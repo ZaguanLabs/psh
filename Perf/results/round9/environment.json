@@ -1,0 +1,517 @@
+{
+  "project": "psh",
+  "date": "2026-11-06",
+  "upstream": "Zsh 5.9.2",
+  "base_git_commit": "f82d388cf09920da51de93ae2b96e2d2d6d74ce7",
+  "compiler": "GCC 15.2.0 (Mageia)",
+  "flags": "-O2 -g; --enable-multibyte --enable-zsh-debug",
+  "cpu": "AMD Ryzen 9 5950X",
+  "timing_cpu": 2,
+  "experiment": "Bounded uint64 ASCII scanning inside the existing terminal-star fast path; timings versus eighth psh",
+  "files": {
+    "Src/pattern.c": "7fdc36281f4bc8ce38e2416465504f30da09fd5d5cc7a940e81ab653531bf53b",
+    "Src/utils.c": "7293f2c7f4554fac966558ad42dc3b75ecdd3854685fd8276fbab6719c979572",
+    "Src/params.c": "44613082057962777410e16107b9a09f5bed66b584d77a868d3a9649071c7c87",
+    "Test/C02cond.ztst": "1e9b0ee1285339dfee479fd524fd841580e8ca52f6d4c48b9d5d43c7bdc3f7b7",
+    "Test/D06subscript.ztst": "a967052a234c19ad1ba4b27f9e5581b201cd23720bae49d1b967b83671407f71",
+    "Test/D07multibyte.ztst": "8fe5b745076f779e89aff57f304f3459493393dc4ed0cdc661fa25164bf73251",
+    "Perf/pattern-module.c": "b9f5a172dd39ba837240628b763ba7db2dbf47b48e59eeb9f9b9f927fcdcadcd",
+    "Perf/check-pattern-module.py": "4bc5fc48ac19113f9ee29281084a137154b28e8c79e78caac82448f8ce7368fe",
+    "Perf/pattern-compare.py": "3dd8e2dfcf72edfadd4e49b3c814a1ca3eb6bf1baf765f418e7c55fa8585b209",
+    "Perf/search-compare.py": "aab2dbb95dbec59ad6fce9311f9dd1bff0845100d75ecea68f46d44e5069fdd0",
+    "Perf/scalar-search-benchmark.py": "afaba4a6692e8c000f0a18568fc4d93839783bdbdcde84ffc21fde9a1b00302a",
+    "Perf/scalar-search-workload.zsh": "d006657eb9377bb66ca736b508f1a15e90f75056c3455c78f8c639b7d6da0d4c",
+    "Perf/parser-benchmark.py": "810ddb9e1e91578408806220fd9fb0f04c26f865fa5f9289e7e0b59474732c2a",
+    "Perf/parser-workload.zsh": "ff8bba644caee8336c921cf6062646b2eace19bb33756a4df2a376b79a8616f8",
+    "Perf/applications.py": "a00964e0ec872c403460d696ea70ac7b25630d3c7f759524886513231e08fdf2",
+    "Perf/application-workload.zsh": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "Perf/0009-terminal-star-ascii-words.patch": "6ff1726e28d7bda3f12a93fabca26ec21134ecbdb8e627cb553f01bb601b5f09",
+    ".work/round8/psh": "1df4cd2c26bbdc9d9cd3e864db0993c40370a5ac59708aa0669b250de5301214",
+    ".work/candidate/Src/zsh": "867a412a8ecbbfcca4f7cd184b02310dd06e4599e9456f5eaf50a3e15cda9f14",
+    ".work/no-mb-candidate/Src/zsh": "e99ae5e6059954447218aba61f70f11703d4171e2673cc1c809f6f7b718a8af6",
+    ".work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    ".work/no-mb-baseline/Src/zsh": "a7d443a64a26e7abffaf96018dd459d8a2f977b446ffb00bab85b9d99bdd168b",
+    ".work/logs/round9/psh-no-word": "8ce5cd9c29a8eb9745721d2a600c6de80fa0d2c468d6ee958006d26675b67f1c",
+    "psh": "867a412a8ecbbfcca4f7cd184b02310dd06e4599e9456f5eaf50a3e15cda9f14"
+  },
+  "evidence_sha256": {
+    "application-benchmarks.json": "c03bcd31a05b2f64d5f0437b119c113c1d35af93b242fadd3b2d23fce732f959",
+    "application-benchmarks.log": "bbb5a5956587f4ceb5675f392d3f2dd557b4c72b7975f1725fceb8db54c9c2b9",
+    "application-tests.json": "a06e87add4cdd9b219a27de4ad8b108890f7790fcacca0cb4d102e99a146f6d9",
+    "array-pristine.json": "d309db57e009bd29df48f437b5f8fedb2fbb642a5882a179c4b14ba11e76f13a",
+    "array-pristine.log": "5f55a47717c4e3b7c132416d5d0f59985870939cf1450a56932f533871d5f30c",
+    "candidate-build.log": "40b3c3aa340f4d6da076616830ae8c8bfc590068ae8a176b79a56700c8613a51",
+    "candidate-instructions.log": "3836defa96cc57f79e443a2ee740c9ac220790cd1da3609bf73810c87828889e",
+    "candidate-memcheck.log": "f32a2caef87e44bb1ac1955c5ffc802ad1d237b4a15d98011b1242d054a51284",
+    "fallback-build.json": "735cf446e8975e4ab894251d6a5648ec419149209bdb962a5532584b90c47730",
+    "fallback-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fallback-link.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fallback-native-output.log": "58d6f1cbcf0a0b161cce542955cac582c9a7031d0c8602150f32cec9939dcf74",
+    "fallback-pattern-module-0-C-multibyte.memcheck.log": "8dfc7ad2d8eeb9c1a0a9a5afd187c9fcee45c8b0315fe6acf7d4671e8efe1721",
+    "fallback-pattern-module-0-C-nomultibyte.memcheck.log": "2f0f8117aa2a78e4aaa005ba7dbc57dda9d3d6a9325ce30e26efd3093af61c80",
+    "fallback-pattern-module-0-C.UTF-8-multibyte.memcheck.log": "9612780a9c99d9e04c825deb9b81f09b66b66cb87d1ec7e9075c63b597ba9c5f",
+    "fallback-pattern-module-0-C.UTF-8-nomultibyte.memcheck.log": "8861f9cfdd1bf86f94f3e4e8bb106b998d8277104ac4c4384d6a5217ca03ac85",
+    "fallback-pattern-module-1-C-multibyte.memcheck.log": "23069548a6f86fceae8c6436fee3cf83c3017748884d8640c49210c52c67ea8b",
+    "fallback-pattern-module-1-C-nomultibyte.memcheck.log": "3ac4a1acd4d301989117bcdb7032a1ee1e7b512443d1d8de3ccb21f05e50cddb",
+    "fallback-pattern-module-1-C.UTF-8-multibyte.memcheck.log": "72a6e261bce31b1cea830e6a60ab412f51e4f1a8a33a7c86ea9dd02b79ca3ad9",
+    "fallback-pattern-module-1-C.UTF-8-nomultibyte.memcheck.log": "a367cc3c1c0b25349d55315dbb1ac122a5d6666b897680c90a990676c371f012",
+    "fallback-pattern-module.json": "ff2b513ede591f1541ce333bc77d9366d08373759ab33ade0ffa0fe1136269ee",
+    "fallback-pattern-pristine.json": "8ff262cb92c9a6a8bad1f01d4645f87066973136e65a7223361f0b32846cccd2",
+    "fallback-patterns-output.log": "c14e91d90ac2ced868bf7751a2a4ae69599f43ca8c61c3f3dd800c0ff86ea85f",
+    "html-tests.log": "f0a208dd16ac404850f3705e38c25853734be5429d6981815af045ec484e3f3a",
+    "memcheck-comparison.json": "dcf17080ffc0b858433d0848efe4e050b4a55670cce4b88b1d9345631b51fb3a",
+    "memcheck-output.log": "4ead8bad89a41e0b4a39c4e6cf59b3232d8f50f6185d736da4274b4b15d923df",
+    "native-array-output.log": "2c2c3b8b73e648a2cac8ada6b822ecbef2ba250532f0617062145412e239d4fb",
+    "native-array.json": "16ed5cca879f852f58171a08193f7648f4d36bc6b903d7113b490cd660c34632",
+    "native.log": "19bbb317ee755026605ba1c817e793148ec23f6c7cb0d31f70a99bd93a93808f",
+    "no-mb-build.log": "fb50e5e0fecd8b63a09461c48d78464dd7e097dce6267dae7136966e33110b8b",
+    "no-mb-conditionals.log": "0d1df21d30a377a152a4295eb544a9d8af282a2e7af80c40386c380d76cb4197",
+    "no-mb-patterns.log": "c14e91d90ac2ced868bf7751a2a4ae69599f43ca8c61c3f3dd800c0ff86ea85f",
+    "no-mb-search.log": "03e6d2485ebe0470ad16b62e6c151b7944a16868fe7bc87874883d1f66c364e9",
+    "no-mb-upstream.log": "674f1f8ff12b9f0025cf41047b9d41673e23cb26613618b9433149447daaa43d",
+    "no-word.h": "2ae93bf7fcfcf02cd8a0f14a7f65595c2112164083398a8c84a0c69a19e5c267",
+    "parser-benchmarks.json": "0fa654d15ec6a54fc64be982a675c1a85fc45f57cfa4752bf779c180552bc0ee",
+    "parser-benchmarks.log": "0edf82951f2a22bdf1560db11c311ba3f02337d7cd8fb655b8a9293661a8bfe0",
+    "pattern-module-0-C-multibyte.memcheck.log": "e4c9b36ce5d7aaf46f99aea10536c795cf55f3585ceb3c1e9985999625ddd326",
+    "pattern-module-0-C-nomultibyte.memcheck.log": "2f5ba3a69ea79841a7cff9f8e319ce67397ada15bb39d8d9b8e840efd0ce9a2a",
+    "pattern-module-0-C.UTF-8-multibyte.memcheck.log": "1c732b87f352bf79c8941183792d39ed739d3f4bef942dcb4c3a154812865d8d",
+    "pattern-module-0-C.UTF-8-nomultibyte.memcheck.log": "ac13b850afa0854cf59a96ddf6d1045606a3f18695fe995f11966c33be3048a7",
+    "pattern-module-1-C-multibyte.memcheck.log": "a7e1184ac7ce73dbad3b711713ae72ed0e79d32a5aea3cd2af8d645047d5e6d2",
+    "pattern-module-1-C-nomultibyte.memcheck.log": "a4c99ad91570f85b2c8aec3ea9a021e57d59d820aae01b3e6e5bb4c7933b4fd9",
+    "pattern-module-1-C.UTF-8-multibyte.memcheck.log": "a8724dce652dc5a1cdfa32eb8eb83b958b5f3709623d7d41f30009608958ea14",
+    "pattern-module-1-C.UTF-8-nomultibyte.memcheck.log": "5192e8647c5880d572bdda63c938941eadf88d76a9813d757427d25a37de6521",
+    "pattern-module.json": "bda4556dab2413466601329ad8ad3f1cddffd8502652704003f90c98dc9c60df",
+    "pattern-no-multibyte.json": "3052725139f067eb53822c4624b877cc77262012328b9d34b11736efd556ac88",
+    "pattern-pristine.json": "23a72daca4c1f515d6067b7de427ca4b7a7b4c2f0cf98aae276e314384c128d2",
+    "patterns.log": "c14e91d90ac2ced868bf7751a2a4ae69599f43ca8c61c3f3dd800c0ff86ea85f",
+    "previous-instructions.log": "0253508260f49300272ab55272092d9db1192157f4470f6873b1c90049407577",
+    "previous-profile.log": "1a29b198f46e202321313603689a1bc51a7afbc1529c0bb2efbee682c88b9aa5",
+    "pristine-new-tests.log": "bdb20b2c6ba5b5063e0f03ffa73347eb7d5c285c7608c4c7c94b07cc9c94fc80",
+    "profile.log": "f4f8ca7df31a76f46f4100c9bb80d96f1fb9adadc86f9943aa3bea4b6804f98d",
+    "scalar-pristine.json": "7dc270539b03b4e4ea858e81f3b40198f1c69e89ad2d06be836a4a70f3f665e5",
+    "scalar-pristine.log": "4bf944f0a2af01676fa07cdd4066071e8eff4463fdc308096d25dd8ecf103760",
+    "scalar-search-benchmarks.json": "86eb0b02cb2d55ddd17176cf392728e56fb2e392bbef9029c276cd927ebff247",
+    "scalar-search-benchmarks.log": "2ed3529291bbbe1205024eb02bd86a73f9cea0f568206e859ea78122653b842a",
+    "scalar-search-candidate.callgrind": "a33f9574d6fad0a283a04dfbde8a58bf1478133cb52495dde241e9275502efcc",
+    "search-no-multibyte.json": "e31e9e947a4b7d614c327ad49ed22503fe535b6fdd23658d6473da7ab5cc095f",
+    "search-pristine.json": "93896992fb1a889f12dc90f22023d124548cab7fe02d4493406af78981eab5ce",
+    "search-pristine.log": "03e6d2485ebe0470ad16b62e6c151b7944a16868fe7bc87874883d1f66c364e9",
+    "upstream.log": "25763da4fe97c708ff26b9579d4fa1dcdd090ffb93131ad016c8baf784fa14cb"
+  },
+  "candidate_upstream_tests": {
+    "successful_scripts": 62,
+    "failed_scripts": 0,
+    "skipped_scripts": 3
+  },
+  "skipped_scripts": [
+    "P01privileged",
+    "V07pcre",
+    "V11db_gdbm"
+  ],
+  "other_skips": "Capability-dependent individual cases retained in full upstream log.",
+  "no_multibyte": {
+    "substitution_successful_scripts": 8,
+    "substitution_failed_scripts": 0,
+    "substitution_skipped_scripts": 1,
+    "conditional_successful_scripts": 1,
+    "conditional_failed_scripts": 0,
+    "search_comparisons": 193236,
+    "pattern_comparisons": 159600,
+    "differences": 0,
+    "checks_run_sequentially": true
+  },
+  "pattern_locale_charmaps": {
+    "C": "ANSI_X3.4-1968",
+    "C.UTF-8": "UTF-8",
+    "ja_JP.eucjp": "EUC-JP",
+    "zh_CN.GB18030": "GB18030",
+    "zh_TW.EUC-TW": "EUC-TW"
+  },
+  "callgrind": {
+    "previous_instructions": 644202692,
+    "candidate_instructions": 156753692,
+    "command": "s=target${(l:99994::x:)}; repeat 1000 found=${s[(i)target]}; [[ $found == 1 ]]",
+    "previous_evidence": "Perf/results/round8/candidate-profile.log"
+  },
+  "native_pattern_fixture": {
+    "checks_per_run": 844,
+    "runs": 8,
+    "queue_modes": [
+      "unqueued",
+      "queued"
+    ],
+    "memcheck_errors": 0,
+    "leak_checking": false,
+    "module_installed": false
+  },
+  "scalar_fallback": {
+    "uint64_max_undefined": true,
+    "separate_pattern_object_and_binary": true,
+    "pattern_comparisons": 159600,
+    "native_checks_per_run": 844,
+    "native_runs": 8,
+    "native_memcheck_errors": 0,
+    "build_record": "fallback-build.json",
+    "cross_architecture_runtime_tested": false
+  },
+  "known_terminator_issue": {
+    "reference": "Perf/results/round6/memcheck-comparison.json",
+    "reference_baseline_binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    "candidate_binary_sha256": "867a412a8ecbbfcca4f7cd184b02310dd06e4599e9456f5eaf50a3e15cda9f14",
+    "workload": "Perf/results/round6/memcheck-scalar-search-all.zsh",
+    "matrices": 84,
+    "matrices_with_errors": 36,
+    "candidate_errors": 520,
+    "same_outputs_counts_and_function_stacks": true,
+    "status": "same pre-existing terminator read; not Memcheck-clean",
+    "stdout_sha256": "4ead8bad89a41e0b4a39c4e6cf59b3232d8f50f6185d736da4274b4b15d923df",
+    "matrix_errors_and_contexts": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "zhtml2md_checks": {
+    "passed": 307,
+    "failed": 0
+  },
+  "public_exports_unchanged": true,
+  "public_parameter_utility_and_pattern_declarations_unchanged": true,
+  "pristine_manifest_verified_files": 1847,
+  "previous_snapshot_verified": true,
+  "incremental_patch_apply_verified": true,
+  "published_binary_matches_tested_candidate": true
+}

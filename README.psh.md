@@ -44,6 +44,9 @@ after the sixth.
 The [eighth experiment](Perf/round8.md) removes unused backtracking storage for
 eligible terminal stars; its [patch](Perf/0008-terminal-star-matching.patch)
 applies after the seventh.
+The [ninth experiment](Perf/round9.md) skips ASCII runs with bounded word loads
+inside eligible terminal stars; its
+[patch](Perf/0009-terminal-star-ascii-words.patch) applies after the eighth.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -62,7 +65,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all eight changes; the fourth experiment compares against
+executable includes all nine changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -90,3 +93,10 @@ conversion state; byte mode advances directly to the end. On heap-allocation
 builds, unqueued calls retain the original path and its signal boundary.
 Measurements compare against the seventh executable and include small measured
 slowdowns alongside the targeted gains.
+
+The ninth change skips groups of eight bytes whose high bits are all clear,
+using bounded unaligned-safe loads. Non-ASCII bytes retain the existing converter
+and its state; embedded NUL remains a byte in bounded matcher input. Platforms
+without an exact 64-bit unsigned type and eight-bit bytes use scalar traversal.
+Measurements compare against the eighth executable and include unchanged
+application controls and a slower short late-match benchmark.

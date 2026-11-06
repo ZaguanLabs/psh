@@ -711,3 +711,18 @@ F:support character sets outside the portable 7-bit range.
     [[ $s == (#m)a* && $MATCH == "$s" && $MEND == 2 ]]
   }
 0:Terminal stars retain Unicode captures, byte overrides, approximations and incomplete characters
+
+  () {
+    emulate -L zsh -o extendedglob
+    local s needle='(#m)a' out MATCH MBEGIN MEND
+    s=a${(l:23::x:)}é${(l:31::y:)}
+    out=${s[(i)$needle]}
+    [[ $out == 1 && $MATCH == "$s" && $MBEGIN == 1 && $MEND == 56 ]] || return 1
+    s=a${(l:15::x:)}$'\0'${(l:17::y:)}
+    out=${s[(i)$needle]}
+    [[ $out == 1 && $MATCH == "$s" && $MEND == 34 ]] || return 1
+    s=a${(l:31::x:)}$'\303'
+    out=${s[(i)$needle]}
+    [[ $out == 1 && $MATCH == "$s" && $MEND == 33 ]]
+  }
+0:Terminal-star ASCII runs preserve mixed Unicode, embedded NUL and incomplete-tail match state

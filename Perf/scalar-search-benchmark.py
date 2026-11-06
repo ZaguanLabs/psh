@@ -16,6 +16,8 @@ def main():
     p.add_argument("--samples", type=int, default=9)
     p.add_argument("--cpu", type=int)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--mixed", action="store_true",
+                   help="add alternating ASCII/Unicode and Unicode-to-ASCII controls")
     args = p.parse_args()
     if args.samples < 3:
         p.error("at least three samples are required")
@@ -47,6 +49,9 @@ def main():
         ("negative-start", "offset", "ascii", "multibyte", 100000, 99995, -6, 100, 99995),
         ("backward", "backward", "ascii", "multibyte", 2000, 1995, 1, 5, 1995),
     ]
+    if args.mixed:
+        specs += [("mixed-first", "index", "mixed", "multibyte", 100000, 1, 1, 100, 1),
+                  ("post-unicode", "index", "post-unicode", "multibyte", 100000, 1, 1, 100, 1)]
     for name, operation, unit, mb_option, size, position, start, iterations, expected in specs:
         samples = [[], []]
         for sample in range(args.samples):

@@ -10,6 +10,68 @@ compile_pattern(const char *pattern)
 }
 
 static int
+check_boundaries(int utf8chars)
+{
+    static const int positions[] = { 1, 7, 8, 9, 15, 16, 17, 31, 32, 33, 62, 63 };
+    Patprog prog = compile_pattern("a*");
+    int alignment, n, position, variant, checks = 0;
+    if (!prog) return -1;
+
+    /* All alignments and short lengths around eight-byte boundaries.
+     * These allocations have no NUL or guard after the requested span. */
+    for (alignment = 0; alignment < 8; alignment++) {
+	for (n = 1; n <= 65; n++) {
+	    char *allocation, *input;
+	    int end = -99, result, failed;
+	    if (n > 33 && n < 63) continue;
+	    allocation = zalloc(alignment + n);
+	    memset(allocation, 'x', alignment + n);
+	    input = allocation + alignment;
+	    input[0] = 'a';
+	    result = pattryrefs(prog, input, n, n, NULL, 7, NULL, NULL, &end);
+	    failed = result != 1 || end != n + 7 || patmatchlen() != n;
+	    zfree(allocation, alignment + n);
+	    if (failed) {
+		fprintf(stderr, "bounded ASCII alignment=%d length=%d\n", alignment, n);
+		freepatprog(prog);
+		return -1;
+	    }
+	    checks++;
+	}
+    }
+    for (position = 0; position < 12; position++) {
+	for (variant = 0; variant < 3; variant++) {
+	    char raw[64], *encoded;
+	    int p = positions[position], chars = 64, metalen, end = -99, result, failed;
+	    memset(raw, 'x', sizeof(raw));
+	    raw[0] = 'a';
+	    if (variant == 0) raw[p] = '\0';
+	    else if (variant == 1) raw[p] = (char)0xff;
+	    else {
+		raw[p] = (char)0xc3;
+		if (p + 1 < 64) {
+		    raw[p + 1] = (char)0xa9;
+		    if (utf8chars == 3) chars--;
+		}
+	    }
+	    encoded = metafy(raw, 64, META_DUP);
+	    metalen = strlen(encoded);
+	    result = pattryrefs(prog, encoded, metalen, 64, NULL, 7, NULL, NULL, &end);
+	    failed = result != 1 || end != chars + 7 || patmatchlen() != metalen;
+	    zsfree(encoded);
+	    if (failed) {
+		fprintf(stderr, "mixed boundary position=%d variant=%d\n", p, variant);
+		freepatprog(prog);
+		return -1;
+	    }
+	    checks++;
+	}
+    }
+    freepatprog(prog);
+    return checks;
+}
+
+static int
 check_api(char **args)
 {
     static const struct {
@@ -23,7 +85,7 @@ check_api(char **args)
     static const char *patterns[] = {
 	"a*", "a***", "(#b)(a)*", "(#b)(a*)", "a*X"
     };
-    int input, variant, offset, checks = 0, utf8chars = atoi(args[0]);
+    int input, variant, offset, checks = 0, utf8chars = atoi(args[0]), bounded;
 
     for (input = 0; input < 7; input++) {
 	int n = inputs[input].bytes, metalen = n, i;
@@ -77,6 +139,9 @@ check_api(char **args)
 	}
 	zsfree(encoded);
     }
+    bounded = check_boundaries(utf8chars);
+    if (bounded < 0) return 1;
+    checks += bounded;
     printf("checks=%d\n", checks);
     fflush(stdout);
     return 0;

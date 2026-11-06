@@ -375,3 +375,36 @@ those test directories. The round-eight no-multibyte checks were rerun
 sequentially after two concurrent upstream jobs interfered.
 
 See `round8.md` and `0008-terminal-star-matching.patch` for this experiment.
+
+## Terminal-star ASCII runs
+
+The ninth experiment extends the eighth path with bounded word loads. With
+`UINT64_MAX` available and `CHAR_BIT == 8`, `memcpy()` reads a full `uint64_t`
+only when that many input bytes remain. A repeated high-bit mask establishes
+that all eight bytes have the converter's state-free ASCII width. Alignment and
+endianness do not matter. Embedded NUL is included; no terminator is required.
+Non-ASCII bytes still use `CHARINC()` with its existing conversion state.
+The eighth experiment's signal-queue eligibility is retained.
+
+Single ASCII bytes are handled before considering word loads, avoiding repeated
+loads for alternating ASCII/non-ASCII input. Without the type/byte-width guard,
+the scalar path remains. An isolated object compiled with `UINT64_MAX` undefined
+was linked and run through the native and five-locale pattern checks.
+
+```sh
+python3 Perf/scalar-search-benchmark.py .work/round8/psh .work/candidate/Src/zsh \
+  --cpu 2 --mixed --output .work/logs/round9/scalar-search-benchmarks.json
+```
+
+`--mixed` adds alternating ASCII/Unicode and a long ASCII run following Unicode
+to the existing controls. The current native pattern fixture checks **844
+results per run**, half queued and half unqueued. Added exact-size allocations
+have no guard byte after their bounded spans: lengths 1–33 and 63–65 at eight
+alignments, plus NUL/invalid/incomplete/valid multibyte sequences near word
+boundaries. Eight runs cover both shells, C/C.UTF-8 and multibyte on/off under
+Memcheck. The extended five-locale pattern matrix now has **159,600** comparisons;
+the default two-locale matrix retains 14,364. These replace the fixture counts
+recorded for the earlier experiment, whose archived results remain unchanged.
+
+See [round9.md](round9.md) and
+[0009-terminal-star-ascii-words.patch](0009-terminal-star-ascii-words.patch).

@@ -3306,10 +3306,32 @@ patmatch(Upat prog)
 #ifdef MULTIBYTE_SUPPORT
 		if (patglobflags & GF_MULTIBYTE) {
 		    while (patinput < patinend) {
-			if (!((unsigned char)*patinput & 0x80))
+			if (!((unsigned char)*patinput & 0x80)) {
+			    /* Handle a single ASCII byte without a word load. */
 			    patinput++;
-			else
-			    CHARINC(patinput, patinend);
+			    if (patinput == patinend)
+				break;
+			    if (!((unsigned char)*patinput & 0x80)) {
+#if defined(UINT64_MAX) && defined(CHAR_BIT) && CHAR_BIT == 8
+				/* Unaligned, bounded loads: every skipped byte must
+				 * have the converter's state-free ASCII width. */
+				const uint64_t highbits = UINT64_MAX / 0xff * 0x80;
+				while ((size_t)(patinend - patinput) >= sizeof(uint64_t)) {
+				    uint64_t word;
+				    memcpy(&word, patinput, sizeof(word));
+				    if (word & highbits)
+					break;
+				    patinput += sizeof(word);
+				}
+#endif
+				while (patinput < patinend &&
+				       !((unsigned char)*patinput & 0x80))
+				    patinput++;
+				if (patinput == patinend)
+				    break;
+			    }
+			}
+			CHARINC(patinput, patinend);
 		    }
 		} else
 #endif

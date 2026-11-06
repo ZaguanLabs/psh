@@ -24,10 +24,10 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
-- [Project details and the eight experiments](README.psh.md)
+- [Project details and the nine experiments](README.psh.md)
 - [Build, comparison and benchmark workflow](Perf/README.md)
 - [Source-review coverage](Perf/audit.md)
-- [Latest measurements and compatibility evidence](Perf/round8.md)
+- [Latest measurements and compatibility evidence](Perf/round9.md)
 - [Upstream bug report and reproducer](Perf/bugs/scalar-search-terminator/report.txt)
 
 The review is ongoing. Test results are evidence of compatibility, not proof of

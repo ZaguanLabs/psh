@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round9/scalar-search-candidate.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 33099280
+Trigger: Program termination
+Profiled target:  .work/candidate/Src/zsh -dfc s=target${(l:99994::x:)}; repeat 1000 found=${s[(i)target]}; [[ $found == 1 ]] (PID 3839617, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       95
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+156,753,692 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+112,795,000 (71.96%)  Src/pattern.c:patmatch [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+ 15,889,698 (10.14%)  ???:__strlen_avx2 [/usr/lib64/libc.so.6]
+ 10,426,680 ( 6.65%)  ???:__memchr_avx2 [/usr/lib64/libc.so.6]
+  2,899,978 ( 1.85%)  .work/candidate/Src/../../../Src/subst.c:dopadding [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+  2,037,220 ( 1.30%)  Src/utils.c:mb_metacharlenconv [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    992,094 ( 0.63%)  .work/candidate/Src/../../../Src/glob.c:remnulargs [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    953,080 ( 0.61%)  .work/candidate/Src/../../../Src/exec.c:untokenize.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    631,816 ( 0.40%)  Src/utils.c:itype_end [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    477,000 ( 0.30%)  Src/params.c:getarg [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    447,870 ( 0.29%)  .work/candidate/Src/../../../Src/subst.c:paramsubst [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    416,991 ( 0.27%)  .work/candidate/Src/../../../Src/input.c:ingetc.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    334,834 ( 0.21%)  .work/candidate/Src/../../../Src/subst.c:stringsubst [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    330,000 ( 0.21%)  Src/pattern.c:patcomppiece [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+    314,089 ( 0.20%)  .work/candidate/Src/../../../Src/mem.c:zhalloc [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+

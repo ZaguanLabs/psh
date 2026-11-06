@@ -5,6 +5,8 @@ setopt $mb_option
 case $unit_kind in
   ascii) typeset unit=x ;;
   unicode) typeset unit=é ;;
+  mixed) typeset unit=xé ;;
+  post-unicode) typeset unit=x ;;
   nul) typeset unit=$'\0' ;;
   invalid) typeset unit=$'\377' ;;
   *) exit 2 ;;
@@ -14,6 +16,10 @@ if (( position )); then
   s=${(pl:$prefix::$unit:)}target${(pl:$suffix::$unit:)}
 else
   s=${(pl:$size::$unit:)}
+fi
+if [[ $unit_kind == post-unicode ]]; then
+  (( position > 0 && suffix > 0 )) || exit 2
+  s[position+6]=é
 fi
 run-search() {
   case $operation in
