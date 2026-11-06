@@ -1,0 +1,203 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round1/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh"
+  ],
+  "cpu_affinity": [
+    2
+  ],
+  "binary_sha256": [
+    "4e7879aa35bfb2242d522f192ffdc231c025bc983ec6f428c2674f9b90bec642",
+    "47f24a145a0fae223eed8fa192d7745a74b3cda57d191a25d01aec50b64a418d"
+  ],
+  "locale": "C.UTF-8",
+  "samples": 9,
+  "cases": [
+    {
+      "case": "html-comment-1m",
+      "input_bytes": 1048598,
+      "input_sha256": "96927f53a42c3b1489f49d121dbe488ca378ad999c80ba22e22e7471fc435fe5",
+      "output_bytes": 9,
+      "output_sha256": "d25a40aa4f234dff3cf60d2afe65a6596d7232e6603ef7cf36984836fd6046aa",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_entities.zsh": "54b13f761048972bbb1f956a71309c7b25589f1ebccffd6a23bbf750422170b7",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_frames.zsh": "c514b7137b152de553341a65135c3466f24645cd39cdcf18eefd5737d1c040e9",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_input.zsh": "2e0200a046cc947546ea8f5eb0eb69be22a753bf14aea10dd2c0253c2f6c96d5",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_markdown.zsh": "9d6412552862f3d50d81cd7df6b6c9d19d36533620cc660933d1c1b1d581c036",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_render.zsh": "4bdf094b75f1a1af1b097346c9b0f4d47294d074effa845000cf428d7695117f",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_structures.zsh": "d6b4c22f189e9bab6435a9fa44414377b44e27e6dd786e0b1aab5cfc24cf5f43",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_tokenizer.zsh": "8b7b1eed2c9e1e2a819b8f0cf5ee343d66f943ea3a755f0bfd439b7b0e514d50",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/zhtml2md.zsh": "bac6e8712cd9e1f50158e648a18223293df886f26aa434ee48baba47dbbfd7cc"
+      },
+      "samples_ms_per_call": [
+        [
+          575.5173333333333,
+          577.6633333333333,
+          577.3846666666667,
+          574.406,
+          579.7526666666666,
+          573.4723333333334,
+          571.8743333333333,
+          572.442,
+          575.3323333333334
+        ],
+        [
+          556.8180000000001,
+          553.6743333333333,
+          559.959,
+          552.7373333333334,
+          552.7553333333334,
+          552.0833333333334,
+          551.5823333333334,
+          552.275,
+          552.6266666666667
+        ]
+      ],
+      "iterations": 3,
+      "median_ms": [
+        575.3323333333334,
+        552.7373333333334
+      ],
+      "speedup": 1.0408783677840951
+    },
+    {
+      "case": "html-prose-100k",
+      "input_bytes": 102400,
+      "input_sha256": "5cfc8a58577b50e270b89a913120932e9e60817d8b7eef1307c02b651ef85cc4",
+      "output_bytes": 100421,
+      "output_sha256": "1b6f5384b43e4f2449d83e94f63c8b722e7823895852331d5bb4aa0713e2d96e",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_entities.zsh": "54b13f761048972bbb1f956a71309c7b25589f1ebccffd6a23bbf750422170b7",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_frames.zsh": "c514b7137b152de553341a65135c3466f24645cd39cdcf18eefd5737d1c040e9",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_input.zsh": "2e0200a046cc947546ea8f5eb0eb69be22a753bf14aea10dd2c0253c2f6c96d5",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_markdown.zsh": "9d6412552862f3d50d81cd7df6b6c9d19d36533620cc660933d1c1b1d581c036",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_render.zsh": "4bdf094b75f1a1af1b097346c9b0f4d47294d074effa845000cf428d7695117f",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_structures.zsh": "d6b4c22f189e9bab6435a9fa44414377b44e27e6dd786e0b1aab5cfc24cf5f43",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/lib/_zhtml2md_tokenizer.zsh": "8b7b1eed2c9e1e2a819b8f0cf5ee343d66f943ea3a755f0bfd439b7b0e514d50",
+        "/home/stig/dev/ai/zaguan/labs/zhtml2md/zhtml2md.zsh": "bac6e8712cd9e1f50158e648a18223293df886f26aa434ee48baba47dbbfd7cc"
+      },
+      "samples_ms_per_call": [
+        [
+          138.392,
+          144.231,
+          137.66733333333332,
+          138.44233333333332,
+          142.67966666666666,
+          137.56466666666668,
+          138.11066666666667,
+          142.801,
+          137.464
+        ],
+        [
+          142.50866666666667,
+          137.363,
+          137.47566666666665,
+          137.47233333333332,
+          136.649,
+          137.21766666666664,
+          137.22166666666666,
+          138.61366666666666,
+          136.78766666666667
+        ]
+      ],
+      "iterations": 3,
+      "median_ms": [
+        138.392,
+        137.363
+      ],
+      "speedup": 1.0074911002234954
+    },
+    {
+      "case": "json-repair-100k",
+      "input_bytes": 100000,
+      "input_sha256": "21c9bab2c87b88bfbc9046f7efdbc018d3ea4c370e145f3fe73b451816aadcb4",
+      "output_bytes": 100004,
+      "output_sha256": "d82af65911e20a24e189396c3a9f56a4c82b977f139b8344aea59de00a692766",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "samples_ms_per_call": [
+        [
+          50.00833333333333,
+          45.303666666666665,
+          45.166000000000004,
+          45.552666666666674,
+          45.548333333333325,
+          45.63399999999999,
+          45.671,
+          46.047333333333334,
+          45.53633333333334
+        ],
+        [
+          42.76266666666667,
+          42.827999999999996,
+          43.178666666666665,
+          42.809999999999995,
+          42.83133333333333,
+          42.86233333333334,
+          42.78133333333334,
+          42.86933333333334,
+          43.05433333333334
+        ]
+      ],
+      "iterations": 3,
+      "median_ms": [
+        45.552666666666674,
+        42.83133333333333
+      ],
+      "speedup": 1.0635360405933352
+    },
+    {
+      "case": "html-clean-128",
+      "input_bytes": 19328,
+      "input_sha256": "f5313ea7c85881283da0081017134d290ae8070309910b0d0086565c78fa1c91",
+      "output_bytes": 10880,
+      "output_sha256": "d74293e562c5f83f942a9460c8f27629292c025f235e55bd455280dd7bf97306",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_clean": "3aaaf9c897a36276684ef473f758ad4e7f38ca1dd52c05bd422d1ad5dc1a0e29",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_escape": "1d104fdab909b2509e2ef2c558410a9b45d067d4c1075e75b787138c3058bc01",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_more": "3b3a944eb2ccaf3946ba98156e725e7f4ed0935053ec6ba3e0ded4ee627d51d2",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_script": "8b2e6a838e2b65ecd0aee4d8c32ac4b2f9fb565bb63740c07da893d51a5da5d5",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_tag": "32262fe293249093bc8e4aba20438e53acc08215797d1a2a7eddcbd277ab3243",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_tag_more": "94c16a4819a4ee3c08c23fe3e850e49a99762c2aad7e386789bd39978f0072f6",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/_zoup_url": "452962a16a1289e3557a2c919d768349f2f889e0c223c440e33c8cd29f2aee3c",
+        "/home/stig/dev/ai/zaguan/labs/zoup/functions/zoup": "3ba021765aea832ad4690372b6716ddc99dc407a071d112850ee02d91c4fbf96"
+      },
+      "samples_ms_per_call": [
+        [
+          107.45766666666668,
+          107.22699999999999,
+          107.96433333333333,
+          105.17466666666667,
+          106.68266666666666,
+          106.44200000000001,
+          112.479,
+          106.89166666666667,
+          106.75
+        ],
+        [
+          107.71900000000001,
+          106.07600000000001,
+          104.92233333333333,
+          105.26299999999999,
+          105.77333333333333,
+          106.34933333333333,
+          106.22233333333332,
+          105.15466666666667,
+          110.74000000000001
+        ]
+      ],
+      "iterations": 3,
+      "median_ms": [
+        106.89166666666667,
+        106.07600000000001
+      ],
+      "speedup": 1.0076894553590507
+    }
+  ]
+}

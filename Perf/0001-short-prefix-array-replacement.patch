@@ -1,0 +1,131 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -2778,10 +2778,40 @@
+ 	char **const old = v->pm->gsu.a->getfn(v->pm);
+ 	char **new;
+ 	char **p, **q, **r; /* index variables */
+-	const int pre_assignment_length = arrlen(old);
++	int pre_assignment_length = -1;
++	const int value_length = arrlen(val);
+ 	int post_assignment_length;
+ 	int i;
+ 
++	/* For a size-preserving replacement at nonnegative indices, it is
++	 * enough to check that the old array reaches the end of the slice.
++	 * Avoid scanning the rest of a potentially much larger array.  Limit
++	 * this to a short prefix: a bounded scan is slower than arrlen() for
++	 * distant indices.  Keep the same restrictions as the in-place
++	 * replacement below. */
++	if (v->end <= 32 && v->start >= 0 && v->end > v->start &&
++	    !(v->flags & VALFLAG_INV) &&
++	    value_length == v->end - v->start &&
++	    v->pm->gsu.a->setfn == arrsetfn &&
++	    !(v->pm->node.flags & (PM_SPECIAL|PM_UNIQUE)) &&
++	    !v->pm->ename) {
++	    for (i = 0; i < v->end && old[i]; i++);
++	    if (i == v->end) {
++		p = old + v->start;
++		for (r = val; *r;) {
++		    zsfree(*p);
++		    *p++ = *r++;
++		}
++		free(val);
++		return;
++	    }
++	    /* The slice extends past the array: the bounded scan has already
++	     * found its full length, so do not scan it again below. */
++	    pre_assignment_length = i;
++	}
++
++	if (pre_assignment_length < 0)
++	    pre_assignment_length = arrlen(old);
+ 	q = old;
+ 
+ 	if ((v->flags & VALFLAG_INV) && unset(KSHARRAYS)) {
+@@ -2802,7 +2832,7 @@
+ 	if (v->end < v->start)
+ 	    v->end = v->start;
+ 
+-	post_assignment_length = v->start + arrlen(val);
++	post_assignment_length = v->start + value_length;
+ 	if (v->end < pre_assignment_length) {
+ 	    /* 
+ 	     * Allocate room for array elements between the end of the slice `v'
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -299,3 +299,75 @@
+   echo ${string[(pws:\0:)1]}
+ 0:Word splitting by NUL
+ >foo
++
++  () {
++    local -a a=(one two three four five)
++    a[1]=''
++    a[2,3]=('two words' $'line\nbreak')
++    a[5]=last
++    print -r -- ${(qqqq)a}
++  }
++0:Size-preserving array replacements retain empty elements and literal data
++>$'' $'two words' $'line\nbreak' $'four' $'last'
++
++  () {
++    local -a a=(one two three)
++    a[3,4]=(last extra)
++    a[6]=beyond
++    print -r -- ${(qq)a}
++    a[2,3]=()
++    print -r -- ${(qq)a}
++  }
++0:Array replacements extending past the end and deleting slices
++>'one' 'two' 'last' 'extra' '' 'beyond'
++>'one' 'extra' '' 'beyond'
++
++  () {
++    emulate -L ksh
++    typeset -a a=(one two three four)
++    a[0]=first
++    a[1,2]=(middle pair)
++    print -r -- "${a[@]}"
++  }
++0:Size-preserving array replacements use zero-based indices in ksh emulation
++>first middle pair four
++
++  () {
++    local -a a=(one two three four)
++    a[-1]=last
++    a[-3,-2]=(middle pair)
++    a[(i)one]=first
++    print -r -- $a
++  }
++0:Size-preserving negative and pattern array subscripts
++>first middle pair last
++
++  () {
++    local -aU a=(one two three)
++    a[1]=three
++    print -r -- $a
++    local joined
++    local -a linked
++    typeset -T joined linked
++    linked=(one two three)
++    linked[1]=first
++    linked[2,3]=(middle last)
++    print -r -- "$joined"
++  }
++0:Array replacement retains uniqueness and updates tied scalars
++>three two
++>first:middle:last
++
++  () {
++    emulate -L zsh
++    local -a a=({1..64})
++    a[32]=inside
++    a[33]=outside
++    print -r -- $a[31,34]
++    a=({1..31})
++    a[32]=extended
++    print -r -- $#a $a[-2,-1]
++  }
++0:Array replacement at the short-prefix boundary and extension past it
++>31 inside outside 34
++>32 31 extended

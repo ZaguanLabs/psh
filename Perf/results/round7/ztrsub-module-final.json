@@ -1,0 +1,52 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/ztrsub-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/ztrsub-module/psh_ztrsub_fixture.so"
+  ],
+  "source_sha256": "8111ce4bb29ff35c3ba8b463c1f39fdc88a1f6718b065009496ad0b1a6b010d8",
+  "module_sha256": "d63143d99d50250f4968fd15e3aff1db4c6c1a56fba3856f64ec8c0e5b2a5d3f",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "checks": 132615,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 132615,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C",
+      "checks": 132615,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "bf0a78d71727d5061b7395246405fe60903a5f02d5530be4f3fbc11a8eeab1b4"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 132615,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "bf0a78d71727d5061b7395246405fe60903a5f02d5530be4f3fbc11a8eeab1b4"
+    }
+  ]
+}

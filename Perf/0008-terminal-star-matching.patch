@@ -1,0 +1,94 @@
+--- a/Src/pattern.c
++++ b/Src/pattern.c
+@@ -3295,6 +3295,28 @@
+ 	     * are handled by the more complicated branching method
+ 	     */
+ 	    op = P_OP(scan);
++	    if (op == P_STAR && P_OP(next) == P_END
++#ifndef USE_STACK_ALLOCATION
++		/* zhalloc() can dispatch signals if they are not queued. */
++		&& queue_signal_level()
++#endif
++		) {
++		/* A terminal star cannot backtrack.  Preserve character conversion
++		 * state in multibyte mode, without allocating its boundary bitmap. */
++#ifdef MULTIBYTE_SUPPORT
++		if (patglobflags & GF_MULTIBYTE) {
++		    while (patinput < patinend) {
++			if (!((unsigned char)*patinput & 0x80))
++			    patinput++;
++			else
++			    CHARINC(patinput, patinend);
++		    }
++		} else
++#endif
++		if (patinput < patinend)
++		    patinput = patinend;
++		return 1;
++	    }
+ 	    /* Note that no counts possibly metafied characters */
+ 	    start = patinput;
+ 	    {
+@@ -3313,7 +3335,8 @@
+ 			charstart[patinput-start] = 1;
+ 			no++;
+ 		    }
+-		    /* simple optimization for reasonably common case */
++		    /* Also retain the allocation's signal boundary on the
++		     * unqueued heap path excluded from the fast case above. */
+ 		    if (P_OP(next) == P_END)
+ 			return 1;
+ 		} else {
+--- a/Test/C02cond.ztst
++++ b/Test/C02cond.ztst
+@@ -448,6 +448,30 @@
+ >in conjunction: 3
+ ?(eval):6: no such option: invalidoption
+ 
++  () {
++    emulate -L zsh -o extendedglob -o nomultibyte
++    local s=$'ab\0c\377' MATCH MBEGIN MEND
++    local -a match mbegin mend
++    [[ $s == (#m)a* && $MATCH == "$s" && $MBEGIN == 1 && $MEND == 5 ]] || return 1
++    [[ $s == (#b)(a)*** && $match[1] == a &&
++       $mbegin[1] == 1 && $mend[1] == 1 ]] || return 1
++    [[ ${s#a*} == $'b\0c\377' && ${s##a*} == '' && ${s//a*/X} == X ]] || return 1
++    setopt multibyte
++    [[ $s == (#U)(#m)a* && $MATCH == "$s" && $MEND == 5 ]]
++  }
++0:Terminal stars retain byte-mode captures, NUL data, replacement and per-pattern byte flags
++
++  () {
++    emulate -L zsh -o extendedglob
++    local s=a
++    local -a match mbegin mend
++    [[ $s == (#b)(a)*** && $match[1] == a &&
++       $mbegin[1] == 1 && $mend[1] == 1 ]] || return 1
++    s=$'ab\0tail'
++    [[ $s == (#a1)bb* && $s == a*~az* && $s != a*~ab* ]]
++  }
++0:Terminal stars retain empty suffixes, star chains, approximations and exclusions
++
+ %clean
+   # This works around a bug in rm -f in some versions of Cygwin
+   chmod 644 unmodish
+--- a/Test/D07multibyte.ztst
++++ b/Test/D07multibyte.ztst
+@@ -697,3 +697,17 @@
+        "${s[(r)a,(r)😀]}" == a😀 ]]
+   }
+ 0:Scalar pattern searches retain Unicode indices and incomplete trailing character handling
++
++  () {
++    emulate -L zsh -o extendedglob
++    local s='aé😀z' MATCH MBEGIN MEND
++    local -a match mbegin mend
++    [[ $s == (#m)a* && $MATCH == "$s" && $MBEGIN == 1 && $MEND == 4 ]] || return 1
++    [[ $s == (#U)(#m)a* && $MEND == 4 ]] || return 1
++    [[ $s == (#b)(a)*** && $match[1] == a && $mend[1] == 1 ]] || return 1
++    [[ $s == (#b)(a*) && $match[1] == "$s" && $mend[1] == 4 ]] || return 1
++    [[ $s == (#a1)b* ]] || return 1
++    s=$'a\303'
++    [[ $s == (#m)a* && $MATCH == "$s" && $MEND == 2 ]]
++  }
++0:Terminal stars retain Unicode captures, byte overrides, approximations and incomplete characters

@@ -1,0 +1,67 @@
+{
+  "project": "psh",
+  "date": "2026-11-06",
+  "upstream": "Zsh 5.9.2",
+  "compiler": "GCC 15.2.0 (Mageia)",
+  "flags": "-O2 -g; --enable-multibyte --enable-zsh-debug",
+  "cpu": "AMD Ryzen 9 5950X",
+  "timing_cpu": 2,
+  "files": {
+    "Src/params.c": "0c3da4f5936e877f4ed9167ec4ca0a9580c353c9539a09f57515363432da186d",
+    "Test/D06subscript.ztst": "c2fef80998a60d8aebd1455775ec4468032298da5a41eaba1eb519428c728101",
+    "Test/D07multibyte.ztst": "045a1646cef1fb409f8a5917de48f14bad9b3e9b436dd4a5ab3a5a3f73280c92",
+    "Perf/scalar-compare.py": "ed8ce9d1a425317e3717a506434be44e32faa1bb98ab81d01dcf52d31add9e40",
+    "Perf/slice-workload.zsh": "4a9449e97f5df7996238b628e2deb795b9728a17a1617c20c2533f7edeb778d5",
+    "Perf/slice-benchmark.py": "79147a3af6f9bdee119e4b0c4acd1f29d33f71b0ed43a6640f229d1f4228b39f",
+    ".work/round2/psh": "47f24a145a0fae223eed8fa192d7745a74b3cda57d191a25d01aec50b64a418d",
+    ".work/candidate/Src/zsh": "ba5b4cb90f67f529429fd8c600059fa70df4f90e97aad3782fbf27a759feef99",
+    ".work/no-mb-baseline/Src/zsh": "a7d443a64a26e7abffaf96018dd459d8a2f977b446ffb00bab85b9d99bdd168b",
+    ".work/no-mb-candidate/Src/zsh": "a66d1c1bf3dc400f348e651f165588c9d48f5224c266b266a93fdbcfade85036",
+    "psh": "ba5b4cb90f67f529429fd8c600059fa70df4f90e97aad3782fbf27a759feef99"
+  },
+  "upstream_tests": {
+    "baseline": {
+      "successful_scripts": 62,
+      "failed_scripts": 0,
+      "skipped_scripts": 3
+    },
+    "candidate": {
+      "successful_scripts": 62,
+      "failed_scripts": 0,
+      "skipped_scripts": 3
+    }
+  },
+  "skipped_scripts": [
+    "P01privileged",
+    "V07pcre",
+    "V11db_gdbm"
+  ],
+  "other_skips": "Capability-dependent individual cases include MONITOR and terminal-color checks; see full logs.",
+  "callgrind": {
+    "previous_instructions": 46084204,
+    "candidate_instructions": 22092500,
+    "command": "setopt nomultibyte; s=${(l:10000::x:)}; repeat 100 out=${s[9993,10000]}; [[ $out == xxxxxxxx ]]"
+  },
+  "memcheck_errors": 0,
+  "experiment": "scalar index widths; timings versus second psh",
+  "zhtml2md_checks": {
+    "candidate": {
+      "passed": 307,
+      "failed": 0
+    }
+  },
+  "no_multibyte_build": {
+    "baseline": {
+      "successful_scripts": 8,
+      "failed_scripts": 0,
+      "skipped_scripts": 1
+    },
+    "candidate": {
+      "successful_scripts": 8,
+      "failed_scripts": 0,
+      "skipped_scripts": 1
+    },
+    "scalar_read_comparisons": 12266,
+    "differences": 0
+  }
+}

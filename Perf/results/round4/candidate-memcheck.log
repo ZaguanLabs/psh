@@ -1,0 +1,15 @@
+==3326831== Memcheck, a memory error detector
+==3326831== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3326831== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3326831== Command: .work/candidate/Src/zsh -dfc module_path=("$PWD/.work/append-module"\ $module_path);\ for\ m\ in\ stable\ changing\ self-replacing\ custom-setter\ public-api;\ do\ zmodload\ psh_append_fixture\ ||\ exit\ 1;\ psh-array-fixture\ "$m"\ ||\ exit\ 1;\ if\ [[\ $m\ !=\ public-api\ ]];\ then\ psh_fixture_array+=(tail);\ fi;\ psh-array-fixture\ report\ ||\ exit\ 1;\ zmodload\ -u\ psh_append_fixture\ ||\ exit\ 1;\ done;\ repeat\ 20\ {\ a=();\ repeat\ 100\ a+=(x\ ""\ y);\ a[2,5]=();\ a+=(tail);\ };\ ()\ {\ local\ -aU\ u=(a\ b);\ repeat\ 50\ u+=(b\ c);\ [[\ ${#u}\ ==\ 3\ ]]\ ||\ return\ 1;\ local\ linked;\ local\ -a\ tied;\ typeset\ -xT\ linked\ tied;\ tied=(a\ ""\ b);\ tied+=(c\ "");\ [[\ $linked\ ==\ "a::b:c:"\ ]];\ }
+==3326831== Parent PID: 1853661
+==3326831== 
+==3326831== 
+==3326831== HEAP SUMMARY:
+==3326831==     in use at exit: 77,421 bytes in 1,548 blocks
+==3326831==   total heap usage: 20,147 allocs, 18,599 frees, 2,967,498 bytes allocated
+==3326831== 
+==3326831== For a detailed leak analysis, rerun with: --leak-check=full
+==3326831== 
+==3326831== For lists of detected and suppressed errors, rerun with: -s
+==3326831== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

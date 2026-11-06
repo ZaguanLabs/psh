@@ -1,0 +1,71 @@
+{
+  "project": "psh",
+  "date": "2026-11-06",
+  "upstream": "Zsh 5.9.2",
+  "compiler": "GCC 15.2.0 (Mageia)",
+  "flags": "-O2 -g; --enable-multibyte --enable-zsh-debug",
+  "cpu": "AMD Ryzen 9 5950X",
+  "timing_cpu": 2,
+  "files": {
+    "Src/params.c": "d38a0f10030186605401052b6074be58a1717898d86114b863266025a708e3a0",
+    "Test/D06subscript.ztst": "4b3b1bc10fa68c5c0a4899fd80e554f243484dfc3f1863c1981699364ab8226e",
+    "Perf/compare.py": "0814b850513d197b266cf4d61c8c39a2d8b4aa411bc7b85ad06659e74d01b906",
+    "Perf/append-module.c": "a4d5d01590ddbdc45268c89aa1cd01fc0c275e48e57a96dfa33c2de7c5b572d5",
+    "Perf/check-append-module.py": "6e54d6966b910a8dd03aa260177e27d5d08c6002e44044d415d421d404ad2068",
+    "Perf/append-workload.zsh": "c7269cd6960e567be50b745223a2ef4b442181d307ee49f9d0ab294038042832",
+    "Perf/append-benchmark.py": "c463b193ecca2b86520bb896bf94897fd7a1df513bf5bf8d1c9b8786d0de3b16",
+    "Perf/application-workload.zsh": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "Perf/applications.py": "a00964e0ec872c403460d696ea70ac7b25630d3c7f759524886513231e08fdf2",
+    ".work/round3/psh": "ba5b4cb90f67f529429fd8c600059fa70df4f90e97aad3782fbf27a759feef99",
+    ".work/candidate/Src/zsh": "6da5e5da89df9ad0db59ded3c383ffbdc4f1ee37ac42ce5b17c56cff8a582b77",
+    ".work/no-mb-candidate/Src/zsh": "d48bb44e3baca7fd954f822ea9419ea63f1ab1587dba309ec29f105717141515",
+    "psh": "6da5e5da89df9ad0db59ded3c383ffbdc4f1ee37ac42ce5b17c56cff8a582b77"
+  },
+  "upstream_tests": {
+    "baseline": {
+      "successful_scripts": 62,
+      "failed_scripts": 0,
+      "skipped_scripts": 3
+    },
+    "candidate": {
+      "successful_scripts": 62,
+      "failed_scripts": 0,
+      "skipped_scripts": 3
+    }
+  },
+  "skipped_scripts": [
+    "P01privileged",
+    "V07pcre",
+    "V11db_gdbm"
+  ],
+  "other_skips": "Capability-dependent individual cases include MONITOR and terminal-color checks; see full logs.",
+  "callgrind": {
+    "previous_instructions": 78123874,
+    "candidate_instructions": 46130169,
+    "command": "a=(); repeat 4000 a+=(x); (( ${#a} == 4000 ))"
+  },
+  "memcheck_errors": 0,
+  "experiment": "ordinary array list-append length reuse; timings versus third psh",
+  "zhtml2md_checks": {
+    "candidate": {
+      "passed": 307,
+      "failed": 0
+    }
+  },
+  "no_multibyte_build": {
+    "baseline": {
+      "successful_scripts": 8,
+      "failed_scripts": 0,
+      "skipped_scripts": 1
+    },
+    "candidate": {
+      "successful_scripts": 8,
+      "failed_scripts": 0,
+      "skipped_scripts": 1
+    },
+    "differences": 0,
+    "array_comparisons": 5192
+  },
+  "public_exports_unchanged": true,
+  "public_parameter_declarations_unchanged": true
+}

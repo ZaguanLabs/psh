@@ -1,0 +1,37 @@
+{
+  "project": "psh",
+  "date": "2026-11-06",
+  "upstream": "Zsh 5.9.2",
+  "compiler": "GCC 15.2.0 (Mageia)",
+  "flags": "-O2 -g; --enable-multibyte --enable-zsh-debug",
+  "cpu": "AMD Ryzen 9 5950X",
+  "timing_cpu": 2,
+  "files": {
+    "Src/params.c": "d50416ea645f8ca948fec8b8bf3b0b7992dafddf8c88efe962f45fc105d1a3e3",
+    "Test/D06subscript.ztst": "43aafe7020a99a03dff8aa1bd1eb7ef9bcd9d47e925b4bafa40ec5fac8cea787",
+    "psh": "4e7879aa35bfb2242d522f192ffdc231c025bc983ec6f428c2674f9b90bec642"
+  },
+  "upstream_tests": {
+    "baseline": {
+      "successful_scripts": 62,
+      "failed_scripts": 0,
+      "skipped_scripts": 3
+    },
+    "candidate": {
+      "successful_scripts": 62,
+      "failed_scripts": 0,
+      "skipped_scripts": 3
+    }
+  },
+  "skipped_scripts": [
+    "P01privileged",
+    "V07pcre",
+    "V11db_gdbm"
+  ],
+  "other_skips": "Capability-dependent individual cases include MONITOR and terminal-color checks; see full logs.",
+  "callgrind": {
+    "baseline_instructions": 59201290,
+    "candidate_instructions": 19199867
+  },
+  "memcheck_errors": 0
+}

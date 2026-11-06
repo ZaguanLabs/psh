@@ -1,0 +1,103 @@
+{
+  "project": "psh",
+  "date": "2026-11-06",
+  "upstream": "Zsh 5.9.2",
+  "compiler": "GCC 15.2.0 (Mageia)",
+  "flags": "-O2 -g; --enable-multibyte --enable-zsh-debug",
+  "cpu": "AMD Ryzen 9 5950X",
+  "timing_cpu": 2,
+  "experiment": "skip scalar character count before forward pattern search from the beginning; timings versus fifth psh",
+  "files": {
+    "Src/params.c": "44613082057962777410e16107b9a09f5bed66b584d77a868d3a9649071c7c87",
+    "Test/D06subscript.ztst": "540ea6107bf6b483b62edb6ffd39def4b0c3e6820c563937c82c08b9e44c7ad7",
+    "Test/D07multibyte.ztst": "3cdaaf79e3858e345addeedf558ea9175db4d306448d825f83da20d5002dba30",
+    "Perf/search-compare.py": "aab2dbb95dbec59ad6fce9311f9dd1bff0845100d75ecea68f46d44e5069fdd0",
+    "Perf/scalar-search-benchmark.py": "b99fd1d2932ef37ee38bb1b1dfcf3186296ab43cf332274ed6811b3cdf1a263c",
+    "Perf/scalar-search-workload.zsh": "e6f86cf48397d8cc4fd079cffb5f2ace27e341501e5ddeefdbfe1e57144b7a10",
+    "Perf/check-append-module.py": "a24772b2feaf39d7ca9bad0bea4f8133045c12e2e062fa969931a188d4368818",
+    "Perf/append-module.c": "a4d5d01590ddbdc45268c89aa1cd01fc0c275e48e57a96dfa33c2de7c5b572d5",
+    "Perf/compare.py": "0814b850513d197b266cf4d61c8c39a2d8b4aa411bc7b85ad06659e74d01b906",
+    "Perf/scalar-compare.py": "ed8ce9d1a425317e3717a506434be44e32faa1bb98ab81d01dcf52d31add9e40",
+    "Perf/applications.py": "a00964e0ec872c403460d696ea70ac7b25630d3c7f759524886513231e08fdf2",
+    "Perf/application-workload.zsh": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "Perf/parser-benchmark.py": "810ddb9e1e91578408806220fd9fb0f04c26f865fa5f9289e7e0b59474732c2a",
+    "Perf/parser-workload.zsh": "ff8bba644caee8336c921cf6062646b2eace19bb33756a4df2a376b79a8616f8",
+    "Perf/0006-scalar-search-length.patch": "7b0401d1c77001973db5a4c58b358480fce6722056d895cfaff0c34e74e07a86",
+    ".work/round5/psh": "8bbb8da755fbf2593b1b4e5d02b6a7aa8871b817dc245334bae042f2316bfe9d",
+    ".work/candidate/Src/zsh": "91146a07501f44ce1c081e9cda16aef98307634f3bc97752767c79d16b7c0795",
+    ".work/no-mb-candidate/Src/zsh": "5b23bc1caf6528a69d9545e108d8d2cdef624f143c4b725482281b9f67786e83",
+    ".work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    ".work/no-mb-baseline/Src/zsh": "a7d443a64a26e7abffaf96018dd459d8a2f977b446ffb00bab85b9d99bdd168b",
+    "psh": "91146a07501f44ce1c081e9cda16aef98307634f3bc97752767c79d16b7c0795"
+  },
+  "evidence_sha256": {
+    "scalar-search-benchmarks.json": "e500fab586c024c4bb18cdd563e7bf7f675ce3b9893826ead4f3b3cf11decf2c",
+    "parser-benchmarks.json": "e2d809402a82453ee8770590d1db4199bc81fc52d42af63bc41b757939fb3d0c",
+    "application-benchmarks.json": "76bec6b167bf5705d2d84c3effdb217cc59086bf8b79a2102d55bfa753ebc1bc",
+    "search-differential-pristine.json": "93896992fb1a889f12dc90f22023d124548cab7fe02d4493406af78981eab5ce",
+    "search-differential-round5.json": "fe4a48f84feca16380fea0c04b4c1ab95c4266a57e646218bfde381a052ce3e6",
+    "search-no-multibyte.json": "e31e9e947a4b7d614c327ad49ed22503fe535b6fdd23658d6473da7ab5cc095f",
+    "array-differential-pristine.json": "d309db57e009bd29df48f437b5f8fedb2fbb642a5882a179c4b14ba11e76f13a",
+    "scalar-differential-pristine.json": "7dc270539b03b4e4ea858e81f3b40198f1c69e89ad2d06be836a4a70f3f665e5",
+    "native-module-pristine.json": "16ed5cca879f852f58171a08193f7648f4d36bc6b903d7113b490cd660c34632",
+    "application-tests.json": "a06e87add4cdd9b219a27de4ad8b108890f7790fcacca0cb4d102e99a146f6d9",
+    "upstream.log": "25763da4fe97c708ff26b9579d4fa1dcdd090ffb93131ad016c8baf784fa14cb",
+    "pristine-new-tests.log": "3c8f988b3cf0ac8a20fe84a9f2f655ac98d790fe067578f8ca73811bd01c83ad",
+    "no-mb-upstream.log": "674f1f8ff12b9f0025cf41047b9d41673e23cb26613618b9433149447daaa43d",
+    "html-tests.log": "f0a208dd16ac404850f3705e38c25853734be5429d6981815af045ec484e3f3a",
+    "scalar-search-round5-profile.log": "0b319fd13c6be162808aaffda1253d9a24c1bdbe056dfb5f1d3b1ce56821e352",
+    "scalar-search-round5-instructions.log": "bccbb5a48f08facdd6a4db9135c531c35cf685f8373fcb901550e6673b455604",
+    "candidate-profile.log": "806c62bf397341c0b81d6e49d94f9dedc86a5248d9edb455054d3b1c5e8f62b7",
+    "candidate-instructions.log": "7baebad3821030e2e603d089b0bb1a86d720378849b46a434fbb10e55ca5a1d5",
+    "memcheck-scalar-search-all.zsh": "baca4e6165a0bc90e3ae286852ec4c00a538a0d2b483f092ad886246c8f5e824",
+    "pristine-memcheck-all.log": "4626ff9a571b0bffbc3336f504308127271da457315a45a4ba3e4183d5471600",
+    "candidate-memcheck-all.log": "c43fce9329371c936bd2b00a57ec1566eb517893a922a63066001c41f790056e",
+    "memcheck-comparison.json": "16a3ed5952aa733c83973177d64e42f89691978d86737813344007ec5f5c39f2",
+    "terminator-pristine-memcheck.log": "7a96018414280309bab0f94bf485553d88726ec4215da337fdd069331b1ad77b",
+    "terminator-candidate-memcheck.log": "42e36fa5ee8862e9a01da0a5d5ce992ee9dec229e493b32343a5a31f7c5bbc49",
+    "terminator-pristine-output.log": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "terminator-candidate-output.log": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+  },
+  "candidate_upstream_tests": {
+    "successful_scripts": 62,
+    "failed_scripts": 0,
+    "skipped_scripts": 3
+  },
+  "skipped_scripts": [
+    "P01privileged",
+    "V07pcre",
+    "V11db_gdbm"
+  ],
+  "other_skips": "Capability-dependent individual cases include MONITOR and terminal-color checks; see full logs.",
+  "no_multibyte": {
+    "successful_scripts": 8,
+    "failed_scripts": 0,
+    "skipped_scripts": 1,
+    "search_comparisons": 193236,
+    "differences": 0
+  },
+  "callgrind": {
+    "previous_instructions": 4134090486,
+    "candidate_instructions": 2234029499,
+    "previous_mb_metastrlenend_instructions": 1900039151,
+    "command": "s=target${(l:99994::x:)}; repeat 1000 found=${s[(i)target]}; [[ $found == 1 ]]"
+  },
+  "memcheck": {
+    "clean": false,
+    "previous_errors": 520,
+    "candidate_errors": 520,
+    "matrices": 84,
+    "matrices_with_errors": 36,
+    "same_outputs_counts_and_function_stacks": true,
+    "known_issue": "existing scalar-search terminator read; see Perf/upstream-terminator-read.md",
+    "leak_checking": false
+  },
+  "zhtml2md_checks": {
+    "passed": 307,
+    "failed": 0
+  },
+  "public_exports_unchanged": true,
+  "public_parameter_declarations_unchanged": true,
+  "pristine_manifest_verified_files": 1847,
+  "incremental_patch_apply_verified": true
+}

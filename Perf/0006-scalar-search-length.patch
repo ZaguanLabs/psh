@@ -1,0 +1,52 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1699,7 +1699,10 @@
+ 	     * beg and len are character counts, not raw offsets.
+ 	     * Remember we need to return a raw offset.
+ 	     */
+-	    len = MB_METASTRLEN(d);
++	    /* A forward search from the beginning only needs to know that
++	     * the string is nonempty.  Other starts and backward searches
++	     * still need the full character count. */
++	    len = (!down && beg == 0) ? 1 : MB_METASTRLEN(d);
+ 	    slen = strlen(d);
+ 	    if (beg < 0)
+ 		beg += len;
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -485,3 +485,20 @@
+ >alpha:1:5
+ >6
+ >alpha:1:5
++
++  () {
++    emulate -L zsh -o nomultibyte -o extendedglob
++    local s=$'abc\0a\377end' out
++    local -a match mbegin mend
++    [[ ${s[(i)a]} == 1 && ${s[(ib:0:)a]} == 1 &&
++       ${s[(in:2:)a]} == 5 && ${s[(I)a]} == 5 &&
++       ${s[(i)missing]} == 10 && ${s[(r)missing]} == '' &&
++       "${s[(r)abc,(r)end]}" == "$s" ]] || return 1
++    out=${s[(i)(#b)(a*)]}
++    [[ $out == 1 && $match[1] == "$s" &&
++       $mbegin[1] == 1 && $mend[1] == 9 ]] || return 1
++    s=''
++    [[ ${s[(i)a]} == 0 && ${s[(I)a]} == 0 &&
++       ${s[(r)a,(r)a]} == '' ]]
++  }
++0:Forward scalar searches retain byte indices, NUL, captures, missing results and empty boundaries
+--- a/Test/D07multibyte.ztst
++++ b/Test/D07multibyte.ztst
+@@ -688,3 +688,12 @@
+     [[ ${#s} == 3 && ${s[3]} == é && ${s[-1]} == é ]]
+   }
+ 0:Scalar index traversal observes changes to the multibyte option between accesses
++
++  () {
++    emulate -L zsh
++    local s=$'éa😀a\303'
++    [[ ${s[(i)a]} == 2 && ${s[(I)a]} == 4 &&
++       ${s[(in:2:)a]} == 4 && ${s[(i)missing]} == 6 &&
++       "${s[(r)a,(r)😀]}" == a😀 ]]
++  }
++0:Scalar pattern searches retain Unicode indices and incomplete trailing character handling

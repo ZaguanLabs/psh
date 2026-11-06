@@ -1,0 +1,28 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round8/scalar-search-candidate.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 208080280
+Trigger: Program termination
+Profiled target:  .work/candidate/Src/zsh -dfc s=target${(l:99994::x:)}; repeat 1000 found=${s[(i)target]}; [[ $found == 1 ]] (PID 3680649, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       95
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+644,202,692 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+600,244,000 (93.18%)  Src/pattern.c:patmatch [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+ 15,889,698 ( 2.47%)  ???:__strlen_avx2 [/usr/lib64/libc.so.6]
+

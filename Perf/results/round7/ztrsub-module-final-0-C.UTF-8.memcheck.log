@@ -1,0 +1,15 @@
+==3570931== Memcheck, a memory error detector
+==3570931== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3570931== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3570931== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_ztrsub_fixture\ ||\ exit\ 1_psh-ztrsub-check\ ||\ exit\ 1_zmodload\ -u\ psh_ztrsub_fixture\ ||\ exit\ 1_if\ whence\ psh-ztrsub-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/ztrsub-module
+==3570931== Parent PID: 3570862
+==3570931== 
+==3570931== 
+==3570931== HEAP SUMMARY:
+==3570931==     in use at exit: 46,006 bytes in 747 blocks
+==3570931==   total heap usage: 1,040 allocs, 293 frees, 1,160,926 bytes allocated
+==3570931== 
+==3570931== For a detailed leak analysis, rerun with: --leak-check=full
+==3570931== 
+==3570931== For lists of detected and suppressed errors, rerun with: -s
+==3570931== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

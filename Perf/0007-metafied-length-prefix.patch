@@ -1,0 +1,42 @@
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -5144,6 +5144,16 @@
+ ztrsub(char const *t, char const *s)
+ {
+     int l = t - s;
++    char const *meta;
++
++    /* Skip the prefix with no Meta escapes in one bounded search.  Once
++     * an escape is found, retain the existing pair handling below. */
++    if (s != t) {
++	meta = memchr(s, Meta, t - s);
++	if (!meta)
++	    return l;
++	s = meta;
++    }
+ 
+     while (s != t) {
+ 	if (*s++ == Meta) {
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -502,3 +502,20 @@
+        ${s[(r)a,(r)a]} == '' ]]
+   }
+ 0:Forward scalar searches retain byte indices, NUL, captures, missing results and empty boundaries
++
++  () {
++    emulate -L zsh -o nomultibyte -o extendedglob
++    local prefix=${(l:4096::x:)} s needle=$'(#b)(\0)(*)' out
++    local -a match mbegin mend
++    s=$prefix$'\0tail'
++    out=${s[(i)$needle]}
++    [[ $out == 4097 && $match[1] == $'\0' && $match[2] == tail &&
++       $mbegin[1] == 1 && $mend[1] == 1 &&
++       $mbegin[2] == 2 && $mend[2] == 5 &&
++       ${s[(i)missing]} == 4102 ]] || return 1
++    s=$'\0\0\0tail'
++    out=${s[(i)$needle]}
++    [[ $out == 1 && $match[1] == $'\0' &&
++       $match[2] == $'\0\0tail' && $mend[2] == 7 ]]
++  }
++0:Pattern searches preserve byte lengths and captures with late and dense Meta escapes

@@ -1,0 +1,138 @@
+{
+  "project": "psh",
+  "date": "2026-11-06",
+  "upstream": "Zsh 5.9.2",
+  "compiler": "GCC 15.2.0 (Mageia)",
+  "flags": "-O2 -g; --enable-multibyte --enable-zsh-debug",
+  "cpu": "AMD Ryzen 9 5950X",
+  "timing_cpu": 2,
+  "experiment": "terminal-star matching without unused boundary bitmap; preserve multibyte state and unqueued heap signal boundary; timings versus seventh psh",
+  "files": {
+    "Src/pattern.c": "062828bb6bec3ab525cc302e158c503d7b2ba5cce4d5f249d4ba07ee1e4b7e22",
+    "Src/utils.c": "7293f2c7f4554fac966558ad42dc3b75ecdd3854685fd8276fbab6719c979572",
+    "Src/params.c": "44613082057962777410e16107b9a09f5bed66b584d77a868d3a9649071c7c87",
+    "Test/C02cond.ztst": "1e9b0ee1285339dfee479fd524fd841580e8ca52f6d4c48b9d5d43c7bdc3f7b7",
+    "Test/D06subscript.ztst": "a967052a234c19ad1ba4b27f9e5581b201cd23720bae49d1b967b83671407f71",
+    "Test/D07multibyte.ztst": "2269d4c38cca5e1133e6ec466c6c320633a639faa18cb8507625f0f3fd4eceda",
+    "Perf/pattern-module.c": "48429159016c9418fb8d9201650db4c27cfbad61b7397623af94c4b0dbefc5e6",
+    "Perf/check-pattern-module.py": "5ecd180f26b84c3ea47e4fd0db2682508ff9b71a53322ec91a3fbaaffd51dd24",
+    "Perf/pattern-compare.py": "ecda6fc73328847968248939769cae76cb69d66d7f6bdd3532cd3d4ba42f24bc",
+    "Perf/search-compare.py": "aab2dbb95dbec59ad6fce9311f9dd1bff0845100d75ecea68f46d44e5069fdd0",
+    "Perf/scalar-search-benchmark.py": "b99fd1d2932ef37ee38bb1b1dfcf3186296ab43cf332274ed6811b3cdf1a263c",
+    "Perf/scalar-search-workload.zsh": "e6f86cf48397d8cc4fd079cffb5f2ace27e341501e5ddeefdbfe1e57144b7a10",
+    "Perf/parser-benchmark.py": "810ddb9e1e91578408806220fd9fb0f04c26f865fa5f9289e7e0b59474732c2a",
+    "Perf/parser-workload.zsh": "ff8bba644caee8336c921cf6062646b2eace19bb33756a4df2a376b79a8616f8",
+    "Perf/applications.py": "a00964e0ec872c403460d696ea70ac7b25630d3c7f759524886513231e08fdf2",
+    "Perf/application-workload.zsh": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "Perf/0008-terminal-star-matching.patch": "7b46eb67b8096e277a44c1657f46885808a86b94c6591ece2c578eec95bdb2c6",
+    ".work/round7/psh": "bf0a78d71727d5061b7395246405fe60903a5f02d5530be4f3fbc11a8eeab1b4",
+    ".work/candidate/Src/zsh": "1df4cd2c26bbdc9d9cd3e864db0993c40370a5ac59708aa0669b250de5301214",
+    ".work/no-mb-candidate/Src/zsh": "bbc831e0c61eea5f0544163f7d2320fa7bd754c7ba0cc1b69b5495e0d71e31a9",
+    ".work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    ".work/no-mb-baseline/Src/zsh": "a7d443a64a26e7abffaf96018dd459d8a2f977b446ffb00bab85b9d99bdd168b",
+    "psh": "1df4cd2c26bbdc9d9cd3e864db0993c40370a5ac59708aa0669b250de5301214"
+  },
+  "evidence_sha256": {
+    "scalar-search-benchmarks.json": "132a6f6426126e124be6718429d8020c7d551166a6f64f3a9ae4d8e211e6851d",
+    "parser-benchmarks.json": "fee24001c36afa21f4c6b9d0b7de75f4bba18ca4f7f80672d17803adefc8c904",
+    "application-benchmarks.json": "50620c7d6a5746d9e5f7103e936b747e84b310c48fa7fbbc132f937943f70d90",
+    "search-pristine.json": "93896992fb1a889f12dc90f22023d124548cab7fe02d4493406af78981eab5ce",
+    "pattern-extended-pristine.json": "9c247efee9c41e976b9586f1eb76597fcdd0dd99f854b823f965b90a32ffdc22",
+    "search-no-multibyte.json": "e31e9e947a4b7d614c327ad49ed22503fe535b6fdd23658d6473da7ab5cc095f",
+    "pattern-no-multibyte.json": "48468c1a143af2c2b880f7f2c7e1f4a2141bf0e60fd5c1da97f1f94ae0275cef",
+    "array-pristine.json": "d309db57e009bd29df48f437b5f8fedb2fbb642a5882a179c4b14ba11e76f13a",
+    "scalar-pristine.json": "7dc270539b03b4e4ea858e81f3b40198f1c69e89ad2d06be836a4a70f3f665e5",
+    "pattern-module.json": "ffdb3289c4b5e4f71086156f97ad88adfb290889c4f8dc7faa563b23a92f94ea",
+    "native-array.json": "16ed5cca879f852f58171a08193f7648f4d36bc6b903d7113b490cd660c34632",
+    "application-tests.json": "a06e87add4cdd9b219a27de4ad8b108890f7790fcacca0cb4d102e99a146f6d9",
+    "upstream.log": "25763da4fe97c708ff26b9579d4fa1dcdd090ffb93131ad016c8baf784fa14cb",
+    "pristine-new-tests.log": "d6063011cef01b1642ba2fa563994a25d4329d87f21978d98169292230d21536",
+    "no-mb-upstream-final.log": "674f1f8ff12b9f0025cf41047b9d41673e23cb26613618b9433149447daaa43d",
+    "no-mb-conditionals-final.log": "0d1df21d30a377a152a4295eb544a9d8af282a2e7af80c40386c380d76cb4197",
+    "html-tests.log": "f0a208dd16ac404850f3705e38c25853734be5429d6981815af045ec484e3f3a",
+    "candidate-profile.log": "1a29b198f46e202321313603689a1bc51a7afbc1529c0bb2efbee682c88b9aa5",
+    "candidate-instructions.log": "0253508260f49300272ab55272092d9db1192157f4470f6873b1c90049407577",
+    "candidate-memcheck.log": "3b5383d1a129c32b5c4b6147cf4c783fd0560b2664da6f7a1abfbd380f0f8eb0",
+    "candidate-memcheck-output.log": "4ead8bad89a41e0b4a39c4e6cf59b3232d8f50f6185d736da4274b4b15d923df",
+    "memcheck-comparison.json": "b93c77810d94e96c6902e708e14197d2fc12c0d381cf73dd19005a5eececa262",
+    "stack-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pattern-module-0-C-multibyte.memcheck.log": "19fb2df4f50bb03a7fbd450899bac5891d3700ad3d6e4e24ad0aa64d11ec16ff",
+    "pattern-module-0-C-nomultibyte.memcheck.log": "fe538fd484c93c6042fe183c8f86764f8b226b81f790b806f50ca47075b4173c",
+    "pattern-module-0-C.UTF-8-multibyte.memcheck.log": "4e9e21e482e2ed46528cebedb7601ad06c5867f9753220315b4fdd3656350097",
+    "pattern-module-0-C.UTF-8-nomultibyte.memcheck.log": "ae0bd1904e3e4e3f2ce9cb3768d3f298267332979be61ddd94b48633e693fa95",
+    "pattern-module-1-C-multibyte.memcheck.log": "39703fc909e422dc1f9de5482e74d0ddc7b13ad775ef241581d2390b24da56d7",
+    "pattern-module-1-C-nomultibyte.memcheck.log": "ffd6a0c186d3b172906f90b00b3ba5a75174d0ec44134cd87d56c64c75fef52c",
+    "pattern-module-1-C.UTF-8-multibyte.memcheck.log": "da742a7026e0a441e21aa14f073324bfdeeb80964b591cb2f5852870582c6c29",
+    "pattern-module-1-C.UTF-8-nomultibyte.memcheck.log": "5cebd4439943debc8aca642e7a254f7ee1684fe5d6ba4f96080f418d24b7c7a9",
+    "previous-profile.log": "7b4652fa3aaf0d6a657b077371581ac4f75e15ff752ed3bdf1f71bb09cd8b2f3",
+    "previous-instructions.log": "a2512370e94981610a7bf8554c335788d398f702b6547de73e749892a3d962b6"
+  },
+  "candidate_upstream_tests": {
+    "successful_scripts": 62,
+    "failed_scripts": 0,
+    "skipped_scripts": 3
+  },
+  "skipped_scripts": [
+    "P01privileged",
+    "V07pcre",
+    "V11db_gdbm"
+  ],
+  "other_skips": "Capability-dependent individual cases include MONITOR and terminal-color checks; see full logs.",
+  "no_multibyte": {
+    "substitution_successful_scripts": 8,
+    "substitution_failed_scripts": 0,
+    "substitution_skipped_scripts": 1,
+    "conditional_successful_scripts": 1,
+    "conditional_failed_scripts": 0,
+    "search_comparisons": 193236,
+    "pattern_comparisons": 109200,
+    "differences": 0,
+    "final_checks_run_sequentially": true
+  },
+  "pattern_locale_charmaps": {
+    "C": "ANSI_X3.4-1968",
+    "C.UTF-8": "UTF-8",
+    "ja_JP.eucjp": "EUC-JP",
+    "zh_CN.GB18030": "GB18030",
+    "zh_TW.EUC-TW": "EUC-TW"
+  },
+  "callgrind": {
+    "previous_instructions": 1643985914,
+    "candidate_instructions": 644202692,
+    "command": "s=target${(l:99994::x:)}; repeat 1000 found=${s[(i)target]}; [[ $found == 1 ]]"
+  },
+  "native_pattern_fixture": {
+    "checks_per_run": 196,
+    "runs": 8,
+    "queue_modes": [
+      "unqueued",
+      "queued"
+    ],
+    "memcheck_errors": 0,
+    "leak_checking": false,
+    "module_installed": false
+  },
+  "stack_allocation": {
+    "object_compile_passed": true,
+    "separate_full_runtime_build": false,
+    "compile_command": "cc -c -I. -I../../../Src -I.. -DHAVE_CONFIG_H -O2 -g -DUSE_STACK_ALLOCATION ../../../Src/pattern.c -o ../../logs/round8/pattern-stack.o",
+    "compile_cwd": ".work/candidate/Src"
+  },
+  "known_terminator_issue": {
+    "still_reproduced": true,
+    "matrices": 84,
+    "matrices_with_errors": 36,
+    "candidate_memcheck_errors": 520,
+    "same_output_error_counts_and_function_stacks_as_pristine": true,
+    "reference": "Perf/results/round6/memcheck-comparison.json"
+  },
+  "validation_notes": "Provisional timings before the signal guard are excluded. Two concurrent no-multibyte make-check jobs interfered with shared fixtures/module links; final checks passed sequentially.",
+  "zhtml2md_checks": {
+    "passed": 307,
+    "failed": 0
+  },
+  "public_exports_unchanged": true,
+  "public_parameter_utility_and_pattern_declarations_unchanged": true,
+  "pristine_manifest_verified_files": 1847,
+  "incremental_patch_apply_verified": true
+}

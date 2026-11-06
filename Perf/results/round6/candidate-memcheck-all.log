@@ -1,0 +1,1743 @@
+==3550825== Memcheck, a memory error detector
+==3550825== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3550825== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3550825== Command: .work/candidate/Src/zsh -df .work/logs/round6/memcheck-scalar-search-all.zsh
+==3550825== Parent PID: 1853661
+==3550825== 
+==3550853== 
+==3550853== HEAP SUMMARY:
+==3550853==     in use at exit: 75,123 bytes in 1,280 blocks
+==3550853==   total heap usage: 15,161 allocs, 13,881 frees, 2,116,329 bytes allocated
+==3550853== 
+==3550853== For a detailed leak analysis, rerun with: --leak-check=full
+==3550853== 
+==3550853== For lists of detected and suppressed errors, rerun with: -s
+==3550853== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550855== 
+==3550855== HEAP SUMMARY:
+==3550855==     in use at exit: 75,128 bytes in 1,281 blocks
+==3550855==   total heap usage: 2,215 allocs, 934 frees, 222,307 bytes allocated
+==3550855== 
+==3550855== For a detailed leak analysis, rerun with: --leak-check=full
+==3550855== 
+==3550855== For lists of detected and suppressed errors, rerun with: -s
+==3550855== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550857== Invalid read of size 1
+==3550857==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550857==    by 0x47272C: getarg (params.c:1867)
+==3550857==    by 0x472890: getindex (params.c:1933)
+==3550857==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550857==    by 0x496210: paramsubst (subst.c:2567)
+==3550857==    by 0x49B58C: stringsubst (subst.c:322)
+==3550857==    by 0x49BCA0: prefork (subst.c:142)
+==3550857==    by 0x42BC3A: addvars (exec.c:2540)
+==3550857==    by 0x438600: execsimple (exec.c:1309)
+==3550857==    by 0x43580E: execlist (exec.c:1452)
+==3550857==    by 0x45D8D1: execfor (loop.c:175)
+==3550857==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550857==  Address 0x4c35f22 is 0 bytes after a block of size 2 alloc'd
+==3550857==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550857==    by 0x465006: zalloc (mem.c:966)
+==3550857==    by 0x491846: ztrdup (string.c:83)
+==3550857==    by 0x42BCA3: addvars (exec.c:2572)
+==3550857==    by 0x438600: execsimple (exec.c:1309)
+==3550857==    by 0x43580E: execlist (exec.c:1452)
+==3550857==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550857==    by 0x43340B: execpline2 (exec.c:2012)
+==3550857==    by 0x4337DB: execpline (exec.c:1737)
+==3550857==    by 0x435197: execlist (exec.c:1489)
+==3550857==    by 0x435B03: execode (exec.c:1266)
+==3550857==    by 0x44CD1A: loop (init.c:217)
+==3550857== 
+==3550857== 
+==3550857== HEAP SUMMARY:
+==3550857==     in use at exit: 75,248 bytes in 1,285 blocks
+==3550857==   total heap usage: 16,163 allocs, 14,878 frees, 2,134,828 bytes allocated
+==3550857== 
+==3550857== For a detailed leak analysis, rerun with: --leak-check=full
+==3550857== 
+==3550857== For lists of detected and suppressed errors, rerun with: -s
+==3550857== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3550891== 
+==3550891== HEAP SUMMARY:
+==3550891==     in use at exit: 75,160 bytes in 1,284 blocks
+==3550891==   total heap usage: 2,564 allocs, 1,280 frees, 237,313 bytes allocated
+==3550891== 
+==3550891== For a detailed leak analysis, rerun with: --leak-check=full
+==3550891== 
+==3550891== For lists of detected and suppressed errors, rerun with: -s
+==3550891== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550893== Invalid read of size 1
+==3550893==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550893==    by 0x47272C: getarg (params.c:1867)
+==3550893==    by 0x472890: getindex (params.c:1933)
+==3550893==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550893==    by 0x496210: paramsubst (subst.c:2567)
+==3550893==    by 0x49B58C: stringsubst (subst.c:322)
+==3550893==    by 0x49BCA0: prefork (subst.c:142)
+==3550893==    by 0x42BC3A: addvars (exec.c:2540)
+==3550893==    by 0x438600: execsimple (exec.c:1309)
+==3550893==    by 0x43580E: execlist (exec.c:1452)
+==3550893==    by 0x45D8D1: execfor (loop.c:175)
+==3550893==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550893==  Address 0x4c3afdc is 0 bytes after a block of size 12 alloc'd
+==3550893==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550893==    by 0x465006: zalloc (mem.c:966)
+==3550893==    by 0x491846: ztrdup (string.c:83)
+==3550893==    by 0x42BCA3: addvars (exec.c:2572)
+==3550893==    by 0x438600: execsimple (exec.c:1309)
+==3550893==    by 0x43580E: execlist (exec.c:1452)
+==3550893==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550893==    by 0x43340B: execpline2 (exec.c:2012)
+==3550893==    by 0x4337DB: execpline (exec.c:1737)
+==3550893==    by 0x435197: execlist (exec.c:1489)
+==3550893==    by 0x435B03: execode (exec.c:1266)
+==3550893==    by 0x44CD1A: loop (init.c:217)
+==3550893== 
+==3550893== 
+==3550893== HEAP SUMMARY:
+==3550893==     in use at exit: 75,269 bytes in 1,285 blocks
+==3550893==   total heap usage: 17,204 allocs, 15,919 frees, 2,159,986 bytes allocated
+==3550893== 
+==3550893== For a detailed leak analysis, rerun with: --leak-check=full
+==3550893== 
+==3550893== For lists of detected and suppressed errors, rerun with: -s
+==3550893== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550901== 
+==3550901== HEAP SUMMARY:
+==3550901==     in use at exit: 75,172 bytes in 1,284 blocks
+==3550901==   total heap usage: 3,098 allocs, 1,814 frees, 255,185 bytes allocated
+==3550901== 
+==3550901== For a detailed leak analysis, rerun with: --leak-check=full
+==3550901== 
+==3550901== For lists of detected and suppressed errors, rerun with: -s
+==3550901== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550903== Invalid read of size 1
+==3550903==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550903==    by 0x47272C: getarg (params.c:1867)
+==3550903==    by 0x472890: getindex (params.c:1933)
+==3550903==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550903==    by 0x496210: paramsubst (subst.c:2567)
+==3550903==    by 0x49B58C: stringsubst (subst.c:322)
+==3550903==    by 0x49BCA0: prefork (subst.c:142)
+==3550903==    by 0x42BC3A: addvars (exec.c:2540)
+==3550903==    by 0x438600: execsimple (exec.c:1309)
+==3550903==    by 0x43580E: execlist (exec.c:1452)
+==3550903==    by 0x45D8D1: execfor (loop.c:175)
+==3550903==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550903==  Address 0x4c4009d is 0 bytes after a block of size 13 alloc'd
+==3550903==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550903==    by 0x465006: zalloc (mem.c:966)
+==3550903==    by 0x491846: ztrdup (string.c:83)
+==3550903==    by 0x42BCA3: addvars (exec.c:2572)
+==3550903==    by 0x438600: execsimple (exec.c:1309)
+==3550903==    by 0x43580E: execlist (exec.c:1452)
+==3550903==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550903==    by 0x43340B: execpline2 (exec.c:2012)
+==3550903==    by 0x4337DB: execpline (exec.c:1737)
+==3550903==    by 0x435197: execlist (exec.c:1489)
+==3550903==    by 0x435B03: execode (exec.c:1266)
+==3550903==    by 0x44CD1A: loop (init.c:217)
+==3550903== 
+==3550903== 
+==3550903== HEAP SUMMARY:
+==3550903==     in use at exit: 75,268 bytes in 1,285 blocks
+==3550903==   total heap usage: 16,739 allocs, 15,454 frees, 2,167,222 bytes allocated
+==3550903== 
+==3550903== For a detailed leak analysis, rerun with: --leak-check=full
+==3550903== 
+==3550903== For lists of detected and suppressed errors, rerun with: -s
+==3550903== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3550915== 
+==3550915== HEAP SUMMARY:
+==3550915==     in use at exit: 75,175 bytes in 1,284 blocks
+==3550915==   total heap usage: 2,912 allocs, 1,628 frees, 265,954 bytes allocated
+==3550915== 
+==3550915== For a detailed leak analysis, rerun with: --leak-check=full
+==3550915== 
+==3550915== For lists of detected and suppressed errors, rerun with: -s
+==3550915== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550917== Invalid read of size 1
+==3550917==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550917==    by 0x47272C: getarg (params.c:1867)
+==3550917==    by 0x472890: getindex (params.c:1933)
+==3550917==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550917==    by 0x496210: paramsubst (subst.c:2567)
+==3550917==    by 0x49B58C: stringsubst (subst.c:322)
+==3550917==    by 0x49BCA0: prefork (subst.c:142)
+==3550917==    by 0x42BC3A: addvars (exec.c:2540)
+==3550917==    by 0x438600: execsimple (exec.c:1309)
+==3550917==    by 0x43580E: execlist (exec.c:1452)
+==3550917==    by 0x45D8D1: execfor (loop.c:175)
+==3550917==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550917==  Address 0x4c45159 is 0 bytes after a block of size 9 alloc'd
+==3550917==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550917==    by 0x465006: zalloc (mem.c:966)
+==3550917==    by 0x491846: ztrdup (string.c:83)
+==3550917==    by 0x42BCA3: addvars (exec.c:2572)
+==3550917==    by 0x438600: execsimple (exec.c:1309)
+==3550917==    by 0x43580E: execlist (exec.c:1452)
+==3550917==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550917==    by 0x43340B: execpline2 (exec.c:2012)
+==3550917==    by 0x4337DB: execpline (exec.c:1737)
+==3550917==    by 0x435197: execlist (exec.c:1489)
+==3550917==    by 0x435B03: execode (exec.c:1266)
+==3550917==    by 0x44CD1A: loop (init.c:217)
+==3550917== 
+==3550917== 
+==3550917== HEAP SUMMARY:
+==3550917==     in use at exit: 75,286 bytes in 1,286 blocks
+==3550917==   total heap usage: 17,092 allocs, 15,806 frees, 2,182,506 bytes allocated
+==3550917== 
+==3550917== For a detailed leak analysis, rerun with: --leak-check=full
+==3550917== 
+==3550917== For lists of detected and suppressed errors, rerun with: -s
+==3550917== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550919== 
+==3550919== HEAP SUMMARY:
+==3550919==     in use at exit: 75,191 bytes in 1,285 blocks
+==3550919==   total heap usage: 3,092 allocs, 1,807 frees, 280,109 bytes allocated
+==3550919== 
+==3550919== For a detailed leak analysis, rerun with: --leak-check=full
+==3550919== 
+==3550919== For lists of detected and suppressed errors, rerun with: -s
+==3550919== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550921== Invalid read of size 1
+==3550921==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550921==    by 0x47272C: getarg (params.c:1867)
+==3550921==    by 0x472890: getindex (params.c:1933)
+==3550921==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550921==    by 0x496210: paramsubst (subst.c:2567)
+==3550921==    by 0x49B58C: stringsubst (subst.c:322)
+==3550921==    by 0x49BCA0: prefork (subst.c:142)
+==3550921==    by 0x42BC3A: addvars (exec.c:2540)
+==3550921==    by 0x438600: execsimple (exec.c:1309)
+==3550921==    by 0x43580E: execlist (exec.c:1452)
+==3550921==    by 0x45D8D1: execfor (loop.c:175)
+==3550921==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550921==  Address 0x4c4a227 is 0 bytes after a block of size 23 alloc'd
+==3550921==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550921==    by 0x465006: zalloc (mem.c:966)
+==3550921==    by 0x491846: ztrdup (string.c:83)
+==3550921==    by 0x42BCA3: addvars (exec.c:2572)
+==3550921==    by 0x438600: execsimple (exec.c:1309)
+==3550921==    by 0x43580E: execlist (exec.c:1452)
+==3550921==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550921==    by 0x43340B: execpline2 (exec.c:2012)
+==3550921==    by 0x4337DB: execpline (exec.c:1737)
+==3550921==    by 0x435197: execlist (exec.c:1489)
+==3550921==    by 0x435B03: execode (exec.c:1266)
+==3550921==    by 0x44CD1A: loop (init.c:217)
+==3550921== 
+==3550921== 
+==3550921== HEAP SUMMARY:
+==3550921==     in use at exit: 75,269 bytes in 1,285 blocks
+==3550921==   total heap usage: 16,559 allocs, 15,274 frees, 2,189,132 bytes allocated
+==3550921== 
+==3550921== For a detailed leak analysis, rerun with: --leak-check=full
+==3550921== 
+==3550921== For lists of detected and suppressed errors, rerun with: -s
+==3550921== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550932== 
+==3550932== HEAP SUMMARY:
+==3550932==     in use at exit: 75,181 bytes in 1,284 blocks
+==3550932==   total heap usage: 2,972 allocs, 1,688 frees, 291,483 bytes allocated
+==3550932== 
+==3550932== For a detailed leak analysis, rerun with: --leak-check=full
+==3550932== 
+==3550932== For lists of detected and suppressed errors, rerun with: -s
+==3550932== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550934== Invalid read of size 1
+==3550934==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550934==    by 0x47272C: getarg (params.c:1867)
+==3550934==    by 0x472890: getindex (params.c:1933)
+==3550934==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550934==    by 0x496210: paramsubst (subst.c:2567)
+==3550934==    by 0x49B58C: stringsubst (subst.c:322)
+==3550934==    by 0x49BCA0: prefork (subst.c:142)
+==3550934==    by 0x42BC3A: addvars (exec.c:2540)
+==3550934==    by 0x438600: execsimple (exec.c:1309)
+==3550934==    by 0x43580E: execlist (exec.c:1452)
+==3550934==    by 0x45D8D1: execfor (loop.c:175)
+==3550934==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550934==  Address 0x4c4f2d6 is 0 bytes after a block of size 6 alloc'd
+==3550934==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550934==    by 0x465006: zalloc (mem.c:966)
+==3550934==    by 0x491846: ztrdup (string.c:83)
+==3550934==    by 0x42BCA3: addvars (exec.c:2572)
+==3550934==    by 0x438600: execsimple (exec.c:1309)
+==3550934==    by 0x43580E: execlist (exec.c:1452)
+==3550934==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550934==    by 0x43340B: execpline2 (exec.c:2012)
+==3550934==    by 0x4337DB: execpline (exec.c:1737)
+==3550934==    by 0x435197: execlist (exec.c:1489)
+==3550934==    by 0x435B03: execode (exec.c:1266)
+==3550934==    by 0x44CD1A: loop (init.c:217)
+==3550934== 
+==3550934== 
+==3550934== HEAP SUMMARY:
+==3550934==     in use at exit: 75,280 bytes in 1,286 blocks
+==3550934==   total heap usage: 16,938 allocs, 15,652 frees, 2,205,411 bytes allocated
+==3550934== 
+==3550934== For a detailed leak analysis, rerun with: --leak-check=full
+==3550934== 
+==3550934== For lists of detected and suppressed errors, rerun with: -s
+==3550934== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3550942== 
+==3550942== HEAP SUMMARY:
+==3550942==     in use at exit: 75,196 bytes in 1,285 blocks
+==3550942==   total heap usage: 3,204 allocs, 1,919 frees, 306,196 bytes allocated
+==3550942== 
+==3550942== For a detailed leak analysis, rerun with: --leak-check=full
+==3550942== 
+==3550942== For lists of detected and suppressed errors, rerun with: -s
+==3550942== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550944== 
+==3550944== HEAP SUMMARY:
+==3550944==     in use at exit: 75,217 bytes in 1,282 blocks
+==3550944==   total heap usage: 15,875 allocs, 14,593 frees, 2,210,802 bytes allocated
+==3550944== 
+==3550944== For a detailed leak analysis, rerun with: --leak-check=full
+==3550944== 
+==3550944== For lists of detected and suppressed errors, rerun with: -s
+==3550944== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550946== 
+==3550946== HEAP SUMMARY:
+==3550946==     in use at exit: 75,128 bytes in 1,281 blocks
+==3550946==   total heap usage: 2,927 allocs, 1,646 frees, 316,689 bytes allocated
+==3550946== 
+==3550946== For a detailed leak analysis, rerun with: --leak-check=full
+==3550946== 
+==3550946== For lists of detected and suppressed errors, rerun with: -s
+==3550946== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550956== Invalid read of size 1
+==3550956==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550956==    by 0x47272C: getarg (params.c:1867)
+==3550956==    by 0x472890: getindex (params.c:1933)
+==3550956==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550956==    by 0x496210: paramsubst (subst.c:2567)
+==3550956==    by 0x49B58C: stringsubst (subst.c:322)
+==3550956==    by 0x49BCA0: prefork (subst.c:142)
+==3550956==    by 0x42BC3A: addvars (exec.c:2540)
+==3550956==    by 0x438600: execsimple (exec.c:1309)
+==3550956==    by 0x43580E: execlist (exec.c:1452)
+==3550956==    by 0x45D8D1: execfor (loop.c:175)
+==3550956==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550956==  Address 0x4c59362 is 0 bytes after a block of size 2 alloc'd
+==3550956==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550956==    by 0x465006: zalloc (mem.c:966)
+==3550956==    by 0x491846: ztrdup (string.c:83)
+==3550956==    by 0x42BCA3: addvars (exec.c:2572)
+==3550956==    by 0x438600: execsimple (exec.c:1309)
+==3550956==    by 0x43580E: execlist (exec.c:1452)
+==3550956==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550956==    by 0x43340B: execpline2 (exec.c:2012)
+==3550956==    by 0x4337DB: execpline (exec.c:1737)
+==3550956==    by 0x435197: execlist (exec.c:1489)
+==3550956==    by 0x435B03: execode (exec.c:1266)
+==3550956==    by 0x44CD1A: loop (init.c:217)
+==3550956== 
+==3550956== 
+==3550956== HEAP SUMMARY:
+==3550956==     in use at exit: 75,248 bytes in 1,285 blocks
+==3550956==   total heap usage: 16,875 allocs, 15,590 frees, 2,229,213 bytes allocated
+==3550956== 
+==3550956== For a detailed leak analysis, rerun with: --leak-check=full
+==3550956== 
+==3550956== For lists of detected and suppressed errors, rerun with: -s
+==3550956== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3550958== 
+==3550958== HEAP SUMMARY:
+==3550958==     in use at exit: 75,160 bytes in 1,284 blocks
+==3550958==   total heap usage: 3,276 allocs, 1,992 frees, 331,701 bytes allocated
+==3550958== 
+==3550958== For a detailed leak analysis, rerun with: --leak-check=full
+==3550958== 
+==3550958== For lists of detected and suppressed errors, rerun with: -s
+==3550958== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550960== Invalid read of size 1
+==3550960==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550960==    by 0x47272C: getarg (params.c:1867)
+==3550960==    by 0x472890: getindex (params.c:1933)
+==3550960==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550960==    by 0x496210: paramsubst (subst.c:2567)
+==3550960==    by 0x49B58C: stringsubst (subst.c:322)
+==3550960==    by 0x49BCA0: prefork (subst.c:142)
+==3550960==    by 0x42BC3A: addvars (exec.c:2540)
+==3550960==    by 0x438600: execsimple (exec.c:1309)
+==3550960==    by 0x43580E: execlist (exec.c:1452)
+==3550960==    by 0x45D8D1: execfor (loop.c:175)
+==3550960==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550960==  Address 0x4c5e43c is 0 bytes after a block of size 12 alloc'd
+==3550960==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550960==    by 0x465006: zalloc (mem.c:966)
+==3550960==    by 0x491846: ztrdup (string.c:83)
+==3550960==    by 0x42BCA3: addvars (exec.c:2572)
+==3550960==    by 0x438600: execsimple (exec.c:1309)
+==3550960==    by 0x43580E: execlist (exec.c:1452)
+==3550960==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550960==    by 0x43340B: execpline2 (exec.c:2012)
+==3550960==    by 0x4337DB: execpline (exec.c:1737)
+==3550960==    by 0x435197: execlist (exec.c:1489)
+==3550960==    by 0x435B03: execode (exec.c:1266)
+==3550960==    by 0x44CD1A: loop (init.c:217)
+==3550960== 
+==3550960== 
+==3550960== HEAP SUMMARY:
+==3550960==     in use at exit: 75,269 bytes in 1,285 blocks
+==3550960==   total heap usage: 17,916 allocs, 16,631 frees, 2,254,377 bytes allocated
+==3550960== 
+==3550960== For a detailed leak analysis, rerun with: --leak-check=full
+==3550960== 
+==3550960== For lists of detected and suppressed errors, rerun with: -s
+==3550960== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550962== 
+==3550962== HEAP SUMMARY:
+==3550962==     in use at exit: 75,172 bytes in 1,284 blocks
+==3550962==   total heap usage: 3,810 allocs, 2,526 frees, 349,579 bytes allocated
+==3550962== 
+==3550962== For a detailed leak analysis, rerun with: --leak-check=full
+==3550962== 
+==3550962== For lists of detected and suppressed errors, rerun with: -s
+==3550962== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550964== Invalid read of size 1
+==3550964==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550964==    by 0x47272C: getarg (params.c:1867)
+==3550964==    by 0x472890: getindex (params.c:1933)
+==3550964==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550964==    by 0x496210: paramsubst (subst.c:2567)
+==3550964==    by 0x49B58C: stringsubst (subst.c:322)
+==3550964==    by 0x49BCA0: prefork (subst.c:142)
+==3550964==    by 0x42BC3A: addvars (exec.c:2540)
+==3550964==    by 0x438600: execsimple (exec.c:1309)
+==3550964==    by 0x43580E: execlist (exec.c:1452)
+==3550964==    by 0x45D8D1: execfor (loop.c:175)
+==3550964==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550964==  Address 0x4c6351d is 0 bytes after a block of size 13 alloc'd
+==3550964==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550964==    by 0x465006: zalloc (mem.c:966)
+==3550964==    by 0x491846: ztrdup (string.c:83)
+==3550964==    by 0x42BCA3: addvars (exec.c:2572)
+==3550964==    by 0x438600: execsimple (exec.c:1309)
+==3550964==    by 0x43580E: execlist (exec.c:1452)
+==3550964==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550964==    by 0x43340B: execpline2 (exec.c:2012)
+==3550964==    by 0x4337DB: execpline (exec.c:1737)
+==3550964==    by 0x435197: execlist (exec.c:1489)
+==3550964==    by 0x435B03: execode (exec.c:1266)
+==3550964==    by 0x44CD1A: loop (init.c:217)
+==3550964== 
+==3550964== 
+==3550964== HEAP SUMMARY:
+==3550964==     in use at exit: 75,268 bytes in 1,285 blocks
+==3550964==   total heap usage: 17,424 allocs, 16,139 frees, 2,261,487 bytes allocated
+==3550964== 
+==3550964== For a detailed leak analysis, rerun with: --leak-check=full
+==3550964== 
+==3550964== For lists of detected and suppressed errors, rerun with: -s
+==3550964== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550974== 
+==3550974== HEAP SUMMARY:
+==3550974==     in use at exit: 75,176 bytes in 1,284 blocks
+==3550974==   total heap usage: 3,768 allocs, 2,484 frees, 361,728 bytes allocated
+==3550974== 
+==3550974== For a detailed leak analysis, rerun with: --leak-check=full
+==3550974== 
+==3550974== For lists of detected and suppressed errors, rerun with: -s
+==3550974== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550976== Invalid read of size 1
+==3550976==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550976==    by 0x47272C: getarg (params.c:1867)
+==3550976==    by 0x472890: getindex (params.c:1933)
+==3550976==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550976==    by 0x496210: paramsubst (subst.c:2567)
+==3550976==    by 0x49B58C: stringsubst (subst.c:322)
+==3550976==    by 0x49BCA0: prefork (subst.c:142)
+==3550976==    by 0x42BC3A: addvars (exec.c:2540)
+==3550976==    by 0x438600: execsimple (exec.c:1309)
+==3550976==    by 0x43580E: execlist (exec.c:1452)
+==3550976==    by 0x45D8D1: execfor (loop.c:175)
+==3550976==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550976==  Address 0x4c685f9 is 0 bytes after a block of size 9 alloc'd
+==3550976==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550976==    by 0x465006: zalloc (mem.c:966)
+==3550976==    by 0x491846: ztrdup (string.c:83)
+==3550976==    by 0x42BCA3: addvars (exec.c:2572)
+==3550976==    by 0x438600: execsimple (exec.c:1309)
+==3550976==    by 0x43580E: execlist (exec.c:1452)
+==3550976==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550976==    by 0x43340B: execpline2 (exec.c:2012)
+==3550976==    by 0x4337DB: execpline (exec.c:1737)
+==3550976==    by 0x435197: execlist (exec.c:1489)
+==3550976==    by 0x435B03: execode (exec.c:1266)
+==3550976==    by 0x44CD1A: loop (init.c:217)
+==3550976== 
+==3550976== 
+==3550976== HEAP SUMMARY:
+==3550976==     in use at exit: 75,286 bytes in 1,286 blocks
+==3550976==   total heap usage: 17,804 allocs, 16,518 frees, 2,276,909 bytes allocated
+==3550976== 
+==3550976== For a detailed leak analysis, rerun with: --leak-check=full
+==3550976== 
+==3550976== For lists of detected and suppressed errors, rerun with: -s
+==3550976== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550984== 
+==3550984== HEAP SUMMARY:
+==3550984==     in use at exit: 75,191 bytes in 1,285 blocks
+==3550984==   total heap usage: 3,804 allocs, 2,519 frees, 374,515 bytes allocated
+==3550984== 
+==3550984== For a detailed leak analysis, rerun with: --leak-check=full
+==3550984== 
+==3550984== For lists of detected and suppressed errors, rerun with: -s
+==3550984== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550986== Invalid read of size 1
+==3550986==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550986==    by 0x47272C: getarg (params.c:1867)
+==3550986==    by 0x472890: getindex (params.c:1933)
+==3550986==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550986==    by 0x496210: paramsubst (subst.c:2567)
+==3550986==    by 0x49B58C: stringsubst (subst.c:322)
+==3550986==    by 0x49BCA0: prefork (subst.c:142)
+==3550986==    by 0x42BC3A: addvars (exec.c:2540)
+==3550986==    by 0x438600: execsimple (exec.c:1309)
+==3550986==    by 0x43580E: execlist (exec.c:1452)
+==3550986==    by 0x45D8D1: execfor (loop.c:175)
+==3550986==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550986==  Address 0x4c6d6e7 is 0 bytes after a block of size 23 alloc'd
+==3550986==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550986==    by 0x465006: zalloc (mem.c:966)
+==3550986==    by 0x491846: ztrdup (string.c:83)
+==3550986==    by 0x42BCA3: addvars (exec.c:2572)
+==3550986==    by 0x438600: execsimple (exec.c:1309)
+==3550986==    by 0x43580E: execlist (exec.c:1452)
+==3550986==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550986==    by 0x43340B: execpline2 (exec.c:2012)
+==3550986==    by 0x4337DB: execpline (exec.c:1737)
+==3550986==    by 0x435197: execlist (exec.c:1489)
+==3550986==    by 0x435B03: execode (exec.c:1266)
+==3550986==    by 0x44CD1A: loop (init.c:217)
+==3550986== 
+==3550986== 
+==3550986== HEAP SUMMARY:
+==3550986==     in use at exit: 75,269 bytes in 1,285 blocks
+==3550986==   total heap usage: 17,340 allocs, 16,055 frees, 2,284,192 bytes allocated
+==3550986== 
+==3550986== For a detailed leak analysis, rerun with: --leak-check=full
+==3550986== 
+==3550986== For lists of detected and suppressed errors, rerun with: -s
+==3550986== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3550997== 
+==3550997== HEAP SUMMARY:
+==3550997==     in use at exit: 75,183 bytes in 1,284 blocks
+==3550997==   total heap usage: 3,684 allocs, 2,400 frees, 385,970 bytes allocated
+==3550997== 
+==3550997== For a detailed leak analysis, rerun with: --leak-check=full
+==3550997== 
+==3550997== For lists of detected and suppressed errors, rerun with: -s
+==3550997== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550999== Invalid read of size 1
+==3550999==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3550999==    by 0x47272C: getarg (params.c:1867)
+==3550999==    by 0x472890: getindex (params.c:1933)
+==3550999==    by 0x472E3F: fetchvalue (params.c:2153)
+==3550999==    by 0x496210: paramsubst (subst.c:2567)
+==3550999==    by 0x49B58C: stringsubst (subst.c:322)
+==3550999==    by 0x49BCA0: prefork (subst.c:142)
+==3550999==    by 0x42BC3A: addvars (exec.c:2540)
+==3550999==    by 0x438600: execsimple (exec.c:1309)
+==3550999==    by 0x43580E: execlist (exec.c:1452)
+==3550999==    by 0x45D8D1: execfor (loop.c:175)
+==3550999==    by 0x431794: execcmd_exec (exec.c:4020)
+==3550999==  Address 0x4c727b6 is 0 bytes after a block of size 6 alloc'd
+==3550999==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3550999==    by 0x465006: zalloc (mem.c:966)
+==3550999==    by 0x491846: ztrdup (string.c:83)
+==3550999==    by 0x42BCA3: addvars (exec.c:2572)
+==3550999==    by 0x438600: execsimple (exec.c:1309)
+==3550999==    by 0x43580E: execlist (exec.c:1452)
+==3550999==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3550999==    by 0x43340B: execpline2 (exec.c:2012)
+==3550999==    by 0x4337DB: execpline (exec.c:1737)
+==3550999==    by 0x435197: execlist (exec.c:1489)
+==3550999==    by 0x435B03: execode (exec.c:1266)
+==3550999==    by 0x44CD1A: loop (init.c:217)
+==3550999== 
+==3550999== 
+==3550999== HEAP SUMMARY:
+==3550999==     in use at exit: 75,280 bytes in 1,286 blocks
+==3550999==   total heap usage: 17,734 allocs, 16,448 frees, 2,300,630 bytes allocated
+==3550999== 
+==3550999== For a detailed leak analysis, rerun with: --leak-check=full
+==3550999== 
+==3550999== For lists of detected and suppressed errors, rerun with: -s
+==3550999== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551002== 
+==3551002== HEAP SUMMARY:
+==3551002==     in use at exit: 75,196 bytes in 1,285 blocks
+==3551002==   total heap usage: 3,952 allocs, 2,667 frees, 400,941 bytes allocated
+==3551002== 
+==3551002== For a detailed leak analysis, rerun with: --leak-check=full
+==3551002== 
+==3551002== For lists of detected and suppressed errors, rerun with: -s
+==3551002== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551004== 
+==3551004== HEAP SUMMARY:
+==3551004==     in use at exit: 75,217 bytes in 1,282 blocks
+==3551004==   total heap usage: 16,591 allocs, 15,309 frees, 2,305,419 bytes allocated
+==3551004== 
+==3551004== For a detailed leak analysis, rerun with: --leak-check=full
+==3551004== 
+==3551004== For lists of detected and suppressed errors, rerun with: -s
+==3551004== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551006== 
+==3551006== HEAP SUMMARY:
+==3551006==     in use at exit: 75,128 bytes in 1,281 blocks
+==3551006==   total heap usage: 3,643 allocs, 2,362 frees, 411,316 bytes allocated
+==3551006== 
+==3551006== For a detailed leak analysis, rerun with: --leak-check=full
+==3551006== 
+==3551006== For lists of detected and suppressed errors, rerun with: -s
+==3551006== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551008== Invalid read of size 1
+==3551008==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551008==    by 0x47272C: getarg (params.c:1867)
+==3551008==    by 0x472890: getindex (params.c:1933)
+==3551008==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551008==    by 0x496210: paramsubst (subst.c:2567)
+==3551008==    by 0x49B58C: stringsubst (subst.c:322)
+==3551008==    by 0x49BFE7: prefork (subst.c:157)
+==3551008==    by 0x42BC3A: addvars (exec.c:2540)
+==3551008==    by 0x438600: execsimple (exec.c:1309)
+==3551008==    by 0x43580E: execlist (exec.c:1452)
+==3551008==    by 0x45D8D1: execfor (loop.c:175)
+==3551008==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551008==  Address 0x4c7ca02 is 0 bytes after a block of size 2 alloc'd
+==3551008==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551008==    by 0x465006: zalloc (mem.c:966)
+==3551008==    by 0x491846: ztrdup (string.c:83)
+==3551008==    by 0x42BCA3: addvars (exec.c:2572)
+==3551008==    by 0x438600: execsimple (exec.c:1309)
+==3551008==    by 0x43580E: execlist (exec.c:1452)
+==3551008==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551008==    by 0x43340B: execpline2 (exec.c:2012)
+==3551008==    by 0x4337DB: execpline (exec.c:1737)
+==3551008==    by 0x435197: execlist (exec.c:1489)
+==3551008==    by 0x435B03: execode (exec.c:1266)
+==3551008==    by 0x44CD1A: loop (init.c:217)
+==3551008== 
+==3551008== 
+==3551008== HEAP SUMMARY:
+==3551008==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551008==   total heap usage: 16,694 allocs, 15,412 frees, 2,319,008 bytes allocated
+==3551008== 
+==3551008== For a detailed leak analysis, rerun with: --leak-check=full
+==3551008== 
+==3551008== For lists of detected and suppressed errors, rerun with: -s
+==3551008== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551017== 
+==3551017== HEAP SUMMARY:
+==3551017==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551017==   total heap usage: 3,746 allocs, 2,465 frees, 424,815 bytes allocated
+==3551017== 
+==3551017== For a detailed leak analysis, rerun with: --leak-check=full
+==3551017== 
+==3551017== For lists of detected and suppressed errors, rerun with: -s
+==3551017== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551021== Invalid read of size 1
+==3551021==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551021==    by 0x47272C: getarg (params.c:1867)
+==3551021==    by 0x472890: getindex (params.c:1933)
+==3551021==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551021==    by 0x496210: paramsubst (subst.c:2567)
+==3551021==    by 0x49B58C: stringsubst (subst.c:322)
+==3551021==    by 0x49BFE7: prefork (subst.c:157)
+==3551021==    by 0x42BC3A: addvars (exec.c:2540)
+==3551021==    by 0x438600: execsimple (exec.c:1309)
+==3551021==    by 0x43580E: execlist (exec.c:1452)
+==3551021==    by 0x45D8D1: execfor (loop.c:175)
+==3551021==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551021==  Address 0x4c81abc is 0 bytes after a block of size 12 alloc'd
+==3551021==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551021==    by 0x465006: zalloc (mem.c:966)
+==3551021==    by 0x491846: ztrdup (string.c:83)
+==3551021==    by 0x42BCA3: addvars (exec.c:2572)
+==3551021==    by 0x438600: execsimple (exec.c:1309)
+==3551021==    by 0x43580E: execlist (exec.c:1452)
+==3551021==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551021==    by 0x43340B: execpline2 (exec.c:2012)
+==3551021==    by 0x4337DB: execpline (exec.c:1737)
+==3551021==    by 0x435197: execlist (exec.c:1489)
+==3551021==    by 0x435B03: execode (exec.c:1266)
+==3551021==    by 0x44CD1A: loop (init.c:217)
+==3551021== 
+==3551021== 
+==3551021== HEAP SUMMARY:
+==3551021==     in use at exit: 75,228 bytes in 1,282 blocks
+==3551021==   total heap usage: 16,796 allocs, 15,514 frees, 2,332,998 bytes allocated
+==3551021== 
+==3551021== For a detailed leak analysis, rerun with: --leak-check=full
+==3551021== 
+==3551021== For lists of detected and suppressed errors, rerun with: -s
+==3551021== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551027== 
+==3551027== HEAP SUMMARY:
+==3551027==     in use at exit: 75,139 bytes in 1,281 blocks
+==3551027==   total heap usage: 3,848 allocs, 2,567 frees, 438,424 bytes allocated
+==3551027== 
+==3551027== For a detailed leak analysis, rerun with: --leak-check=full
+==3551027== 
+==3551027== For lists of detected and suppressed errors, rerun with: -s
+==3551027== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551029== Invalid read of size 1
+==3551029==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551029==    by 0x47272C: getarg (params.c:1867)
+==3551029==    by 0x472890: getindex (params.c:1933)
+==3551029==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551029==    by 0x496210: paramsubst (subst.c:2567)
+==3551029==    by 0x49B58C: stringsubst (subst.c:322)
+==3551029==    by 0x49BFE7: prefork (subst.c:157)
+==3551029==    by 0x42BC3A: addvars (exec.c:2540)
+==3551029==    by 0x438600: execsimple (exec.c:1309)
+==3551029==    by 0x43580E: execlist (exec.c:1452)
+==3551029==    by 0x45D8D1: execfor (loop.c:175)
+==3551029==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551029==  Address 0x4c86b7d is 0 bytes after a block of size 13 alloc'd
+==3551029==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551029==    by 0x465006: zalloc (mem.c:966)
+==3551029==    by 0x491846: ztrdup (string.c:83)
+==3551029==    by 0x42BCA3: addvars (exec.c:2572)
+==3551029==    by 0x438600: execsimple (exec.c:1309)
+==3551029==    by 0x43580E: execlist (exec.c:1452)
+==3551029==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551029==    by 0x43340B: execpline2 (exec.c:2012)
+==3551029==    by 0x4337DB: execpline (exec.c:1737)
+==3551029==    by 0x435197: execlist (exec.c:1489)
+==3551029==    by 0x435B03: execode (exec.c:1266)
+==3551029==    by 0x44CD1A: loop (init.c:217)
+==3551029== 
+==3551029== 
+==3551029== HEAP SUMMARY:
+==3551029==     in use at exit: 75,229 bytes in 1,282 blocks
+==3551029==   total heap usage: 16,898 allocs, 15,616 frees, 2,346,409 bytes allocated
+==3551029== 
+==3551029== For a detailed leak analysis, rerun with: --leak-check=full
+==3551029== 
+==3551029== For lists of detected and suppressed errors, rerun with: -s
+==3551029== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551039== 
+==3551039== HEAP SUMMARY:
+==3551039==     in use at exit: 75,140 bytes in 1,281 blocks
+==3551039==   total heap usage: 3,950 allocs, 2,669 frees, 451,933 bytes allocated
+==3551039== 
+==3551039== For a detailed leak analysis, rerun with: --leak-check=full
+==3551039== 
+==3551039== For lists of detected and suppressed errors, rerun with: -s
+==3551039== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551041== Invalid read of size 1
+==3551041==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551041==    by 0x47272C: getarg (params.c:1867)
+==3551041==    by 0x472890: getindex (params.c:1933)
+==3551041==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551041==    by 0x496210: paramsubst (subst.c:2567)
+==3551041==    by 0x49B58C: stringsubst (subst.c:322)
+==3551041==    by 0x49BFE7: prefork (subst.c:157)
+==3551041==    by 0x42BC3A: addvars (exec.c:2540)
+==3551041==    by 0x438600: execsimple (exec.c:1309)
+==3551041==    by 0x43580E: execlist (exec.c:1452)
+==3551041==    by 0x45D8D1: execfor (loop.c:175)
+==3551041==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551041==  Address 0x4c8bc32 is 0 bytes after a block of size 2 alloc'd
+==3551041==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551041==    by 0x465006: zalloc (mem.c:966)
+==3551041==    by 0x491846: ztrdup (string.c:83)
+==3551041==    by 0x42BCA3: addvars (exec.c:2572)
+==3551041==    by 0x438600: execsimple (exec.c:1309)
+==3551041==    by 0x43580E: execlist (exec.c:1452)
+==3551041==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551041==    by 0x43340B: execpline2 (exec.c:2012)
+==3551041==    by 0x4337DB: execpline (exec.c:1737)
+==3551041==    by 0x435197: execlist (exec.c:1489)
+==3551041==    by 0x435B03: execode (exec.c:1266)
+==3551041==    by 0x44CD1A: loop (init.c:217)
+==3551041== 
+==3551041== 
+==3551041== HEAP SUMMARY:
+==3551041==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551041==   total heap usage: 17,000 allocs, 15,718 frees, 2,359,503 bytes allocated
+==3551041== 
+==3551041== For a detailed leak analysis, rerun with: --leak-check=full
+==3551041== 
+==3551041== For lists of detected and suppressed errors, rerun with: -s
+==3551041== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551043== 
+==3551043== HEAP SUMMARY:
+==3551043==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551043==   total heap usage: 4,052 allocs, 2,771 frees, 465,323 bytes allocated
+==3551043== 
+==3551043== For a detailed leak analysis, rerun with: --leak-check=full
+==3551043== 
+==3551043== For lists of detected and suppressed errors, rerun with: -s
+==3551043== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551045== Invalid read of size 1
+==3551045==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551045==    by 0x47272C: getarg (params.c:1867)
+==3551045==    by 0x472890: getindex (params.c:1933)
+==3551045==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551045==    by 0x496210: paramsubst (subst.c:2567)
+==3551045==    by 0x49B58C: stringsubst (subst.c:322)
+==3551045==    by 0x49BFE7: prefork (subst.c:157)
+==3551045==    by 0x42BC3A: addvars (exec.c:2540)
+==3551045==    by 0x438600: execsimple (exec.c:1309)
+==3551045==    by 0x43580E: execlist (exec.c:1452)
+==3551045==    by 0x45D8D1: execfor (loop.c:175)
+==3551045==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551045==  Address 0x4c90d07 is 0 bytes after a block of size 23 alloc'd
+==3551045==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551045==    by 0x465006: zalloc (mem.c:966)
+==3551045==    by 0x491846: ztrdup (string.c:83)
+==3551045==    by 0x42BCA3: addvars (exec.c:2572)
+==3551045==    by 0x438600: execsimple (exec.c:1309)
+==3551045==    by 0x43580E: execlist (exec.c:1452)
+==3551045==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551045==    by 0x43340B: execpline2 (exec.c:2012)
+==3551045==    by 0x4337DB: execpline (exec.c:1737)
+==3551045==    by 0x435197: execlist (exec.c:1489)
+==3551045==    by 0x435B03: execode (exec.c:1266)
+==3551045==    by 0x44CD1A: loop (init.c:217)
+==3551045== 
+==3551045== 
+==3551045== HEAP SUMMARY:
+==3551045==     in use at exit: 75,239 bytes in 1,282 blocks
+==3551045==   total heap usage: 17,102 allocs, 15,820 frees, 2,373,428 bytes allocated
+==3551045== 
+==3551045== For a detailed leak analysis, rerun with: --leak-check=full
+==3551045== 
+==3551045== For lists of detected and suppressed errors, rerun with: -s
+==3551045== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551056== 
+==3551056== HEAP SUMMARY:
+==3551056==     in use at exit: 75,150 bytes in 1,281 blocks
+==3551056==   total heap usage: 4,154 allocs, 2,873 frees, 479,055 bytes allocated
+==3551056== 
+==3551056== For a detailed leak analysis, rerun with: --leak-check=full
+==3551056== 
+==3551056== For lists of detected and suppressed errors, rerun with: -s
+==3551056== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551058== Invalid read of size 1
+==3551058==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551058==    by 0x47272C: getarg (params.c:1867)
+==3551058==    by 0x472890: getindex (params.c:1933)
+==3551058==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551058==    by 0x496210: paramsubst (subst.c:2567)
+==3551058==    by 0x49B58C: stringsubst (subst.c:322)
+==3551058==    by 0x49BFE7: prefork (subst.c:157)
+==3551058==    by 0x42BC3A: addvars (exec.c:2540)
+==3551058==    by 0x438600: execsimple (exec.c:1309)
+==3551058==    by 0x43580E: execlist (exec.c:1452)
+==3551058==    by 0x45D8D1: execfor (loop.c:175)
+==3551058==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551058==  Address 0x4c95db6 is 0 bytes after a block of size 6 alloc'd
+==3551058==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551058==    by 0x465006: zalloc (mem.c:966)
+==3551058==    by 0x491846: ztrdup (string.c:83)
+==3551058==    by 0x42BCA3: addvars (exec.c:2572)
+==3551058==    by 0x438600: execsimple (exec.c:1309)
+==3551058==    by 0x43580E: execlist (exec.c:1452)
+==3551058==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551058==    by 0x43340B: execpline2 (exec.c:2012)
+==3551058==    by 0x4337DB: execpline (exec.c:1737)
+==3551058==    by 0x435197: execlist (exec.c:1489)
+==3551058==    by 0x435B03: execode (exec.c:1266)
+==3551058==    by 0x44CD1A: loop (init.c:217)
+==3551058== 
+==3551058== 
+==3551058== HEAP SUMMARY:
+==3551058==     in use at exit: 75,246 bytes in 1,283 blocks
+==3551058==   total heap usage: 17,206 allocs, 15,923 frees, 2,386,717 bytes allocated
+==3551058== 
+==3551058== For a detailed leak analysis, rerun with: --leak-check=full
+==3551058== 
+==3551058== For lists of detected and suppressed errors, rerun with: -s
+==3551058== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551066== 
+==3551066== HEAP SUMMARY:
+==3551066==     in use at exit: 75,157 bytes in 1,282 blocks
+==3551066==   total heap usage: 4,258 allocs, 2,976 frees, 492,423 bytes allocated
+==3551066== 
+==3551066== For a detailed leak analysis, rerun with: --leak-check=full
+==3551066== 
+==3551066== For lists of detected and suppressed errors, rerun with: -s
+==3551066== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551068== 
+==3551068== HEAP SUMMARY:
+==3551068==     in use at exit: 75,217 bytes in 1,282 blocks
+==3551068==   total heap usage: 17,303 allocs, 16,021 frees, 2,399,808 bytes allocated
+==3551068== 
+==3551068== For a detailed leak analysis, rerun with: --leak-check=full
+==3551068== 
+==3551068== For lists of detected and suppressed errors, rerun with: -s
+==3551068== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551070== 
+==3551070== HEAP SUMMARY:
+==3551070==     in use at exit: 75,128 bytes in 1,281 blocks
+==3551070==   total heap usage: 4,355 allocs, 3,074 frees, 505,707 bytes allocated
+==3551070== 
+==3551070== For a detailed leak analysis, rerun with: --leak-check=full
+==3551070== 
+==3551070== For lists of detected and suppressed errors, rerun with: -s
+==3551070== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551080== Invalid read of size 1
+==3551080==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551080==    by 0x47272C: getarg (params.c:1867)
+==3551080==    by 0x472890: getindex (params.c:1933)
+==3551080==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551080==    by 0x496210: paramsubst (subst.c:2567)
+==3551080==    by 0x49B58C: stringsubst (subst.c:322)
+==3551080==    by 0x49BFE7: prefork (subst.c:157)
+==3551080==    by 0x42BC3A: addvars (exec.c:2540)
+==3551080==    by 0x438600: execsimple (exec.c:1309)
+==3551080==    by 0x43580E: execlist (exec.c:1452)
+==3551080==    by 0x45D8D1: execfor (loop.c:175)
+==3551080==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551080==  Address 0x4c9fe42 is 0 bytes after a block of size 2 alloc'd
+==3551080==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551080==    by 0x465006: zalloc (mem.c:966)
+==3551080==    by 0x491846: ztrdup (string.c:83)
+==3551080==    by 0x42BCA3: addvars (exec.c:2572)
+==3551080==    by 0x438600: execsimple (exec.c:1309)
+==3551080==    by 0x43580E: execlist (exec.c:1452)
+==3551080==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551080==    by 0x43340B: execpline2 (exec.c:2012)
+==3551080==    by 0x4337DB: execpline (exec.c:1737)
+==3551080==    by 0x435197: execlist (exec.c:1489)
+==3551080==    by 0x435B03: execode (exec.c:1266)
+==3551080==    by 0x44CD1A: loop (init.c:217)
+==3551080== 
+==3551080== 
+==3551080== HEAP SUMMARY:
+==3551080==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551080==   total heap usage: 17,406 allocs, 16,124 frees, 2,413,401 bytes allocated
+==3551080== 
+==3551080== For a detailed leak analysis, rerun with: --leak-check=full
+==3551080== 
+==3551080== For lists of detected and suppressed errors, rerun with: -s
+==3551080== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551082== 
+==3551082== HEAP SUMMARY:
+==3551082==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551082==   total heap usage: 4,458 allocs, 3,177 frees, 519,210 bytes allocated
+==3551082== 
+==3551082== For a detailed leak analysis, rerun with: --leak-check=full
+==3551082== 
+==3551082== For lists of detected and suppressed errors, rerun with: -s
+==3551082== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551084== Invalid read of size 1
+==3551084==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551084==    by 0x47272C: getarg (params.c:1867)
+==3551084==    by 0x472890: getindex (params.c:1933)
+==3551084==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551084==    by 0x496210: paramsubst (subst.c:2567)
+==3551084==    by 0x49B58C: stringsubst (subst.c:322)
+==3551084==    by 0x49BFE7: prefork (subst.c:157)
+==3551084==    by 0x42BC3A: addvars (exec.c:2540)
+==3551084==    by 0x438600: execsimple (exec.c:1309)
+==3551084==    by 0x43580E: execlist (exec.c:1452)
+==3551084==    by 0x45D8D1: execfor (loop.c:175)
+==3551084==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551084==  Address 0x4ca4f1c is 0 bytes after a block of size 12 alloc'd
+==3551084==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551084==    by 0x465006: zalloc (mem.c:966)
+==3551084==    by 0x491846: ztrdup (string.c:83)
+==3551084==    by 0x42BCA3: addvars (exec.c:2572)
+==3551084==    by 0x438600: execsimple (exec.c:1309)
+==3551084==    by 0x43580E: execlist (exec.c:1452)
+==3551084==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551084==    by 0x43340B: execpline2 (exec.c:2012)
+==3551084==    by 0x4337DB: execpline (exec.c:1737)
+==3551084==    by 0x435197: execlist (exec.c:1489)
+==3551084==    by 0x435B03: execode (exec.c:1266)
+==3551084==    by 0x44CD1A: loop (init.c:217)
+==3551084== 
+==3551084== 
+==3551084== HEAP SUMMARY:
+==3551084==     in use at exit: 75,228 bytes in 1,282 blocks
+==3551084==   total heap usage: 17,508 allocs, 16,226 frees, 2,427,395 bytes allocated
+==3551084== 
+==3551084== For a detailed leak analysis, rerun with: --leak-check=full
+==3551084== 
+==3551084== For lists of detected and suppressed errors, rerun with: -s
+==3551084== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551086== 
+==3551086== HEAP SUMMARY:
+==3551086==     in use at exit: 75,139 bytes in 1,281 blocks
+==3551086==   total heap usage: 4,560 allocs, 3,279 frees, 532,823 bytes allocated
+==3551086== 
+==3551086== For a detailed leak analysis, rerun with: --leak-check=full
+==3551086== 
+==3551086== For lists of detected and suppressed errors, rerun with: -s
+==3551086== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551088== Invalid read of size 1
+==3551088==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551088==    by 0x47272C: getarg (params.c:1867)
+==3551088==    by 0x472890: getindex (params.c:1933)
+==3551088==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551088==    by 0x496210: paramsubst (subst.c:2567)
+==3551088==    by 0x49B58C: stringsubst (subst.c:322)
+==3551088==    by 0x49BFE7: prefork (subst.c:157)
+==3551088==    by 0x42BC3A: addvars (exec.c:2540)
+==3551088==    by 0x438600: execsimple (exec.c:1309)
+==3551088==    by 0x43580E: execlist (exec.c:1452)
+==3551088==    by 0x45D8D1: execfor (loop.c:175)
+==3551088==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551088==  Address 0x4ca9ffd is 0 bytes after a block of size 13 alloc'd
+==3551088==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551088==    by 0x465006: zalloc (mem.c:966)
+==3551088==    by 0x491846: ztrdup (string.c:83)
+==3551088==    by 0x42BCA3: addvars (exec.c:2572)
+==3551088==    by 0x438600: execsimple (exec.c:1309)
+==3551088==    by 0x43580E: execlist (exec.c:1452)
+==3551088==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551088==    by 0x43340B: execpline2 (exec.c:2012)
+==3551088==    by 0x4337DB: execpline (exec.c:1737)
+==3551088==    by 0x435197: execlist (exec.c:1489)
+==3551088==    by 0x435B03: execode (exec.c:1266)
+==3551088==    by 0x44CD1A: loop (init.c:217)
+==3551088== 
+==3551088== 
+==3551088== HEAP SUMMARY:
+==3551088==     in use at exit: 75,229 bytes in 1,282 blocks
+==3551088==   total heap usage: 17,610 allocs, 16,328 frees, 2,440,853 bytes allocated
+==3551088== 
+==3551088== For a detailed leak analysis, rerun with: --leak-check=full
+==3551088== 
+==3551088== For lists of detected and suppressed errors, rerun with: -s
+==3551088== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551098== 
+==3551098== HEAP SUMMARY:
+==3551098==     in use at exit: 75,140 bytes in 1,281 blocks
+==3551098==   total heap usage: 4,662 allocs, 3,381 frees, 546,336 bytes allocated
+==3551098== 
+==3551098== For a detailed leak analysis, rerun with: --leak-check=full
+==3551098== 
+==3551098== For lists of detected and suppressed errors, rerun with: -s
+==3551098== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551100== Invalid read of size 1
+==3551100==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551100==    by 0x47272C: getarg (params.c:1867)
+==3551100==    by 0x472890: getindex (params.c:1933)
+==3551100==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551100==    by 0x496210: paramsubst (subst.c:2567)
+==3551100==    by 0x49B58C: stringsubst (subst.c:322)
+==3551100==    by 0x49BFE7: prefork (subst.c:157)
+==3551100==    by 0x42BC3A: addvars (exec.c:2540)
+==3551100==    by 0x438600: execsimple (exec.c:1309)
+==3551100==    by 0x43580E: execlist (exec.c:1452)
+==3551100==    by 0x45D8D1: execfor (loop.c:175)
+==3551100==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551100==  Address 0x4caf0d2 is 0 bytes after a block of size 2 alloc'd
+==3551100==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551100==    by 0x465006: zalloc (mem.c:966)
+==3551100==    by 0x491846: ztrdup (string.c:83)
+==3551100==    by 0x42BCA3: addvars (exec.c:2572)
+==3551100==    by 0x438600: execsimple (exec.c:1309)
+==3551100==    by 0x43580E: execlist (exec.c:1452)
+==3551100==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551100==    by 0x43340B: execpline2 (exec.c:2012)
+==3551100==    by 0x4337DB: execpline (exec.c:1737)
+==3551100==    by 0x435197: execlist (exec.c:1489)
+==3551100==    by 0x435B03: execode (exec.c:1266)
+==3551100==    by 0x44CD1A: loop (init.c:217)
+==3551100== 
+==3551100== 
+==3551100== HEAP SUMMARY:
+==3551100==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551100==   total heap usage: 17,712 allocs, 16,430 frees, 2,453,908 bytes allocated
+==3551100== 
+==3551100== For a detailed leak analysis, rerun with: --leak-check=full
+==3551100== 
+==3551100== For lists of detected and suppressed errors, rerun with: -s
+==3551100== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551108== 
+==3551108== HEAP SUMMARY:
+==3551108==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551108==   total heap usage: 4,764 allocs, 3,483 frees, 559,730 bytes allocated
+==3551108== 
+==3551108== For a detailed leak analysis, rerun with: --leak-check=full
+==3551108== 
+==3551108== For lists of detected and suppressed errors, rerun with: -s
+==3551108== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551110== Invalid read of size 1
+==3551110==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551110==    by 0x47272C: getarg (params.c:1867)
+==3551110==    by 0x472890: getindex (params.c:1933)
+==3551110==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551110==    by 0x496210: paramsubst (subst.c:2567)
+==3551110==    by 0x49B58C: stringsubst (subst.c:322)
+==3551110==    by 0x49BFE7: prefork (subst.c:157)
+==3551110==    by 0x42BC3A: addvars (exec.c:2540)
+==3551110==    by 0x438600: execsimple (exec.c:1309)
+==3551110==    by 0x43580E: execlist (exec.c:1452)
+==3551110==    by 0x45D8D1: execfor (loop.c:175)
+==3551110==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551110==  Address 0x4cb41c7 is 0 bytes after a block of size 23 alloc'd
+==3551110==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551110==    by 0x465006: zalloc (mem.c:966)
+==3551110==    by 0x491846: ztrdup (string.c:83)
+==3551110==    by 0x42BCA3: addvars (exec.c:2572)
+==3551110==    by 0x438600: execsimple (exec.c:1309)
+==3551110==    by 0x43580E: execlist (exec.c:1452)
+==3551110==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551110==    by 0x43340B: execpline2 (exec.c:2012)
+==3551110==    by 0x4337DB: execpline (exec.c:1737)
+==3551110==    by 0x435197: execlist (exec.c:1489)
+==3551110==    by 0x435B03: execode (exec.c:1266)
+==3551110==    by 0x44CD1A: loop (init.c:217)
+==3551110== 
+==3551110== 
+==3551110== HEAP SUMMARY:
+==3551110==     in use at exit: 75,239 bytes in 1,282 blocks
+==3551110==   total heap usage: 17,814 allocs, 16,532 frees, 2,467,924 bytes allocated
+==3551110== 
+==3551110== For a detailed leak analysis, rerun with: --leak-check=full
+==3551110== 
+==3551110== For lists of detected and suppressed errors, rerun with: -s
+==3551110== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551119== 
+==3551119== HEAP SUMMARY:
+==3551119==     in use at exit: 75,150 bytes in 1,281 blocks
+==3551119==   total heap usage: 4,866 allocs, 3,585 frees, 573,466 bytes allocated
+==3551119== 
+==3551119== For a detailed leak analysis, rerun with: --leak-check=full
+==3551119== 
+==3551119== For lists of detected and suppressed errors, rerun with: -s
+==3551119== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551122== Invalid read of size 1
+==3551122==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551122==    by 0x47272C: getarg (params.c:1867)
+==3551122==    by 0x472890: getindex (params.c:1933)
+==3551122==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551122==    by 0x496210: paramsubst (subst.c:2567)
+==3551122==    by 0x49B58C: stringsubst (subst.c:322)
+==3551122==    by 0x49BFE7: prefork (subst.c:157)
+==3551122==    by 0x42BC3A: addvars (exec.c:2540)
+==3551122==    by 0x438600: execsimple (exec.c:1309)
+==3551122==    by 0x43580E: execlist (exec.c:1452)
+==3551122==    by 0x45D8D1: execfor (loop.c:175)
+==3551122==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551122==  Address 0x4cb9296 is 0 bytes after a block of size 6 alloc'd
+==3551122==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551122==    by 0x465006: zalloc (mem.c:966)
+==3551122==    by 0x491846: ztrdup (string.c:83)
+==3551122==    by 0x42BCA3: addvars (exec.c:2572)
+==3551122==    by 0x438600: execsimple (exec.c:1309)
+==3551122==    by 0x43580E: execlist (exec.c:1452)
+==3551122==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551122==    by 0x43340B: execpline2 (exec.c:2012)
+==3551122==    by 0x4337DB: execpline (exec.c:1737)
+==3551122==    by 0x435197: execlist (exec.c:1489)
+==3551122==    by 0x435B03: execode (exec.c:1266)
+==3551122==    by 0x44CD1A: loop (init.c:217)
+==3551122== 
+==3551122== 
+==3551122== HEAP SUMMARY:
+==3551122==     in use at exit: 75,246 bytes in 1,283 blocks
+==3551122==   total heap usage: 17,918 allocs, 16,635 frees, 2,481,124 bytes allocated
+==3551122== 
+==3551122== For a detailed leak analysis, rerun with: --leak-check=full
+==3551122== 
+==3551122== For lists of detected and suppressed errors, rerun with: -s
+==3551122== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551125== 
+==3551125== HEAP SUMMARY:
+==3551125==     in use at exit: 75,157 bytes in 1,282 blocks
+==3551125==   total heap usage: 4,970 allocs, 3,688 frees, 586,838 bytes allocated
+==3551125== 
+==3551125== For a detailed leak analysis, rerun with: --leak-check=full
+==3551125== 
+==3551125== For lists of detected and suppressed errors, rerun with: -s
+==3551125== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551128== 
+==3551128== HEAP SUMMARY:
+==3551128==     in use at exit: 75,217 bytes in 1,282 blocks
+==3551128==   total heap usage: 18,019 allocs, 16,737 frees, 2,494,436 bytes allocated
+==3551128== 
+==3551128== For a detailed leak analysis, rerun with: --leak-check=full
+==3551128== 
+==3551128== For lists of detected and suppressed errors, rerun with: -s
+==3551128== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551130== 
+==3551130== HEAP SUMMARY:
+==3551130==     in use at exit: 75,128 bytes in 1,281 blocks
+==3551130==   total heap usage: 5,071 allocs, 3,790 frees, 600,332 bytes allocated
+==3551130== 
+==3551130== For a detailed leak analysis, rerun with: --leak-check=full
+==3551130== 
+==3551130== For lists of detected and suppressed errors, rerun with: -s
+==3551130== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551133== Invalid read of size 1
+==3551133==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551133==    by 0x47272C: getarg (params.c:1867)
+==3551133==    by 0x472890: getindex (params.c:1933)
+==3551133==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551133==    by 0x496210: paramsubst (subst.c:2567)
+==3551133==    by 0x49B58C: stringsubst (subst.c:322)
+==3551133==    by 0x49BFE7: prefork (subst.c:157)
+==3551133==    by 0x42BC3A: addvars (exec.c:2540)
+==3551133==    by 0x438600: execsimple (exec.c:1309)
+==3551133==    by 0x43580E: execlist (exec.c:1452)
+==3551133==    by 0x45D8D1: execfor (loop.c:175)
+==3551133==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551133==  Address 0x4cc34e2 is 0 bytes after a block of size 2 alloc'd
+==3551133==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551133==    by 0x465006: zalloc (mem.c:966)
+==3551133==    by 0x491846: ztrdup (string.c:83)
+==3551133==    by 0x42BCA3: addvars (exec.c:2572)
+==3551133==    by 0x438600: execsimple (exec.c:1309)
+==3551133==    by 0x43580E: execlist (exec.c:1452)
+==3551133==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551133==    by 0x43340B: execpline2 (exec.c:2012)
+==3551133==    by 0x4337DB: execpline (exec.c:1737)
+==3551133==    by 0x435197: execlist (exec.c:1489)
+==3551133==    by 0x435B03: execode (exec.c:1266)
+==3551133==    by 0x44CD1A: loop (init.c:217)
+==3551133== 
+==3551133== 
+==3551133== HEAP SUMMARY:
+==3551133==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551133==   total heap usage: 18,122 allocs, 16,840 frees, 2,508,023 bytes allocated
+==3551133== 
+==3551133== For a detailed leak analysis, rerun with: --leak-check=full
+==3551133== 
+==3551133== For lists of detected and suppressed errors, rerun with: -s
+==3551133== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551142== 
+==3551142== HEAP SUMMARY:
+==3551142==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551142==   total heap usage: 5,174 allocs, 3,893 frees, 613,829 bytes allocated
+==3551142== 
+==3551142== For a detailed leak analysis, rerun with: --leak-check=full
+==3551142== 
+==3551142== For lists of detected and suppressed errors, rerun with: -s
+==3551142== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551144== Invalid read of size 1
+==3551144==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551144==    by 0x47272C: getarg (params.c:1867)
+==3551144==    by 0x472890: getindex (params.c:1933)
+==3551144==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551144==    by 0x496210: paramsubst (subst.c:2567)
+==3551144==    by 0x49B58C: stringsubst (subst.c:322)
+==3551144==    by 0x49BFE7: prefork (subst.c:157)
+==3551144==    by 0x42BC3A: addvars (exec.c:2540)
+==3551144==    by 0x438600: execsimple (exec.c:1309)
+==3551144==    by 0x43580E: execlist (exec.c:1452)
+==3551144==    by 0x45D8D1: execfor (loop.c:175)
+==3551144==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551144==  Address 0x4cc859c is 0 bytes after a block of size 12 alloc'd
+==3551144==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551144==    by 0x465006: zalloc (mem.c:966)
+==3551144==    by 0x491846: ztrdup (string.c:83)
+==3551144==    by 0x42BCA3: addvars (exec.c:2572)
+==3551144==    by 0x438600: execsimple (exec.c:1309)
+==3551144==    by 0x43580E: execlist (exec.c:1452)
+==3551144==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551144==    by 0x43340B: execpline2 (exec.c:2012)
+==3551144==    by 0x4337DB: execpline (exec.c:1737)
+==3551144==    by 0x435197: execlist (exec.c:1489)
+==3551144==    by 0x435B03: execode (exec.c:1266)
+==3551144==    by 0x44CD1A: loop (init.c:217)
+==3551144== 
+==3551144== 
+==3551144== HEAP SUMMARY:
+==3551144==     in use at exit: 75,228 bytes in 1,282 blocks
+==3551144==   total heap usage: 18,224 allocs, 16,942 frees, 2,522,011 bytes allocated
+==3551144== 
+==3551144== For a detailed leak analysis, rerun with: --leak-check=full
+==3551144== 
+==3551144== For lists of detected and suppressed errors, rerun with: -s
+==3551144== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551152== 
+==3551152== HEAP SUMMARY:
+==3551152==     in use at exit: 75,139 bytes in 1,281 blocks
+==3551152==   total heap usage: 5,276 allocs, 3,995 frees, 627,436 bytes allocated
+==3551152== 
+==3551152== For a detailed leak analysis, rerun with: --leak-check=full
+==3551152== 
+==3551152== For lists of detected and suppressed errors, rerun with: -s
+==3551152== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551154== Invalid read of size 1
+==3551154==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551154==    by 0x47272C: getarg (params.c:1867)
+==3551154==    by 0x472890: getindex (params.c:1933)
+==3551154==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551154==    by 0x496210: paramsubst (subst.c:2567)
+==3551154==    by 0x49B58C: stringsubst (subst.c:322)
+==3551154==    by 0x49BFE7: prefork (subst.c:157)
+==3551154==    by 0x42BC3A: addvars (exec.c:2540)
+==3551154==    by 0x438600: execsimple (exec.c:1309)
+==3551154==    by 0x43580E: execlist (exec.c:1452)
+==3551154==    by 0x45D8D1: execfor (loop.c:175)
+==3551154==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551154==  Address 0x4ccd65d is 0 bytes after a block of size 13 alloc'd
+==3551154==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551154==    by 0x465006: zalloc (mem.c:966)
+==3551154==    by 0x491846: ztrdup (string.c:83)
+==3551154==    by 0x42BCA3: addvars (exec.c:2572)
+==3551154==    by 0x438600: execsimple (exec.c:1309)
+==3551154==    by 0x43580E: execlist (exec.c:1452)
+==3551154==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551154==    by 0x43340B: execpline2 (exec.c:2012)
+==3551154==    by 0x4337DB: execpline (exec.c:1737)
+==3551154==    by 0x435197: execlist (exec.c:1489)
+==3551154==    by 0x435B03: execode (exec.c:1266)
+==3551154==    by 0x44CD1A: loop (init.c:217)
+==3551154== 
+==3551154== 
+==3551154== HEAP SUMMARY:
+==3551154==     in use at exit: 75,229 bytes in 1,282 blocks
+==3551154==   total heap usage: 18,326 allocs, 17,044 frees, 2,535,420 bytes allocated
+==3551154== 
+==3551154== For a detailed leak analysis, rerun with: --leak-check=full
+==3551154== 
+==3551154== For lists of detected and suppressed errors, rerun with: -s
+==3551154== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551166== 
+==3551166== HEAP SUMMARY:
+==3551166==     in use at exit: 75,140 bytes in 1,281 blocks
+==3551166==   total heap usage: 5,378 allocs, 4,097 frees, 640,943 bytes allocated
+==3551166== 
+==3551166== For a detailed leak analysis, rerun with: --leak-check=full
+==3551166== 
+==3551166== For lists of detected and suppressed errors, rerun with: -s
+==3551166== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551190== Invalid read of size 1
+==3551190==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551190==    by 0x47272C: getarg (params.c:1867)
+==3551190==    by 0x472890: getindex (params.c:1933)
+==3551190==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551190==    by 0x496210: paramsubst (subst.c:2567)
+==3551190==    by 0x49B58C: stringsubst (subst.c:322)
+==3551190==    by 0x49BFE7: prefork (subst.c:157)
+==3551190==    by 0x42BC3A: addvars (exec.c:2540)
+==3551190==    by 0x438600: execsimple (exec.c:1309)
+==3551190==    by 0x43580E: execlist (exec.c:1452)
+==3551190==    by 0x45D8D1: execfor (loop.c:175)
+==3551190==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551190==  Address 0x4cd2712 is 0 bytes after a block of size 2 alloc'd
+==3551190==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551190==    by 0x465006: zalloc (mem.c:966)
+==3551190==    by 0x491846: ztrdup (string.c:83)
+==3551190==    by 0x42BCA3: addvars (exec.c:2572)
+==3551190==    by 0x438600: execsimple (exec.c:1309)
+==3551190==    by 0x43580E: execlist (exec.c:1452)
+==3551190==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551190==    by 0x43340B: execpline2 (exec.c:2012)
+==3551190==    by 0x4337DB: execpline (exec.c:1737)
+==3551190==    by 0x435197: execlist (exec.c:1489)
+==3551190==    by 0x435B03: execode (exec.c:1266)
+==3551190==    by 0x44CD1A: loop (init.c:217)
+==3551190== 
+==3551190== 
+==3551190== HEAP SUMMARY:
+==3551190==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551190==   total heap usage: 18,428 allocs, 17,146 frees, 2,548,512 bytes allocated
+==3551190== 
+==3551190== For a detailed leak analysis, rerun with: --leak-check=full
+==3551190== 
+==3551190== For lists of detected and suppressed errors, rerun with: -s
+==3551190== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551218== 
+==3551218== HEAP SUMMARY:
+==3551218==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551218==   total heap usage: 5,480 allocs, 4,199 frees, 654,331 bytes allocated
+==3551218== 
+==3551218== For a detailed leak analysis, rerun with: --leak-check=full
+==3551218== 
+==3551218== For lists of detected and suppressed errors, rerun with: -s
+==3551218== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551220== Invalid read of size 1
+==3551220==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551220==    by 0x47272C: getarg (params.c:1867)
+==3551220==    by 0x472890: getindex (params.c:1933)
+==3551220==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551220==    by 0x496210: paramsubst (subst.c:2567)
+==3551220==    by 0x49B58C: stringsubst (subst.c:322)
+==3551220==    by 0x49BFE7: prefork (subst.c:157)
+==3551220==    by 0x42BC3A: addvars (exec.c:2540)
+==3551220==    by 0x438600: execsimple (exec.c:1309)
+==3551220==    by 0x43580E: execlist (exec.c:1452)
+==3551220==    by 0x45D8D1: execfor (loop.c:175)
+==3551220==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551220==  Address 0x4cd77e7 is 0 bytes after a block of size 23 alloc'd
+==3551220==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551220==    by 0x465006: zalloc (mem.c:966)
+==3551220==    by 0x491846: ztrdup (string.c:83)
+==3551220==    by 0x42BCA3: addvars (exec.c:2572)
+==3551220==    by 0x438600: execsimple (exec.c:1309)
+==3551220==    by 0x43580E: execlist (exec.c:1452)
+==3551220==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551220==    by 0x43340B: execpline2 (exec.c:2012)
+==3551220==    by 0x4337DB: execpline (exec.c:1737)
+==3551220==    by 0x435197: execlist (exec.c:1489)
+==3551220==    by 0x435B03: execode (exec.c:1266)
+==3551220==    by 0x44CD1A: loop (init.c:217)
+==3551220== 
+==3551220== 
+==3551220== HEAP SUMMARY:
+==3551220==     in use at exit: 75,239 bytes in 1,282 blocks
+==3551220==   total heap usage: 18,530 allocs, 17,248 frees, 2,562,435 bytes allocated
+==3551220== 
+==3551220== For a detailed leak analysis, rerun with: --leak-check=full
+==3551220== 
+==3551220== For lists of detected and suppressed errors, rerun with: -s
+==3551220== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551230== 
+==3551230== HEAP SUMMARY:
+==3551230==     in use at exit: 75,150 bytes in 1,281 blocks
+==3551230==   total heap usage: 5,582 allocs, 4,301 frees, 668,061 bytes allocated
+==3551230== 
+==3551230== For a detailed leak analysis, rerun with: --leak-check=full
+==3551230== 
+==3551230== For lists of detected and suppressed errors, rerun with: -s
+==3551230== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551233== Invalid read of size 1
+==3551233==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551233==    by 0x47272C: getarg (params.c:1867)
+==3551233==    by 0x472890: getindex (params.c:1933)
+==3551233==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551233==    by 0x496210: paramsubst (subst.c:2567)
+==3551233==    by 0x49B58C: stringsubst (subst.c:322)
+==3551233==    by 0x49BFE7: prefork (subst.c:157)
+==3551233==    by 0x42BC3A: addvars (exec.c:2540)
+==3551233==    by 0x438600: execsimple (exec.c:1309)
+==3551233==    by 0x43580E: execlist (exec.c:1452)
+==3551233==    by 0x45D8D1: execfor (loop.c:175)
+==3551233==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551233==  Address 0x4cdc896 is 0 bytes after a block of size 6 alloc'd
+==3551233==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551233==    by 0x465006: zalloc (mem.c:966)
+==3551233==    by 0x491846: ztrdup (string.c:83)
+==3551233==    by 0x42BCA3: addvars (exec.c:2572)
+==3551233==    by 0x438600: execsimple (exec.c:1309)
+==3551233==    by 0x43580E: execlist (exec.c:1452)
+==3551233==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551233==    by 0x43340B: execpline2 (exec.c:2012)
+==3551233==    by 0x4337DB: execpline (exec.c:1737)
+==3551233==    by 0x435197: execlist (exec.c:1489)
+==3551233==    by 0x435B03: execode (exec.c:1266)
+==3551233==    by 0x44CD1A: loop (init.c:217)
+==3551233== 
+==3551233== 
+==3551233== HEAP SUMMARY:
+==3551233==     in use at exit: 75,246 bytes in 1,283 blocks
+==3551233==   total heap usage: 18,634 allocs, 17,351 frees, 2,575,722 bytes allocated
+==3551233== 
+==3551233== For a detailed leak analysis, rerun with: --leak-check=full
+==3551233== 
+==3551233== For lists of detected and suppressed errors, rerun with: -s
+==3551233== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551241== 
+==3551241== HEAP SUMMARY:
+==3551241==     in use at exit: 75,157 bytes in 1,282 blocks
+==3551241==   total heap usage: 5,686 allocs, 4,404 frees, 681,427 bytes allocated
+==3551241== 
+==3551241== For a detailed leak analysis, rerun with: --leak-check=full
+==3551241== 
+==3551241== For lists of detected and suppressed errors, rerun with: -s
+==3551241== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551243== 
+==3551243== HEAP SUMMARY:
+==3551243==     in use at exit: 75,217 bytes in 1,282 blocks
+==3551243==   total heap usage: 18,731 allocs, 17,449 frees, 2,588,811 bytes allocated
+==3551243== 
+==3551243== For a detailed leak analysis, rerun with: --leak-check=full
+==3551243== 
+==3551243== For lists of detected and suppressed errors, rerun with: -s
+==3551243== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551246== 
+==3551246== HEAP SUMMARY:
+==3551246==     in use at exit: 75,128 bytes in 1,281 blocks
+==3551246==   total heap usage: 5,783 allocs, 4,502 frees, 694,709 bytes allocated
+==3551246== 
+==3551246== For a detailed leak analysis, rerun with: --leak-check=full
+==3551246== 
+==3551246== For lists of detected and suppressed errors, rerun with: -s
+==3551246== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551248== Invalid read of size 1
+==3551248==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551248==    by 0x47272C: getarg (params.c:1867)
+==3551248==    by 0x472890: getindex (params.c:1933)
+==3551248==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551248==    by 0x496210: paramsubst (subst.c:2567)
+==3551248==    by 0x49B58C: stringsubst (subst.c:322)
+==3551248==    by 0x49BFE7: prefork (subst.c:157)
+==3551248==    by 0x42BC3A: addvars (exec.c:2540)
+==3551248==    by 0x438600: execsimple (exec.c:1309)
+==3551248==    by 0x43580E: execlist (exec.c:1452)
+==3551248==    by 0x45D8D1: execfor (loop.c:175)
+==3551248==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551248==  Address 0x4ce6922 is 0 bytes after a block of size 2 alloc'd
+==3551248==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551248==    by 0x465006: zalloc (mem.c:966)
+==3551248==    by 0x491846: ztrdup (string.c:83)
+==3551248==    by 0x42BCA3: addvars (exec.c:2572)
+==3551248==    by 0x438600: execsimple (exec.c:1309)
+==3551248==    by 0x43580E: execlist (exec.c:1452)
+==3551248==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551248==    by 0x43340B: execpline2 (exec.c:2012)
+==3551248==    by 0x4337DB: execpline (exec.c:1737)
+==3551248==    by 0x435197: execlist (exec.c:1489)
+==3551248==    by 0x435B03: execode (exec.c:1266)
+==3551248==    by 0x44CD1A: loop (init.c:217)
+==3551248== 
+==3551248== 
+==3551248== HEAP SUMMARY:
+==3551248==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551248==   total heap usage: 18,834 allocs, 17,552 frees, 2,602,402 bytes allocated
+==3551248== 
+==3551248== For a detailed leak analysis, rerun with: --leak-check=full
+==3551248== 
+==3551248== For lists of detected and suppressed errors, rerun with: -s
+==3551248== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551259== 
+==3551259== HEAP SUMMARY:
+==3551259==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551259==   total heap usage: 5,886 allocs, 4,605 frees, 708,210 bytes allocated
+==3551259== 
+==3551259== For a detailed leak analysis, rerun with: --leak-check=full
+==3551259== 
+==3551259== For lists of detected and suppressed errors, rerun with: -s
+==3551259== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551261== Invalid read of size 1
+==3551261==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551261==    by 0x47272C: getarg (params.c:1867)
+==3551261==    by 0x472890: getindex (params.c:1933)
+==3551261==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551261==    by 0x496210: paramsubst (subst.c:2567)
+==3551261==    by 0x49B58C: stringsubst (subst.c:322)
+==3551261==    by 0x49BFE7: prefork (subst.c:157)
+==3551261==    by 0x42BC3A: addvars (exec.c:2540)
+==3551261==    by 0x438600: execsimple (exec.c:1309)
+==3551261==    by 0x43580E: execlist (exec.c:1452)
+==3551261==    by 0x45D8D1: execfor (loop.c:175)
+==3551261==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551261==  Address 0x4ceb9fc is 0 bytes after a block of size 12 alloc'd
+==3551261==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551261==    by 0x465006: zalloc (mem.c:966)
+==3551261==    by 0x491846: ztrdup (string.c:83)
+==3551261==    by 0x42BCA3: addvars (exec.c:2572)
+==3551261==    by 0x438600: execsimple (exec.c:1309)
+==3551261==    by 0x43580E: execlist (exec.c:1452)
+==3551261==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551261==    by 0x43340B: execpline2 (exec.c:2012)
+==3551261==    by 0x4337DB: execpline (exec.c:1737)
+==3551261==    by 0x435197: execlist (exec.c:1489)
+==3551261==    by 0x435B03: execode (exec.c:1266)
+==3551261==    by 0x44CD1A: loop (init.c:217)
+==3551261== 
+==3551261== 
+==3551261== HEAP SUMMARY:
+==3551261==     in use at exit: 75,228 bytes in 1,282 blocks
+==3551261==   total heap usage: 18,936 allocs, 17,654 frees, 2,616,394 bytes allocated
+==3551261== 
+==3551261== For a detailed leak analysis, rerun with: --leak-check=full
+==3551261== 
+==3551261== For lists of detected and suppressed errors, rerun with: -s
+==3551261== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551264== 
+==3551264== HEAP SUMMARY:
+==3551264==     in use at exit: 75,139 bytes in 1,281 blocks
+==3551264==   total heap usage: 5,988 allocs, 4,707 frees, 721,821 bytes allocated
+==3551264== 
+==3551264== For a detailed leak analysis, rerun with: --leak-check=full
+==3551264== 
+==3551264== For lists of detected and suppressed errors, rerun with: -s
+==3551264== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551265== Invalid read of size 1
+==3551265==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551265==    by 0x47272C: getarg (params.c:1867)
+==3551265==    by 0x472890: getindex (params.c:1933)
+==3551265==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551265==    by 0x496210: paramsubst (subst.c:2567)
+==3551265==    by 0x49B58C: stringsubst (subst.c:322)
+==3551265==    by 0x49BFE7: prefork (subst.c:157)
+==3551265==    by 0x42BC3A: addvars (exec.c:2540)
+==3551265==    by 0x438600: execsimple (exec.c:1309)
+==3551265==    by 0x43580E: execlist (exec.c:1452)
+==3551265==    by 0x45D8D1: execfor (loop.c:175)
+==3551265==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551265==  Address 0x4cf0add is 0 bytes after a block of size 13 alloc'd
+==3551265==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551265==    by 0x465006: zalloc (mem.c:966)
+==3551265==    by 0x491846: ztrdup (string.c:83)
+==3551265==    by 0x42BCA3: addvars (exec.c:2572)
+==3551265==    by 0x438600: execsimple (exec.c:1309)
+==3551265==    by 0x43580E: execlist (exec.c:1452)
+==3551265==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551265==    by 0x43340B: execpline2 (exec.c:2012)
+==3551265==    by 0x4337DB: execpline (exec.c:1737)
+==3551265==    by 0x435197: execlist (exec.c:1489)
+==3551265==    by 0x435B03: execode (exec.c:1266)
+==3551265==    by 0x44CD1A: loop (init.c:217)
+==3551265== 
+==3551265== 
+==3551265== HEAP SUMMARY:
+==3551265==     in use at exit: 75,229 bytes in 1,282 blocks
+==3551265==   total heap usage: 19,038 allocs, 17,756 frees, 2,629,850 bytes allocated
+==3551265== 
+==3551265== For a detailed leak analysis, rerun with: --leak-check=full
+==3551265== 
+==3551265== For lists of detected and suppressed errors, rerun with: -s
+==3551265== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551275== 
+==3551275== HEAP SUMMARY:
+==3551275==     in use at exit: 75,140 bytes in 1,281 blocks
+==3551275==   total heap usage: 6,090 allocs, 4,809 frees, 735,332 bytes allocated
+==3551275== 
+==3551275== For a detailed leak analysis, rerun with: --leak-check=full
+==3551275== 
+==3551275== For lists of detected and suppressed errors, rerun with: -s
+==3551275== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551277== Invalid read of size 1
+==3551277==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551277==    by 0x47272C: getarg (params.c:1867)
+==3551277==    by 0x472890: getindex (params.c:1933)
+==3551277==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551277==    by 0x496210: paramsubst (subst.c:2567)
+==3551277==    by 0x49B58C: stringsubst (subst.c:322)
+==3551277==    by 0x49BFE7: prefork (subst.c:157)
+==3551277==    by 0x42BC3A: addvars (exec.c:2540)
+==3551277==    by 0x438600: execsimple (exec.c:1309)
+==3551277==    by 0x43580E: execlist (exec.c:1452)
+==3551277==    by 0x45D8D1: execfor (loop.c:175)
+==3551277==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551277==  Address 0x4cf5bb2 is 0 bytes after a block of size 2 alloc'd
+==3551277==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551277==    by 0x465006: zalloc (mem.c:966)
+==3551277==    by 0x491846: ztrdup (string.c:83)
+==3551277==    by 0x42BCA3: addvars (exec.c:2572)
+==3551277==    by 0x438600: execsimple (exec.c:1309)
+==3551277==    by 0x43580E: execlist (exec.c:1452)
+==3551277==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551277==    by 0x43340B: execpline2 (exec.c:2012)
+==3551277==    by 0x4337DB: execpline (exec.c:1737)
+==3551277==    by 0x435197: execlist (exec.c:1489)
+==3551277==    by 0x435B03: execode (exec.c:1266)
+==3551277==    by 0x44CD1A: loop (init.c:217)
+==3551277== 
+==3551277== 
+==3551277== HEAP SUMMARY:
+==3551277==     in use at exit: 75,218 bytes in 1,282 blocks
+==3551277==   total heap usage: 19,140 allocs, 17,858 frees, 2,642,903 bytes allocated
+==3551277== 
+==3551277== For a detailed leak analysis, rerun with: --leak-check=full
+==3551277== 
+==3551277== For lists of detected and suppressed errors, rerun with: -s
+==3551277== ERROR SUMMARY: 24 errors from 1 contexts (suppressed: 0 from 0)
+==3551285== 
+==3551285== HEAP SUMMARY:
+==3551285==     in use at exit: 75,129 bytes in 1,281 blocks
+==3551285==   total heap usage: 6,192 allocs, 4,911 frees, 748,724 bytes allocated
+==3551285== 
+==3551285== For a detailed leak analysis, rerun with: --leak-check=full
+==3551285== 
+==3551285== For lists of detected and suppressed errors, rerun with: -s
+==3551285== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551287== Invalid read of size 1
+==3551287==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551287==    by 0x47272C: getarg (params.c:1867)
+==3551287==    by 0x472890: getindex (params.c:1933)
+==3551287==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551287==    by 0x496210: paramsubst (subst.c:2567)
+==3551287==    by 0x49B58C: stringsubst (subst.c:322)
+==3551287==    by 0x49BFE7: prefork (subst.c:157)
+==3551287==    by 0x42BC3A: addvars (exec.c:2540)
+==3551287==    by 0x438600: execsimple (exec.c:1309)
+==3551287==    by 0x43580E: execlist (exec.c:1452)
+==3551287==    by 0x45D8D1: execfor (loop.c:175)
+==3551287==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551287==  Address 0x4cfaca7 is 0 bytes after a block of size 23 alloc'd
+==3551287==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551287==    by 0x465006: zalloc (mem.c:966)
+==3551287==    by 0x491846: ztrdup (string.c:83)
+==3551287==    by 0x42BCA3: addvars (exec.c:2572)
+==3551287==    by 0x438600: execsimple (exec.c:1309)
+==3551287==    by 0x43580E: execlist (exec.c:1452)
+==3551287==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551287==    by 0x43340B: execpline2 (exec.c:2012)
+==3551287==    by 0x4337DB: execpline (exec.c:1737)
+==3551287==    by 0x435197: execlist (exec.c:1489)
+==3551287==    by 0x435B03: execode (exec.c:1266)
+==3551287==    by 0x44CD1A: loop (init.c:217)
+==3551287== 
+==3551287== 
+==3551287== HEAP SUMMARY:
+==3551287==     in use at exit: 75,239 bytes in 1,282 blocks
+==3551287==   total heap usage: 19,242 allocs, 17,960 frees, 2,656,917 bytes allocated
+==3551287== 
+==3551287== For a detailed leak analysis, rerun with: --leak-check=full
+==3551287== 
+==3551287== For lists of detected and suppressed errors, rerun with: -s
+==3551287== ERROR SUMMARY: 8 errors from 1 contexts (suppressed: 0 from 0)
+==3551289== 
+==3551289== HEAP SUMMARY:
+==3551289==     in use at exit: 75,150 bytes in 1,281 blocks
+==3551289==   total heap usage: 6,294 allocs, 5,013 frees, 762,458 bytes allocated
+==3551289== 
+==3551289== For a detailed leak analysis, rerun with: --leak-check=full
+==3551289== 
+==3551289== For lists of detected and suppressed errors, rerun with: -s
+==3551289== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3551291== Invalid read of size 1
+==3551291==    at 0x4A71D7: mb_metacharlenconv (utils.c:5570)
+==3551291==    by 0x47272C: getarg (params.c:1867)
+==3551291==    by 0x472890: getindex (params.c:1933)
+==3551291==    by 0x472E3F: fetchvalue (params.c:2153)
+==3551291==    by 0x496210: paramsubst (subst.c:2567)
+==3551291==    by 0x49B58C: stringsubst (subst.c:322)
+==3551291==    by 0x49BFE7: prefork (subst.c:157)
+==3551291==    by 0x42BC3A: addvars (exec.c:2540)
+==3551291==    by 0x438600: execsimple (exec.c:1309)
+==3551291==    by 0x43580E: execlist (exec.c:1452)
+==3551291==    by 0x45D8D1: execfor (loop.c:175)
+==3551291==    by 0x431794: execcmd_exec (exec.c:4020)
+==3551291==  Address 0x4cffd76 is 0 bytes after a block of size 6 alloc'd
+==3551291==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3551291==    by 0x465006: zalloc (mem.c:966)
+==3551291==    by 0x491846: ztrdup (string.c:83)
+==3551291==    by 0x42BCA3: addvars (exec.c:2572)
+==3551291==    by 0x438600: execsimple (exec.c:1309)
+==3551291==    by 0x43580E: execlist (exec.c:1452)
+==3551291==    by 0x43216A: execcmd_exec (exec.c:4292)
+==3551291==    by 0x43340B: execpline2 (exec.c:2012)
+==3551291==    by 0x4337DB: execpline (exec.c:1737)
+==3551291==    by 0x435197: execlist (exec.c:1489)
+==3551291==    by 0x435B03: execode (exec.c:1266)
+==3551291==    by 0x44CD1A: loop (init.c:217)
+==3551291== 
+==3551291== 
+==3551291== HEAP SUMMARY:
+==3551291==     in use at exit: 75,246 bytes in 1,283 blocks
+==3551291==   total heap usage: 19,346 allocs, 18,063 frees, 2,670,115 bytes allocated
+==3551291== 
+==3551291== For a detailed leak analysis, rerun with: --leak-check=full
+==3551291== 
+==3551291== For lists of detected and suppressed errors, rerun with: -s
+==3551291== ERROR SUMMARY: 16 errors from 1 contexts (suppressed: 0 from 0)
+==3551302== 
+==3551302== HEAP SUMMARY:
+==3551302==     in use at exit: 75,157 bytes in 1,282 blocks
+==3551302==   total heap usage: 6,398 allocs, 5,116 frees, 775,828 bytes allocated
+==3551302== 
+==3551302== For a detailed leak analysis, rerun with: --leak-check=full
+==3551302== 
+==3551302== For lists of detected and suppressed errors, rerun with: -s
+==3551302== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3550825== 
+==3550825== HEAP SUMMARY:
+==3550825==     in use at exit: 75,135 bytes in 1,258 blocks
+==3550825==   total heap usage: 5,912 allocs, 4,654 frees, 712,084 bytes allocated
+==3550825== 
+==3550825== For a detailed leak analysis, rerun with: --leak-check=full
+==3550825== 
+==3550825== For lists of detected and suppressed errors, rerun with: -s
+==3550825== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

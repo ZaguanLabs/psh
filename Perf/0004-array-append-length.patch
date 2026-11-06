@@ -1,0 +1,138 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -2744,6 +2744,17 @@
+ mod_export void
+ setarrvalue(Value v, char **val)
+ {
++    setarrvalue_len(v, val, -1);
++}
++
++/* A nonnegative length is supplied only for an ordinary whole-array append,
++ * with signals queued and no intervening callbacks that can change the array.
++ * Public callers always take the existing unknown-length path. */
++
++/**/
++static void
++setarrvalue_len(Value v, char **val, int pre_assignment_length)
++{
+     if (unset(EXECOPT))
+ 	return;
+     if (v->pm->node.flags & PM_READONLY) {
+@@ -2785,7 +2796,6 @@
+ 	char **const old = v->pm->gsu.a->getfn(v->pm);
+ 	char **new;
+ 	char **p, **q, **r; /* index variables */
+-	int pre_assignment_length = -1;
+ 	const int value_length = arrlen(val);
+ 	int post_assignment_length;
+ 	int i;
+@@ -2796,7 +2806,8 @@
+ 	 * this to a short prefix: a bounded scan is slower than arrlen() for
+ 	 * distant indices.  Keep the same restrictions as the in-place
+ 	 * replacement below. */
+-	if (v->end <= 32 && v->start >= 0 && v->end > v->start &&
++	if (pre_assignment_length < 0 && v->end <= 32 &&
++	    v->start >= 0 && v->end > v->start &&
+ 	    !(v->flags & VALFLAG_INV) &&
+ 	    value_length == v->end - v->start &&
+ 	    v->pm->gsu.a->setfn == arrsetfn &&
+@@ -3230,6 +3241,7 @@
+     char *ss;
+     int created = 0;
+     int may_warn_about_nested_vars = 1;
++    int pre_assignment_length = -1;
+ 
+     if (!isident(s)) {
+ 	zerr("not an identifier: %s", s);
+@@ -3429,8 +3441,14 @@
+     if (flags & ASSPM_AUGMENT) {
+     	if (v->start == 0 && v->end == -1) {
+ 	    if (PM_TYPE(v->pm->node.flags) & PM_ARRAY) {
++		/* Decide before invoking a possibly self-modifying getter. */
++		int reuse_length = v->pm->gsu.a == &stdarray_gsu &&
++		    !(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) &&
++		    !v->pm->ename;
+ 	    	v->start = arrlen(v->pm->gsu.a->getfn(v->pm));
+ 	    	v->end = v->start + 1;
++		if (reuse_length)
++		    pre_assignment_length = v->start;
+ 	    } else if (PM_TYPE(v->pm->node.flags) & PM_HASHED)
+ 	    	v->start = -1, v->end = 0;
+ 	} else {
+@@ -3443,7 +3461,7 @@
+ 	}
+     }
+ 
+-    setarrvalue(v, val);
++    setarrvalue_len(v, val, pre_assignment_length);
+     unqueue_signals();
+     return v->pm;
+ }
+@@ -3897,7 +3915,7 @@
+     if (pm->ename && x)
+ 	arrfixenv(pm->ename, x);
+     /* If you extend this function, update the list of conditions in
+-     * setarrvalue(). */
++     * setarrvalue_len(). */
+ }
+ 
+ /* Function to get value of an association parameter */
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -403,3 +403,56 @@
+     [[ $s == $'abX\0z' ]]
+   }
+ 0:Byte-index traversal preserves Meta widths for positive and negative reads and assignments
++
++  () {
++    emulate -L zsh
++    local -a a=()
++    a+=(a '' b)
++    a+=()
++    a+=("${a[@]}")
++    print -r -- ${(qq)a}
++    a[2,4]=()
++    a+=(tail)
++    print -r -- ${(qq)a}
++    unset a
++    a+=(fresh)
++    print -r -- $a
++  }
++0:List appends preserve empty values and recompute lengths after deletion and recreation
++>'a' '' 'b' 'a' '' 'b'
++>'a' '' 'b' 'tail'
++>fresh
++
++  () {
++    emulate -L zsh
++    local -aU a=(a b)
++    a+=(b c c)
++    a+=()
++    print -r -- $a
++  }
++0:Unique arrays retain deduplication for ordinary and empty list appends
++>a b c
++
++  () {
++    emulate -L ksh
++    typeset -a a=(a b)
++    a+=(c)
++    a+=X
++    print -r -- "${a[@]}"
++  }
++0:Ksh emulation distinguishes whole-array list append from scalar element augmentation
++>aX b c
++
++  () {
++    emulate -L zsh
++    local linked
++    local -a a
++    typeset -xT linked a
++    a=(a '' b)
++    a+=(c '')
++    print -r -- "<$linked>"
++    "$ZTST_exe" -dfc 'print -r -- "<$linked>"'
++  }
++0:Tied exported arrays update their scalar and inherited environment after list append
++><a::b:c:>
++><a::b:c:>

@@ -1,0 +1,30 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round6/scalar-search-round5.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 1406511294
+Trigger: Program termination
+Profiled target:  .work/round5/psh -dfc s=target${(l:99994::x:)}; repeat 1000 found=${s[(i)target]}; [[ $found == 1 ]] (PID 3462171, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       95
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+4,134,090,486 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                      file:function
+--------------------------------------------------------------------------------
+1,900,039,151 (45.96%)  .work/candidate/Src/../../../Src/utils.c:mb_metastrlenend [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round5/psh]
+  900,233,000 (21.78%)  .work/candidate/Src/../../../Src/pattern.c:patmatch [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round5/psh]
+  600,008,014 (14.51%)  .work/candidate/Src/../../../Src/utils.c:ztrsub [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round5/psh]
+  599,964,000 (14.51%)  .work/candidate/Src/../../../Src/pattern.c:charnext [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round5/psh]
+

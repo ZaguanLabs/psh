@@ -1,0 +1,41 @@
+==3549893== Memcheck, a memory error detector
+==3549893== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3549893== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3549893== Command: .work/baseline/Src/zsh -dfc s=a;\ print\ -r\ --\ "${s[(in:2:)*]}"
+==3549893== Parent PID: 1853661
+==3549893== 
+==3549893== Invalid read of size 1
+==3549893==    at 0x4A7017: mb_metacharlenconv (utils.c:5570)
+==3549893==    by 0x47259D: getarg (params.c:1847)
+==3549893==    by 0x4727E0: getindex (params.c:1913)
+==3549893==    by 0x472D8F: fetchvalue (params.c:2133)
+==3549893==    by 0x496050: paramsubst (subst.c:2567)
+==3549893==    by 0x49B3CC: stringsubst (subst.c:322)
+==3549893==    by 0x49BAE0: prefork (subst.c:142)
+==3549893==    by 0x42FE07: execcmd_exec (exec.c:3278)
+==3549893==    by 0x43340B: execpline2 (exec.c:2012)
+==3549893==    by 0x4337DB: execpline (exec.c:1737)
+==3549893==    by 0x435197: execlist (exec.c:1489)
+==3549893==    by 0x435B03: execode (exec.c:1266)
+==3549893==  Address 0x4c2e5f2 is 0 bytes after a block of size 2 alloc'd
+==3549893==    at 0x4841826: malloc (vg_replace_malloc.c:446)
+==3549893==    by 0x465006: zalloc (mem.c:966)
+==3549893==    by 0x491686: ztrdup (string.c:83)
+==3549893==    by 0x42BCA3: addvars (exec.c:2572)
+==3549893==    by 0x438600: execsimple (exec.c:1309)
+==3549893==    by 0x43580E: execlist (exec.c:1452)
+==3549893==    by 0x435B03: execode (exec.c:1266)
+==3549893==    by 0x435BE3: execstring (exec.c:1232)
+==3549893==    by 0x44EAC5: init_misc (init.c:1392)
+==3549893==    by 0x45022A: zsh_main (init.c:1783)
+==3549893==    by 0x4A252F8: (below main) (in /usr/lib64/libc.so.6)
+==3549893== 
+==3549893== 
+==3549893== HEAP SUMMARY:
+==3549893==     in use at exit: 73,488 bytes in 1,239 blocks
+==3549893==   total heap usage: 1,610 allocs, 371 frees, 144,093 bytes allocated
+==3549893== 
+==3549893== For a detailed leak analysis, rerun with: --leak-check=full
+==3549893== 
+==3549893== For lists of detected and suppressed errors, rerun with: -s
+==3549893== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

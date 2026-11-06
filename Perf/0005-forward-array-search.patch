@@ -1,0 +1,54 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1621,6 +1621,16 @@
+ 		ta = getarrvalue(v);
+ 	    if (!ta || !*ta)
+ 		return !down;
++	    if (!ishash && !down && beg >= 0) {
++		/* A forward search can stop at its match without first
++		 * counting the unused suffix.  Walk to the start safely;
++		 * reaching the terminator also gives the missing index. */
++		for (r = 1, p = ta; r <= beg && *p; r++, p++);
++		for (; *p; r++, p++)
++		    if (pprog && pattry(pprog, *p) && !--num)
++			return r;
++		return r;
++	    }
+ 	    len = arrlen(ta);
+ 	    if (beg < 0)
+ 		beg += len;
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -456,3 +456,32 @@
+ 0:Tied exported arrays update their scalar and inherited environment after list append
+ ><a::b:c:>
+ ><a::b:c:>
++
++  () {
++    emulate -L zsh
++    local -a a=(zero alpha beta alpha tail)
++    local -i start=2 nth=2
++    print -r -- "${a[(ib:start:n:nth:)alpha]}:${a[(rb:start:n:nth:)alpha]}:${a[(ib:99:)alpha]}:${a[(ib:-99:)alpha]}"
++    print -r -- "${a[(i)missing]}:${a[(r)missing]}:${a[(in:-1:)alpha]}:${a[(r)alpha,(R)alpha]}"
++    a=()
++    print -r -- "${a[(ib:-99:)x]}:${a[(i)x]}:${a[(r)x]}"
++  }
++0:Forward array searches preserve start bounds, occurrence direction and missing results
++>4:alpha:6:0
++>6::4:alpha beta alpha
++>1:1:
++
++  () {
++    emulate -L zsh -o extendedglob
++    local -a a=(zero alpha beta alpha tail)
++    local -a match=(before) mbegin=(99) mend=(99)
++    print -r -- "${a[(i)(#b)(al*)]}"
++    print -r -- "${(j:,:)match}:${(j:,:)mbegin}:${(j:,:)mend}"
++    print -r -- "${a[(ib:99:)(#b)(al*)]}"
++    print -r -- "${(j:,:)match}:${(j:,:)mbegin}:${(j:,:)mend}"
++  }
++0:Forward array searches retain captures and leave them untouched past the array end
++>2
++>alpha:1:5
++>6
++>alpha:1:5

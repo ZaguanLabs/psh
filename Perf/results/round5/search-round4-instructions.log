@@ -1,0 +1,29 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round5/search-round4.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 15079931
+Trigger: Program termination
+Profiled target:  .work/round4/psh -dfc a=(target ${(s::)${(l:9999::x:)}}); repeat 1000 found=${a[(i)target]}; [[ $found == 1 ]] (PID 3376698, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       70
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                  
+--------------------------------------------------------------------------------
+61,233,311 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                   file:function
+--------------------------------------------------------------------------------
+40,005,000 (65.33%)  .work/candidate/Src/../../../Src/utils.c:arrlen [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round4/psh]
+ 1,562,730 ( 2.55%)  ???:_int_malloc [/usr/lib64/libc.so.6]
+ 1,416,774 ( 2.31%)  .work/candidate/Src/../../../Src/mem.c:zhalloc [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round4/psh]
+

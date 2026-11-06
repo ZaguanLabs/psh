@@ -1,0 +1,113 @@
+To: zsh-workers@zsh.org
+Subject: Zsh 5.9.2: one-byte heap over-read in scalar (in:2:) pattern subscript
+
+Hello,
+
+I found a reproducible one-byte heap over-read in an unmodified build of the
+Zsh 5.9.2 release sources. It occurs when a scalar pattern subscript selects
+a match at the string terminator.
+
+Minimal reproducer
+------------------
+
+Run the following against an unmodified Zsh 5.9.2 executable:
+
+  LC_ALL=C.UTF-8 valgrind --error-exitcode=97 --leak-check=no \
+    ./Src/zsh -dfc 's=a; print -r -- "${s[(in:2:)*]}"'
+
+For an out-of-tree build, replace ./Src/zsh with the built executable's path.
+The single quotes around the -c argument are significant: the calling shell
+must pass the parameter expansion literally to the Zsh being tested.
+
+Observed result
+---------------
+
+Standard output is:
+
+  2
+
+Memcheck reports one invalid read of size one, immediately after the two-byte
+heap allocation holding "a" and its terminating NUL. The process exits with
+97 because of --error-exitcode=97. Without Valgrind it prints 2 and exits 0
+on this machine; I have not observed a crash in this minimal example.
+
+Relevant diagnostic from the unmodified release build:
+
+  Invalid read of size 1
+     at mb_metacharlenconv (utils.c:5570)
+     by getarg (params.c:1847)
+     by getindex (params.c:1913)
+     by fetchvalue (params.c:2133)
+     by paramsubst (subst.c:2567)
+     by stringsubst (subst.c:322)
+     by prefork (subst.c:142)
+  Address ... is 0 bytes after a block of size 2 alloc'd
+     at malloc (vg_replace_malloc.c:446)
+     by zalloc (mem.c:966)
+     by ztrdup (string.c:83)
+     by addvars (exec.c:2572)
+
+The accompanying valgrind-pristine.log contains the full diagnostic, including
+addresses and allocation stack. Leak checking was disabled; this report is
+about the invalid read.
+
+Expected memory behavior
+------------------------
+
+Evaluating this subscript should not read beyond the scalar allocation. This
+report does not request a change to the existing printed result of 2.
+
+Source analysis
+---------------
+
+In getarg()'s forward scalar search, pattry() can match '*' when t points at
+the terminating NUL. The successful-match path then does:
+
+  t += (lastcharlen = MB_METACHARLEN(t));
+  if (prevcharlen)
+      *prevcharlen = lastcharlen;
+  if (nextcharlen)
+      *nextcharlen = MB_METACHARLEN(t);
+
+mb_metacharlenconv() returns one for NUL in its single-byte fast case. The
+first line therefore advances t past the allocation, and the nextcharlen
+calculation dereferences that pointer. This is my interpretation of the
+diagnostic and release source, not a proposed patch.
+
+Environment and scope
+---------------------
+
+  Zsh:       5.9.2, unmodified release source
+  OS:        Mageia 11, Linux 6.18.44-desktop-1.mga10, x86_64
+  CPU:       AMD Ryzen 9 5950X
+  Compiler:  GCC 15.2.0 (Mageia 15.2.0-1.mga10)
+  CFLAGS:    -O2 -g
+  Configure: --enable-multibyte --enable-zsh-debug
+             (with a private installation prefix)
+  Locale:    LC_ALL=C.UTF-8; locale charmap reports UTF-8
+  Valgrind:  3.24.0
+
+A build can be prepared from the release tarball with:
+
+  ./configure --enable-multibyte --enable-zsh-debug CFLAGS='-O2 -g'
+  make -j8
+
+I have not tested current upstream development HEAD or other platforms, and
+have not established exploitability or a security impact.
+
+The issue was discovered during local optimization experiments, then reduced
+and independently reproduced in an executable built from a separate pristine
+release-source snapshot. No local optimization patch is needed to trigger it.
+
+Suggested attachments
+---------------------
+
+  valgrind-pristine.log
+  reproduce.zsh
+  stdout.txt
+
+Reporting destination checked against the official Zsh manual:
+https://zsh.sourceforge.io/Doc/Release/Introduction.html#Mailing-Lists
+
+The development/bug-report address is zsh-workers@zsh.org. The source mirror
+at https://github.com/zsh-users/zsh also directs bug reports to this list.

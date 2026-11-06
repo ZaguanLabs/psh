@@ -1,0 +1,48 @@
+make: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-candidate'
+cd Test ; make check
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-candidate/Test'
+if test -n "gcc"; then \
+  cd .. && DESTDIR= \
+  make MODDIR=`pwd`/Test/Modules install.modules > /dev/null; \
+fi
+if test -z "$ZTST_handler"; then \
+  ZTST_handler=runtests.zsh; \
+fi; \
+if ZTST_testlist="`for f in ../../../Test/D*.ztst; \
+           do echo $f; done`" \
+ ZTST_srcdir="../../../Test" \
+ ZTST_exe=../Src/zsh \
+ ../Src/zsh +Z -f ../../../Test/$ZTST_handler; then \
+ stat=0; \
+else \
+ stat=1; \
+fi; \
+sleep 1; \
+rm -rf Modules .zcompdump; \
+exit $stat
+../../../Test/D01prompt.ztst: starting.
+../../../Test/D01prompt.ztst: all tests successful.
+../../../Test/D02glob.ztst: starting.
+../../../Test/D02glob.ztst: all tests successful.
+../../../Test/D03procsubst.ztst: starting.
+This test hangs the shell when it fails...
+../../../Test/D03procsubst.ztst: all tests successful.
+../../../Test/D04parameter.ztst: starting.
+Test case skipped: (#X) accepts any byte if multibyte is off
+Test case skipped: (#X) accepts any byte if multibyte is off
+../../../Test/D04parameter.ztst: all tests successful.
+../../../Test/D05array.ztst: starting.
+../../../Test/D05array.ztst: all tests successful.
+../../../Test/D06subscript.ztst: starting.
+../../../Test/D06subscript.ztst: all tests successful.
+../../../Test/D07multibyte.ztst: starting.
+../../../Test/D07multibyte.ztst: skipped (no UTF-8 locale or multibyte mode is not implemented)
+../../../Test/D08cmdsubst.ztst: starting.
+../../../Test/D08cmdsubst.ztst: all tests successful.
+../../../Test/D09brace.ztst: starting.
+../../../Test/D09brace.ztst: all tests successful.
+**************************************
+8 successful test scripts, 0 failures, 1 skipped
+**************************************
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-candidate/Test'
+make: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-candidate'

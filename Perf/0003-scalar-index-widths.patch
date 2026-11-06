@@ -1,0 +1,72 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1508,8 +1508,13 @@
+ 		zlong nchars = r;
+ 
+ 		MB_METACHARINIT();
++		/* Match mb_metacharlenconv()'s ASCII and byte-mode widths,
++		 * which do not change conversion state.  Keep other characters
++		 * on its existing multibyte path. */
+ 		for (t = s; nchars && *t; nchars--)
+-		    t += (lastcharlen = MB_METACHARLEN(t));
++		    t += (lastcharlen = (unsigned char)*t <= 0x7f ?
++			  1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
++			  MB_METACHARLEN(t));
+ 		/* for consistency, keep any remainder off the end */
+ 		r = (zlong)(t - s) + nchars;
+ 		if (prevcharlen && !nchars /* ignore if off the end */)
+@@ -1532,7 +1537,9 @@
+ 		} else {
+ 		    MB_METACHARINIT();
+ 		    for (t = s; nchars && *t; nchars--)
+-			t += (lastcharlen = MB_METACHARLEN(t));
++			t += (lastcharlen = (unsigned char)*t <= 0x7f ?
++			      1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
++			      MB_METACHARLEN(t));
+ 		    r = - (zlong)strlen(t); /* keep negative */
+ 		    if (prevcharlen)
+ 			*prevcharlen = lastcharlen;
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -392,3 +392,14 @@
+        $s == $'a\0b\203\377z' ]]
+   }
+ 0:Bounded scalar slices preserve embedded NUL and metafied bytes without changing the source
++
++  () {
++    emulate -L zsh -o nomultibyte
++    local s=$'ab\0\203\377cd'
++    [[ ${s[3,5]} == $'\0\203\377' && ${s[-3,-1]} == $'\377cd' ]] || return 1
++    s[3,5]=X
++    [[ $s == abXcd ]] || return 1
++    s[-2,-1]=$'\0z'
++    [[ $s == $'abX\0z' ]]
++  }
++0:Byte-index traversal preserves Meta widths for positive and negative reads and assignments
+--- a/Test/D07multibyte.ztst
++++ b/Test/D07multibyte.ztst
+@@ -667,3 +667,24 @@
+        $s == 'aé😀éz' ]]
+   }
+ 0:Bounded scalar slices retain complete multibyte characters and combining marks
++
++  () {
++    emulate -L zsh
++    local s='abécd😀ef'
++    [[ ${s[2,7]} == 'bécd😀e' && ${s[-3,-1]} == '😀ef' ]] || return 1
++    s[3,6]=X
++    [[ $s == abXef ]] || return 1
++    s[-2,-1]=é
++    [[ $s == abXé ]]
++  }
++0:ASCII traversal fast widths retain Unicode boundaries and assignment offsets
++
++  () {
++    emulate -L zsh
++    local s='abé'
++    setopt nomultibyte
++    [[ ${#s} == 4 && ${s[3,4]} == é ]] || return 1
++    setopt multibyte
++    [[ ${#s} == 3 && ${s[3]} == é && ${s[-1]} == é ]]
++  }
++0:Scalar index traversal observes changes to the multibyte option between accesses
