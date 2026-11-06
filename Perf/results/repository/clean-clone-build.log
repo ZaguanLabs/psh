@@ -1,0 +1,9 @@
+Restored verified release baseline from refs/tags/upstream/zsh-5.9.2
+baseline: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/.work/pristine/configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/.work/runtime --enable-multibyte --enable-zsh-debug CFLAGS=-O2 -g
+baseline: make -j8
+baseline: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/.work/baseline/modules install.modules
+candidate: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/.work/runtime --enable-multibyte --enable-zsh-debug CFLAGS=-O2 -g
+candidate: make -j8
+candidate: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/.work/candidate/modules install.modules
+candidate: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/.work/runtime/lib/zsh/5.9.2 install.modules
+Ready: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/clean-clone-check/psh
