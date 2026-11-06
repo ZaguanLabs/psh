@@ -35,5 +35,5 @@ make a bounded change, compare against pristine behavior, run relevant upstream
 and application checks, then measure gains and control cases on idle builds.
 
 Round-six Memcheck coverage also found an [existing scalar-search terminator
-read](upstream-terminator-read.md), reproduced in pristine Zsh. A separate
-correctness review is pending; the performance patch does not fix it.
+read](upstream-terminator-read.md), reproduced in pristine Zsh. Mikael Magnusson’s two bounds guards have since been backported in a separate
+correctness commit; the saved Memcheck corpus now reports zero errors.

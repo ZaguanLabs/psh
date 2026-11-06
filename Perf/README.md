@@ -297,7 +297,10 @@ See `round6.md` and `0006-scalar-search-length.patch` for this experiment.
 Expanded Memcheck coverage found a pre-existing scalar-search terminator read
 in both pristine Zsh and psh. The [issue note](upstream-terminator-read.md)
 includes a minimal reproducer and links the full comparison evidence. Round
-six's Memcheck results must not be described as clean.
+six's Memcheck results must not be described as clean. Mikael Magnusson's
+subsequent two-guard fix is now backported separately; the saved 84-matrix
+corpus reports zero errors with that correction. See the issue note for
+provenance and current evidence.
 
 ## Metafied byte-length prefix scanning
 

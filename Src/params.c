@@ -1842,10 +1842,12 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
 			    /* return pointer after matched char */
 			    lastpos +=
 				(lastcharlen = MB_METACHARLEN(lastpos));
-			    if (prevcharlen)
-				*prevcharlen = lastcharlen;
-			    if (nextcharlen)
-				*nextcharlen = MB_METACHARLEN(lastpos);
+			    if (lastpos <= de) {
+				if (prevcharlen)
+				    *prevcharlen = lastcharlen;
+				if (nextcharlen)
+				    *nextcharlen = MB_METACHARLEN(lastpos);
+			    }
 			    return lastpos - d;
 			}
 
@@ -1861,10 +1863,12 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
 			    if (pprog && pattry(pprog, t) && !--num) {
 				/* return pointer after matched char */
 				t += (lastcharlen = MB_METACHARLEN(t));
-				if (prevcharlen)
-				    *prevcharlen = lastcharlen;
-				if (nextcharlen)
-				    *nextcharlen = MB_METACHARLEN(t);
+				if (t <= de) {
+				    if (prevcharlen)
+					*prevcharlen = lastcharlen;
+				    if (nextcharlen)
+					*nextcharlen = MB_METACHARLEN(t);
+				}
 				return t - d;
 			    }
 			    if (t == de)

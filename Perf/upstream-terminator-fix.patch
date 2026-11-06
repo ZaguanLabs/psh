@@ -1,0 +1,43 @@
+From: Mikael Magnusson <mikachu@gmail.com>
+Subject: Check search pointers before updating character widths in getarg
+
+Backport of the two guards in the maintainer patch supplied by the user on
+2026-11-06. Upstream subject: PATCH: check we didn't advance past the end of
+string in getarg's search loops. No upstream commit ID was supplied.
+
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1842,10 +1842,12 @@
+ 			    /* return pointer after matched char */
+ 			    lastpos +=
+ 				(lastcharlen = MB_METACHARLEN(lastpos));
+-			    if (prevcharlen)
+-				*prevcharlen = lastcharlen;
+-			    if (nextcharlen)
+-				*nextcharlen = MB_METACHARLEN(lastpos);
++			    if (lastpos <= de) {
++				if (prevcharlen)
++				    *prevcharlen = lastcharlen;
++				if (nextcharlen)
++				    *nextcharlen = MB_METACHARLEN(lastpos);
++			    }
+ 			    return lastpos - d;
+ 			}
+ 
+@@ -1861,10 +1863,12 @@
+ 			    if (pprog && pattry(pprog, t) && !--num) {
+ 				/* return pointer after matched char */
+ 				t += (lastcharlen = MB_METACHARLEN(t));
+-				if (prevcharlen)
+-				    *prevcharlen = lastcharlen;
+-				if (nextcharlen)
+-				    *nextcharlen = MB_METACHARLEN(t);
++				if (t <= de) {
++				    if (prevcharlen)
++					*prevcharlen = lastcharlen;
++				    if (nextcharlen)
++					*nextcharlen = MB_METACHARLEN(t);
++				}
+ 				return t - d;
+ 			    }
+ 			    if (t == de)

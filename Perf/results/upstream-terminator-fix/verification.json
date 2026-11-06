@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-06",
+  "base_git_commit": "f7fb1bb16f1ea9d2a2363fc660946b1dc0ccfecb",
+  "provenance": "Mikael Magnusson maintainer patch supplied verbatim by user; upstream commit ID not supplied",
+  "upstream_subject": "PATCH: check we didn't advance past the end of string in getarg's search loops",
+  "source_sha256": "8b316842b34b30550da23dbdb65e5cc209157cc603ae5d4d86b28d2a47bfef11",
+  "candidate_binary_sha256": "6adeac971c0f02a029023d7cbe3c5452b17306635484d8a2b972bae0c61cada8",
+  "baseline_binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+  "no_multibyte_binary_sha256": "8a52aee4aee0dabe5427cfc235dd506bd96c00daf0f0dfe86e1d9db79fd05c6b",
+  "regression_sha256": "021f46199dd2121c38969bda54d056f053ba73a4b0a885c3fbcddc445f23aac2",
+  "backport_patch_sha256": "7a786a0219707d7969f93b7b7d4e4e51d1704a2975310a1697ccf50a0bc42719",
+  "minimal_reproducer": {
+    "stdout": "2\n",
+    "release_memcheck_exit": 97,
+    "fixed_memcheck_exit": 0
+  },
+  "memcheck": {
+    "matrices": 84,
+    "summaries_including_parent": 85,
+    "errors": 0,
+    "contexts": 0,
+    "leak_checking": false,
+    "historical_errors_removed": 520,
+    "outputs_unchanged_after_normalizing_valgrind_induced_statuses": true,
+    "reference": "Perf/results/round9/memcheck-output.log",
+    "fixed_stdout_sha256": "fd3242944ac684a71beb51473e3aff94d1b386b47885486ad48b0a7919d238a2"
+  },
+  "upstream": {
+    "passed_scripts": 62,
+    "failed_scripts": 0,
+    "skipped_scripts": 3
+  },
+  "no_multibyte_substitution": {
+    "passed_scripts": 8,
+    "failed_scripts": 0,
+    "skipped_scripts": 1
+  },
+  "search_comparisons": 193236,
+  "scalar_read_write_comparisons": 28394,
+  "differences": 0,
+  "backport_patch_apply_verified": true,
+  "evidence_sha256": {
+    "build.log": "8cce1c46476563ba93c3ef0e4d7c53d7735b536eff1fe11ecbb9e48b24d33614",
+    "fixed-minimal.log": "5320ea3ca08dd8b162ff6e7e5b1e03ad94bc02188ae25b0882991b4fcdb58561",
+    "memcheck-output.log": "fd3242944ac684a71beb51473e3aff94d1b386b47885486ad48b0a7919d238a2",
+    "memcheck.log": "995b4f63da2350a1a79d9d7679b5cd62cd77753fabe5f829d1117c5f2afc35f5",
+    "no-mb-build.log": "4ef22dad2cd1d1a399bc090a411cbcd31e0bbf9770545a9edae663bf9fd2c6fd",
+    "no-mb-upstream.log": "66f4dca23c165627dc731ac8aeea0d4020c2c57a2592f3ec6a6d4c3e77e43999",
+    "release-minimal.log": "6938f2d78aed583e6bed6625eaf2eca45d2241c96e0bc12cda4251aa4fbe0a17",
+    "scalar-pristine.json": "7dc270539b03b4e4ea858e81f3b40198f1c69e89ad2d06be836a4a70f3f665e5",
+    "scalar.log": "4bf944f0a2af01676fa07cdd4066071e8eff4463fdc308096d25dd8ecf103760",
+    "search-pristine.json": "93896992fb1a889f12dc90f22023d124548cab7fe02d4493406af78981eab5ce",
+    "search.log": "03e6d2485ebe0470ad16b62e6c151b7944a16868fe7bc87874883d1f66c364e9",
+    "upstream.log": "25763da4fe97c708ff26b9579d4fa1dcdd090ffb93131ad016c8baf784fa14cb"
+  }
+}

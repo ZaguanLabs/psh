@@ -100,3 +100,7 @@ and its state; embedded NUL remains a byte in bounded matcher input. Platforms
 without an exact 64-bit unsigned type and eight-bit bytes use scalar traversal.
 Measurements compare against the eighth executable and include unchanged
 application controls and a slower short late-match benchmark.
+
+Mikael Magnusson's [scalar-search bounds fix](Perf/upstream-terminator-read.md)
+is backported in a separate correctness commit. The original release baseline
+and historical diagnostic logs remain intact.

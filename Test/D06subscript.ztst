@@ -519,3 +519,16 @@ F:In math, (($i)) should be the same as ((i)), see workers/47748.
        $match[2] == $'\0\0tail' && $mend[2] == 7 ]]
   }
 0:Pattern searches preserve byte lengths and captures with late and dense Meta escapes
+
+  () {
+    emulate -L zsh
+    local s=a
+    printf '[%s]\n' "${s[(in:2:)*]}" "${s[(I)*]}" \
+      "${s[(rn:2:)*]}" "${s[(R)*]}" "${s[(rn:2:)*,-1]}"
+  }
+0:Scalar searches matching the terminator retain indices and empty ranges
+>[2]
+>[2]
+>[]
+>[]
+>[]
