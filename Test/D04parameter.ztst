@@ -2894,3 +2894,17 @@ F:output ignorable as long as not an error
     [[ $out == "${prefix}${value}${prefix}" ]]
   }
 0:Literal spans retain substitution order, assignment markers and byte payloads
+
+  () {
+    emulate -L zsh
+    local prefix=${(l:600::x:)} pattern text
+    local -a values=( "$prefix" '' ${prefix}''\*""'?' )
+    [[ ${#values} == 3 && $values[1] == "$prefix" && -z $values[2] &&
+       $values[3] == "${prefix}*?" ]] || return 1
+    pattern=${prefix}'\*'
+    text=${prefix}'*'
+    [[ $text == ${~pattern} && ${prefix}ordinary != ${~pattern} ]] || return 1
+    values=( "${prefix}"$'a\0b' '' )
+    [[ $values[1] == "${prefix}"$'a\0b' && -z $values[2] ]]
+  }
+0:Long inert prefixes preserve empty arguments, quote removal and escaped patterns

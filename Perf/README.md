@@ -456,3 +456,50 @@ Mikael Magnusson's correctness fix is a separate preceding commit and is
 present in both timing builds. The pristine release source/tag remains the
 behavioral reference. See [round10.md](round10.md) for measurements, rejected
 copy-only work, and compatibility limits.
+
+## Long inert prefixes during null-marker removal
+
+The eleventh experiment changes `remnulargs()` only before its first removable
+marker. A bounded 64-byte scalar probe handles short strings. When a longer
+inert prefix remains, a standard-library length check requires at least 512
+remaining bytes before constructing a reject set. The set is built from the
+current `INULL` flags for all nonzero byte values, excluding `Bnullkeep`, and
+`strcspn()` skips to the first removable marker or terminator. Medium tails
+continue through the original scan. These are measured heuristics, not cache
+or header-layout boundaries or claims of globally optimal cutoffs.
+
+The original removal loop, original start pointer and collapsed-empty-string
+rule remain unchanged. `Bnullkeep` before the first removed marker remains in
+the prefix; later occurrences retain the original conversion to a backslash.
+The 256-byte temporary set is rebuilt per eligible call, honoring classification
+changes without a persistent cache. Strings remain NUL-terminated and metafied.
+The additional length scan remains linear; gains depend on library routines
+and workload size. No allocator or signal-queue boundary is removed.
+
+```sh
+python3 Perf/check-remnulargs-module.py .work/baseline/Src/zsh .work/candidate/Src/zsh \
+  --memcheck --output .work/logs/round11/remnulargs-native.json
+python3 Perf/check-completion-prefix.py .work/baseline/Src/zsh .work/candidate/Src/zsh \
+  --output .work/logs/round11/completion-prefix.json
+python3 Perf/scalar-write-benchmark.py .work/round10/psh .work/candidate/Src/zsh \
+  --boundaries --cpu 2 --output .work/logs/round11/scalar-write-benchmarks.json
+```
+
+The same pristine-header native module runs on both shells in C and C.UTF-8.
+Its 30,203 checks per run compare complete allocations, including bytes beyond
+the resulting terminator. Cases cover every nonzero byte, prefix/suffix marker
+positions, eight alignments, exact allocation boundaries, 1 MiB spans, default
+classification, one added flag, one removed flag, an empty set and a full set.
+The fixture restores classification state before returning or unloading.
+Memcheck checks all four runs; leak checking is disabled.
+
+The PTY driver uses upstream `Test/comptest` and checks 24 actual ZLE buffers
+across eight prefix lengths and unquoted/single-quoted/double-quoted input. It
+passes the binary path explicitly to the child shell. `--boundaries` adds 15
+whole-assignment controls from 31 through 4,096 characters, including both
+cutoffs, to the scalar benchmark's original 12 cases. Final timings use nine
+alternating fresh-process samples with builds, suites and profilers idle.
+
+See [round11.md](round11.md) and
+[0011-null-marker-prefix.patch](0011-null-marker-prefix.patch), including the
+rejected first cutoff and the complete application controls.

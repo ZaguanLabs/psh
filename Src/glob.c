@@ -3661,6 +3661,23 @@ remnulargs(char *s)
 {
     if (*s) {
 	char *o = s, c;
+	int probe = 64;
+
+	/* Keep short strings on a bounded scalar path.  For a longer inert
+	 * prefix, amortize constructing the current classification set. */
+	while (probe-- && (c = *s) &&
+	       (c == Bnullkeep || !inull(c)))
+	    s++;
+	if (probe < 0 && strlen(s) >= 512) {
+	    char nulls[256], *p = nulls;
+	    int byte;
+
+	    for (byte = 1; byte < 256; byte++)
+		if (byte != (unsigned char)Bnullkeep && inull(byte))
+		    *p++ = (char)byte;
+	    *p = '\0';
+	    s += strcspn(s, nulls);
+	}
 
 	while ((c = *s++))
 	    if (c == Bnullkeep) {

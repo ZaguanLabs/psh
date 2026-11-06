@@ -1,0 +1,46 @@
+--- a/Src/glob.c
++++ b/Src/glob.c
+@@ -3661,6 +3661,23 @@
+ {
+     if (*s) {
+ 	char *o = s, c;
++	int probe = 64;
++
++	/* Keep short strings on a bounded scalar path.  For a longer inert
++	 * prefix, amortize constructing the current classification set. */
++	while (probe-- && (c = *s) &&
++	       (c == Bnullkeep || !inull(c)))
++	    s++;
++	if (probe < 0 && strlen(s) >= 512) {
++	    char nulls[256], *p = nulls;
++	    int byte;
++
++	    for (byte = 1; byte < 256; byte++)
++		if (byte != (unsigned char)Bnullkeep && inull(byte))
++		    *p++ = (char)byte;
++	    *p = '\0';
++	    s += strcspn(s, nulls);
++	}
+ 
+ 	while ((c = *s++))
+ 	    if (c == Bnullkeep) {
+--- a/Test/D04parameter.ztst
++++ b/Test/D04parameter.ztst
+@@ -2894,3 +2894,17 @@
+     [[ $out == "${prefix}${value}${prefix}" ]]
+   }
+ 0:Literal spans retain substitution order, assignment markers and byte payloads
++
++  () {
++    emulate -L zsh
++    local prefix=${(l:600::x:)} pattern text
++    local -a values=( "$prefix" '' ${prefix}''\*""'?' )
++    [[ ${#values} == 3 && $values[1] == "$prefix" && -z $values[2] &&
++       $values[3] == "${prefix}*?" ]] || return 1
++    pattern=${prefix}'\*'
++    text=${prefix}'*'
++    [[ $text == ${~pattern} && ${prefix}ordinary != ${~pattern} ]] || return 1
++    values=( "${prefix}"$'a\0b' '' )
++    [[ $values[1] == "${prefix}"$'a\0b' && -z $values[2] ]]
++  }
++0:Long inert prefixes preserve empty arguments, quote removal and escaped patterns

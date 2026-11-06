@@ -50,6 +50,9 @@ inside eligible terminal stars; its
 The [tenth experiment](Perf/round10.md) skips inert literal spans during
 substitution; its [patch](Perf/0010-literal-substitution-spans.patch) changes
 only the substitution routine and its regression case.
+The [eleventh experiment](Perf/round11.md) skips long inert prefixes while
+removing null markers; its [patch](Perf/0011-null-marker-prefix.patch) applies
+after the tenth.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -68,7 +71,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all ten changes; the fourth experiment compares against
+executable includes all eleven changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -114,3 +117,10 @@ assignment markers required for assignment-like arguments. It introduces no
 new cache, allocation, public symbol or string representation. Its measurements
 compare against the ninth executable with the maintainer's bounds fix applied
 to both builds.
+
+The eleventh change keeps short and medium inputs on scalar traversal, while
+long inert prefixes use a temporary byte set built from the current character
+classification table. It preserves backslash-marker handling and the original
+removal loop. Native checks include modified classification flags and full
+allocation bytes; actual completion buffers also match pristine Zsh. Its
+measurements compare against the preserved tenth executable.

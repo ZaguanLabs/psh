@@ -1,0 +1,36 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round11/candidate.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 509465233
+Trigger: Program termination
+Profiled target:  .work/candidate/Src/zsh -df Perf/scalar-write-workload.zsh replace ascii 16 1000000 100 (PID 42668, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       99
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+2,229,293,659 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                      file:function
+--------------------------------------------------------------------------------
+1,632,076,257 (73.21%)  .work/candidate/Src/../../../Src/exec.c:untokenize.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+  281,218,587 (12.61%)  ???:__strcspn_sse42 [/usr/lib64/libc.so.6]
+   80,841,124 ( 3.63%)  ???:__strcpy_avx2 [/usr/lib64/libc.so.6]
+   79,729,164 ( 3.58%)  ???:__strlen_avx2 [/usr/lib64/libc.so.6]
+   31,599,227 ( 1.42%)  ???:__strchr_avx2 [/usr/lib64/libc.so.6]
+   29,000,768 ( 1.30%)  Src/subst.c:dopadding [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+   28,001,372 ( 1.26%)  Src/pattern.c:patcompile [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+   22,596,872 ( 1.01%)  Src/glob.c:remnulargs [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+   17,209,507 ( 0.77%)  Src/utils.c:mb_metacharlenconv [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh]
+   15,636,204 ( 0.70%)  ???:__strcat_avx2 [/usr/lib64/libc.so.6]
+
