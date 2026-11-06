@@ -24,11 +24,11 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
-- [Project details and the nine experiments](README.psh.md)
+- [Project details and the ten experiments](README.psh.md)
 - [Build, comparison and benchmark workflow](Perf/README.md)
 - [Source-review coverage](Perf/audit.md)
-- [Latest measurements and compatibility evidence](Perf/round9.md)
-- [Upstream bug report and reproducer](Perf/bugs/scalar-search-terminator/report.txt)
+- [Latest measurements and compatibility evidence](Perf/round10.md)
+- [Upstream bug report, backported fix and reproducer](Perf/upstream-terminator-read.md)
 
 The review is ongoing. Test results are evidence of compatibility, not proof of
 complete equivalence. Internal Zsh identities and public module interfaces are

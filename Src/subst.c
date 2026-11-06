@@ -237,6 +237,10 @@ static LinkNode
 stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	    int asssub)
 {
+    static const char proc_tokens[] = { Inang, OutangProc, Equals, 0 };
+    static const char subst_tokens[] = { String, Qstring, Tick, Qtick, 0 };
+    static const char assign_tokens[] =
+	{ String, Qstring, Tick, Qtick, '=', Equals, 0 };
     int qt;
     char *str3 = (char *)getdata(node);
     char *str  = str3, c;
@@ -274,8 +278,11 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	    str3 = snew;
 	    str = snew + str3len + sublen;
 	    setdata(node, str3);
-	} else
+	} else {
 	    str++;
+	    /* Skip bytes that cannot begin process substitution. */
+	    str += strcspn(str, proc_tokens);
+	}
     }
     str = str3;
 
@@ -438,6 +445,8 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	    pf_flags |= PREFORK_SINGLE;
 	}
 	str++;
+	/* Literal spans have no effects; retain assignment-marker handling. */
+	str += strcspn(str, asssub ? assign_tokens : subst_tokens);
     }
     return errflag ? NULL : node;
 }

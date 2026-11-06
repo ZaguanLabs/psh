@@ -1,0 +1,16 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -2630,9 +2630,10 @@
+             /* Does new size differ? */
+             if (newsize != zlen || v->pm->gsu.s->setfn != strsetfn) {
+                 x = (char *) zalloc(newsize + 1);
+-                strncpy(x, z, v->start);
+-                strcpy(x + v->start, val);
+-                strcat(x + v->start, z + v->end);
++                memcpy(x, z, v->start);
++                memcpy(x + v->start, val, vlen);
++                memcpy(x + v->start + vlen, z + v->end,
++                       zlen - v->end + 1);
+                 v->pm->gsu.s->setfn(v->pm, x);
+             } else {
+ 		Param pm = v->pm;

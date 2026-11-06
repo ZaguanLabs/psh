@@ -411,3 +411,48 @@ recorded for the earlier experiment, whose archived results remain unchanged.
 
 See [round9.md](round9.md) and
 [0009-terminal-star-ascii-words.patch](0009-terminal-star-ascii-words.patch).
+
+## Literal spans during substitution
+
+The tenth experiment changes only the traversal between `stringsubst()`'s
+existing handlers. The process-substitution pass can skip bytes other than
+`Inang`, `OutangProc` and `Equals`. The ordinary pass can skip bytes other than
+`String`, `Qstring`, `Tick` and `Qtick`; assignment-like arguments also stop at
+literal `=` and `Equals`, preserving their no-splitting flag update. Each
+current byte still takes the original handler path, and `strcspn()` skips the
+following inert span. Handler order, node replacement and continuation pointers
+are unchanged. The next loop header retains the error check before another
+handler. No allocator or signal-queue boundary is removed.
+
+The string remains NUL-terminated and metafied. This is a byte scan, independent
+of locale: embedded user NUL is represented by Meta bytes, and the existing
+handlers retain encoding interpretation. No word-load bounds assumptions,
+ctype-table shortcuts or persistent cache are introduced.
+
+```sh
+python3 Perf/substitution-compare.py .work/baseline/Src/zsh .work/candidate/Src/zsh \
+  --output .work/logs/round10/substitution-final.json
+python3 Perf/scalar-write-benchmark.py .work/terminator-fixed/psh .work/candidate/Src/zsh \
+  --cpu 2 --output .work/logs/round10/scalar-write-benchmarks.json
+```
+
+The differential driver checks 2,640 programs across C/C.UTF-8, native/ksh/sh
+and multibyte on/off. It covers parameter, arithmetic, command and all three
+process-substitution forms, assignment-like arguments, splitting flags, long
+literal prefixes/suffixes, Unicode, NUL and every byte value. Output bytes,
+diagnostics and status must match; completion markers detect aborted programs.
+The same cases run against no-multibyte builds. A saved 440-matrix subset also
+runs under Memcheck and matches the corrected ninth psh's output.
+
+The scalar assignment benchmark includes a reset before each operation inside
+timing. Input construction, loading and warm-up precede timing. Each sample
+checks an independently constructed expected value before and after timing.
+The tiny case, whole assignment and same-size replacement are controls for
+assignment-copy behavior; all can still benefit from faster expansion.
+Nine alternating fresh-process samples are retained, alongside complete-call
+parser/application measurements. Keep all builds, suites and profilers idle.
+
+Mikael Magnusson's correctness fix is a separate preceding commit and is
+present in both timing builds. The pristine release source/tag remains the
+behavioral reference. See [round10.md](round10.md) for measurements, rejected
+copy-only work, and compatibility limits.

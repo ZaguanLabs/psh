@@ -1,0 +1,306 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/terminator-fixed/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh"
+  ],
+  "binary_sha256": [
+    "6adeac971c0f02a029023d7cbe3c5452b17306635484d8a2b972bae0c61cada8",
+    "a40685d8cccd4803f6c7f39762192427d52ffbfea4a47a58e026cd09abfe44d0"
+  ],
+  "worker_sha256": "3d507ba2a7f22718b834b6df608ecb8486335cd051645a28e80d557525cb6142",
+  "samples": 3,
+  "locale": "C.UTF-8",
+  "cpu_affinity": [
+    2
+  ],
+  "cases": [
+    {
+      "operation": "replace",
+      "unit": "ascii",
+      "initial_characters": 16,
+      "replacement_characters": 8,
+      "iterations": 5000,
+      "samples_ms": [
+        [
+          4.204000000000001,
+          4.222,
+          4.186
+        ],
+        [
+          4.2170000000000005,
+          4.267,
+          4.257000000000001
+        ]
+      ],
+      "median_ms": [
+        4.204000000000001,
+        4.257000000000001
+      ],
+      "speedup": 0.9875499177824759
+    },
+    {
+      "operation": "replace",
+      "unit": "ascii",
+      "initial_characters": 16,
+      "replacement_characters": 1000000,
+      "iterations": 1000,
+      "samples_ms": [
+        [
+          2077.5800000000004,
+          2081.515,
+          2072.2520000000004
+        ],
+        [
+          2077.498,
+          2068.755,
+          2069.106
+        ]
+      ],
+      "median_ms": [
+        2077.5800000000004,
+        2069.106
+      ],
+      "speedup": 1.004095488582992
+    },
+    {
+      "operation": "replace",
+      "unit": "ascii",
+      "initial_characters": 100000,
+      "replacement_characters": 1000000,
+      "iterations": 250,
+      "samples_ms": [
+        [
+          596.585,
+          602.718,
+          596.941
+        ],
+        [
+          595.268,
+          596.033,
+          597.009
+        ]
+      ],
+      "median_ms": [
+        596.941,
+        596.033
+      ],
+      "speedup": 1.001523405583248
+    },
+    {
+      "operation": "replace",
+      "unit": "unicode",
+      "initial_characters": 16,
+      "replacement_characters": 100000,
+      "iterations": 1000,
+      "samples_ms": [
+        [
+          396.698,
+          397.061,
+          398.975
+        ],
+        [
+          395.231,
+          395.882,
+          394.233
+        ]
+      ],
+      "median_ms": [
+        397.061,
+        395.231
+      ],
+      "speedup": 1.0046302036024501
+    },
+    {
+      "operation": "replace",
+      "unit": "nul",
+      "initial_characters": 16,
+      "replacement_characters": 100000,
+      "iterations": 1000,
+      "samples_ms": [
+        [
+          400.02700000000004,
+          398.387,
+          396.65299999999996
+        ],
+        [
+          395.089,
+          397.09299999999996,
+          396.54200000000003
+        ]
+      ],
+      "median_ms": [
+        398.387,
+        396.54200000000003
+      ],
+      "speedup": 1.0046527227885065
+    },
+    {
+      "operation": "replace",
+      "unit": "invalid",
+      "initial_characters": 16,
+      "replacement_characters": 100000,
+      "iterations": 1000,
+      "samples_ms": [
+        [
+          192.902,
+          193.811,
+          192.54399999999998
+        ],
+        [
+          192.351,
+          192.978,
+          190.779
+        ]
+      ],
+      "median_ms": [
+        192.902,
+        192.351
+      ],
+      "speedup": 1.002864554902236
+    },
+    {
+      "operation": "replace",
+      "unit": "byte",
+      "initial_characters": 16,
+      "replacement_characters": 1000000,
+      "iterations": 1000,
+      "samples_ms": [
+        [
+          2078.0150000000003,
+          2077.443,
+          2077.353
+        ],
+        [
+          2068.658,
+          2065.174,
+          2067.485
+        ]
+      ],
+      "median_ms": [
+        2077.443,
+        2067.485
+      ],
+      "speedup": 1.004816479926094
+    },
+    {
+      "operation": "append",
+      "unit": "ascii",
+      "initial_characters": 1000000,
+      "replacement_characters": 32,
+      "iterations": 100,
+      "samples_ms": [
+        [
+          182.541,
+          182.261,
+          182.62
+        ],
+        [
+          182.195,
+          182.321,
+          182.703
+        ]
+      ],
+      "median_ms": [
+        182.541,
+        182.321
+      ],
+      "speedup": 1.0012066629735465
+    },
+    {
+      "operation": "prepend",
+      "unit": "ascii",
+      "initial_characters": 1000000,
+      "replacement_characters": 32,
+      "iterations": 100,
+      "samples_ms": [
+        [
+          182.576,
+          182.974,
+          183.388
+        ],
+        [
+          182.169,
+          182.90400000000002,
+          182.616
+        ]
+      ],
+      "median_ms": [
+        182.974,
+        182.616
+      ],
+      "speedup": 1.001960397774565
+    },
+    {
+      "operation": "replace",
+      "unit": "ascii",
+      "initial_characters": 1000000,
+      "replacement_characters": 0,
+      "iterations": 100,
+      "samples_ms": [
+        [
+          182.655,
+          182.752,
+          182.166
+        ],
+        [
+          182.472,
+          182.126,
+          182.528
+        ]
+      ],
+      "median_ms": [
+        182.655,
+        182.472
+      ],
+      "speedup": 1.0010028935946336
+    },
+    {
+      "operation": "replace",
+      "unit": "ascii",
+      "initial_characters": 1000000,
+      "replacement_characters": 1,
+      "iterations": 100,
+      "samples_ms": [
+        [
+          180.82500000000002,
+          180.471,
+          180.677
+        ],
+        [
+          180.144,
+          180.209,
+          180.638
+        ]
+      ],
+      "median_ms": [
+        180.677,
+        180.209
+      ],
+      "speedup": 1.0025969846123113
+    },
+    {
+      "operation": "whole",
+      "unit": "ascii",
+      "initial_characters": 16,
+      "replacement_characters": 1000000,
+      "iterations": 1000,
+      "samples_ms": [
+        [
+          1791.058,
+          1792.4560000000001,
+          1791.363
+        ],
+        [
+          1790.404,
+          1792.344,
+          1790.8809999999999
+        ]
+      ],
+      "median_ms": [
+        1791.363,
+        1790.8809999999999
+      ],
+      "speedup": 1.0002691412773939
+    }
+  ]
+}

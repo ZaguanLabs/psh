@@ -1,0 +1,56 @@
+--- a/Src/subst.c
++++ b/Src/subst.c
+@@ -237,6 +237,10 @@
+ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
+ 	    int asssub)
+ {
++    static const char proc_tokens[] = { Inang, OutangProc, Equals, 0 };
++    static const char subst_tokens[] = { String, Qstring, Tick, Qtick, 0 };
++    static const char assign_tokens[] =
++	{ String, Qstring, Tick, Qtick, '=', Equals, 0 };
+     int qt;
+     char *str3 = (char *)getdata(node);
+     char *str  = str3, c;
+@@ -274,8 +278,11 @@
+ 	    str3 = snew;
+ 	    str = snew + str3len + sublen;
+ 	    setdata(node, str3);
+-	} else
++	} else {
+ 	    str++;
++	    /* Skip bytes that cannot begin process substitution. */
++	    str += strcspn(str, proc_tokens);
++	}
+     }
+     str = str3;
+ 
+@@ -438,6 +445,8 @@
+ 	    pf_flags |= PREFORK_SINGLE;
+ 	}
+ 	str++;
++	/* Literal spans have no effects; retain assignment-marker handling. */
++	str += strcspn(str, asssub ? assign_tokens : subst_tokens);
+     }
+     return errflag ? NULL : node;
+ }
+--- a/Test/D04parameter.ztst
++++ b/Test/D04parameter.ztst
+@@ -2879,3 +2879,18 @@
+ 0:regression for workers/53179 unicode ZDOTDIR
+ F:output ignorable as long as not an error
+ *>*
++
++  () {
++    emulate -L zsh
++    local prefix=${(l:65::x:)} value='a b' out assigned
++    integer calls=0
++    out="${prefix}${value}$((++calls))${prefix}"
++    [[ $out == "${prefix}a b1${prefix}" && $calls == 1 ]] || return 1
++    setopt shwordsplit
++    typeset assigned=${prefix}=$value
++    [[ $assigned == "${prefix}=a b" ]] || return 1
++    value=$'a\0é'
++    out="${prefix}$(print -rn -- "$value")${prefix}"
++    [[ $out == "${prefix}${value}${prefix}" ]]
++  }
++0:Literal spans retain substitution order, assignment markers and byte payloads

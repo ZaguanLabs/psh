@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round10/previous.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 2698595121
+Trigger: Program termination
+Profiled target:  .work/terminator-fixed/psh -df Perf/scalar-write-workload.zsh replace ascii 16 1000000 100 (PID 4035500, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       99
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+8,248,523,396 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                      file:function
+--------------------------------------------------------------------------------
+4,669,169,668 (56.61%)  .work/candidate/Src/../../../Src/subst.c:stringsubst [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/terminator-fixed/psh]
+1,670,030,802 (20.25%)  .work/candidate/Src/../../../Src/glob.c:remnulargs [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/terminator-fixed/psh]
+1,632,076,265 (19.79%)  .work/candidate/Src/../../../Src/exec.c:untokenize.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/terminator-fixed/psh]
+   80,841,090 ( 0.98%)  ???:__strcpy_avx2 [/usr/lib64/libc.so.6]
+   63,627,221 ( 0.77%)  ???:__strlen_avx2 [/usr/lib64/libc.so.6]
+   31,599,180 ( 0.38%)  ???:__strchr_avx2 [/usr/lib64/libc.so.6]
+   29,000,768 ( 0.35%)  .work/candidate/Src/../../../Src/subst.c:dopadding [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/terminator-fixed/psh]
+

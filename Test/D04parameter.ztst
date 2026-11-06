@@ -2879,3 +2879,18 @@ F:behavior, see http://austingroupbugs.net/view.php?id=888
 0:regression for workers/53179 unicode ZDOTDIR
 F:output ignorable as long as not an error
 *>*
+
+  () {
+    emulate -L zsh
+    local prefix=${(l:65::x:)} value='a b' out assigned
+    integer calls=0
+    out="${prefix}${value}$((++calls))${prefix}"
+    [[ $out == "${prefix}a b1${prefix}" && $calls == 1 ]] || return 1
+    setopt shwordsplit
+    typeset assigned=${prefix}=$value
+    [[ $assigned == "${prefix}=a b" ]] || return 1
+    value=$'a\0é'
+    out="${prefix}$(print -rn -- "$value")${prefix}"
+    [[ $out == "${prefix}${value}${prefix}" ]]
+  }
+0:Literal spans retain substitution order, assignment markers and byte payloads

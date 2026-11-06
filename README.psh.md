@@ -47,6 +47,9 @@ applies after the seventh.
 The [ninth experiment](Perf/round9.md) skips ASCII runs with bounded word loads
 inside eligible terminal stars; its
 [patch](Perf/0009-terminal-star-ascii-words.patch) applies after the eighth.
+The [tenth experiment](Perf/round10.md) skips inert literal spans during
+substitution; its [patch](Perf/0010-literal-substitution-spans.patch) changes
+only the substitution routine and its regression case.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -65,7 +68,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all nine changes; the fourth experiment compares against
+executable includes all ten changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -104,3 +107,10 @@ application controls and a slower short late-match benchmark.
 Mikael Magnusson's [scalar-search bounds fix](Perf/upstream-terminator-read.md)
 is backported in a separate correctness commit. The original release baseline
 and historical diagnostic logs remain intact.
+
+The tenth change uses standard-library byte-set scanning between existing
+substitution handlers. It retains process-substitution tokens and the extra
+assignment markers required for assignment-like arguments. It introduces no
+new cache, allocation, public symbol or string representation. Its measurements
+compare against the ninth executable with the maintainer's bounds fix applied
+to both builds.
