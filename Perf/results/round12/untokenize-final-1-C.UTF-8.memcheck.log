@@ -1,0 +1,15 @@
+==883082== Memcheck, a memory error detector
+==883082== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==883082== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==883082== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_untokenize_fixture\ ||\ exit\ 1_psh-untokenize-check\ ||\ exit\ 1_zmodload\ -u\ psh_untokenize_fixture\ ||\ exit\ 1_if\ whence\ psh-untokenize-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/untokenize-module
+==883082== Parent PID: 826017
+==883082== 
+==883082== 
+==883082== HEAP SUMMARY:
+==883082==     in use at exit: 46,030 bytes in 747 blocks
+==883082==   total heap usage: 79,768 allocs, 79,021 frees, 47,974,021 bytes allocated
+==883082== 
+==883082== For a detailed leak analysis, rerun with: --leak-check=full
+==883082== 
+==883082== For lists of detected and suppressed errors, rerun with: -s
+==883082== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

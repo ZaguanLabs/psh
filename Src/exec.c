@@ -2070,10 +2070,43 @@ makecline(LinkList list)
     return (argv);
 }
 
+/* Keep long-input setup out of the public helper's short-string path. */
+#if defined(__GNUC__) && (!defined(__APPLE__) || defined(__clang__))
+static void untokenize_tail(char *, int) __attribute__((__noinline__));
+#endif
+
 /**/
-mod_export void
-untokenize(char *s)
+static void
+untokenize_tail(char *s, int long_prefix)
 {
+    if (long_prefix) {
+	size_t skip = strlen(s), found;
+
+	if (skip >= 1024) {
+	    char tokens[16];
+	    int byte, count = 0;
+
+	    /* The first match in the union is the minimum group offset. */
+	    for (byte = 1; byte < 256; byte++) {
+		if (itok(byte)) {
+		    tokens[count++] = (char)byte;
+		    if (count == 15) {
+			tokens[count] = '\0';
+			found = strcspn(s, tokens);
+			if (found < skip) skip = found;
+			count = 0;
+			if (!skip) break;
+		    }
+		}
+	    }
+	    if (count) {
+		tokens[count] = '\0';
+		found = strcspn(s, tokens);
+		if (found < skip) skip = found;
+	    }
+	    s += skip;
+	}
+    }
     if (*s) {
 	int c;
 
@@ -2094,6 +2127,32 @@ untokenize(char *s)
 		*p = '\0';
 		break;
 	    }
+    }
+}
+
+/**/
+mod_export void
+untokenize(char *s)
+{
+    if (*s) {
+	int c, groups = 16;
+
+	/* Each byte is checked before advancing; no unchecked word loads. */
+	while (groups--) {
+	    if (!(c = *s) || itok(c)) goto convert_tokens;
+	    s++;
+	    if (!(c = *s) || itok(c)) goto convert_tokens;
+	    s++;
+	    if (!(c = *s) || itok(c)) goto convert_tokens;
+	    s++;
+	    if (!(c = *s) || itok(c)) goto convert_tokens;
+	    s++;
+	}
+	if (*s) untokenize_tail(s, 1);
+	return;
+
+    convert_tokens:
+	if (c) untokenize_tail(s, 0);
     }
 }
 

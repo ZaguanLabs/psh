@@ -24,11 +24,11 @@ def main():
             r = subprocess.run([str(shell), "-df", str(worker), str(root), str(shell)], cwd=d,
                                env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"},
                                capture_output=True, timeout=120)
-        if r.returncode or r.stderr or not r.stdout.endswith(b"checks=24\n"):
+        if r.returncode or r.stderr or not r.stdout.endswith(b"checks=36\n"):
             raise RuntimeError((str(shell), r.returncode, r.stdout[-400:], r.stderr))
         results.append(r.stdout)
         rows.append({"shell": str(shell), "binary_sha256": sha(shell),
-                     "checks": 24, "stdout_sha256": hashlib.sha256(r.stdout).hexdigest(),
+                     "checks": 36, "stdout_sha256": hashlib.sha256(r.stdout).hexdigest(),
                      "stdout": r.stdout.decode(), "status": 0})
     if results[0] != results[1]:
         raise RuntimeError("completed ZLE buffers differ")
@@ -36,7 +36,7 @@ def main():
     args.output.write_text(json.dumps({"worker_sha256": sha(worker),
                                       "upstream_helper_sha256": sha(root / "Test/comptest"),
                                       "cases": rows, "differences": []}, indent=2) + "\n")
-    print("24 PTY completion buffers match pristine Zsh")
+    print("36 PTY completion buffers match pristine Zsh")
 
 
 if __name__ == "__main__":

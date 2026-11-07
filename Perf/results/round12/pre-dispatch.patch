@@ -1,0 +1,114 @@
+--- a/Src/exec.c
++++ b/Src/exec.c
+@@ -2070,6 +2070,41 @@
+     return (argv);
+ }
+ 
++/* Keep the long-input setup out of the short-string path. */
++#if defined(__GNUC__) && (!defined(__APPLE__) || defined(__clang__))
++static char *untokenize_skip(char *, size_t) __attribute__((__noinline__));
++#endif
++
++/* The union's first match is the minimum offset found in any group.
++ * Keep each library reject set small, rebuilding it from current flags. */
++/**/
++static char *
++untokenize_skip(char *s, size_t skip)
++{
++    char tokens[16];
++    size_t found;
++    int byte, count = 0;
++
++    for (byte = 1; byte < 256; byte++) {
++	if (itok(byte)) {
++	    tokens[count++] = (char)byte;
++	    if (count == 15) {
++		tokens[count] = '\0';
++		found = strcspn(s, tokens);
++		if (found < skip) skip = found;
++		count = 0;
++		if (!skip) break;
++	    }
++	}
++    }
++    if (count) {
++	tokens[count] = '\0';
++	found = strcspn(s, tokens);
++	if (found < skip) skip = found;
++    }
++    return s + skip;
++}
++
+ /**/
+ mod_export void
+ untokenize(char *s)
+@@ -2077,6 +2112,28 @@
+     if (*s) {
+ 	int c;
+ 
++	/* Probe in small groups, checking each byte before advancing. */
++	{
++	    int groups = 16;
++
++	    while (groups--) {
++		if (!(c = *s) || itok(c)) goto scan_tokens;
++		s++;
++		if (!(c = *s) || itok(c)) goto scan_tokens;
++		s++;
++		if (!(c = *s) || itok(c)) goto scan_tokens;
++		s++;
++		if (!(c = *s) || itok(c)) goto scan_tokens;
++		s++;
++	    }
++	}
++	{
++	    size_t remaining = strlen(s);
++	    if (remaining >= 1024)
++		s = untokenize_skip(s, remaining);
++	}
++
++    scan_tokens:
+ 	while ((c = *s++))
+ 	    if (itok(c)) {
+ 		char *p = s - 1;
+--- a/Src/glob.c
++++ b/Src/glob.c
+@@ -3661,14 +3661,22 @@
+ {
+     if (*s) {
+ 	char *o = s, c;
+-	int probe = 64;
+-
+-	/* Keep short strings on a bounded scalar path.  For a longer inert
+-	 * prefix, amortize constructing the current classification set. */
+-	while (probe-- && (c = *s) &&
+-	       (c == Bnullkeep || !inull(c)))
+-	    s++;
+-	if (probe < 0 && strlen(s) >= 512) {
++	/* Group the probe without reading past an unchecked byte. */
++	{
++	    int groups = 16;
++
++	    while (groups--) {
++		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
++		s++;
++		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
++		s++;
++		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
++		s++;
++		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
++		s++;
++	    }
++	}
++	if (strlen(s) >= 512) {
+ 	    char nulls[256], *p = nulls;
+ 	    int byte;
+ 
+@@ -3679,6 +3687,7 @@
+ 	    s += strcspn(s, nulls);
+ 	}
+ 
++    scan_nulls:
+ 	while ((c = *s++))
+ 	    if (c == Bnullkeep) {
+ 		/*

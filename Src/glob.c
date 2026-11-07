@@ -3661,14 +3661,22 @@ remnulargs(char *s)
 {
     if (*s) {
 	char *o = s, c;
-	int probe = 64;
+	/* Group the probe without reading past an unchecked byte. */
+	{
+	    int groups = 16;
 
-	/* Keep short strings on a bounded scalar path.  For a longer inert
-	 * prefix, amortize constructing the current classification set. */
-	while (probe-- && (c = *s) &&
-	       (c == Bnullkeep || !inull(c)))
-	    s++;
-	if (probe < 0 && strlen(s) >= 512) {
+	    while (groups--) {
+		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
+		s++;
+		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
+		s++;
+		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
+		s++;
+		if (!(c = *s) || (c != Bnullkeep && inull(c))) goto scan_nulls;
+		s++;
+	    }
+	}
+	if (strlen(s) >= 512) {
 	    char nulls[256], *p = nulls;
 	    int byte;
 
@@ -3679,6 +3687,7 @@ remnulargs(char *s)
 	    s += strcspn(s, nulls);
 	}
 
+    scan_nulls:
 	while ((c = *s++))
 	    if (c == Bnullkeep) {
 		/*

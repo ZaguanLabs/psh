@@ -1,0 +1,60 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/untokenize-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/untokenize-module/psh_untokenize_fixture.so"
+  ],
+  "source_sha256": "2703f09ccbe5d23c8e607f8afa31312be93fadd569fcdb91228f7c0cd942da14",
+  "module_sha256": "398746132c89261a995aad8cc1ac174deda18bf0570bf56814efa103ce0801a7",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "checks": 78732,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+      "stdout_sha256": "66ce2a5c16b07c32e4cb6fffb767e6bffde2b7f4d71f7dc5cd557d9b2ecae9fa",
+      "stdout_bytes": 47353741
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 78732,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+      "stdout_sha256": "66ce2a5c16b07c32e4cb6fffb767e6bffde2b7f4d71f7dc5cd557d9b2ecae9fa",
+      "stdout_bytes": 47353741
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C",
+      "checks": 78732,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "24387a34912140150199266a9dc9474e3ccf9955ced06d8fe36fa001c768431b",
+      "stdout_sha256": "66ce2a5c16b07c32e4cb6fffb767e6bffde2b7f4d71f7dc5cd557d9b2ecae9fa",
+      "stdout_bytes": 47353741
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 78732,
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "24387a34912140150199266a9dc9474e3ccf9955ced06d8fe36fa001c768431b",
+      "stdout_sha256": "66ce2a5c16b07c32e4cb6fffb767e6bffde2b7f4d71f7dc5cd557d9b2ecae9fa",
+      "stdout_bytes": 47353741
+    }
+  ]
+}

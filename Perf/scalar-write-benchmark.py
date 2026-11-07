@@ -44,7 +44,7 @@ def main():
              ("whole", "ascii", 16, 1000000, 100)]
     if args.boundaries:
         specs += [("whole", "ascii", 16, n, 5000)
-                  for n in (31, 32, 63, 64, 65, 127, 128, 255, 256, 512, 575, 576, 577, 1024, 4096)]
+                  for n in (31, 32, 63, 64, 65, 127, 128, 255, 256, 512, 575, 576, 577, 1024, 1087, 1088, 1089, 2048, 4096)]
     for operation, unit, initial, supplied, iterations in specs:
         samples = [[], []]
         for sample in range(args.samples):

@@ -2908,3 +2908,19 @@ F:output ignorable as long as not an error
     [[ $values[1] == "${prefix}"$'a\0b' && -z $values[2] ]]
   }
 0:Long inert prefixes preserve empty arguments, quote removal and escaped patterns
+
+  () {
+    emulate -L zsh
+    local prefix=${(l:1200::x:)} data expr out
+    data=${prefix}$'a\0b *? \\"'
+    expr=${(q)data}
+    out=${(Q)expr}
+    [[ $out == "$data" ]] || return 1
+    out=$(eval "print -rn -- $expr")
+    [[ $out == "$data" ]] || return 1
+    data=${prefix}'$(print SHOULD_NOT_RUN) `print nor_this`'
+    expr=${(q)data}
+    out=$(eval "print -rn -- $expr")
+    [[ $out == "$data" ]]
+  }
+0:Long token-free prefixes retain quote roundtrips, NUL bytes and literal substitution text

@@ -503,3 +503,50 @@ alternating fresh-process samples with builds, suites and profilers idle.
 See [round11.md](round11.md) and
 [0011-null-marker-prefix.patch](0011-null-marker-prefix.patch), including the
 rejected first cutoff and the complete application controls.
+
+## Grouped token-prefix scanning
+
+The twelfth experiment adds a long-prefix path to `untokenize()`. Sixteen groups
+of four individually guarded byte steps probe at most 64 bytes. Early tokens
+go to a private tail worker containing the original conversion loop;
+terminators return immediately. After a complete
+probe, at least 1,024 remaining bytes are required for the private scanner.
+It rebuilds reject sets from current `ITOK` flags, up to 15 nonzero bytes per
+set, and takes the minimum match offset across library scans. An empty set
+skips to the known terminator; a zero offset can stop further scanning.
+The original conversion loop still reads the live `ztokens` mapping and handles
+`Nularg` as before. The null-marker helper uses the same grouped probe, retaining
+its separate 512-byte remaining-length gate and original removal loop.
+
+Small sets improve library scanning on the measured libc. These group sizes
+are performance choices, not safety assumptions or guaranteed optima elsewhere.
+There are no unchecked word loads: each byte is tested before advancing.
+The tail worker handles both early tokens and long tails, keeping length/set
+setup out of the public short-string path. A guarded GNU-family no-inline hint
+keeps that separation in the measured build. The same code is separately compiled and tested
+with the hint omitted. No public symbol, signature, representation or persistent
+cache is added; private generated prototypes may change.
+
+```sh
+python3 Perf/check-untokenize-module.py .work/baseline/Src/zsh .work/candidate/Src/zsh \
+  --memcheck --output .work/logs/round12/untokenize-final.json
+python3 Perf/check-remnulargs-module.py .work/baseline/Src/zsh .work/candidate/Src/zsh \
+  --memcheck --output .work/logs/round12/remnulargs-final.json
+python3 Perf/check-completion-prefix.py .work/baseline/Src/zsh .work/candidate/Src/zsh \
+  --output .work/logs/round12/completion-final.json
+```
+
+The token fixture checks 78,732 allocations per run on both shells in C and
+C.UTF-8. Cases include every nonzero byte, eight alignments, 1 MiB input,
+classification subsets of 0/2/15/16/29/30 tokens, changed mappings including a
+NUL mapping, and token-group ordering. The mapping and classification tables
+are restored before return. Complete allocations are compared, including bytes
+past the resulting terminator. The existing null-marker fixture retains 30,203
+checks per run. Both fixtures run under Memcheck with leak checking disabled.
+
+The completion fixture now checks 36 actual PTY buffers, adding lengths around
+1,088 bytes and a longer control. `--boundaries` now adds 19 controls to the
+12 standard scalar-assignment cases, for 31 cases total. Existing archived
+results and their counts remain unchanged. Final timing uses nine alternating
+fresh-process samples and sequential drivers, with all this work's builds,
+tests and profilers idle. See [round12.md](round12.md) for results and limits.

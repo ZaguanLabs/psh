@@ -53,6 +53,9 @@ only the substitution routine and its regression case.
 The [eleventh experiment](Perf/round11.md) skips long inert prefixes while
 removing null markers; its [patch](Perf/0011-null-marker-prefix.patch) applies
 after the tenth.
+The [twelfth experiment](Perf/round12.md) adds grouped token-prefix scanning
+and refines the null-marker probe; its
+[patch](Perf/0012-grouped-token-prefix.patch) applies after the eleventh.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -71,7 +74,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all eleven changes; the fourth experiment compares against
+executable includes all twelve changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -124,3 +127,11 @@ classification table. It preserves backslash-marker handling and the original
 removal loop. Native checks include modified classification flags and full
 allocation bytes; actual completion buffers also match pristine Zsh. Its
 measurements compare against the preserved tenth executable.
+
+The twelfth change handles long token-free prefixes through a private scanner
+using small, freshly constructed classification sets. It retains the original
+conversion loop and live token mappings. Both marker helpers now probe in
+four guarded byte steps per group. GNU-family builds use a guarded no-inline
+hint for the tail worker; correctness also passes with that hint omitted.
+Its measurements compare against the preserved eleventh executable and retain
+short-input and complete-application controls.

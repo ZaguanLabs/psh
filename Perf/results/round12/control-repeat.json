@@ -1,0 +1,50 @@
+{
+  "reason": "Original 256-character control showed a temporary slow phase in both builds; original samples retained separately",
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round11/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh"
+  ],
+  "binary_sha256": [
+    "eef76c41f9006f3f4fe84f801eabdc939e064b6b06fe8976298d0bccdb894f9e",
+    "24387a34912140150199266a9dc9474e3ccf9955ced06d8fe36fa001c768431b"
+  ],
+  "worker_sha256": "3d507ba2a7f22718b834b6df608ecb8486335cd051645a28e80d557525cb6142",
+  "operation": "whole",
+  "unit": "ascii",
+  "initial_characters": 16,
+  "replacement_characters": 256,
+  "iterations": 5000,
+  "samples": 9,
+  "samples_ms": [
+    [
+      3.335,
+      3.279,
+      3.3089999999999997,
+      3.337,
+      4.63,
+      3.3040000000000003,
+      3.6189999999999998,
+      3.296,
+      4.027
+    ],
+    [
+      3.6189999999999998,
+      3.231,
+      5.0889999999999995,
+      3.351,
+      3.2889999999999997,
+      3.306,
+      3.234,
+      3.321,
+      3.2880000000000003
+    ]
+  ],
+  "median_ms": [
+    3.335,
+    3.306
+  ],
+  "cpu_affinity": [
+    2
+  ],
+  "locale": "C.UTF-8"
+}

@@ -1,0 +1,351 @@
+{
+  "source_sha256": {
+    "Src/exec.c": "10504eb73b3d963f89ab1ab43fc244a776f4bfc00ae7da267299f2f17b7e31be",
+    "Src/glob.c": "28a0c9a878ef310062bc2cab6c064d3907422dd366310592f734fd19e4a33e42",
+    "Test/D04parameter.ztst": "cfdb13ff6edf085c2447efe0000b8240a70f4b729ac6e9d8895cbb2f61b2f30f"
+  },
+  "binary_sha256": "24387a34912140150199266a9dc9474e3ccf9955ced06d8fe36fa001c768431b",
+  "runs": [
+    {
+      "name": "pristine-final-test",
+      "command": [
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+        "+Z",
+        "-f",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Test/runtests.zsh"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Test",
+      "status": 0,
+      "elapsed_seconds": 1.212
+    },
+    {
+      "name": "search-final",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--scalars",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/search-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 2.703
+    },
+    {
+      "name": "remnulargs-final",
+      "command": [
+        "python3",
+        "Perf/check-remnulargs-module.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/remnulargs-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.363
+    },
+    {
+      "name": "no-mb-build-final",
+      "command": [
+        "make",
+        "-C",
+        ".work/no-mb-candidate",
+        "-j8"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.831
+    },
+    {
+      "name": "substitution-final",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/substitution-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 5.432
+    },
+    {
+      "name": "completion-final",
+      "command": [
+        "python3",
+        "Perf/check-completion-prefix.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/completion-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 5.496
+    },
+    {
+      "name": "scalar-final",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--assignments",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/scalar-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 8.304
+    },
+    {
+      "name": "pattern-final",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--extended",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/pattern-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 5.11
+    },
+    {
+      "name": "array-final",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/array-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 8.641
+    },
+    {
+      "name": "untokenize-final",
+      "command": [
+        "python3",
+        "Perf/check-untokenize-module.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/untokenize-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 12.783
+    },
+    {
+      "name": "no-mb-upstream",
+      "command": [
+        "make",
+        "-C",
+        ".work/no-mb-candidate",
+        "check",
+        "TESTNUM=D*"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 8.297
+    },
+    {
+      "name": "no-hint-compile",
+      "command": [
+        "gcc",
+        "-I.",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "-DHAVE_CONFIG_H",
+        "-O2",
+        "-g",
+        "-include",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/no-hint.h",
+        "-c",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/exec.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/exec-nohint.o"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src",
+      "status": 0,
+      "elapsed_seconds": 1.459
+    },
+    {
+      "name": "no-hint-link",
+      "command": [
+        "gcc",
+        "-g",
+        "-rdynamic",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/psh-no-hint",
+        "main.o",
+        "builtin.o",
+        "compat.o",
+        "cond.o",
+        "context.o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/exec-nohint.o",
+        "glob.o",
+        "hashtable.o",
+        "hashnameddir.o",
+        "hist.o",
+        "init.o",
+        "input.o",
+        "jobs.o",
+        "lex.o",
+        "linklist.o",
+        "loop.o",
+        "math.o",
+        "mem.o",
+        "module.o",
+        "options.o",
+        "params.o",
+        "parse.o",
+        "pattern.o",
+        "prompt.o",
+        "signals.o",
+        "signames.o",
+        "sort.o",
+        "string.o",
+        "subst.o",
+        "text.o",
+        "utils.o",
+        "openssh_bsd_setres_id.o",
+        "-ldl",
+        "-lncursesw",
+        "-lrt",
+        "-lm",
+        "-lc"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src",
+      "status": 0,
+      "elapsed_seconds": 0.035
+    },
+    {
+      "name": "no-mb-conditionals",
+      "command": [
+        "make",
+        "-C",
+        ".work/no-mb-candidate",
+        "check",
+        "TESTNUM=C02"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 3.303
+    },
+    {
+      "name": "substitution-no-mb",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/no-mb-baseline/Src/zsh",
+        ".work/no-mb-candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/substitution-no-mb.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.975
+    },
+    {
+      "name": "memcheck-final",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/memcheck-final.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+        "-df",
+        "Perf/results/round6/memcheck-scalar-search-all.zsh"
+      ],
+      "status": 0
+    },
+    {
+      "name": "no-hint-native",
+      "command": [
+        "python3",
+        "Perf/check-untokenize-module.py",
+        ".work/baseline/Src/zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/psh-no-hint",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/no-hint-native.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 11.842
+    },
+    {
+      "name": "substitution-memcheck-final",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/substitution-memcheck-final.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+        "-df",
+        "Perf/results/round10/substitution-memcheck.zsh"
+      ],
+      "status": 0
+    },
+    {
+      "name": "no-hint-substitution",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/baseline/Src/zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/psh-no-hint",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round12/no-hint-substitution.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.967
+    },
+    {
+      "name": "html-final",
+      "command": [
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+        "-df",
+        "tests/run.zsh"
+      ],
+      "cwd": "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "status": 0,
+      "elapsed_seconds": 26.406
+    },
+    {
+      "name": "upstream-final",
+      "command": [
+        "make",
+        "-C",
+        ".work/candidate",
+        "check"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 92.957
+    }
+  ],
+  "failures": []
+}
