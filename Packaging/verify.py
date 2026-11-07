@@ -179,15 +179,24 @@ done < /proc/$$/maps
     assert mapped and all(path.startswith(str(prefix) + "/") for path in mapped), mapped
     for name in ["zdraw.so", "zcurl.so", "zmdown.so", "curses.so"]:
         assert any(path.endswith("/" + name) for path in mapped), name
+    component_log = work / "logs/installed-components.log"
+    with component_log.open("wb") as out:
+        components = subprocess.run(["/usr/bin/python3", str(ROOT / "Packaging/test-installed-components.py"),
+                                     "--prefix", str(prefix)], env=env,
+                                    stdout=out, stderr=subprocess.STDOUT, timeout=45)
+    if components.returncode != 0:
+        raise RuntimeError(f"installed component tests failed; see {component_log}")
     startup_result = startup(shell)
     receipt = {"passed": True, "release": b["release"], "payload_manifest": expected,
                "shell_sha256": sha(shell), "native_sha256": {name: sha(file) for name, file in tested.items()},
                "suites": reports, "stable_protected_entries": len(before), "stable_unchanged": True,
                "login_shell_unchanged": True, "mapped_modules": mapped, "startup": startup_result,
-               "stock_modules_preserved": sorted(stable_modules)}
+               "stock_modules_preserved": sorted(stable_modules),
+               "installed_component_tests": "file hashes, relative dependencies and change-gutter PTY rendering passed"}
     (work / "validation.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(f"Verified {len(before)} protected entries unchanged; all seven suites passed")
     print(startup_result)
+    print("Installed zdraw components: source loading and native change-gutter rendering passed")
     print("Validation receipt:", work / "validation.json")
 
 

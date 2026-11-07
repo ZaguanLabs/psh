@@ -95,7 +95,8 @@ def main():
         ROOT / "Vendor/zcurl", logs / "zcurl-build.log")
     copy(ROOT / "Vendor/zcurl/build/zcurl.so", modules / "zcurl.so")
     runtime = {"zjson": ["zjson.zsh", "lib"], "zhtml2md": ["zhtml2md.zsh", "lib", "data"],
-               "zoup": ["functions", "bin"], "zdraw": ["lib", "VERSION"],
+               "zoup": ["functions", "bin"],
+               "zdraw": ["lib", "VERSION", "examples/components"],
                "zcurl": ["zcurl.zsh", "completions"], "zmdown": []}
     for name, parts in runtime.items():
         project = ROOT / "Vendor" / name

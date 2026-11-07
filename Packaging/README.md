@@ -8,6 +8,8 @@ alter personal startup files, or change the account's login shell.
 The [first installed release's validation record](validation-2026-11-07.json)
 contains executable and native-module hashes, pinned revisions, suite results,
 and the protection-check summary. Full local logs remain under `.work/package/`.
+The [component packaging fix](validation-2026-11-07-components.json) records the
+subsequent repair and its installed-package regression tests.
 
 ## Layout
 
@@ -36,6 +38,8 @@ Each binary pins the paths of its release. Switching `current` therefore leaves
 already running shells using their original matching modules. Keep old release
 directories while any process still uses them. The development `./psh` produced
 by `Perf/build.py` remains a separate executable with development paths.
+After upgrading, start a new psh process. Recreate any application trial that
+cached a versioned package path, using the current `psh-config --script-dir`.
 
 ## Build, test, and activate
 
@@ -81,6 +85,11 @@ Final verification checks native loading paths, installed libraries and entity
 data, interactive login startup in a PTY with temporary dotfiles, source hashes,
 and the unchanged stable Zsh installation. An active release's modules cannot
 be refreshed in place.
+
+It also checks the installed zdraw component files and their relative library
+dependencies, then runs the upstream change-gutter rendering assertions against
+the installed component and native module in a PTY. Run that regression alone
+with `python3 Packaging/test-installed-components.py`.
 
 Verification also compares the installed stock module inventory with
 `/usr/bin/zsh`, refusing activation if an existing module is absent from psh.
@@ -139,6 +148,15 @@ The original source entry points remain available when applications need them:
 ```zsh
 source "$(psh-config --script-dir)/zjson/zjson.zsh"
 source "$(psh-config --script-dir)/zcurl/zcurl.zsh"
+```
+
+Reusable zdraw components keep their upstream relative paths, including
+`zdraw/examples/components/change-gutter.zsh`, `linked-detail.zsh`, and
+`status-strip.zsh` below `psh-config --script-dir`. These are runtime helpers used
+by applications, despite living under `examples/` upstream. For example:
+
+```zsh
+source "$(psh-config --script-dir)/zdraw/examples/components/change-gutter.zsh"
 ```
 
 Use `psh-config --module-dir`, `--function-dir`, `--headers-root`, `--mandir`,

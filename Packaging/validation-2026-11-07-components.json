@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-07",
+  "release": "5.9.2-33d3875a3687",
+  "previous_release": "5.9.2-f6d4ff0a0cde",
+  "prefix": "/usr/local/psh/releases/5.9.2-33d3875a3687",
+  "problem": "zdraw examples/components were omitted from the installed runtime, but zcoder sources change-gutter.zsh from that directory.",
+  "fix": "Ship the complete reusable examples/components directory, preserving relative library imports.",
+  "component_sha256": {
+    "zdraw/examples/components/change-gutter.zsh": "e6d641a0bbdce87d9fc9a6e010613ad79662f4db4a871f4149481ffd3abfd93f",
+    "zdraw/examples/components/linked-detail.zsh": "7f3db2e10c32260a8c657b3ca3462d3331d66d660179fcd6f3bcb5815ebb8eef",
+    "zdraw/examples/components/status-strip.zsh": "c5d61a471fcd85525a450d0c6a63d3845401e6f1e776f3ec017aefd647a88ca7"
+  },
+  "regression": {
+    "old_release_exit_status": 1,
+    "corrected_release_exit_status": 0,
+    "installed_tests": 2,
+    "coverage": [
+      "pinned installed file hashes",
+      "all three helpers and relative library imports",
+      "upstream change-gutter native PTY rendering assertions using installed code"
+    ]
+  },
+  "suites": {
+    "core": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ]
+    },
+    "zdraw": {
+      "passed": true,
+      "exit_statuses": [
+        0,
+        0
+      ]
+    },
+    "zmdown": {
+      "passed": true,
+      "exit_statuses": [
+        0,
+        0
+      ]
+    },
+    "zcurl": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ]
+    },
+    "zjson": {
+      "passed": true,
+      "exit_statuses": [
+        0,
+        0
+      ]
+    },
+    "zhtml2md": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ]
+    },
+    "zoup": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ]
+    }
+  },
+  "core": {
+    "passed_scripts": 63,
+    "failed_scripts": 0,
+    "skipped_scripts": 2
+  },
+  "zdraw_unittest_count": 190,
+  "shell_sha256": "5bab7607b7beab8e17fd009378a63673c0c12a76b9a03c08081ac1c39333fe7e",
+  "native_sha256": {
+    "zdraw": "c80ee28718a5c3d20cbccc9e08e69f0b78238f1ea29952b9f42a149aacc5ea63",
+    "zmdown": "ed2ea6a25d0641e595479ca8d80d1d90be745d2e0c9d0dc13a5a0b26438072e3",
+    "zcurl": "0b8a3a4066de3e5934e4d4229472cac553236a30503332cdf39fd5f75b5de03a"
+  },
+  "stable_protected_entries": 11828,
+  "stable_zsh_unchanged": true,
+  "previous_psh_release_unchanged": true,
+  "etc_shells_unchanged": true,
+  "login_shell_unchanged": true,
+  "core_source_changes": false
+}
