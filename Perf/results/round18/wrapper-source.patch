@@ -1,0 +1,28 @@
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -446,6 +446,25 @@
+ scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
+ 	      ScanFunc scanfunc, int scanflags)
+ {
++    if (!sorted && !flags1 && !flags2 && !ht->scantab) {
++	int i, hsize = ht->hsize, match = 0;
++	HashNode *nodes = ht->nodes;
++	struct scanstatus st;
++
++	/* Scope cleanup and other unfiltered callers need no per-node
++	 * selection. Preserve the scanner's callback mutation protocol. */
++	st.sorted = 0;
++	impl(ht)->scan = &st;
++	for (i = 0; i < hsize; i++)
++	    for (st.u.u = nodes[i]; st.u.u; ) {
++		HashNode hn = st.u.u;
++		st.u.u = st.u.u->next;
++		match++;
++		scanfunc(hn, scanflags);
++	    }
++	impl(ht)->scan = NULL;
++	return match;
++    }
+     return scanmatchtable(ht, NULL, sorted, flags1, flags2,
+ 			  scanfunc, scanflags);
+ }

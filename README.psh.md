@@ -83,6 +83,11 @@ runs in the multibyte length/width helper. Its
 [patch](Perf/0017-character-count-ascii.patch) applies after the sixteenth;
 Unicode conversion and Meta handling retain their original loops.
 
+The [eighteenth investigation](Perf/round18.md) tests two unfiltered hash-scan
+specializations. Both were rejected after mixed customer timings. The core
+implementation and installed daily driver retain the seventeen accepted changes;
+new native callback tests and a scope-restoration regression are retained.
+
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
 storage-format change. Array append scaling remains an open investigation.

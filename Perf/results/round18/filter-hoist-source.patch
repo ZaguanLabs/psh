@@ -1,0 +1,38 @@
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -423,16 +423,28 @@
+ 	st.sorted = 0;
+ 	impl(ht)->scan = &st;
+ 
+-	for (i = 0; i < hsize; i++)
+-	    for (st.u.u = nodes[i]; st.u.u; ) {
+-		HashNode hn = st.u.u;
+-		st.u.u = st.u.u->next;
+-		if ((!flags1 || (hn->flags & flags1)) && !(hn->flags & flags2)
+-		    && (!pprog || pattry(pprog, hn->nam))) {
++	if (!flags1 && !flags2 && !pprog) {
++	    /* Choose the unfiltered traversal once. Keep the successor in
++	     * scanstatus so callback removals and replacements update it. */
++	    for (i = 0; i < hsize; i++)
++		for (st.u.u = nodes[i]; st.u.u; ) {
++		    HashNode hn = st.u.u;
++		    st.u.u = st.u.u->next;
+ 		    match++;
+ 		    scanfunc(hn, scanflags);
+ 		}
+-	    }
++	} else {
++	    for (i = 0; i < hsize; i++)
++		for (st.u.u = nodes[i]; st.u.u; ) {
++		    HashNode hn = st.u.u;
++		    st.u.u = st.u.u->next;
++		    if ((!flags1 || (hn->flags & flags1)) && !(hn->flags & flags2)
++			&& (!pprog || pattry(pprog, hn->nam))) {
++			match++;
++			scanfunc(hn, scanflags);
++		    }
++		}
++	}
+ 
+ 	impl(ht)->scan = NULL;
+     }

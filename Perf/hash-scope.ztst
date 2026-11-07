@@ -1,0 +1,45 @@
+%prep
+
+%test
+
+  () {
+    emulate -L zsh
+    local -i i
+    local name
+    local -a psh_scope_array=(outer retained)
+    local -A psh_scope_hash=(outer retained)
+    local -x psh_scope_export=outer
+    for i in {1..129}; do local "psh_restore_${i}=outer:$i"; done
+    () {
+      local -i i
+      local name
+      local -A psh_scope_array=(inner changed)
+      local -a psh_scope_hash=(inner changed)
+      local -x psh_scope_export=inner
+      for i in {1..129}; do
+        local "psh_restore_${i}=inner:$i" "psh_temporary_${i}=temporary:$i"
+        (( i % 3 )) || unset "psh_restore_$i"
+      done
+      () {
+        local -i i
+        for i in {1..129}; do local "psh_restore_${i}=nested:$i"; done
+      }
+      for i in {1..129}; do
+        name=psh_restore_$i
+        if (( i % 3 )); then
+          [[ ${(P)name} == inner:$i ]] || return 1
+        else
+          [[ -z ${(P)name} ]] || return 1
+        fi
+      done
+    } || return 1
+    [[ ${psh_scope_array[1]} == outer && ${psh_scope_array[2]} == retained &&
+       ${psh_scope_hash[outer]} == retained && $psh_scope_export == outer ]] || return 1
+    for i in {1..129}; do
+      name=psh_restore_$i
+      [[ ${(P)name} == outer:$i ]] || return 1
+      name=psh_temporary_$i
+      [[ -z ${(Pt)name} ]] || return 1
+    done
+  }
+0:Unfiltered scope scans restore shadowed and unset locals across buckets and parameter types
