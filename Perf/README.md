@@ -550,3 +550,28 @@ The completion fixture now checks 36 actual PTY buffers, adding lengths around
 results and their counts remain unchanged. Final timing uses nine alternating
 fresh-process samples and sequential drivers, with all this work's builds,
 tests and profilers idle. See [round12.md](round12.md) for results and limits.
+
+
+## Grouped array-length scans
+
+The thirteenth candidate groups four individually guarded pointer checks in
+`arrlen()` and `arrlen_ge()`. The other public predicates retain their original
+composition, including unsigned wrap at `UINT_MAX`. No data beyond the NULL
+slot or pointed-to element bytes is read. No length cache is introduced.
+
+```sh
+python3 Perf/check-array-length-module.py .work/baseline/Src/zsh ./psh \
+  --memcheck --output .work/logs/array-length-native.json
+python3 Perf/array-length-benchmark.py /path/to/previous/psh ./psh --cpu 2 \
+  --output .work/logs/array-length-benchmarks.json
+```
+
+The native module uses pristine headers and known-length oracles for all five
+helpers, exact allocation ends, eight offsets, empty element strings and
+non-dereferenceable payload pointers. It checks no-read bounds with NULL and
+one-past vectors and preserves the wrappers' existing unsigned behavior.
+
+The benchmark measures reads, short slices and length queries at empty, small,
+medium and large sizes. Setup and warm-up precede timing, and expected values
+are checked before and after. Run timings with builds, tests and profilers
+idle. See [round13.md](round13.md) for gains, unchanged controls and limits.

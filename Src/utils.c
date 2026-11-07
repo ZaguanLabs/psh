@@ -2344,8 +2344,17 @@ arrlen(char **s)
 {
     int count;
 
-    for (count = 0; *s; s++, count++);
-    return count;
+    count = 0;
+    for (;;) {
+	if (!*s++) return count;
+	count++;
+	if (!*s++) return count;
+	count++;
+	if (!*s++) return count;
+	count++;
+	if (!*s++) return count;
+	count++;
+    }
 }
 
 /* Return TRUE iff arrlen(s) >= lower_bound, but more efficiently. */
@@ -2354,6 +2363,14 @@ arrlen(char **s)
 mod_export char
 arrlen_ge(char **s, unsigned lower_bound)
 {
+    /* Check each pointer before advancing; a terminator needs no padding. */
+    while (lower_bound >= 4) {
+	if (!*s++) return 0;
+	if (!*s++) return 0;
+	if (!*s++) return 0;
+	if (!*s++) return 0;
+	lower_bound -= 4;
+    }
     while (lower_bound--)
 	if (!*s++)
 	    return 0 /* FALSE */;

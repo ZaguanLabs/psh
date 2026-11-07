@@ -57,6 +57,9 @@ The [twelfth experiment](Perf/round12.md) adds grouped token-prefix scanning
 and refines the null-marker probe; its
 [patch](Perf/0012-grouped-token-prefix.patch) applies after the eleventh.
 
+The [thirteenth experiment](Perf/round13.md) groups pointer-array scans; its
+[patch](Perf/0013-grouped-array-scans.patch) applies after the twelfth.
+
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
 storage-format change. Array append scaling remains an open investigation.
@@ -74,7 +77,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twelve changes; the fourth experiment compares against
+executable includes all thirteen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -135,3 +138,9 @@ four guarded byte steps per group. GNU-family builds use a guarded no-inline
 hint for the tail worker; correctness also passes with that hint omitted.
 Its measurements compare against the preserved eleventh executable and retain
 short-input and complete-application controls.
+
+The thirteenth change unrolls full and bounded array-length scans into four
+individually checked pointer steps. It requires no padding, keeps existing
+unsigned-bound behavior, and changes no array representation or public API.
+Late reads and slices improve on large arrays; complete application timings
+remain close. Measurements compare against the preserved twelfth executable.

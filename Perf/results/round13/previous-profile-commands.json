@@ -1,0 +1,40 @@
+[
+  {
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/json-previous.callgrind",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round12/psh",
+      "-df",
+      "Perf/application-workload.zsh",
+      "zjson-array",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8"
+    },
+    "status": 0,
+    "binary_sha256": "24387a34912140150199266a9dc9474e3ccf9955ced06d8fe36fa001c768431b"
+  },
+  {
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/encode-previous.callgrind",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round12/psh",
+      "-df",
+      "Perf/application-workload.zsh",
+      "zjson-encode-array",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8"
+    },
+    "status": 0,
+    "binary_sha256": "24387a34912140150199266a9dc9474e3ccf9955ced06d8fe36fa001c768431b"
+  }
+]

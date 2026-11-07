@@ -1,0 +1,210 @@
+{
+  "source_sha256": {
+    "Src/utils.c": "07a843b6183ba0f8dd396e74f5dd8f6bbef05aa54a00ede3abf8a111f8139a1d",
+    "Test/D06subscript.ztst": "00e725ba7f32248243fdcd41a98729eb2d56da335dd77c4d685a4004f1d1a72c"
+  },
+  "binary_sha256": "347d2b8349cc50046b3aace3c69d7d73d99d62268d38155c131b071ee2758806",
+  "runs": [
+    {
+      "name": "pristine-final-test",
+      "command": [
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+        "+Z",
+        "-f",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Test/runtests.zsh"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Test",
+      "status": 0,
+      "elapsed_seconds": 0.205
+    },
+    {
+      "name": "append-native",
+      "command": [
+        "python3",
+        "Perf/check-append-module.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--search",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/append-native.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 0.27
+    },
+    {
+      "name": "search-final",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--scalars",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/search-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 2.636
+    },
+    {
+      "name": "no-mb-build-final",
+      "command": [
+        "make",
+        "-C",
+        ".work/no-mb-candidate",
+        "-j8"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 2.978
+    },
+    {
+      "name": "completion-final",
+      "command": [
+        "python3",
+        "Perf/check-completion-prefix.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/completion-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.249
+    },
+    {
+      "name": "substitution-final",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/substitution-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 5.261
+    },
+    {
+      "name": "scalar-final",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--assignments",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/scalar-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 8.086
+    },
+    {
+      "name": "pattern-final",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--extended",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/pattern-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.921
+    },
+    {
+      "name": "no-mb-upstream",
+      "command": [
+        "make",
+        "-C",
+        ".work/no-mb-candidate",
+        "check",
+        "TESTNUM=D*"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 7.856
+    },
+    {
+      "name": "array-final",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/baseline/Src/zsh",
+        ".work/candidate/Src/zsh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/array-final.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 8.613
+    },
+    {
+      "name": "no-mb-conditionals",
+      "command": [
+        "make",
+        "-C",
+        ".work/no-mb-candidate",
+        "check",
+        "TESTNUM=C02"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 3.296
+    },
+    {
+      "name": "substitution-no-mb",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/no-mb-baseline/Src/zsh",
+        ".work/no-mb-candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round13/substitution-no-mb.json"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 4.898
+    },
+    {
+      "name": "html-final",
+      "command": [
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+        "-df",
+        "tests/run.zsh"
+      ],
+      "cwd": "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "status": 0,
+      "elapsed_seconds": 25.321
+    },
+    {
+      "name": "upstream-final",
+      "command": [
+        "make",
+        "-C",
+        ".work/candidate",
+        "check"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+      "status": 0,
+      "elapsed_seconds": 91.382
+    }
+  ],
+  "failures": []
+}

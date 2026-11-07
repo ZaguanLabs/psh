@@ -532,3 +532,30 @@ F:In math, (($i)) should be the same as ((i)), see workers/47748.
 >[]
 >[]
 >[]
+
+  () {
+    emulate -L zsh
+    local -a a out
+    local -i n
+    for n in {0..9} 31 32 33 63 64 65 127 128 129 1023 1024 1025; do
+      a=( ${(s::)${(l:$n::x:)}} )
+      (( ${#a} == n )) || return 1
+      [[ ${a[n+1]} == '' ]] || return 1
+      if (( n )); then
+        a[n]=tail
+        [[ $a[n] == tail && $a[-1] == tail ]] || return 1
+        out=( "${(@)a[n,n+1]}" )
+        (( ${#out} == 1 )) && [[ $out[1] == tail ]] || return 1
+      fi
+      setopt ksharrays
+      (( ${#a[@]} == n )) || return 1
+      [[ ${a[n]} == '' ]] || return 1
+      if (( n )); then
+        [[ ${a[n-1]} == tail && ${a[-1]} == tail ]] || return 1
+        out=( "${(@)a[n-1,n]}" )
+        (( ${#out[@]} == 1 )) && [[ ${out[0]} == tail ]] || return 1
+      fi
+      unsetopt ksharrays
+    done
+  }
+0:Array lengths and end slices retain terminator boundaries with native and zero-based indices
