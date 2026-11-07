@@ -30,6 +30,9 @@ def main():
     env = dict(os.environ, PATH=f"{shim}:/usr/bin:/bin", LC_ALL="C.UTF-8",
                ZSH_TEST_SHELL=str(shell), ZSH_BIN=str(shell), ZSH_BUILD_ROOT=str(core),
                ZHTML2MD_TEST_ZSH=str(shell))
+    # An interactive parent can export its own system Zsh function path.
+    # Let this candidate initialize fpath from its compiled private defaults.
+    env.pop("FPATH", None)
     suites = {
         "core": [(core, ["make", "check"], {})],
         "zdraw": [(ROOT / "Vendor/zdraw", ["make", "test", f"ZSH_BIN={shell}"], {})],
@@ -67,7 +70,7 @@ def main():
             print(f"{name}: exit {status} ({rows[-1]['seconds']}s)", flush=True)
         if hashlib.sha256(shell.read_bytes()).hexdigest() != host_digest:
             raise RuntimeError("installed test shell changed during the suite")
-        report = {"release": b["release"], "shell": str(shell), "shell_sha256": host_digest, "environment": {
+        report = {"release": b["release"], "shell": str(shell), "shell_sha256": host_digest, "FPATH_unset": True, "environment": {
             key: env[key] for key in ["PATH", "LC_ALL", "ZSH_TEST_SHELL", "ZSH_BIN", "ZSH_BUILD_ROOT", "ZHTML2MD_TEST_ZSH"]},
                   "runs": rows, "passed": all(row["status"] == 0 for row in rows)}
         (work / f"test-{name}.json").write_text(json.dumps(report, indent=2) + "\n")

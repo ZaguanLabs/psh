@@ -38,7 +38,7 @@
         0
       ],
       "seconds": [
-        91.282
+        91.026
       ],
       "logs": [
         ".work/package/5.9.2-f6d4ff0a0cde/logs/test-core-0.log"
@@ -49,7 +49,8 @@
       "skips": [
         "privileged tests require super-user privileges",
         "zsh/db/gdbm is not built; it is also absent from the system module inventory"
-      ]
+      ],
+      "FPATH_unset": true
     },
     "zdraw": {
       "passed": true,
@@ -109,7 +110,7 @@
         0
       ],
       "seconds": [
-        0.715,
+        0.665,
         0.715
       ],
       "logs": [
@@ -120,7 +121,8 @@
       "locales": [
         "C",
         "C.UTF-8"
-      ]
+      ],
+      "FPATH_unset": true
     },
     "zhtml2md": {
       "passed": true,
@@ -128,12 +130,13 @@
         0
       ],
       "seconds": [
-        23.946
+        23.595
       ],
       "logs": [
         ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zhtml2md-0.log"
       ],
-      "checks": 307
+      "checks": 307,
+      "FPATH_unset": true
     },
     "zoup": {
       "passed": true,
@@ -141,13 +144,14 @@
         0
       ],
       "seconds": [
-        1.816
+        1.916
       ],
       "logs": [
         ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zoup-0.log"
       ],
       "clean_checks": 101,
-      "stream_checks": 9
+      "stream_checks": 9,
+      "FPATH_unset": true
     }
   },
   "stock_modules_preserved": [
@@ -196,5 +200,6 @@
   "startup": "interactive login PTY and all five original startup filenames passed",
   "installed_smoke": "all six packages, lazy first and repeated calls, source entry points, PCRE capture, default lookup paths and /proc module mappings passed outside the source tree",
   "zcoder_loader_smoke": "existing native loaders retain the preloaded psh modules; full interactive application not run",
-  "source_changes": "packaging and pinned imports; existing Src/ and Test/ unchanged in this installation change"
+  "source_changes": "packaging and pinned imports; existing Src/ and Test/ unchanged in this installation change",
+  "launch_environment": "The existing interactive Zsh exports FPATH. Use env -u FPATH /usr/local/bin/psh to select psh defaults; explicit inherited FPATH remains respected as in Zsh."
 }

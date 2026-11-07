@@ -89,18 +89,25 @@ upstream source configuration.
 
 ## Use the bundled packages
 
-Start a trial shell with `psh`, or run an application explicitly:
+Start a trial shell using the private default function path:
 
 ```sh
-psh /path/to/zcoder.zsh
+env -u FPATH /usr/local/bin/psh
 ```
+
+Zsh honors an inherited `FPATH`. This machine's current interactive Zsh exports
+a path containing its own system functions and personal plugins; psh preserves
+that environment-variable behavior. Clearing `FPATH` for this child process
+lets psh initialize its private defaults before reading your normal startup
+files. It does not change the parent shell, your dotfiles, or core semantics.
+If `FPATH` is unset already, plain `psh` selects the private defaults too.
 
 The current local zcoder checkout can automatically re-execute its own private
 Zsh and prefer its own native modules. To test this psh and its bundled modules
 specifically, use this launch form (no zcoder files need changing):
 
 ```zsh
-ZCODER_RUNTIME=system psh -dfc '
+env -u FPATH ZCODER_RUNTIME=system /usr/local/bin/psh -dfc '
   zmodload zdraw zmdown zcurl || exit
   _psh_entry=$1
   shift
