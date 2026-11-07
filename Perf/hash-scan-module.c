@@ -205,7 +205,7 @@ bin_check(UNUSED(char *name), char **args, UNUSED(Options ops), UNUSED(int func)
 	if (!progs[pattern]) { failed = 1; break; }
     }
     if (failed) {
-    	if (own_queue) unqueue_signals();
+	if (own_queue) unqueue_signals();
 	return 1;
     }
     for (si = 0; si < sizeof(sizes)/sizeof(sizes[0]) && !failed; si++)
