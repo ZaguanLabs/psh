@@ -1,0 +1,151 @@
+# Project scope and stop line
+
+Decision recorded 2026-09-11. This supersedes expansion suggestions in the
+exploration roadmap, implementation plan and earlier research.
+
+Read [design-direction.md](design-direction.md) for the maintainer-approved
+creative toolkit vision, layered API model, theme/component relationships and
+decision rules for future agents. That direction operates within this stop line;
+it does not restart automatic feature expansion.
+
+`zdraw` makes it easier to build polished, responsive text-and-cell terminal
+interfaces in native Zsh. Its value is a coherent drawing and interaction
+contract, good reusable components, and dependable behavior during real use.
+
+## What belongs
+
+| Layer | Responsibility |
+| --- | --- |
+| Native module | Text and cell geometry, styled drawing, retained windows and pads, explicit presentation, structured input, resource accounting and terminal lifecycle. |
+| Optional Zsh libraries | Composable themes, styles, rectangular layouts, panels, lists, tables, forms, documents and compact data displays. Applications select and customize individual pieces. |
+| Development tools | Reproducible builds, diagnostics, representative benchmarks, visual comparisons and interaction tests that support those contracts. |
+| Applications | Data models, navigation, commands, business logic, asynchronous work and event-loop policy. |
+
+The native module remains independent and portable, with inherited behavior
+preserved and useful changes suitable for adaptation to Zsh. Companion libraries
+do not require an application framework. Existing charts and character canvases
+remain bounded ways to display data; they are not a route into image rendering.
+
+## The hard stop
+
+### Bounded exception: RGB raster and box resolve, 2026-09-27
+
+After the rectangle experiment, the maintainer explicitly approved the next
+bounded task: independent RGB raster colors, affine vertex-color interpolation,
+box resolve, and exact RGB half-block packing with frame pair preflight. The
+application evidence is Alpine Vigil's depth-encoded pigment/light workaround
+and measured shell row preparation. A fresh, self-contained capture supports
+correctness checks and comparison with its v0.1.2 presenter.
+
+The [RGB contract](raster-experiment.md#rgb-surfaces-and-resolve) fixes storage,
+color space, rounding, resource bounds and explicit presentation. This remains
+experimental. It authorizes no alpha, textures, image file ingestion, terminal
+image protocols, approximation policy, pair recycling or application-specific
+lighting/filter logic. The [measurements](../benchmarks/raster-rgb-2026-09-27.md)
+separate import/setup from presentation and do not claim to replace the painting's
+entire build. The general stop line and supported-promotion quality bar remain.
+
+### Bounded exception: raster rectangle batches, 2026-09-27
+
+The maintainer approved the next bounded experiment after color-pair preflight:
+capture Cinder Relay inputs, define rectangles to match its existing two-triangle
+submission, and measure output equivalence and submission cost including Zsh
+argument construction. The source supplied for capture is used only by an
+explicit development command; normal builds, tests and benchmarks use the
+self-contained fixture in this repository.
+
+This adds only axis-aligned rectangles with material and top/bottom inverse
+depth, expanded through the existing triangle kernel. It does not authorize
+textures, alpha, RGB raster storage, new presentation paths or broader graphics
+work. The addition remains experimental; see the
+[contract](raster-experiment.md#rectangle-batches) and
+[measurements](../benchmarks/raster-rectangles-2026-09-27.md).
+
+### Bounded task: exact color-pair preflight, 2026-09-27
+
+Following review of application requests and the maintainer's instruction to
+proceed, the selected first task is experimental, non-allocating preflight of an
+ordered list of native color pairs. It reports cache reuse, new demand and
+drawing-path limits without changing the existing allocation contract. See
+[the provisional API](native-api.md#color-pair-preflight-experimental).
+Self-contained correctness fixtures cover budget pressure; the synthetic
+15,718-pair case is not the requesting application's captured workload.
+
+This task stops at exact accounting, documentation and validation. Approximation,
+pair recycling, RGB raster storage, resolve filters, alpha, selective raster
+readback remain separate proposals; rectangle batches were subsequently approved
+as the bounded experiment above. The broader quality
+bar still applies before supported promotion; this does not reopen the roadmap.
+
+### Bounded exception: text-selection companion, 2026-09-17
+
+The maintainer approved the bounded experimental companion described in
+[text-selection.md](text-selection.md): pane-confined source ranges and highlight
+spans, an explicit event-consumption contract, a two-pane example, correctness
+and PTY checks, and drag measurements. A demonstrated mouse-delay validation
+fix is included. The API remains provisional; terminal comparison and the
+quality requirements below still apply before supported promotion. This does
+not authorize clipboard protocols, autoscroll, off-screen selection, an
+application framework, or broader roadmap progression.
+
+### Bounded exception: R1/R2 experiment, 2026-09-14
+
+The maintainer explicitly approved proceeding with an experiment in native
+depth-tested screen-space triangles and direct half-block cell packing after
+reviewing the z3dfx roadblocks and performance assessment. This authorizes only
+the bounded experiment described in [raster-experiment.md](raster-experiment.md),
+its correctness fixtures and measurements. It does not designate a supported
+graphics API, reopen the old roadmap, authorize image protocols or scaled text,
+or waive the quality requirements below for a supported addition.
+
+### General boundary
+
+- Remove image conversion, character-mosaic previews and native image-placement
+  experiments. No image renderer or image protocol is part of the supported API.
+- Cancel scaled-text work. Text uses the documented terminal-cell geometry.
+- Do not grow into a multimedia renderer, terminal emulator, general graphics
+  engine, application framework or second event-loop framework.
+- Stop automatic progression through old checklists. Unchecked entries are
+  historical candidates, not authorization or obligations to implement them.
+- Pause new feature families and protocol experiments. Work on the existing
+  surface is limited to demonstrated defects, usability and visual polish,
+  documentation, portability and measured performance problems until an explicit
+  new task is agreed.
+
+Previously shipped features other than images are not removed by this decision.
+Their existence is also not a commitment to expand them. Existing lifecycle and
+fallback guarantees remain obligations.
+
+## Quality required before adding anything
+
+A new proposal must pass every item below before it becomes supported work:
+
+- [ ] Identify a concrete application task and the current user-visible problem.
+- [ ] Compare the best relevant existing implementations on that same task.
+  Record versions, configurations and representative inputs. Do not claim
+  superiority without evidence.
+- [ ] Show a result at least as good as the strongest relevant alternative on
+  the task's essential outcomes: legibility, interaction, fidelity or speed.
+  Being implemented in Zsh is not a substitute for useful output.
+- [ ] Demonstrate why this belongs in `zdraw`; prefer composing an existing tool
+  when that gives the better result.
+- [ ] Verify actual terminal behavior at ordinary and narrow sizes, through
+  resize and lifecycle changes, with usable behavior on supported fallbacks.
+- [ ] Set a bounded API, ownership model, maintenance cost and stopping point.
+- [ ] Obtain an explicit decision to proceed with that bounded addition.
+
+Passing tests establishes correctness within the tested contract. It does not
+establish that the feature is worth shipping. If the visible result misses the
+quality bar, reject the feature instead of lowering the bar to finish a checklist.
+
+## Why images were removed
+
+The preview reduced screenshots to coarse character pixels, losing readable text
+and meaningful color detail. A larger raster and adaptive palette improved
+contrast but did not make the result useful. The separate native-placement
+experiment also had unresolved repaint, interruption and resume behavior.
+Neither justified a supported image feature or continued expansion.
+
+The implementation, converter, examples, dedicated tests, placement fixtures and
+capture artifacts have been removed. Their history remains in Git (`187c39b`,
+`6241c08`, `0ab8105`). This is a rejected direction, not a deferred image milestone.

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# SPDX-License-Identifier: Apache-2.0
+emulate -R zsh
+fpath=( "${0:A:h:h}/functions" "${fpath[@]}" )
+autoload -Uz zoup
+if [[ ${1-} == clean ]]; then
+  shift
+  zoup clean --stdout "$@"
+else
+  zoup "$@"
+fi

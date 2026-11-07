@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+# Refill only when a tag or quoted attribute crosses a '<' boundary.
+emulate -L zsh
+(( _zt_i <= 32768 )) || return 1
+_zoup_more || return 1
+_zt_length=${#_zc_rest}
+return 0

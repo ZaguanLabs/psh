@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: Apache-2.0
+# Autoload with: fpath=( /path/to/zoup/functions $fpath ); autoload -Uz zoup
+emulate -L zsh
+setopt extended_glob no_aliases typeset_silent
+local LC_ALL=C
+local _zoup_root=${${(%):-%x}:A:h}
+local -a fpath=( "$_zoup_root" "${fpath[@]}" )
+autoload -Uz _zoup_clean _zoup_tag _zoup_escape _zoup_url _zoup_more _zoup_tag_more _zoup_script
+
+local _zoup_input='' _zoup_chunk='' _zoup_output=''
+local -i _zoup_stdin=0 _zoup_stdout=0 _zoup_have_input=0 _zoup_read_status=0
+case ${1-} in
+  --help|-h)
+    print -r -- 'Usage: zoup clean [--stdout] -- HTML
+       zoup clean --stdin [--stdout]
+
+Returns cleaned HTML in REPLY; --stdout writes it instead.
+Input limit: 1048576 bytes. No external commands are used.'
+    return 0 ;;
+  --version) print -r -- 'zoup 0.1.0'; return 0 ;;
+  clean) shift ;;
+  *) print -ru2 -- 'zoup: expected clean, --help, or --version'; return 2 ;;
+esac
+while (( $# )); do
+  case $1 in
+    --stdin) (( _zoup_stdin )) && { print -ru2 -- 'zoup: repeated --stdin'; return 2; }; _zoup_stdin=1; shift ;;
+    --stdout) _zoup_stdout=1; shift ;;
+    --)
+      shift
+      (( $# == 1 && ! _zoup_stdin )) || { print -ru2 -- 'zoup: supply one HTML argument or --stdin'; return 2; }
+      _zoup_input=$1 _zoup_have_input=1
+      shift ;;
+    *) print -ru2 -- 'zoup: unknown argument; use -- before HTML'; return 2 ;;
+  esac
+done
+(( _zoup_have_input || _zoup_stdin )) || { print -ru2 -- 'zoup: missing HTML input'; return 2; }
+if (( ! _zoup_stdout )) && [[ -n ${(t)REPLY} && ${(t)REPLY} != (scalar|scalar-local) ]]; then
+  print -ru2 -- 'zoup: REPLY must be an ordinary writable scalar'
+  return 2
+fi
+if (( _zoup_stdin )); then
+  # Zsh's read cannot distinguish EOF from every descriptor error. sysread
+  # provides a separate EOF status and bounded byte reads without a subprocess.
+  builtin zmodload -F zsh/system b:sysread || { print -ru2 -- 'zoup: --stdin requires zsh/system'; return 1; }
+  while true; do
+    _zoup_chunk=''
+    builtin sysread -i 0 -s 4096 _zoup_chunk
+    _zoup_read_status=$?
+    (( _zoup_read_status == 5 )) && break
+    (( _zoup_read_status == 0 )) || { print -ru2 -- 'zoup: failed to read stdin'; return 1; }
+    _zoup_input+=$_zoup_chunk
+    (( ${#_zoup_input} <= 1048576 )) || { print -ru2 -- 'zoup: input exceeds 1048576 bytes'; return 1; }
+  done
+fi
+(( ${#_zoup_input} <= 1048576 )) || { print -ru2 -- 'zoup: input exceeds 1048576 bytes'; return 1; }
+if [[ $_zoup_input == *[$'\x00'-$'\x08'$'\x0b'$'\x0e'-$'\x1f'$'\x7f']* ]]; then
+  print -ru2 -- 'zoup: input contains unsupported control bytes'
+  return 1
+fi
+_zoup_input=${_zoup_input//$'\r\n'/$'\n'}
+_zoup_input=${_zoup_input//$'\r'/$'\n'}
+_zoup_clean || return $?
+if (( _zoup_stdout )); then
+  print -rn -- "$_zoup_output"
+else
+  REPLY=$_zoup_output
+fi

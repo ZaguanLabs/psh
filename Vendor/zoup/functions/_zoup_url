@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+# Return whether a literal URL has a supported, unambiguous prefix.
+emulate -L zsh
+setopt extended_glob
+local _zu_value=$1 _zu_prefix
+[[ $_zu_value != *[$' \t\r\n\f']* && $_zu_value != *'\'* ]] || return 1
+[[ $_zu_value == ('#'*|'/'*|'./'*|'../'*) ]] && return 0
+_zu_prefix=${_zu_value%%[/?]*}
+# Do not guess at entity-encoded schemes; query-string entities remain valid.
+[[ $_zu_prefix != *'&'* ]] || return 1
+if [[ $_zu_prefix == *:* ]]; then
+  [[ ${(L)_zu_prefix} == (http:|https:|mailto:|tel:)* ]] || return 1
+fi
+return 0

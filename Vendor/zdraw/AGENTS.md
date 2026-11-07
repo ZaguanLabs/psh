@@ -1,0 +1,25 @@
+# Project guidance
+
+- Follow the hard boundary in `docs/scope.md`. Automatic roadmap progression is
+  stopped. Image rendering and scaled text are out of scope; new feature families
+  require an explicit bounded task and evidence meeting the recorded quality bar.
+  Focus on the usefulness and quality of the existing text-and-cell TUI toolkit.
+
+- Develop `zdraw` as an independent, portable, general-purpose Zsh module derived
+  from `zsh/curses`. Keep useful fixes and extensions suitable for adaptation to
+  the official Zsh distribution. Keep application layouts,
+  command palettes and agent concepts out of the C module.
+- Do not depend on a contributor's home directory, distribution build tree,
+  installed module, or another application repository. Document reproducible
+  setup using publicly available Zsh sources.
+- Use the Zsh documentation shipped with the selected source release or the
+  public manual at https://zsh.sourceforge.io/Doc/Release/.
+- Preserve the recorded original sources in `upstream/` and their licence headers.
+- Build in `.build/`; never overwrite the installed module or supplied source tree
+  as part of a normal build or test.
+- Use the Zsh expertise skill for Zsh code. Run `make test` with `ZSH_BUILD_ROOT`
+  pointing to the selected Zsh source tree after code changes. Test against the
+  shell built from that tree; loading into another shell requires a matching ABI.
+- Preserve the inherited `zcurses` operation behavior under the `zdraw` builtin;
+  keep stock `zsh/curses` separate. New terminal protocols must be
+  opt-in and must have explicit input ownership and cleanup behavior.

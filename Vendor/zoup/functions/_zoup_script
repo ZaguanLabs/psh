@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: Apache-2.0
+# Discard script data while tracking HTML's escaped/double-escaped states.
+# _zoup_clean owns _zc_script_state, _zc_raw, and the input cursor. Segment
+# boundaries occur at '<', so a '-->' sequence never spans two segments.
+emulate -L zsh
+local _zs_text _zs_candidate
+
+if [[ $_zc_rest != '<'* ]]; then
+  _zs_text=${_zc_rest%%<*}
+  # Both escaped dash-dash states return to script data at '-->'. A '<'
+  # interrupts the dash run, so no dash state needs to cross a segment.
+  if [[ $_zc_script_state != data && $_zs_text == *'-->'* ]]; then
+    _zc_script_state=data
+  fi
+  _zc_rest=${_zc_rest[${#_zs_text}+1,-1]}
+  return 0
+fi
+
+_zs_candidate=${(L)_zc_rest[1,8]}
+if [[ $_zs_candidate == '</script' && $_zc_rest[9] == [$' \t\n\f/>'] ]]; then
+  if [[ $_zc_script_state == double ]]; then
+    # This apparent end tag only leaves double-escaped data. Its following
+    # text is still script content and must not reach the cleaned document.
+    _zc_script_state=escaped
+  else
+    _zoup_tag || return $?
+    _zc_raw=''
+    _zc_script_state=data
+    return 0
+  fi
+elif [[ $_zc_script_state == escaped && ${(L)_zc_rest[1,7]} == '<script' && $_zc_rest[8] == [$' \t\n\f/>'] ]]; then
+  _zc_script_state=double
+elif [[ $_zc_script_state == data && $_zc_rest == '<!--'* ]]; then
+  _zc_script_state=escaped
+  # Keep '--' in the text run: even '<!-->' immediately returns to data.
+  _zc_rest=${_zc_rest[3,-1]}
+  return 0
+fi
+
+# Other less-than signs are script data, not markup. Keeping the suffix for
+# the next pass also lets '-->' after a transition restore the data state.
+_zc_rest=${_zc_rest[2,-1]}
+return 0

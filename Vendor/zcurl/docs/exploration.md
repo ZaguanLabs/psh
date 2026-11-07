@@ -1,0 +1,191 @@
+# Where to push next
+
+Updated for 0.27.0-dev. Persistent WS/WSS handles have queued sends and
+explicit incremental receive/poll operations; see [the contract](websocket.md).
+The synchronous HTTP implementation uses libcurl's multi interface to process
+Zsh's queued signals between network steps. Named concurrent HTTP requests now
+share a separate multi pool, with submission, polling, collection and cancellation;
+see [the concurrency contract](concurrency.md). Autonomous background work is
+not implemented.
+
+[`zcurl poll`](polling.md) now drives concurrent HTTP and live WebSockets in
+one bounded call. [`make package`](deployment.md) produces a relocatable native
+bundle for compatible hosts. Autonomous progress and broader platform/ABI
+validation remain separate work.
+
+Read-only native arrays now expose retained HTTP and WebSocket names for
+script discovery and existing-handle completion without driving requests or
+replacing results; see [handle discovery](handles.md).
+
+HTTP requests now optionally negotiate and decode compressed responses for
+scalar and file output, with body limits applied after expansion; see
+[compression](compression.md).
+
+The working path is `Zsh builtin → libcurl → TLS backend → network`. The C
+module is the binding. A separate executable is an architectural option,
+not a prerequisite for HTTPS.
+
+Zsh's existing network modules expose useful sockets, but the bundled module
+list does not provide a general libcurl HTTP/TLS client. Building HTTP framing,
+certificate verification, proxies and TLS directly in shell code would spend
+effort on problems libcurl already handles. The useful boundary is shell-native
+request composition and results, with libcurl owning network protocols.
+
+## First customer milestone: zblade-cli
+
+The first development priority is efficient, stable operation of `zblade-cli`,
+the Zsh agentic coding harness, against its remote daemon over verified WSS.
+Broader libcurl feature coverage should follow demonstrated needs in this
+workflow. Existing HTTP discovery and WS transport behavior are the starting
+point; compatibility with the working client matters when extending the API.
+
+The sibling `../zblade-cli` checkout already contains a transport adapter,
+real-client WS/WSS and terminal fixtures, and a transport-only probe at
+`docs/verification/zcurl-blade-smoke.py`. Start with these existing workflows
+against the current module. The client's historical live-conversation results
+are useful evidence, but do not establish compatibility with each new build.
+
+Acceptance work for this milestone:
+
+1. Verify discovery, connection, authentication, streamed replies, tool-result
+   submission and automatic continuation through the actual client.
+2. Keep input, cancellation and WebSocket control traffic responsive during
+   sustained output and local tool work. Measure service-loop time, idle CPU,
+   throughput and memory before choosing optimizations or a different execution
+   model. The current client bounds events/bytes per tick; JSON decoding and
+   local work still share the owning shell thread.
+3. Exercise fragmented UTF-8 messages, interleaved control frames, large tool
+   results and slow peers. Queue pressure must remain bounded and observable.
+4. Exercise idle connections, abrupt loss, interrupted turns, reconnects and
+   peers that do not finish closing. Require finite operation deadlines and
+   explicit outcomes for pending work. Queue acceptance does not prove delivery;
+   reconnect/replay and tool-execution policy belong to the harness.
+5. Run bounded sustained-traffic and repeated-connect tests, checking resource
+   growth and cleanup as well as correctness. Record the workload, duration,
+   platform and measured responsiveness limits with each result.
+
+`zcurl` owns transport, byte integrity, bounded queues, connection lifecycle,
+and useful diagnostics. `zblade-cli` owns the daemon protocol, conversations,
+tool correlation, approvals, retries and recovery policy. Add convenience APIs
+when the client demonstrates repetitive transport work that can be removed
+without obscuring these responsibilities.
+
+The immediate next step is a current-build compatibility baseline, followed by
+the smallest fix or usability improvement exposed by that baseline. A passing
+transport probe alone is not completion of this customer milestone.
+
+## Candidate architectures
+
+| Design | Useful property | Boundary to test |
+| --- | --- | --- |
+| Synchronous native module | Persistent session; direct Zsh parameters; implemented here | Shell waits during the transfer; native faults affect the shell |
+| Native libcurl multi interface | Concurrent transfers on the shell thread without network worker threads | Something must drive socket readiness and timers; arbitrary shell execution is not an event loop |
+| Persistent libcurl worker plus Zsh client | Independent network progress and process isolation; session reuse across commands | Framing, cancellation, backpressure, result ownership, worker lifecycle |
+| External curl invocation | Mature existing interface; excellent for known batches | Separate invocations do not retain one shared connection pool |
+
+The explicit `zcurl http submit/poll/wait/wait-any/collect/cancel/drop/info` API now exercises
+libcurl's multi interface with retained request ownership and bounded storage.
+Local HTTP and HTTPS barriers demonstrate overlapping requests; cancellation,
+partial results, TLS pool reuse and PTY signals have regression coverage.
+Waiting for one handle continues driving the pool and has an independent wait
+deadline. `wait-any` applies the same driver to an explicit selection, preventing
+unrelated retained completions from masking a caller's batch results. Interactive
+integration remains open.
+
+`zle -F` is a useful readiness hook while the line editor is active. The local
+Zsh manual explicitly makes the caller responsible when ZLE is inactive.
+It handles readable descriptors; libcurl's event API also requires writable
+readiness and timer delivery. Treating `zle -F` as a complete, always-running
+libcurl event loop would miss these requirements.
+
+A worker can make progress while the shell runs other commands. A notification
+descriptor can tell Zsh when results are available; shell parameter mutation
+would still happen in the parent shell. A length-delimited protocol and bounded
+reads would preserve arbitrary bytes and keep a partial message from blocking
+the editor. This deserves a direct comparison if autonomous background
+requests turn out to be the main need.
+
+## What the first prototype deliberately leaves open
+
+1. **Result API.** Caller-owned associative snapshots are implemented and tested
+   through dynamic scope. Readonly/special/converting targets are rejected.
+   Raw response headers preserve duplicates, informational blocks and trailers.
+   [Header lookup](headers.md) now extracts individual values from saved
+   snapshots, with duplicate preservation and separate trailer selection.
+   Name discovery now lists the fields present in the selected response or trailers
+   before callers perform field-specific lookups.
+   Field-specific interpretation remains the consuming application's task.
+   Request-header construction now uses linear list building; a repeatable
+   [parser benchmark](header-performance.md) measures scaling to the header limit.
+2. **Streaming.** HTTP requests and responses can now stream through caller-opened
+   regular-file descriptors without accumulating scalar bodies; see
+   [file uploads](file-input.md) and [file output](file-output.md). Pipe/socket
+   sources and sinks still need explicit backpressure. Scalars remain convenient
+   for bounded API requests and responses.
+3. **Session identity.** [Named HTTP sessions](sessions.md) now own separate
+   synchronous and concurrent pools, with targeted reset and drop.
+   `curl_easy_reset` resets options but retains caches and other state; it is not
+   a security isolation boundary. Session timeout, response-size, routing and origin/proxy CA-file defaults now apply to
+   future requests. New sessions can copy those defaults from an existing name
+   while starting with fresh pools and no retained jobs. Individual defaults can
+   be restored atomically alongside updates to other settings.
+   Session inspection exposes those defaults and retained-job counts without I/O.
+   Per-session job lists support state filters, selected waits and scoped cleanup.
+   Broader configuration and cookies remain open work.
+   [Proxy/bypass options](proxy.md) select routing through session defaults and per-request overrides,
+   with HTTP forwarding and HTTPS CONNECT tests, while sharing libcurl HTTP pools.
+   WebSocket opens also accept routing overrides, with WS/WSS CONNECT coverage
+   and separate connections per handle.
+   HTTPS proxies now have independent CA-file configuration and tests for proxy
+   and origin certificate verification across HTTP and WS/WSS.
+   WebSocket callers can require one exact subprotocol at open; offering multiple
+   alternatives and allowing negotiation fallback remain caller policy.
+4. **Forks and lifecycle.** The current PID guard is an experimental restriction.
+   Children need explicitly independent state; merely duplicating a handle
+   does not make shared TLS sockets safe. Connection sockets and retained file
+   descriptors now have [private descriptor registration](descriptors.md),
+   with close/duplication, exec inheritance and repeated cleanup tests.
+   Libcurl auxiliary descriptors, other Zsh builds, signal traps, reentry and
+   module feature toggles still need further stress testing.
+5. **Concurrency.** Explicit overlapping transfers, cancellation and bounded
+   storage are implemented. Next, measure real consuming workloads and determine
+   whether they need scheduling independent of shell calls. Responsive typing
+   and correct timers while ZLE is active and inactive still need separate work.
+6. **Packaging.** Optional [native completion](completion.md) is implemented
+   and exercised in a real ZLE session. Separate [ASan and UBSan builds](sanitizers.md)
+   now run the full suite, including loaders, examples and PTYs. Multiple Zsh
+   builds, distributions, other sanitizers and dependency combinations still
+   need validation before promising a portable native module.
+
+The zblade-cli milestone above now leads the roadmap. Its measurements should
+determine whether explicit polling needs additional helpers or a different
+scheduling mechanism. HTTP concurrency feedback on deadlines, collection and
+admission limits remains useful as those facilities enter real client workflows.
+
+## Sources used
+
+Zsh documentation comes from the user-provided local 5.9.2 HTML manual:
+
+- [Module model and bundled modules](/home/stig/dev/ai/zaguan/PowerHouse/inspiration/zsh/zsh_html/Zsh-Modules.html)
+- [Command substitution](/home/stig/dev/ai/zaguan/PowerHouse/inspiration/zsh/zsh_html/Expansion.html#Command-Substitution)
+- [ZLE descriptor handlers](/home/stig/dev/ai/zaguan/PowerHouse/inspiration/zsh/zsh_html/Zsh-Line-Editor.html)
+
+Implementation details were checked against the downloaded upstream release:
+`../.deps/zsh-5.9.2/Etc/zsh-development-guide`, `Src/Modules/example.c`,
+`Src/module.c`, `Src/utils.c`, and the generated headers. In particular,
+`metafy`/`unmetafy` mediate between raw bytes and Zsh's internal strings.
+
+Primary libcurl references:
+
+- [Easy-handle reset and retained state](https://curl.se/libcurl/c/curl_easy_reset.html)
+- [Connection reuse in the API overview](https://curl.se/libcurl/c/libcurl.html)
+- [Multi-interface concurrency, event integration and blocking exceptions](https://curl.se/libcurl/c/libcurl-multi.html)
+- [Multi polling and timer behavior](https://curl.se/libcurl/c/curl_multi_poll.html)
+- [Driving transfers and completion/error handling](https://curl.se/libcurl/c/curl_multi_perform.html)
+- [Literal POST bodies and explicit lengths](https://curl.se/libcurl/c/CURLOPT_POSTFIELDS.html)
+- [Custom methods versus transfer behavior](https://curl.se/libcurl/c/CURLOPT_CUSTOMREQUEST.html)
+- [Header list lifetime and forwarding behavior](https://curl.se/libcurl/c/CURLOPT_HTTPHEADER.html)
+
+The architecture comparisons and proposed next steps above are engineering
+inferences; the synchronous HTTP, explicitly polled concurrent HTTP, WebSocket
+implementations and reported tests have been demonstrated here.

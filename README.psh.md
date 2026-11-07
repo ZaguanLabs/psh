@@ -23,6 +23,11 @@ shell. In a clean clone, the build script restores `.work/pristine` from the
 the same manifest. The baseline is never constructed from the optimized HEAD.
 Shallow clones may need `git fetch origin tag upstream/zsh-5.9.2` first.
 
+For an installed daily-driver executable, use the separate
+[private installation and bundled-package workflow](Packaging/README.md).
+It retains Zsh module names and personal startup filenames while moving all
+installed psh files and global configuration to private psh directories.
+
 See [the performance workflow](Perf/README.md),
 [the source-review map](Perf/audit.md), and
 [the first source/test patch](Perf/0001-short-prefix-array-replacement.patch).

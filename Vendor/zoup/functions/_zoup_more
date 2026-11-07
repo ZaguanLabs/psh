@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+# Append the next '<'-delimited segment. State belongs to _zoup_clean.
+emulate -L zsh
+(( _zc_next <= ${#_zc_input_parts} )) || return 1
+_zc_rest+="<${_zc_input_parts[_zc_next]}"
+(( _zc_next++ ))
+return 0

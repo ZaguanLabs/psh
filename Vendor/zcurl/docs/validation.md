@@ -1,0 +1,554 @@
+# Validation of 0.27.0-dev
+
+Environment: installed Zsh 5.9.2, Mageia x86_64, libcurl 8.21.0 with OpenSSL
+3.5.8. The module builds with `-std=c99 -Wall -Wextra`; an additional syntax
+check treats warnings as errors. Other Zsh builds and platforms are untested.
+
+## Reproduce
+
+```zsh
+make test
+make memcheck
+make ubsan
+make benchmark
+make benchmark-headers
+```
+
+Each test or benchmark recipe uses GNU `timeout`: a 240-second deadline sends
+SIGTERM to the command's process group, followed by SIGKILL after five seconds
+if it has not exited. A timeout fails the make target and prints a diagnostic.
+On slower machines, set an explicit larger bound, such as
+`make memcheck TEST_TIMEOUT=480s`. Python output is unbuffered so redirected logs
+show progress immediately. These recipe deadlines cover fixture setup, tests,
+and cleanup; they do not cover the prerequisite build and syntax checks.
+
+The Python fixture creates HTTP/1.1 loopback servers and a one-day localhost
+certificate under a temporary directory, including a non-ASCII path. The
+test shell has inherited proxy variables removed and runs with `zsh -df`.
+Proxy-specific tests install their own loopback proxy environment.
+No public endpoints, account credentials or system certificate changes are used.
+
+## First customer baseline: zblade-cli
+
+On 2026-09-11, the sibling client's
+`docs/verification/zcurl-blade-smoke.py` passed against the local 0.27.0-dev
+module over both WS and verified WSS. It exercised Blade envelopes,
+authentication, fragmented UTF-8, interleaved ping/pong, large tool results,
+continuation, approval/context exchanges, cancellation, abrupt EOF and reconnect
+without replay. The probe reported 575 polls for WS and 578 for WSS, with a
+maximum observed poll duration of 0.010 seconds in each run. These loopback
+measurements do not establish end-to-end UI latency or long-session stability.
+The process exited 0 under a 120-second watchdog with a five-second kill grace.
+
+The client's `make test` passed its 63 coordinator/tool assertions, then failed
+at executable startup because the configured ZaguanLabs/zcurses native module
+was missing. The WS/WSS executable and subsequent drawing checks therefore
+remain unverified against this build. This is a client dependency prerequisite,
+not evidence of a zcurl transport failure. Restore the matching zcurses build
+before continuing the actual-client baseline. Local logs and exit statuses are
+under `build/zblade-{transport,client}-baseline.*`.
+
+## Coverage
+
+### Shared polling and deployment
+
+The shared-poll changes passed the normal suite, Valgrind (`TEST_TIMEOUT=480s`),
+and ASan/UBSan. The sanitizer run used the installed GCC 13 compiler/runtime
+pair because the default GCC 15 ASan runtime was unavailable:
+
+```zsh
+make asan CC=/usr/lib/compat-cuda-gcc13/bin/gcc \
+    ASAN_RUNTIME=/usr/lib/compat-cuda-gcc13/lib64/libasan.so.8.0.0 TEST_TIMEOUT=480s
+```
+
+The added blocked-peer and WS/WSS fault-injection checks also passed separately
+with that instrumented module. `make test-package` passed the local extraction
+and network checks. Build checks verified reuse with unchanged settings and
+recompilation after switching to an older alternate header tree or changing
+compiler flags. These are local results, not a broader compatibility matrix.
+
+- `tests/ws-send-again.c` interposes the actual socket send beneath libcurl,
+  forcing the first nonempty WS and WSS frame calls to return AGAIN with zero payload bytes
+  sent. The test requires a zero-fragsize retry, exact 200,000-byte echo, and a
+  correctly framed subsequent message. This Linux probe runs in a separate
+  child, including sanitizer modes; it is not run under Valgrind. The existing
+  socket-backpressure tests remain Valgrind-covered.
+- Shared HTTP/WS/WSS polling crosses a two-pool HTTP response barrier while
+  transferring binary WS chunks, checks service of both sockets alongside an
+  uncollected HTTP completion, and exercises deadline expiry, validation before
+  driving, protocol failure, close, reset and snapshot ownership.
+  A stalled peer also checks that another WS handle and HTTP remain usable;
+  a concurrent HTTP release allows exact recovery of the 8 MiB WS payload.
+- Shared-poll PTYs exercise Ctrl-C with both HTTP and WS handles live, trap
+  reentry/unload rejection, changed result destinations, and post-interruption
+  recovery. The timing assertion covers this fixture, not every backend.
+- `make test-package` verifies archive/module digests, loads an extracted bundle
+  from a directory containing spaces and non-ASCII characters with only Zsh in
+  PATH, and performs verified HTTPS/WSS I/O. It validates local relocation,
+  not compatibility with a different host or Zsh ABI.
+
+### Existing transport and shell coverage
+
+- Actual builtin load/unload/reload; repeated verified HTTPS requests using
+  one connection independently counted by the server.
+- Untrusted certificate rejection, hostname mismatch rejection and CA option
+  reset; HTTP status separate from transport status.
+- POST/PUT/PATCH/DELETE/HEAD, empty POST, literal `@` data, all 256 byte values,
+  embedded NUL, trailing newlines, JSON/authentication/duplicate headers, and
+  server-observed absence of request state on the following GET.
+- Caller-owned associative results, full replacement, snapshots surviving
+  later calls/unload, dynamic scope, and adverse caller options.
+- Invalid names/subscripts, special/readonly/converting targets, bad methods,
+  header control characters and invalid numeric/options syntax. These cases
+  are checked to cause no HTTP requests.
+- Bounded body/headers, timeout, truncated Content-Length, chunked bodies,
+  response trailers, duplicate headers and interim response headers.
+- `--fail` retains error bodies; `--reset` opens a new connection next time;
+  invalid ordinary calls clear global result state.
+- Project loader preserving module paths and aliases, idempotent loading,
+  and the runnable example invoked outside the repository.
+- A real PTY checks Ctrl-C recovery. SIGUSR1 traps change the result target,
+  attempt request reentry and attempt active-module unload. The shell
+  remains usable, the outer request remains coherent, and changed targets
+  are not overwritten.
+
+The synchronous multi driver queues Zsh signals around libcurl calls and
+delivers them between calls. Tests establish these specific behaviors, not
+every resolver, signal trap, job-control combination, or backend behavior.
+
+## Descriptor-ownership coverage
+
+- Six simultaneous synchronous/concurrent HTTP/HTTPS and WS/WSS connection
+  sockets, all at descriptor numbers >=10. Ordinary `{fd}` closure and
+  duplication attempts fail; subsequent HTTP reuse and WS/WSS binary I/O work.
+- Actual socket close-on-exec flags checked through Linux `/proc`, with no
+  connection identities inherited by an executed child.
+- Private input/output duplicates rejecting closure and duplication, while
+  closing their caller-owned originals still permits an exact binary transfer.
+- Reset, WS drop, and three unload/reload cycles releasing sockets. Cached
+  HTTP sockets outlive their creating easy handles and still close correctly.
+- Caller-owned descriptors occupying 3..9 before connection creation, with
+  registration and cleanup of sockets opened above that range.
+
+These checks cover connection sockets and retained file duplicates, not every
+descriptor opened internally by libcurl backends. See [the scope](descriptors.md).
+
+## HTTP and WebSocket proxy coverage
+
+- Environment defaults, explicit direct routing, host/list/wildcard/CIDR
+  bypasses, empty-list overrides and per-request reset without environment edits.
+- Concurrent direct and proxied requests crossing an origin response barrier;
+  copied proxy/bypass strings surviving submitting-function scope.
+- HTTP forwarding, HTTPS CONNECT and connection reuse; origin certificate and
+  hostname rejection, refused tunnels and refused proxy connections with no
+  direct fallback.
+- Origin authorization/custom headers absent from CONNECT, Basic proxy URL
+  credentials, credential reset and no proxy authorization in tunneled requests.
+- Exact binary concurrent file output through CONNECT, and invalid options
+  rejected before either proxy or origin requests.
+- WS/WSS CONNECT routing, explicit and inherited settings, bypass overrides,
+  mixed direct/proxied handles and function-local option strings.
+- Authenticated WebSocket tunnels with origin authentication kept out of CONNECT
+  and proxy credentials kept out of the origin handshake; binary frames,
+  fragmented UTF-8, interleaved ping/pong, graceful close and reset/unload.
+- WebSocket TLS, authentication, refused tunnel and connection failures retain
+  no handle; invalid routing options are rejected before I/O.
+
+- HTTPS proxy forwarding and CONNECT with a separate proxy certificate; proxy
+  and origin trust remain independent, including hostname verification.
+- Proxy CA path ownership in concurrent jobs, option reset, binary bodies through
+  nested TLS, authenticated WS/WSS tunnels and proxy CA filename completion.
+
+Loopback HTTP and HTTPS proxies are covered with OpenSSL. See [routing and limitations](proxy.md).
+
+## Named HTTP sessions
+
+- Independent warm connections for two named pools and the default pool; targeted
+  reset/drop keeps the other pools warm. Origin connection/request counters
+  independently verify reuse, isolation and rejection before I/O.
+- Request headers, methods and CA settings reset between calls; binary file I/O
+  retains the ordinary synchronous result shape.
+- Management and discovery preserve every last-transfer field, including errors;
+  validation, 16-name admission, creation order, feature toggles, forks,
+  dynamic-scope results, global reset and repeated unload/reload are covered.
+- Named-session sockets remain private and close-on-exec. PTYs test cancellation,
+  recovery and rejection of session drop from a trap during a transfer.
+- Completion discovers session names without calling `zcurl` and handles
+  disabled discovery, dropped names and module unload.
+
+Concurrent session tests also cover HTTP/TLS response barriers across named and
+default pools, independent reuse checked by origin connection/request counts,
+all 17 pools under the shared 32-job cap, binary file output, deadline failure in
+one pool while another completes, retained-job reset/drop guards, failed
+admission cleanup and repeated global reset/unload with pending and completed
+jobs. PTY wait-any interruption spans two pools. The same cases run in the
+normal, UBSan, ASan and Valgrind suites (PTYs are excluded from Valgrind).
+
+Session default tests verify timeout/connection-timeout/response limits,
+order-independent explicit overrides, atomic partial patches, standard-value
+restoration, retained pool reuse, targeted reset/recreate, existing job settings
+and storage reservations, inherited admission limits, binary file output, strict
+validation and preserved transfer results. A local TCP peer accepts TLS bytes
+without completing the handshake to verify connection deadlines. Configuration
+while jobs are retained is checked against an origin request counter for no I/O.
+
+Session inspection tests check the eleven-field snapshot, configured/restored
+values, pending/done/cancelled job counts, independent sessions, drop/unload
+survival, dynamic scope, disabled discovery and strict destination validation.
+Failed-transfer and pending-job globals remain unchanged. Origin connection and
+request counts independently verify no inspection I/O and preserved pool reuse.
+
+Session job discovery tests cover all/pending/done/cancelled selections,
+HTTP failure classification, submission order, empty lists, foreign/default
+session exclusion, selected waits, scoped cleanup and copied-name lifetime.
+Destination validation, invalid options, dynamic scope, inherited shells and
+feature toggles preserve results. Origin request counts detect discovery I/O.
+The shared indexed-array validator also runs through the header lookup suite.
+
+Session CA defaults add origin/proxy trust independence, TLS hostname rejection,
+explicit override ordering, queued-job path ownership after clearing defaults,
+Unicode/newline filename round trips, 4096-byte configuration limits, atomic
+mixed numeric/path updates and repeated reset/drop/unload cleanup. The HTTPS
+proxy fixture independently counts CONNECT/forwarded requests. Transfer
+snapshots remain unchanged; session metadata includes both configured CA paths.
+
+Configuration-copy tests cover atomic creation, configured defaults, independent
+CA-path ownership, source reconfiguration/drop, copying with a pending job,
+empty job lists in copies, validation, registry capacity/order and hidden discovery.
+Eight verified HTTPS requests must use exactly four connections across the two
+sessions' synchronous and concurrent pools. Repeated copies and cleanup run
+under the same sanitizers and leak checks as other session operations.
+
+Session routing tests cover unset versus explicit empty metadata, environment
+inheritance, fixed routes despite environment changes, override ordering, queued
+ownership, independent session copies, reset/defaults and failed atomic patches.
+The plain proxy fixture requires nine forwarded requests and eighteen origin
+requests; the HTTPS proxy fixture verifies three tunnels with copied routing and
+independent trust. Bounded and Unicode/newline strings exercise validation and
+cleanup without interpreting them as proxy addresses during configuration.
+
+Selective-default restoration covers all seven fields, idempotent unsets,
+atomic combinations with ordinary updates, alias conflicts, invalid names and
+preserved transfer errors. Three server-observed TLS connections carry three
+requests: warm reuse, a retained job with its original CA path, and a rejected
+future TLS connection after trust removal. Proxy tests restore environment
+selection and bypass independently while retaining trust/limits and accepted jobs.
+Completion filters already updated/unset fields without reading session state.
+
+## Request-header construction
+
+The shared HTTP/WebSocket builder preserves header order while appending through
+a cached last node. Tests parse 65,536 shortest field specifications at the exact
+256 KiB boundary and reject an extra field. Concurrent and WebSocket parsers
+also reject oversized lists before I/O. The HTTP fixture verifies 40 ordered
+duplicates, owned copies after submission and an independent later request;
+the WebSocket fixture checks the same list plus its generated subprotocol field.
+Invalid partial lists and pending drop/reset/unload paths exercise cleanup.
+The added test permits exactly four origin requests, detecting accidental I/O
+from validation or cleanup. Existing proxy tests also retain header separation.
+
+`make benchmark-headers` measures parser scaling without network access and
+reports three-sample median/minimum/maximum timings; it has no pass/fail timing
+threshold. See [method and local results](header-performance.md).
+
+During 0.26.0-dev validation, an ASan run lost its PTY shell during the WebSocket
+signal test without a sanitizer report. The full retry and two isolated ASan signal runs passed.
+The PTY reader now includes captured terminal output when reads fail or the
+shell closes, so a recurrence retains useful diagnostics.
+
+## HTTP compression coverage
+
+- Gzip and zlib deflate generated independently by the loopback fixture; all
+  byte values and trailing newlines preserved in scalars and output files.
+- HTTP and verified HTTPS, concurrent scalar/file output, mixed decoding
+  policies, unchanged snapshot shapes, file upload and uncompressed responses.
+- Server-observed negotiation, literal header override/suppression, raw default
+  behavior, and synchronous option reset on a reused connection.
+- HEAD and decoded HTTP error bodies; unknown encodings and corrupt gzip in
+  synchronous/concurrent requests, followed by successful requests.
+- An inclusive scalar limit and decoded expansion limits for scalars and files;
+  Python independently checks actual output bytes. Invalid/duplicate flags and
+  non-HTTP use cause no network requests.
+
+Gzip/deflate support in the linked libcurl is required for these tests. Other
+decoders and every form of damaged stream are not covered; see
+[compression behavior](compression.md).
+
+## Handle-discovery coverage
+
+- Empty arrays, creation order, separate namespaces, duplicate rejection,
+  cancellation/completion/closure retention, collection/drop, and name reuse.
+- Unchanged result fields and no server-observed I/O from reads; an expired
+  submission stays pending until explicitly driven.
+- Readonly enforcement, inherited child arrays empty while parent arrays remain
+  intact, and indexing under `KSH_ARRAYS`.
+- Feature disable/enable preserving handles, reset emptying arrays, and three
+  unload/reload cycles with copied arrays surviving teardown.
+
+## Completion coverage
+
+An isolated Zsh PTY initializes actual compsys and invokes the registered ZLE
+completion widget. The test checks 224 resulting command buffers, including:
+
+- HTTP, WebSocket and header-lookup subcommands; operation-specific flags;
+  handle positions and the handle-free `http poll` grammar.
+- Variadic `wait-any` handle positions, interspersed options, `--`, namespace
+  filtering and fallback when discovery is disabled or the module is unloaded.
+- Live names for every existing-handle operation, namespace separation, no
+  suggestions for new names, and updates after drop and feature toggling.
+- Methods, frame types, body/HEAD exclusions, repeated headers, options after
+  a URL, end-of-options handling, and unsupported attached argument forms.
+- HTTP-only `--compressed` suggestions and suppression after use.
+- HTTP and WebSocket-open proxy/bypass flags, short aliases, duplicate suppression
+  and scheme prefixes; session configuration also completes proxy/bypass defaults.
+- Associative versus indexed result arrays; filtering readonly, converting,
+  unique and non-ASCII names.
+- CA filenames containing spaces and brackets, URL scheme prefixes, mid-word
+  insertion with `COMPLETE_IN_WORD`, aliases and a custom matcher style.
+- Completion after module unload, unchanged HTTP result parameters, and no
+  invocation of `zcurl` or server-observed network requests during completion.
+
+These are interactive completion checks on installed Zsh 5.9.2. They do not
+validate every framework or third-party completer. See [setup and behavior](completion.md).
+
+## Header-lookup coverage
+
+Name-discovery tests verify ASCII lowercase output, duplicate ordering,
+continuation handling, final-response and trailer selection, 101 versus other
+informational responses, and literal selectors for fields named `--names` or
+`--field`. They exercise a maximum-length name at the 256 KiB input bound,
+16,384 occurrences, dynamic scope, saved results after unload and pending jobs
+that must remain unadvanced. Malformed-input and invalid-target tests run in
+both value and name modes. Origin counters allow only the two explicit setup
+requests; discovery and validation add no I/O.
+
+The first 0.27.0-dev UBSan run exhausted the host's per-user thread allowance:
+4,032 threads were already in use against a soft limit of 4,096. The retry and
+Valgrind run used a soft limit of 8,192 in the test subprocess, within the existing
+hard limit of 115,490. Normal and ASan runs passed with the original allowance.
+
+`zcurl headers` is tested with actual HTTP responses and synthetic libcurl-style
+callback transcripts. Coverage includes:
+
+- Case-insensitive lookup, repeated `Set-Cookie`, identical duplicates, empty
+  values and missing fields, with stable order and no comma splitting.
+- Informational, proxy CONNECT and authentication blocks; HTTP/2 and HTTP/3
+  status-line forms; 101 upgrades; separate chunked-trailer lookup.
+- CRLF and LF lines, outer whitespace, legacy folding (including empty folds),
+  bytes above ASCII, and literal shell-looking values.
+- Synchronous and saved concurrent snapshots, lookup while a completed job is
+  retained, and preservation of transfer metadata and errors on both success
+  and failure. Arrays remain available after unload.
+- Partial header sections consisting of complete lines; malformed status/field
+  lines, orphan folds, NUL/control bytes and unterminated lines; the inclusive
+  256 KiB input boundary and rejection above it without partial publication.
+- Indexed-array validation, rejecting subscripts, absent/scalar/associative,
+  special, readonly, converting and unique targets. Dynamic scope works under
+  adverse caller options, including `KSH_ARRAYS`.
+
+The lookup does not establish transfer completeness or interpret field-specific
+semantics. HTTP/2/3 parsing fixtures validate their rendered status-line forms,
+not network negotiation of those protocols. See [the contract](headers.md).
+
+## File-output coverage
+
+`--output-fd` is tested for synchronous HTTP and concurrent HTTPS with ordinary
+regular files. Binary file contents are checked independently in Python.
+
+- All 256 byte values, NUL and trailing newlines; an 8 MiB-plus response written
+  without a scalar body; raw byte counts and unchanged result shapes.
+- Existing file offsets and append mode; original descriptors still writable
+  after synchronous transfers; closing/reusing originals after submission.
+- Private duplicates absent in executed children, released before collection,
+  and released by cancellation, drop, reset and unload. Linux `/proc` checks
+  count descriptors for the specific fixture files.
+- Invalid, read-only and nonregular destinations rejected before HTTP I/O;
+  body-limit and HTTP-error responses; a cancelled response retaining its prefix.
+- A per-shell file-size limit forcing a short write followed by a write error,
+  with status 23, `error_kind=output`, and the exact byte count checked on disk.
+- All 32 file-output jobs fitting without scalar-body reservations even with
+  large response limits; reset releasing their duplicate descriptors.
+
+File output remains bounded by `--max-body`. Pipe/socket backpressure and
+filesystem durability are outside this milestone; see [the contract](file-output.md).
+
+## File-upload coverage
+
+`--data-fd` is tested for synchronous and concurrent HTTP/HTTPS, including a
+combined upload/download through file descriptors.
+
+- All 256 byte values, NUL and trailing newlines, default POST, explicit PUT and
+  PATCH, empty files, and offsets beyond EOF. Python independently checks bytes.
+- Captured start offsets without changing the caller's position; two jobs
+  reading independent ranges from the same descriptor despite later seeks,
+  closure and reuse of the original descriptor.
+- An 8 MiB-plus binary file-to-file HTTPS round trip with an empty result body.
+- File growth excluded from a captured range; truncation producing status/code
+  42, `error_kind=input`, and a specific premature-EOF diagnostic.
+- Private duplicates absent in executed children and released before collection,
+  on cancellation, drop, reset, unload, expired submission deadlines, TLS failure,
+  and invalid output setup. Read-only and read/write sources are exercised.
+- Invalid/write-only/nonregular sources and conflicting options rejected before
+  HTTP I/O; following literal POST and GET requests restoring ordinary behavior.
+- All 32 jobs accepting a 160 MiB sparse source without payload reservations;
+  reset closes the duplicates without uploading those files.
+
+Pipe/socket sources, filesystem blocking bounds and application-level upload
+acknowledgments remain outside the contract. See [file uploads](file-input.md).
+
+## Concurrent HTTP coverage
+
+The 0.4.0-dev implementation and existing transports pass `make test`,
+`make memcheck`, and a C syntax check with `-Wall -Wextra -Werror` on the
+environment above. Tests run in fresh shells and include:
+
+- HTTP and verified HTTPS response barriers that require two requests to arrive
+  before either can complete, establishing overlap without a speed threshold.
+- Submission and cancellation before polling causing no server-observed I/O;
+  binary upload, methods, headers, URL and CA configuration surviving the
+  submitting function's scope; exact bytes checked independently in Python.
+- Connection reuse after collection, retained snapshots, and dynamic-scope
+  collection under adverse shell options.
+- A fast response completing while a partial response is held by a server gate;
+  cancelling that partial response retains its bytes and status. A WS handle
+  with the same name remains usable.
+- Independent HTTP failure, TLS trust failure, timeout, truncation and response
+  limits; submission deadlines expiring before the first network step.
+- Pending/duplicate/unknown handles, rejected destinations preserving results,
+  repeated ready events and continued progress with an uncollected completion.
+- Named waits driving both sides of HTTP/HTTPS response barriers, preserving
+  unrelated ready results, and continuing when another request times out.
+  Wait timeouts preserve pending requests for later completion; already failed
+  or cancelled targets remain collectable with their original outcome.
+- The 32-handle and 128 MiB reservation limits, rejection before response
+  allocation, release on collection/drop, and reset/unload of outstanding jobs.
+- Selected `wait-any` calls ignoring unrelated retained results while driving
+  unselected HTTP/HTTPS barrier dependencies; submission-order selection,
+  cancelled/failed/expired requests, timeout snapshots and dynamic scope.
+- Empty, duplicate, unknown, malformed and oversized selections and bad options
+  causing no HTTP I/O; the inclusive 32-handle bound accepting all names.
+- PTY Ctrl-C in poll, wait and wait-any preserving pending jobs; trap attempts to cancel/reenter/unload
+  being rejected; a trap changing a poll or wait destination without
+  losing the completed response.
+
+This is explicit cooperative HTTP concurrency. Autonomous background progress,
+ZLE scheduling, cross-platform behavior and other libcurl versions remain outside
+the validated scope. See [the contract](concurrency.md).
+
+## WebSocket coverage
+
+- Required single-subprotocol negotiation over WS/WSS and HTTP/HTTPS proxies;
+  exact token matching, final-response selection, whitespace handling, rejection
+  of absent/mismatched/duplicate/empty/list/quoted selections, and no retained
+  handle after failure. Informational and CONNECT headers cannot satisfy a
+  missing final selection; the offered header stays out of CONNECT requests.
+- Token length/character validation, conflicting manual headers in either order,
+  operation restrictions and unchanged manual-header behavior. Origin request
+  counts verify that parser failures cause no I/O; concurrent handles and
+  function-local tokens preserve independent ownership.
+
+`make test` and `make memcheck` also run a Python standard-library RFC 6455
+fixture, independently encoding and checking wire frames. The 0.3.0-dev run
+passed both targets and a C syntax check with `-Wall -Wextra -Werror`. The
+memory-check output is recorded locally in `build/websocket-valgrind.log`.
+
+- WS and verified WSS handles coexist with persistent HTTP requests; explicit
+  handshake authentication headers, untrusted and mismatched TLS certificates,
+  rejected upgrades, scheme restrictions and handshake deadlines.
+- All 256 byte values, NUL/trailing newlines, empty frames, and a 4 MB frame
+  round-trip through incremental receive and partial queued sends. The fixture
+  checks client masking and the send work bound for a zero-timeout poll.
+- An 8 MiB frame saturates a peer whose receive window is bounded and whose
+  reads wait for an explicit HTTP release. The test requires a partial send
+  with stalled queue progress, checks that each 100 ms poll returns within a
+  generous 2 s scheduling allowance, and verifies that retained frame storage
+  still counts against queue admission. Another WebSocket and HTTP remain
+  usable during the stall. Releasing the peer delivers the exact payload,
+  permits a new send, and allows a graceful close. This checks WS on loopback;
+  it does not establish bounds for every TLS backend or network condition.
+- Text fragmented across UTF-8 character boundaries, interleaved PING/PONG,
+  explicit unsolicited PONG, and automatically queued matching PONG payloads.
+- One-byte receive chunks and offsets from a frame whose payload arrives in
+  two network writes; frame/message completion metadata.
+- Transactional queue rejection and retry, invalid fragment type rejection,
+  256 empty-frame queue limit, duplicate names and the 32-handle limit.
+- Local/peer close handshakes, close reasons, empty peer close, abrupt EOF,
+  malformed UTF-8/close payloads, receive message bounds, retained terminal
+  diagnoses, reset/unload cleanup, and snapshots/dynamic-scope destinations.
+- A fork inheriting the module is rejected while the parent connection remains
+  usable. PTY tests exercise Ctrl-C during WS poll and handshake, reentrant
+  calls, unload attempts, and a signal trap replacing a result destination.
+
+The stalled-upgrade fixture exposed a connect-only handshake that outlasted
+`CURLOPT_TIMEOUT_MS` on this libcurl build. The module therefore enforces a
+monotonic handshake deadline in addition to libcurl's configured timeouts.
+Backend blocking caveats remain; this is not a hard real-time guarantee.
+
+The WS build minimum is now libcurl 8.16.0; this environment's 8.21.0 is the
+only version validated here. Broader proxy and subprotocol negotiation policies, other TLS backends,
+platforms and libcurl versions, ZLE integration, and the Blade application
+protocol still require integration testing. See [the API contract](websocket.md).
+
+## Undefined-behavior checks
+
+`make ubsan` builds a separate instrumented module and runs the entire suite,
+including the loader, examples, completion and signal PTYs. GCC 15.2.0 with
+`-fsanitize=undefined -fno-sanitize-recover=all` passed on the environment above.
+Every child-process report fails the suite, even for expected-failure subshells.
+
+A deliberate signed-overflow probe verified failure propagation. Process maps
+also confirmed that the staged loader loaded the instrumented library rather
+than the normal module. Missing or uninstrumented selections are rejected.
+See [reproduction, artifact selection and limits](sanitizers.md). The shell and
+third-party libraries themselves are not instrumented by this target.
+
+## Memory checks and dependency findings
+
+`make asan` builds a separate module with GCC 15.2.0 address and undefined-behavior
+instrumentation. The full suite passes, including all 224 completion cases,
+loader/examples, proxy tunnels and signal PTYs. The matching ASan runtime is
+preloaded into test children; leak detection is disabled for this target.
+A deliberately overflowing child whose failure was ignored by its parent still
+caused fixture cleanup to fail with the ASan diagnostic. Nine CLI rejection
+cases verified incompatible modes, missing runtime arguments and incorrect
+module selections before fixtures start. See [runtime setup and limits](sanitizers.md).
+
+`make memcheck` runs the scripted test shells under Valgrind with full leak
+checking and an error exit for memory errors and definitely lost allocations.
+PTY tests and the separately executed example remain uninstrumented.
+
+Unfiltered Valgrind reports two allocation stacks after loading/unloading
+this machine's libcurl: 16 bytes in libgpg-error and 192 bytes (144 direct,
+48 indirect) in libgcrypt, both from a libssh constructor. One load/unload
+of libcurl alone reproduces them, without Zsh, zcurl, curl initialization,
+or networking:
+
+```zsh
+cc -g tests/libcurl-load.c -ldl -o build/libcurl-load
+valgrind --keep-debuginfo=yes --leak-check=full \
+    --show-leak-kinds=definite build/libcurl-load
+```
+
+The normal memory-check target excludes only those two exact allocation
+stacks via `tests/valgrind-libcurl.supp`, including the observed Mageia shared
+library versions and constructor frames. Module allocations and all memory
+access errors remain checked. Repeated unload/reload repeats the dependency
+allocations; the module does not attempt to alter those libraries' global
+lifecycle. New library versions may require a fresh baseline investigation.
+
+`build/valgrind.log` records the refinement-session run. The ignore-listed
+build artifacts are local evidence, not prerequisites for running the tests.
+
+## Performance scope
+
+The benchmark compares the native module, one curl process per URL, and one
+curl process receiving all URLs. It uses 100 sequential three-byte HTTPS
+responses by default, three rounds, and rotated ordering. Times include shell
+startup and the relevant module/process startup. Server connection counts are
+reported separately. Run benchmarks without concurrent memory checks or other
+heavy work. This is a loopback overhead experiment, not a WAN throughput test.
+
+Pipe/socket streaming, autonomous background transfers, arbitrary fork inheritance,
+automatic redirects, cookies, default headers/credentials, HTTP/2/3-specific behavior,
+broader proxy integration and cross-platform ABI compatibility still need their own
+implementation and/or test coverage before being relied on.

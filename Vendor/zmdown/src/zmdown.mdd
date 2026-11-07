@@ -1,0 +1,15 @@
+name=zmdown
+link=dynamic
+load=no
+autofeatures="b:zmdown"
+objects="zmdown.o zmd_render.o zmd_grapheme.o zmd_md4c.o zmd_entity.o"
+
+:<<\Make
+# The module needs only libc. Do not inherit the host shell's curses libraries.
+zmdown.$(DL_EXT): override LIBS = -lc
+zmdown.o zmdown..o zmd_render.o zmd_render..o: $(sdir)/render.h
+zmd_render.o zmd_render..o zmd_md4c.o zmd_md4c..o: $(sdir)/md4c.h
+zmd_render.o zmd_render..o zmd_entity.o zmd_entity..o: $(sdir)/entity.h
+zmdown.o zmdown..o zmd_render.o zmd_render..o zmd_grapheme.o zmd_grapheme..o: $(sdir)/grapheme.h
+zmd_grapheme.o zmd_grapheme..o: $(sdir)/grapheme_data.h
+Make

@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: Apache-2.0
+# Consume one tag from _zc_rest. Shared output: _zt_name, _zt_close,
+# _zt_self, _zt_attrs, _zt_order. The caller owns all shared state.
+emulate -L zsh
+setopt extended_glob typeset_silent
+local _zt_key _zt_value _zt_quote
+local -i _zt_i=2 _zt_start _zt_length=${#_zc_rest} _zt_count=0
+_zt_name='' _zt_close=0 _zt_self=0
+_zt_attrs=() _zt_order=()
+if [[ $_zc_rest[_zt_i] == / ]]; then
+  _zt_close=1
+  (( _zt_i++ ))
+fi
+_zt_start=$_zt_i
+while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] == [a-zA-Z0-9:_-] ]]; do
+  (( _zt_i++ ))
+done
+_zt_name=${(L)_zc_rest[_zt_start,_zt_i-1]}
+while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )); do
+  while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] == [$' \t\n\f'] ]]; do (( _zt_i++ )); done
+  (( _zt_i <= 32768 )) || break
+  case $_zc_rest[_zt_i] in
+    '>') _zc_rest=${_zc_rest[_zt_i+1,-1]}; return 0 ;;
+    '/')
+      if [[ $_zc_rest[_zt_i+1] == '>' ]]; then
+        _zt_self=1
+        (( _zt_i < 32768 )) || break
+        _zc_rest=${_zc_rest[_zt_i+2,-1]}
+        return 0
+      fi
+      (( _zt_i++ )); continue ;;
+    '') break ;;
+  esac
+  _zt_start=$_zt_i
+  while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] != [$' \t\n\f/=>'] ]]; do
+    (( _zt_i++ ))
+  done
+  (( _zt_i > _zt_start )) || { print -ru2 -- 'zoup: malformed attribute'; return 1; }
+  _zt_key=${(L)_zc_rest[_zt_start,_zt_i-1]}
+  while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] == [$' \t\n\f'] ]]; do (( _zt_i++ )); done
+  _zt_value=''
+  if [[ $_zc_rest[_zt_i] == '=' ]]; then
+    (( _zt_i++ ))
+    while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] == [$' \t\n\f'] ]]; do (( _zt_i++ )); done
+    _zt_quote=$_zc_rest[_zt_i]
+    if [[ $_zt_quote == (\"|\') ]]; then
+      (( _zt_i++ ))
+      _zt_start=$_zt_i
+      while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] != $_zt_quote ]]; do
+        (( _zt_i++ ))
+      done
+      [[ $_zc_rest[_zt_i] == $_zt_quote ]] || { print -ru2 -- 'zoup: unterminated or oversized attribute'; return 1; }
+      _zt_value=${_zc_rest[_zt_start,_zt_i-1]}
+      (( _zt_i++ ))
+    else
+      _zt_start=$_zt_i
+      while { (( _zt_i <= _zt_length )) || _zoup_tag_more; } && (( _zt_i <= 32768 )) && [[ $_zc_rest[_zt_i] != [$' \t\n\f>'] ]]; do
+        (( _zt_i++ ))
+      done
+      _zt_value=${_zc_rest[_zt_start,_zt_i-1]}
+    fi
+  fi
+  (( ++_zt_count <= 128 )) || { print -ru2 -- 'zoup: tag exceeds 128 attributes'; return 1; }
+  # Invalid names are discarded; first duplicate wins as in HTML.
+  if [[ $_zt_key == [a-zA-Z]* && $_zt_key != *[^a-zA-Z0-9:_-]* && ! -v "_zt_attrs[$_zt_key]" ]]; then
+    _zt_attrs[$_zt_key]=$_zt_value
+    _zt_order+=( "$_zt_key" )
+  fi
+done
+print -ru2 -- 'zoup: unterminated tag or tag exceeds 32768 bytes'
+return 1

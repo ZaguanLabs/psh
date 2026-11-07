@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+# Internal protocol: return HTML-escaped text in the caller's _zoup_escaped.
+# Character references stay encoded for the downstream HTML parser.
+emulate -L zsh
+_zoup_escaped=$1
+[[ ${2-} == literal ]] && _zoup_escaped=${_zoup_escaped//&/&amp;}
+_zoup_escaped=${_zoup_escaped//</&lt;}
+_zoup_escaped=${_zoup_escaped//>/&gt;}
+_zoup_escaped=${_zoup_escaped//\"/&quot;}

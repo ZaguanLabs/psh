@@ -20,7 +20,13 @@ The build uses Python 3.12+, Git, a C compiler and Make. It restores the origina
 release sources from the `upstream/zsh-5.9.2` tag and verifies all 1,847 file
 hashes before building the baseline. The supplied release's generated configure
 script and documentation are included. Builds and private native modules live
-under `.work/`; `./psh` is the local executable. No system shell is installed.
+under `.work/`; `./psh` is the local executable. This development build does not
+install a system shell.
+
+For daily use, the separate [installation workflow](Packaging/README.md) builds
+an isolated `/usr/local/psh` distribution, bundles zdraw, zjson, zcurl, zmdown,
+zhtml2md, and zoup, and registers `/usr/local/bin/psh` in `/etc/shells` after
+validation. The stable Zsh installation remains in place.
 
 For a shallow clone, fetch the baseline tag first:
 
@@ -33,6 +39,7 @@ git fetch origin tag upstream/zsh-5.9.2
 - [Customer project workloads and remaining coverage](Perf/customer-projects.md)
 - [Source-review coverage](Perf/audit.md)
 - [Latest measurements and compatibility evidence](Perf/round15.md)
+- [Daily installation and bundled packages](Packaging/README.md)
 - [Upstream bug report, backported fix and reproducer](Perf/upstream-terminator-read.md)
 
 The review is ongoing. Test results are evidence of compatibility, not proof of

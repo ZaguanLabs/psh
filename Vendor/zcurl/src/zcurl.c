@@ -1,0 +1,1178 @@
+/* Zsh/libcurl binding. See README.md for the supported contract. */
+#define MODULE 1
+#include "zsh.mdh"
+#include "version.h"
+#include <curl/curl.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <poll.h>
+#include <time.h>
+#include <limits.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/socket.h>
+
+#define ZCURL_VERSION "0.27.0-dev"
+#define BODY_LIMIT (8L * 1024 * 1024)
+#define MAX_BODY_LIMIT (64L * 1024 * 1024)
+#define HEADER_LIMIT (256L * 1024)
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(*(a)))
+
+struct http_session {
+    struct http_session *next;
+    char *name;
+    CURL *easy;
+    CURLM *multi;
+    CURLM *http_multi;
+    size_t http_jobs;
+    long timeout, connect_timeout, max_body;
+    char *ca, *proxy_ca, *proxy, *noproxy;
+};
+static struct http_session default_session, *named_sessions;
+static pid_t owner;
+static int initialized, busy;
+static char *body, *headers, *error_text, *error_kind, *effective_url, *content_type;
+static zlong http_status, curl_code, new_connections, total_us;
+static zlong return_status, complete, received_bytes;
+static char *handle_text, *event_text, *state_text, *ws_type, *ws_close_reason;
+static char *channel_text;
+static zlong ws_offset, ws_bytesleft, ws_more, ws_message_end;
+static zlong ws_queued_bytes, ws_queued_frames, ws_close_code;
+
+enum buffer_failure { BUFFER_OK, BUFFER_LIMIT, BUFFER_MEMORY, BUFFER_OUTPUT };
+struct buffer {
+    char *data;
+    size_t len, capacity, limit;
+    enum buffer_failure failure;
+    int streaming, output_fd, output_errno;
+};
+
+struct http_input {
+    int active, fd, error, truncated;
+    off_t start;
+    curl_off_t length, offset;
+};
+
+struct request {
+    char *url, *ca, *method, *data, *result;
+    char *proxy, *noproxy, *proxy_ca;
+    char *session_name;
+    size_t data_len;
+    long timeout, connect_timeout, max_body;
+    int fail_http, head, has_data, has_input, input_fd, has_output, output_fd;
+    int compressed;
+    struct curl_slist *headers, *header_tail;
+    size_t header_bytes;
+};
+
+static size_t
+receive(char *data, size_t size, size_t count, void *context)
+{
+    struct buffer *b = context;
+    size_t n, needed, capacity;
+    char *p;
+    if ((size && count > SIZE_MAX / size) || size * count > b->limit - b->len) {
+        b->failure = BUFFER_LIMIT;
+        return 0;
+    }
+    n = size * count;
+    if (b->streaming) {
+        size_t offset = 0;
+        while (offset < n) {
+            ssize_t written = write(b->output_fd, data + offset, n - offset);
+            if (written < 0 && errno == EINTR) continue;
+            if (written <= 0) {
+                b->failure = BUFFER_OUTPUT;
+                b->output_errno = written < 0 ? errno : EIO;
+                return CURL_WRITEFUNC_ERROR;
+            }
+            offset += (size_t)written;
+            b->len += (size_t)written;
+        }
+        return n;
+    }
+    needed = b->len + n + 1;
+    if (needed > b->capacity) {
+        capacity = b->capacity ? b->capacity * 2 : 4096;
+        if (capacity < needed)
+            capacity = needed;
+        if (capacity > b->limit + 1)
+            capacity = b->limit + 1;
+        p = realloc(b->data, capacity);
+        if (!p) {
+            b->failure = BUFFER_MEMORY;
+            return 0;
+        }
+        b->data = p;
+        b->capacity = capacity;
+    }
+    memcpy(b->data + b->len, data, n);
+    b->len += n;
+    b->data[b->len] = '\0';
+    return n;
+}
+
+static int64_t
+monotonic_ms(void)
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (int64_t)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+}
+
+static int
+interrupted(void)
+{
+    return errflag || retflag || breaks || contflag;
+}
+
+static int
+progress(UNUSED(void *context), UNUSED(curl_off_t dt), UNUSED(curl_off_t dn),
+         UNUSED(curl_off_t ut), UNUSED(curl_off_t un))
+{
+    return interrupted();
+}
+
+/* Connection sockets can outlive their easy handle in a multi cache. These
+ * callbacks therefore use no per-request state. Keep sockets above the shell's
+ * single-digit redirection range and reject {var} closure through fdtable. */
+static curl_socket_t
+open_connection_socket(UNUSED(void *context), curlsocktype purpose, struct curl_sockaddr *address)
+{
+    int fd, owned, saved_errno;
+    if (purpose != CURLSOCKTYPE_IPCXN) return CURL_SOCKET_BAD;
+    fd = socket(address->family, address->socktype, address->protocol);
+    if (fd < 0) return CURL_SOCKET_BAD;
+    if (fd < 10) {
+        owned = fcntl(fd, F_DUPFD_CLOEXEC, 10);
+        saved_errno = errno;
+        close(fd);
+        if (owned < 0) { errno = saved_errno; return CURL_SOCKET_BAD; }
+    } else {
+        owned = fd;
+        if (fcntl(owned, F_SETFD, FD_CLOEXEC) < 0) {
+            saved_errno = errno;
+            close(owned);
+            errno = saved_errno;
+            return CURL_SOCKET_BAD;
+        }
+    }
+    addmodulefd(owned, FDT_INTERNAL);
+    return owned;
+}
+
+static int
+close_connection_socket(UNUSED(void *context), curl_socket_t fd)
+{
+    return zclose(fd) < 0 ? 1 : 0;
+}
+
+/* All parameter publication happens with Zsh signals queued. */
+static void
+replace_text(char **target, const char *data, size_t len)
+{
+    char *next = metafy((char *)data, (int)len, META_DUP);
+    zsfree(*target);
+    *target = next;
+}
+
+static void
+set_error(const char *kind, const char *message, int status)
+{
+    replace_text(&error_kind, kind, strlen(kind));
+    replace_text(&error_text, message, strlen(message));
+    return_status = status;
+}
+
+/* Capture a finite range, not file contents. pread keeps every request's
+ * cursor independent of the caller and other jobs using the same descriptor. */
+static int
+prepare_input(struct request *r, struct http_input *input)
+{
+    struct stat st;
+    off_t start, length;
+    int flags, fd;
+    if (!r->has_input) return 1;
+    flags = fcntl(r->input_fd, F_GETFL);
+    if (flags < 0 || ((flags & O_ACCMODE) != O_RDONLY && (flags & O_ACCMODE) != O_RDWR) ||
+        fstat(r->input_fd, &st) < 0 || !S_ISREG(st.st_mode) || st.st_size < 0 ||
+        (start = lseek(r->input_fd, 0, SEEK_CUR)) < 0) {
+        set_error("usage", "--data-fd requires an open readable regular-file descriptor", 2);
+        return 0;
+    }
+    length = st.st_size > start ? st.st_size - start : 0;
+    input->length = (curl_off_t)length;
+    if (input->length < 0 || (uintmax_t)input->length != (uintmax_t)length) {
+        set_error("usage", "input file range exceeds libcurl's supported size", 2);
+        return 0;
+    }
+    fd = fcntl(r->input_fd, F_DUPFD_CLOEXEC, 10);
+    if (fd < 0) {
+        set_error("input", "could not duplicate input descriptor", 2);
+        return 0;
+    }
+    addmodulefd(fd, FDT_INTERNAL);
+    input->active = 1;
+    input->fd = fd;
+    input->start = start;
+    return 1;
+}
+
+static void
+close_input(struct http_input *input)
+{
+    if (input->active && input->fd >= 0) {
+        int fd = input->fd;
+        input->fd = -1;
+        zclose(fd);
+    }
+}
+
+static size_t
+read_input(char *data, size_t size, size_t count, void *context)
+{
+    struct http_input *input = context;
+    curl_off_t remaining = input->length - input->offset;
+    size_t n;
+    ssize_t got;
+    if (size && count > SIZE_MAX / size) {
+        input->error = EOVERFLOW;
+        return CURL_READFUNC_ABORT;
+    }
+    n = size * count;
+    if ((uintmax_t)n > (uintmax_t)remaining) n = (size_t)remaining;
+    if (n > SSIZE_MAX) n = SSIZE_MAX;
+    if (!n) return 0;
+    do {
+        got = pread(input->fd, data, n, input->start + (off_t)input->offset);
+    } while (got < 0 && errno == EINTR);
+    if (got <= 0) {
+        if (got < 0) input->error = errno;
+        else input->truncated = 1;
+        return CURL_READFUNC_ABORT;
+    }
+    input->offset += (curl_off_t)got;
+    return (size_t)got;
+}
+
+static int
+seek_input(void *context, curl_off_t offset, int origin)
+{
+    struct http_input *input = context;
+    curl_off_t base;
+    switch (origin) {
+    case SEEK_SET: base = 0; break;
+    case SEEK_CUR: base = input->offset; break;
+    case SEEK_END: base = input->length; break;
+    default: return CURL_SEEKFUNC_FAIL;
+    }
+    if (offset < -base || offset > input->length - base) return CURL_SEEKFUNC_FAIL;
+    input->offset = base + offset;
+    return CURL_SEEKFUNC_OK;
+}
+
+/* The duplicate shares the caller's file offset, but has its own lifetime.
+ * FDT_INTERNAL blocks {var} closure; FDT_MODULE does not on Zsh 5.9.2. */
+static int
+prepare_output(struct request *r, struct buffer *b)
+{
+    struct stat st;
+    int flags, fd;
+    if (!r->has_output) return 1;
+    flags = fcntl(r->output_fd, F_GETFL);
+    if (flags < 0 || ((flags & O_ACCMODE) != O_WRONLY && (flags & O_ACCMODE) != O_RDWR) ||
+        fstat(r->output_fd, &st) < 0 || !S_ISREG(st.st_mode)) {
+        set_error("usage", "--output-fd requires an open writable regular-file descriptor", 2);
+        return 0;
+    }
+    fd = fcntl(r->output_fd, F_DUPFD_CLOEXEC, 10);
+    if (fd < 0) {
+        set_error("output", "could not duplicate output descriptor", 2);
+        return 0;
+    }
+    addmodulefd(fd, FDT_INTERNAL);
+    b->streaming = 1;
+    b->output_fd = fd;
+    return 1;
+}
+
+static int
+close_output(struct buffer *b)
+{
+    if (b->streaming && b->output_fd >= 0) {
+        int fd = b->output_fd;
+        b->output_fd = -1;
+        if (zclose(fd) < 0) {
+            if (b->failure == BUFFER_OK) {
+                b->failure = BUFFER_OUTPUT;
+                b->output_errno = errno;
+            }
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static void
+clear_result(void)
+{
+    replace_text(&body, "", 0);
+    replace_text(&headers, "", 0);
+    replace_text(&error_text, "", 0);
+    replace_text(&error_kind, "none", 4);
+    replace_text(&effective_url, "", 0);
+    replace_text(&content_type, "", 0);
+    http_status = new_connections = total_us = received_bytes = complete = 0;
+    return_status = 0;
+    curl_code = -1; /* No transfer has been attempted. */
+    replace_text(&handle_text, "", 0);
+    replace_text(&event_text, "", 0);
+    replace_text(&state_text, "", 0);
+    replace_text(&ws_type, "", 0);
+    replace_text(&ws_close_reason, "", 0);
+    replace_text(&channel_text, "", 0);
+    ws_offset = ws_bytesleft = ws_more = ws_message_end = 0;
+    ws_queued_bytes = ws_queued_frames = ws_close_code = 0;
+}
+
+/* Arguments are metafied, even for a builtin. Data may contain embedded NUL. */
+static char *
+decode(char *value, size_t *length)
+{
+    int len;
+    char *copy = dupstring(value);
+    unmetafy(copy, &len);
+    *length = (size_t)len;
+    return copy;
+}
+
+static char *
+text_argument(char *value)
+{
+    size_t len;
+    char *copy = decode(value, &len);
+    return memchr(copy, '\0', len) ? NULL : copy;
+}
+
+static int
+decimal(const char *value, long min, long max, long *out)
+{
+    char *end;
+    long n;
+    if (!*value || strspn(value, "0123456789") != strlen(value))
+        return 0;
+    errno = 0;
+    n = strtol(value, &end, 10);
+    if (errno || *end || n < min || n > max)
+        return 0;
+    *out = n;
+    return 1;
+}
+
+/* An explicit ASCII grammar avoids subscript/arithmetic evaluation. */
+static int
+identifier(const char *value)
+{
+    const char *first = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+    const char *rest = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789";
+    return *value && strchr(first, *value) && strspn(value, rest) == strlen(value);
+}
+
+static Param
+result_parameter(char *name)
+{
+    Param pm;
+    int forbidden = PM_READONLY | PM_SPECIAL | PM_TIED | PM_AUTOLOAD |
+        PM_LEFT | PM_RIGHT_B | PM_RIGHT_Z | PM_LOWER | PM_UPPER | PM_RESTRICTED;
+    if (!identifier(name))
+        return NULL;
+    pm = (Param)gethashnode2(paramtab, name);
+    if (!pm || PM_TYPE(pm->node.flags) != PM_HASHED ||
+        (pm->node.flags & forbidden) || pm->gsu.h != &stdhash_gsu)
+        return NULL;
+    return pm;
+}
+
+static Param
+indexed_result_parameter(char *name)
+{
+    Param pm;
+    int forbidden = PM_READONLY | PM_SPECIAL | PM_TIED | PM_AUTOLOAD | PM_UNIQUE |
+        PM_LEFT | PM_RIGHT_B | PM_RIGHT_Z | PM_LOWER | PM_UPPER | PM_RESTRICTED;
+    if (!identifier(name)) return NULL;
+    pm = (Param)gethashnode2(paramtab, name);
+    if (!pm || PM_TYPE(pm->node.flags) != PM_ARRAY ||
+        (pm->node.flags & forbidden) || pm->gsu.a != &stdarray_gsu) return NULL;
+    return pm;
+}
+
+static int
+token(const char *value, size_t len)
+{
+    return len && strspn(value,
+        "!#$%&'*+-.^_`|~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") >= len;
+}
+
+static int
+add_header(struct request *r, const char *value)
+{
+    const char *colon = strchr(value, ':');
+    const unsigned char *p = (const unsigned char *)value;
+    struct curl_slist *next;
+    size_t n = strlen(value);
+    /* Accept one HTTP field per option, including curl's 'Name:' suppression. */
+    if (!colon || !token(value, (size_t)(colon - value)))
+        return 0;
+    for (; *p; ++p)
+        if ((*p < 32 && *p != '\t') || *p == 127)
+            return 0;
+    if (n + 2 > HEADER_LIMIT - r->header_bytes)
+        return 0;
+    /* Append through the last node to avoid walking the entire list. Let
+     * libcurl allocate/link nodes; its returned pointer is this sublist's head. */
+    next = curl_slist_append(r->header_tail, value);
+    if (!next) {
+        set_error("memory", "could not allocate request headers", 27);
+        return 0;
+    }
+    if (r->header_tail) r->header_tail = r->header_tail->next;
+    else r->headers = r->header_tail = next;
+    r->header_bytes += n + 2;
+    return 1;
+}
+
+enum option_id { CA, TIMEOUT, CONNECT_TIMEOUT, METHOD, HEADER, DATA, RESULT,
+                 MAX_BODY, FAIL_HTTP, HEAD, OUTPUT_FD, DATA_FD, COMPRESSED, PROXY, NOPROXY, PROXY_CA, SESSION };
+struct option_spec { const char *short_name, *long_name; enum option_id id; int value; };
+static const struct option_spec option_specs[] = {
+    {"-c", "--cacert", CA, 1},
+    {"-t", "--timeout", TIMEOUT, 1},
+    {NULL, "--connect-timeout", CONNECT_TIMEOUT, 1},
+    {"-X", "--request", METHOD, 1},
+    {"-H", "--header", HEADER, 1},
+    {"-d", "--data", DATA, 1},
+    {"-r", "--result", RESULT, 1},
+    {NULL, "--max-body", MAX_BODY, 1},
+    {"-f", "--fail", FAIL_HTTP, 0},
+    {"-I", "--head", HEAD, 0},
+    {NULL, "--output-fd", OUTPUT_FD, 1},
+    {NULL, "--data-fd", DATA_FD, 1},
+    {NULL, "--compressed", COMPRESSED, 0},
+    {"-x", "--proxy", PROXY, 1},
+    {NULL, "--noproxy", NOPROXY, 1},
+    {NULL, "--proxy-cacert", PROXY_CA, 1},
+    {NULL, "--session", SESSION, 1},
+};
+
+static int session_request_defaults(struct request *r, unsigned seen);
+
+static int
+parse_request(char **args, struct request *r)
+{
+    int options = 1;
+    unsigned seen = 0;
+    while (*args) {
+        char *arg = text_argument(*args++), *value = NULL;
+        const struct option_spec *spec = NULL;
+        size_t i;
+        if (!arg)
+            goto invalid;
+        if (options && !strcmp(arg, "--")) {
+            options = 0;
+            continue;
+        }
+        if (!options || arg[0] != '-' || !arg[1]) {
+            if (r->url || !*arg) {
+                set_error("usage", "expected exactly one nonempty URL", 2);
+                return 0;
+            }
+            r->url = arg;
+            continue;
+        }
+        for (i = 0; i < ARRAY_SIZE(option_specs); ++i) {
+            const struct option_spec *s = &option_specs[i];
+            if (!strcmp(arg, s->long_name) || (s->short_name && !strcmp(arg, s->short_name))) {
+                spec = s;
+                break;
+            }
+        }
+        if (!spec) {
+            set_error("usage", "unknown option; use zcurl --help (option values must be separate words)", 2);
+            return 0;
+        }
+        if (spec->id != HEADER && (seen & (1u << spec->id))) {
+            set_error("usage", "only --header may be repeated", 2);
+            return 0;
+        }
+        seen |= 1u << spec->id;
+        if (spec->value) {
+            if (!*args) {
+                set_error("usage", "missing option value", 2);
+                return 0;
+            }
+            if (spec->id == DATA) {
+                r->data = decode(*args++, &r->data_len);
+                r->has_data = 1;
+                continue;
+            }
+            if (!(value = text_argument(*args++)))
+                goto invalid;
+        }
+        switch (spec->id) {
+        case CA: r->ca = value; if (!*value) goto invalid; break;
+        case PROXY: r->proxy = value; break;
+        case NOPROXY: r->noproxy = value; break;
+        case PROXY_CA: r->proxy_ca = value; if (!*value) goto invalid; break;
+        case SESSION:
+            if (!identifier(value) || strlen(value) > 64) goto invalid;
+            r->session_name = value; break;
+        case METHOD:
+            if (!token(value, strlen(value))) goto invalid;
+            r->method = value;
+            break;
+        case TIMEOUT:
+            if (!decimal(value, 1, 600000, &r->timeout)) goto invalid;
+            break;
+        case CONNECT_TIMEOUT:
+            if (!decimal(value, 1, 600000, &r->connect_timeout)) goto invalid;
+            break;
+        case MAX_BODY:
+            if (!decimal(value, 1, MAX_BODY_LIMIT, &r->max_body)) goto invalid;
+            break;
+        case HEADER:
+            if (!add_header(r, value)) {
+                if (!return_status)
+                    set_error("usage", "invalid header or request headers exceed 256 KiB", 2);
+                return 0;
+            }
+            break;
+        case RESULT:
+            if (!result_parameter(value)) {
+                set_error("usage", "--result requires a declared, writable, ordinary associative array", 2);
+                return 0;
+            }
+            r->result = value;
+            break;
+        case FAIL_HTTP: r->fail_http = 1; break;
+        case COMPRESSED: r->compressed = 1; break;
+        case HEAD: r->head = 1; break;
+        case DATA_FD: {
+            long fd;
+            if (!decimal(value, 0, INT_MAX, &fd)) goto invalid;
+            r->has_input = 1;
+            r->input_fd = (int)fd;
+            break;
+        }
+        case OUTPUT_FD: {
+            long fd;
+            if (!decimal(value, 0, INT_MAX, &fd)) goto invalid;
+            r->has_output = 1;
+            r->output_fd = (int)fd;
+            break;
+        }
+        case DATA: break;
+        }
+    }
+    if (!r->url) {
+        set_error("usage", "expected one URL; use zcurl --help", 2);
+        return 0;
+    }
+    if (r->method && !strcmp(r->method, "HEAD"))
+        r->head = 1;
+    if (r->has_data && r->has_input) {
+        set_error("usage", "--data and --data-fd cannot be combined", 2);
+        return 0;
+    }
+    if (r->head && (r->has_data || r->has_input || (r->method && strcmp(r->method, "HEAD")))) {
+        set_error("usage", "HEAD cannot be combined with data or a different method", 2);
+        return 0;
+    }
+    return session_request_defaults(r, seen);
+invalid:
+    set_error("usage", "invalid option value, method, or embedded NUL outside request data", 2);
+    return 0;
+}
+
+static void
+close_session(struct http_session *s)
+{
+    if (s->easy)
+        curl_easy_cleanup(s->easy);
+    s->easy = NULL;
+    if (s->multi)
+        curl_multi_cleanup(s->multi);
+    s->multi = NULL;
+    if (s->http_multi)
+        curl_multi_cleanup(s->http_multi);
+    s->http_multi = NULL;
+}
+
+#include "http_sessions.c"
+
+/* Enter/leave with signals queued. Shell traps run only outside libcurl. */
+static CURLcode
+drive_request(struct http_session *s, char *diagnostic, int *started)
+{
+    CURL *session = s->easy;
+    CURLM *pool = s->multi;
+    CURLMcode mc = curl_multi_add_handle(pool, session);
+    CURLcode rc = CURLE_FAILED_INIT;
+    int attached = mc == CURLM_OK;
+    while (mc == CURLM_OK) {
+        int stop, running, remaining;
+        CURLMsg *message;
+        unqueue_signals();
+        stop = interrupted();
+        queue_signals();
+        if (stop) {
+            rc = CURLE_ABORTED_BY_CALLBACK;
+            break;
+        }
+        *started = 1;
+        mc = curl_multi_perform(pool, &running);
+        if (mc != CURLM_OK)
+            break;
+        message = curl_multi_info_read(pool, &remaining);
+        if (message && message->msg == CURLMSG_DONE && message->easy_handle == session) {
+            rc = message->data.result;
+            break;
+        }
+        if (!running) {
+            snprintf(diagnostic, CURL_ERROR_SIZE, "libcurl completed without a transfer result");
+            break;
+        }
+        /* libcurl shortens this further when its own timer is due. */
+        mc = curl_multi_poll(pool, NULL, 0, 100, NULL);
+    }
+    if (attached) {
+        CURLMcode removed = curl_multi_remove_handle(pool, session);
+        if (mc == CURLM_OK)
+            mc = removed;
+    }
+    if (mc != CURLM_OK) {
+        snprintf(diagnostic, CURL_ERROR_SIZE, "libcurl multi: %s", curl_multi_strerror(mc));
+        rc = CURLE_FAILED_INIT;
+        /* A failed multi stack must not be reused for subsequent transfers. */
+        curl_multi_cleanup(pool);
+        s->multi = NULL;
+    }
+    return rc;
+}
+
+/* libcurl copies string options. Persistent literal bodies need their own copy;
+ * header lists and callback storage remain owned by the caller. */
+static CURLcode
+configure_http(CURL *easy, struct request *r, struct buffer *b,
+               struct buffer *h, struct http_input *input, char *diagnostic, int persistent)
+{
+    CURLcode rc;
+#define SET(option, value) do { \
+    rc = curl_easy_setopt(easy, option, value); \
+    if (rc != CURLE_OK) return rc; \
+} while (0)
+    SET(CURLOPT_URL, r->url);
+    SET(CURLOPT_DEFAULT_PROTOCOL, "https");
+    SET(CURLOPT_PROTOCOLS_STR, "http,https");
+    SET(CURLOPT_REDIR_PROTOCOLS_STR, "https");
+    SET(CURLOPT_FOLLOWLOCATION, 0L);
+    SET(CURLOPT_SSL_VERIFYPEER, 1L);
+    SET(CURLOPT_SSL_VERIFYHOST, 2L);
+    SET(CURLOPT_NOSIGNAL, 1L);
+    SET(CURLOPT_OPENSOCKETFUNCTION, open_connection_socket);
+    SET(CURLOPT_CLOSESOCKETFUNCTION, close_connection_socket);
+    SET(CURLOPT_TIMEOUT_MS, r->timeout);
+    SET(CURLOPT_CONNECTTIMEOUT_MS, r->connect_timeout);
+    SET(CURLOPT_ERRORBUFFER, diagnostic);
+    SET(CURLOPT_WRITEFUNCTION, receive);
+    SET(CURLOPT_WRITEDATA, b);
+    SET(CURLOPT_HEADERFUNCTION, receive);
+    SET(CURLOPT_HEADERDATA, h);
+    SET(CURLOPT_NOPROGRESS, persistent ? 1L : 0L);
+    SET(CURLOPT_XFERINFOFUNCTION, progress);
+    SET(CURLOPT_HTTPHEADER, r->headers);
+    SET(CURLOPT_HEADEROPT, (long)CURLHEADER_SEPARATE);
+    /* An empty string negotiates every decoder supported by this libcurl.
+     * The write callback receives decoded bytes and enforces --max-body. */
+    SET(CURLOPT_ACCEPT_ENCODING, r->compressed ? "" : NULL);
+    /* NULL leaves environment policy intact; an explicit empty string is a
+     * meaningful override. libcurl copies both strings for concurrent jobs. */
+    if (r->proxy) SET(CURLOPT_PROXY, r->proxy);
+    if (r->noproxy) SET(CURLOPT_NOPROXY, r->noproxy);
+    SET(CURLOPT_PROXY_SSL_VERIFYPEER, 1L);
+    SET(CURLOPT_PROXY_SSL_VERIFYHOST, 2L);
+    if (r->proxy_ca) SET(CURLOPT_PROXY_CAINFO, r->proxy_ca);
+    if (r->ca)
+        SET(CURLOPT_CAINFO, r->ca);
+    if (r->has_input) {
+        SET(CURLOPT_POST, 1L);
+        SET(CURLOPT_POSTFIELDSIZE_LARGE, input->length);
+        SET(CURLOPT_READFUNCTION, read_input);
+        SET(CURLOPT_READDATA, input);
+        SET(CURLOPT_SEEKFUNCTION, seek_input);
+        SET(CURLOPT_SEEKDATA, input);
+    } else if (r->has_data || (r->method && !strcmp(r->method, "POST"))) {
+        SET(CURLOPT_POSTFIELDSIZE_LARGE, (curl_off_t)r->data_len);
+        SET(persistent ? CURLOPT_COPYPOSTFIELDS : CURLOPT_POSTFIELDS, r->has_data ? r->data : "");
+    }
+    if (r->head)
+        SET(CURLOPT_NOBODY, 1L);
+    else if (r->method)
+        SET(CURLOPT_CUSTOMREQUEST, r->method);
+
+    return CURLE_OK;
+#undef SET
+}
+
+static void
+http_result(struct buffer *b, struct buffer *h, struct http_input *input, CURLcode rc,
+            const char *diagnostic, int fail_http)
+{
+    replace_text(&body, b->data ? b->data : "", b->data ? b->len : 0);
+    replace_text(&headers, h->data ? h->data : "", h->len);
+    curl_code = rc;
+    received_bytes = (zlong)b->len;
+    complete = rc == CURLE_OK;
+    return_status = (int)rc;
+    if (b->failure == BUFFER_LIMIT)
+        set_error("body-limit", "response body exceeds --max-body", (int)rc);
+    else if (h->failure == BUFFER_LIMIT)
+        set_error("header-limit", "response headers exceed 256 KiB", (int)rc);
+    else if (b->failure == BUFFER_OUTPUT)
+        set_error("output", strerror(b->output_errno), (int)rc);
+    else if (input->error || input->truncated)
+        set_error("input", input->truncated ? "input file ended before its captured upload length" :
+                  strerror(input->error), (int)rc);
+    else if (b->failure == BUFFER_MEMORY || h->failure == BUFFER_MEMORY || rc == CURLE_OUT_OF_MEMORY)
+        set_error("memory", "could not allocate transfer storage", (int)rc);
+    else if (rc != CURLE_OK)
+        set_error("transport", diagnostic[0] ? diagnostic : curl_easy_strerror(rc), (int)rc);
+    else if (fail_http && http_status >= 400)
+        set_error("http", "HTTP response status is 400 or higher", 22);
+}
+
+static void
+perform_request(struct request *r)
+{
+    struct buffer b = {.limit = (size_t)r->max_body};
+    struct buffer h = {.limit = HEADER_LIMIT};
+    struct http_input input = {0};
+    char diagnostic[CURL_ERROR_SIZE] = {0};
+    long status = 0, connects = 0;
+    curl_off_t elapsed = 0;
+    CURLcode rc = CURLE_OK;
+    char *info = NULL;
+    int started = 0;
+    struct http_session *s = r->session_name ? find_session(r->session_name) : &default_session;
+
+    if (!s) {
+        set_error("state", "unknown HTTP session; create it before requesting", 2);
+        return;
+    }
+
+    if (!prepare_input(r, &input)) return;
+    if (!prepare_output(r, &b)) { close_input(&input); return; }
+    if (!s->easy && !(s->easy = curl_easy_init())) {
+        rc = CURLE_OUT_OF_MEMORY;
+        goto done;
+    }
+    if (!s->multi && !(s->multi = curl_multi_init())) {
+        rc = CURLE_OUT_OF_MEMORY;
+        goto done;
+    }
+    /* Reset per-request options; preserve the connection, DNS and TLS caches. */
+    curl_easy_reset(s->easy);
+    rc = configure_http(s->easy, r, &b, &h, &input, diagnostic, 0);
+    if (rc != CURLE_OK) goto done;
+
+    rc = drive_request(s, diagnostic, &started);
+    if (!started)
+        goto done; /* getinfo may otherwise report a previous transfer. */
+    curl_easy_getinfo(s->easy, CURLINFO_RESPONSE_CODE, &status);
+    curl_easy_getinfo(s->easy, CURLINFO_NUM_CONNECTS, &connects);
+    curl_easy_getinfo(s->easy, CURLINFO_TOTAL_TIME_T, &elapsed);
+    if (curl_easy_getinfo(s->easy, CURLINFO_EFFECTIVE_URL, &info) == CURLE_OK && info)
+        replace_text(&effective_url, info, strlen(info));
+    info = NULL;
+    if (curl_easy_getinfo(s->easy, CURLINFO_CONTENT_TYPE, &info) == CURLE_OK && info)
+        replace_text(&content_type, info, strlen(info));
+done:
+    /* Remove every pointer to this request before releasing its storage. */
+    if (s->easy)
+        curl_easy_reset(s->easy);
+    close_input(&input);
+    if (!close_output(&b) && rc == CURLE_OK) rc = CURLE_WRITE_ERROR;
+    http_status = status;
+    new_connections = connects;
+    total_us = (zlong)elapsed;
+    http_result(&b, &h, &input, rc, diagnostic, r->fail_http);
+    free(b.data);
+    free(h.data);
+}
+
+/* The same field table drives module parameters and caller-owned snapshots. */
+struct result_field { const char *key; int integer; void *value; };
+static const struct result_field result_fields[] = {
+    {"body", 0, &body}, {"headers", 0, &headers}, {"error", 0, &error_text},
+    {"error_kind", 0, &error_kind}, {"effective_url", 0, &effective_url},
+    {"content_type", 0, &content_type}, {"http_status", 1, &http_status},
+    {"code", 1, &curl_code}, {"new_connections", 1, &new_connections},
+    {"total_us", 1, &total_us}, {"status", 1, &return_status},
+    {"complete", 1, &complete}, {"bytes", 1, &received_bytes},
+    {"handle", 0, &handle_text}, {"event", 0, &event_text},
+    {"state", 0, &state_text}, {"frame_type", 0, &ws_type},
+    {"offset", 1, &ws_offset}, {"bytesleft", 1, &ws_bytesleft},
+    {"more", 1, &ws_more}, {"message_end", 1, &ws_message_end},
+    {"queued_bytes", 1, &ws_queued_bytes}, {"queued_frames", 1, &ws_queued_frames},
+    {"close_code", 1, &ws_close_code}, {"close_reason", 0, &ws_close_reason},
+    {"channel", 0, &channel_text},
+};
+
+enum result_shape { RESULT_HTTP, RESULT_WS, RESULT_ASYNC, RESULT_POLL };
+
+static int
+publish_result(char *name, enum result_shape shape)
+{
+    char **values;
+    /* HTTP jobs share handle/event/state with WS, retaining both older shapes. */
+    size_t i, count = shape == RESULT_POLL ? ARRAY_SIZE(result_fields) :
+                      shape == RESULT_WS ? 25 :
+                      shape == RESULT_ASYNC ? 16 : 13;
+    /* A trap may have changed the destination during the transfer. */
+    if (!result_parameter(name)) {
+        set_error("result", "result array changed during the request; see zcurl_* parameters", 2);
+        return 0;
+    }
+    values = zalloc((2 * count + 1) * sizeof(*values));
+    for (i = 0; i < count; ++i) {
+        const struct result_field *f = &result_fields[i];
+        char number[64];
+        values[2 * i] = ztrdup(f->key);
+        if (f->integer) {
+            snprintf(number, sizeof(number), "%jd", (intmax_t)*(zlong *)f->value);
+            values[2 * i + 1] = ztrdup(number);
+        } else
+            values[2 * i + 1] = ztrdup(*(char **)f->value ? *(char **)f->value : "");
+    }
+    values[2 * i] = NULL;
+    if (!sethparam(name, values)) {
+        set_error("result", "could not publish result array; see zcurl_* parameters", 2);
+        return 0;
+    }
+    return 1;
+}
+
+static void
+help(void)
+{
+    puts("zcurl [options] URL\n"
+         "  -c, --cacert FILE         PEM trust file\n"
+         "  -t, --timeout MS          Total timeout (1..600000; default 10000)\n"
+         "      --connect-timeout MS  Connection timeout (default 3000)\n"
+         "  -X, --request METHOD      HTTP method (default GET, or POST with data)\n"
+         "  -I, --head                HEAD request, without a response body\n"
+         "  -H, --header FIELD        Request header (repeatable)\n"
+         "  -d, --data BYTES          Literal request body; preserves NUL bytes\n"
+         "      --data-fd FD          Upload remaining bytes from an open readable regular file\n"
+         "  -r, --result ARRAY        Replace a declared ordinary associative array\n"
+         "  -f, --fail                Return 22 for HTTP >=400; retain the response\n"
+         "      --compressed         Negotiate and decode HTTP content compression\n"
+         "  -x, --proxy URL          Override HTTP proxy; empty disables proxies\n"
+         "      --noproxy HOSTS      Override proxy bypass list; empty bypasses none\n"
+         "      --proxy-cacert FILE   PEM trust file for an HTTPS proxy\n"
+         "      --session NAME       Use a named HTTP session\n"
+         "      --max-body BYTES      Response limit (default 8 MiB; maximum 64 MiB)\n"
+         "      --output-fd FD        Write response bytes to an open writable regular file\n"
+         "      --                    End options\n"
+         "  Named sessions may supply timeout, size, CA-file and routing defaults.\n"
+         "zcurl --reset               Close HTTP/WS sessions and clear results\n"
+         "zcurl session create NAME [--from SOURCE]\n"
+         "  Create independent pools, optionally copying a named session's defaults.\n"
+         "zcurl session reset|drop NAME\n"
+         "  Manage named HTTP pools; preserves transfer results.\n"
+         "zcurl session configure NAME [-t MS] [--connect-timeout MS] [--max-body BYTES]\n"
+         "                             [-c FILE] [--proxy-cacert FILE] [-x URL] [--noproxy HOSTS]\n"
+         "zcurl session configure NAME --unset SETTING [--unset SETTING ...]\n"
+         "  Restore individual defaults; may combine with updates to other settings.\n"
+         "zcurl session configure NAME --defaults\n"
+         "  Set request defaults or restore standard values; retained jobs are unchanged.\n"
+         "zcurl session jobs NAME --result ARRAY [--state all|pending|done|cancelled]\n"
+         "  List retained HTTP names in an indexed array without I/O or result changes.\n"
+         "zcurl session info NAME --result ARRAY\n"
+         "  Inspect defaults and retained job count; preserves transfer results.\n"
+         "zcurl --version             Show module, build Zsh and libcurl versions\n"
+         "zcurl --help                Show this help\n"
+         "zcurl headers FIELD|--names --from RAW --result ARRAY [--trailers]\n"
+         "  Look up values or list lowercase names in wire order, preserving duplicates.\n"
+         "  Use --field FIELD for literal names; all lookups preserve zcurl_* results.\n"
+         "zcurl http submit HANDLE [HTTP options] URL\n"
+         "zcurl http poll [-t MS] [-r ARRAY]\n"
+         "zcurl http wait HANDLE [-t MS] [-r ARRAY]\n"
+         "zcurl http wait-any HANDLE [HANDLE ...] [-t MS] [-r ARRAY]\n"
+         "zcurl http collect|cancel|drop|info HANDLE [-r ARRAY]\n"
+         "  See docs/concurrency.md for scheduling, limits and result ownership.\n"
+         "zcurl poll [-t MS] [-r ARRAY] [--max-chunk BYTES]\n"
+         "  Drive concurrent HTTP and live WebSockets; see docs/polling.md.\n"
+         "zcurl ws OP HANDLE [options] [URL]\n"
+         "  OP: open, send, recv, poll, close, drop, info\n"
+         "  See docs/websocket.md for options, events and connection lifecycle.\n"
+         "Option values must be separate words; short options cannot be clustered.\n"
+         "Results are in zcurl_* parameters, and optionally ARRAY. No body is printed.");
+}
+
+#include "http_headers.c"
+#include "websocket.c"
+#include "http_async.c"
+#include "polling.c"
+
+static int
+bin_zcurl(char *name, char **args, UNUSED(Options ops), UNUSED(int func))
+{
+    struct request r = {0};
+    int result;
+    char *control;
+    if (busy || owner != getpid()) {
+        zwarnnam(name, "requires the owning shell and no reentry");
+        return 2;
+    }
+    queue_signals();
+    busy = 1;
+    if (args[0] && (control = text_argument(args[0])) && !strcmp(control, "headers")) {
+        result = headers_command(args + 1);
+        goto finished;
+    }
+    if (args[0] && (control = text_argument(args[0])) && !strcmp(control, "session")) {
+        result = sessions_command(args + 1);
+        goto finished;
+    }
+    clear_result();
+    if (args[0] && (control = text_argument(args[0])) && !strcmp(control, "poll")) {
+        polling_command(args + 1);
+        goto done;
+    }
+    r.timeout = 10000;
+    r.connect_timeout = 3000;
+    r.max_body = BODY_LIMIT;
+    if (args[0] && (control = text_argument(args[0])) && !strcmp(control, "ws")) {
+        websocket_command(args + 1);
+        goto done;
+    }
+    if (args[0] && (control = text_argument(args[0])) && !strcmp(control, "http")) {
+        http_command(args + 1);
+        goto done;
+    }
+    if (args[0] && !args[1] && (control = text_argument(args[0]))) {
+        if (!strcmp(control, "--help")) {
+            help();
+            goto done;
+        }
+        if (!strcmp(control, "--version")) {
+            printf("zcurl %s; built for Zsh %s; %s\n", ZCURL_VERSION, ZSH_VERSION, curl_version());
+            goto done;
+        }
+        if (!strcmp(control, "--reset")) {
+            websocket_cleanup();
+            http_cleanup();
+            sessions_cleanup();
+            goto done;
+        }
+    }
+    if (parse_request(args, &r))
+        perform_request(&r);
+    if (r.result)
+        publish_result(r.result, RESULT_HTTP);
+    if (!strcmp(error_kind, "usage"))
+        zwarnnam(name, "%s", error_text);
+done:
+    curl_slist_free_all(r.headers);
+    result = (int)return_status;
+finished:
+    busy = 0;
+    unqueue_signals();
+    return result;
+}
+
+/* Heap copies survive later drops and unloads. Keep the busy guard through
+ * signal delivery so a deferred trap cannot unload an active getter.
+ * Reading these parameters never drives transfers, even past a deadline. */
+static char **
+http_handles_get(UNUSED(Param pm))
+{
+    struct http_job *job;
+    size_t count = 0, i = 0;
+    char **names;
+    int was_busy = busy;
+    queue_signals();
+    busy = 1;
+    if (getpid() == owner)
+        for (job = http_jobs; job; job = job->next)
+            ++count;
+    names = (char **)zhalloc((count + 1) * sizeof(*names));
+    if (count)
+        for (job = http_jobs; job; job = job->next)
+            names[i++] = dupstring(job->name);
+    names[count] = NULL;
+    unqueue_signals();
+    busy = was_busy;
+    return names;
+}
+
+static char **
+ws_handles_get(UNUSED(Param pm))
+{
+    struct websocket *ws;
+    size_t count = 0, i;
+    char **names;
+    int was_busy = busy;
+    queue_signals();
+    busy = 1;
+    if (getpid() == owner)
+        for (ws = websockets; ws; ws = ws->next)
+            ++count;
+    names = (char **)zhalloc((count + 1) * sizeof(*names));
+    names[count] = NULL;
+    /* WebSockets are prepended; expose creation order like HTTP jobs. */
+    i = count;
+    if (count)
+        for (ws = websockets; ws; ws = ws->next)
+            names[--i] = dupstring(ws->name);
+    unqueue_signals();
+    busy = was_busy;
+    return names;
+}
+
+static char **
+http_sessions_get(UNUSED(Param pm))
+{
+    struct http_session *s;
+    size_t count = 0, i = 0;
+    char **names;
+    int was_busy = busy;
+    queue_signals();
+    busy = 1;
+    if (getpid() == owner)
+        for (s = named_sessions; s; s = s->next) ++count;
+    names = (char **)zhalloc((count + 1) * sizeof(*names));
+    if (count)
+        for (s = named_sessions; s; s = s->next) names[i++] = dupstring(s->name);
+    names[count] = NULL;
+    unqueue_signals();
+    busy = was_busy;
+    return names;
+}
+
+static const struct gsu_array http_sessions_gsu = {
+    http_sessions_get, NULL, stdunsetfn
+};
+static const struct gsu_array http_handles_gsu = {
+    http_handles_get, NULL, stdunsetfn
+};
+static const struct gsu_array ws_handles_gsu = {
+    ws_handles_get, NULL, stdunsetfn
+};
+static const struct paramdef handle_parameters[] = {
+    SPECIALPMDEF("zcurl_http_handles", PM_ARRAY | PM_READONLY, &http_handles_gsu, NULL, NULL),
+    SPECIALPMDEF("zcurl_ws_handles", PM_ARRAY | PM_READONLY, &ws_handles_gsu, NULL, NULL),
+    SPECIALPMDEF("zcurl_http_sessions", PM_ARRAY | PM_READONLY, &http_sessions_gsu, NULL, NULL),
+};
+
+static struct builtin builtins[] = {
+    BUILTIN("zcurl", BINF_HANDLES_OPTS, bin_zcurl, 0, -1, 0, NULL, NULL),
+};
+
+/* Initialized by setup_; names must live until finish_. */
+static struct paramdef parameters[ARRAY_SIZE(result_fields) + ARRAY_SIZE(handle_parameters)];
+static struct features module_features = {
+    builtins, ARRAY_SIZE(builtins), NULL, 0, NULL, 0,
+    parameters, ARRAY_SIZE(parameters), 0
+};
+
+int setup_(UNUSED(Module m))
+{
+    size_t i;
+    const curl_version_info_data *curl_info;
+    const char *const *protocol;
+    unsigned protocols = 0;
+    char *running = getsparam("ZSH_VERSION");
+    if (!running || strcmp(running, ZSH_VERSION)) {
+        zwarn("zcurl: rebuild for this Zsh version (module built for %s)", ZSH_VERSION);
+        return 1;
+    }
+    curl_info = curl_version_info(CURLVERSION_NOW);
+    if (curl_info && curl_info->protocols)
+        for (protocol = curl_info->protocols; *protocol; ++protocol) {
+            if (!strcmp(*protocol, "http")) protocols |= 1;
+            if (!strcmp(*protocol, "https")) protocols |= 2;
+            if (!strcmp(*protocol, "ws")) protocols |= 4;
+            if (!strcmp(*protocol, "wss")) protocols |= 8;
+        }
+    if (!curl_info || curl_info->version_num < 0x081000 || protocols != 15) {
+        zwarn("zcurl: runtime libcurl >=8.16.0 with HTTP/HTTPS/WS/WSS is required");
+        return 1;
+    }
+    owner = getpid();
+    initialized = curl_global_init(CURL_GLOBAL_DEFAULT) == CURLE_OK;
+    if (!initialized)
+        return 1;
+    for (i = 0; i < ARRAY_SIZE(result_fields); ++i) {
+        const struct result_field *f = &result_fields[i];
+        struct paramdef *p = &parameters[i];
+        p->name = ztrdup(dyncat("zcurl_", f->key));
+        p->flags = (f->integer ? PM_INTEGER : PM_SCALAR) | PM_READONLY;
+        p->var = f->value;
+    }
+    for (i = 0; i < ARRAY_SIZE(handle_parameters); ++i) {
+        struct paramdef *p = &parameters[ARRAY_SIZE(result_fields) + i];
+        *p = handle_parameters[i];
+        p->name = ztrdup(p->name);
+    }
+    clear_result();
+    return 0;
+}
+int features_(Module m, char ***features)
+{
+    *features = featuresarray(m, &module_features);
+    return 0;
+}
+int enables_(Module m, int **enables)
+{
+    if (busy && *enables)
+        return 1;
+    return handlefeatures(m, &module_features, enables);
+}
+int boot_(UNUSED(Module m)) { return 0; }
+int cleanup_(Module m)
+{
+    if (busy)
+        return 1;
+    return setfeatureenables(m, &module_features, NULL);
+}
+int finish_(UNUSED(Module m))
+{
+    size_t i;
+    /* Never send TLS shutdown on a connection inherited from the parent. */
+    if (getpid() == owner) {
+        websocket_cleanup();
+        http_cleanup();
+        sessions_cleanup();
+        if (initialized)
+            curl_global_cleanup();
+    }
+    default_session = (struct http_session){0};
+    named_sessions = NULL;
+    websockets = NULL;
+    http_jobs = NULL;
+    http_reserved = 0;
+    initialized = busy = 0;
+    for (i = 0; i < ARRAY_SIZE(result_fields); ++i) {
+        if (!result_fields[i].integer) {
+            char **value = result_fields[i].value;
+            zsfree(*value);
+            *value = NULL;
+        }
+    }
+    for (i = 0; i < ARRAY_SIZE(parameters); ++i) {
+        zsfree(parameters[i].name);
+        memset(&parameters[i], 0, sizeof(parameters[i]));
+    }
+    return 0;
+}

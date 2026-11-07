@@ -1,0 +1,150 @@
+# SPDX-License-Identifier: Apache-2.0
+# HTML token filter, deliberately independent of terminal layout and drawing.
+emulate -L zsh
+setopt extended_glob typeset_silent
+local _zc_rest _zc_text _zc_raw='' _zc_raw_output='' _zc_raw_escape=''
+local _zc_drop='' _zc_tag _zc_attr _zc_value _zc_candidate _zc_script_state=data
+local _zt_name _zoup_escaped
+local -i _zt_close _zt_self _zc_drop_depth=0 _zc_tokens=0 _zc_end _zc_raw_keep=0 _zc_next=2
+local -A _zt_attrs
+local -a _zt_order _zc_parts=() _zc_input_parts
+# Split once, then consume small segments. '<' inside attributes, comments,
+# and raw text is reassembled as data by the corresponding scanner state.
+_zc_input_parts=( "${(@s:<:)_zoup_input}" )
+(( ${#_zc_input_parts} <= 32769 )) || { print -ru2 -- 'zoup: document exceeds markup boundary limit'; return 1; }
+_zc_rest=${_zc_input_parts[1]-}
+while [[ -n $_zc_rest ]] || _zoup_more; do
+  (( ++_zc_tokens <= 32768 )) || { print -ru2 -- 'zoup: document exceeds token limit'; return 1; }
+  if [[ $_zc_raw == script ]]; then
+    _zoup_script || return $?
+    continue
+  fi
+  if [[ -n $_zc_raw ]]; then
+    # Raw content ends only at its own case-insensitive closing tag. In
+    # particular, '<script/>' still opens a script in HTML.
+    if [[ $_zc_rest != *'</'* ]]; then
+      (( _zc_raw_keep )) && { _zoup_escape "$_zc_rest" "$_zc_raw_escape"; _zc_parts+=( "$_zoup_escaped" ); }
+      _zc_rest=''
+      continue
+    fi
+    _zc_text=${_zc_rest%%'</'*}
+    (( _zc_raw_keep )) && { _zoup_escape "$_zc_text" "$_zc_raw_escape"; _zc_parts+=( "$_zoup_escaped" ); }
+    _zc_rest=${_zc_rest[${#_zc_text}+1,-1]}
+    _zc_end=$(( ${#_zc_raw} + 3 ))
+    _zc_candidate=${(L)_zc_rest[3,_zc_end-1]}
+    if [[ $_zc_candidate == $_zc_raw && $_zc_rest[_zc_end] == [$' \t\n\f/>'] ]]; then
+      _zoup_tag || return $?
+      (( _zc_raw_keep )) && _zc_parts+=( "</$_zc_raw_output>" )
+      _zc_raw=''
+    else
+      (( _zc_raw_keep )) && _zc_parts+=( '&lt;/' )
+      _zc_rest=${_zc_rest[3,-1]}
+    fi
+    continue
+  fi
+  if [[ $_zc_rest != '<'* ]]; then
+    _zc_text=${_zc_rest%%<*}
+    [[ -z $_zc_drop ]] && _zc_parts+=( "$_zc_text" )
+    _zc_rest=${_zc_rest[${#_zc_text}+1,-1]}
+    continue
+  fi
+  if [[ $_zc_rest == '<!--'* ]]; then
+    while [[ $_zc_rest != *('-->'|'--!>')* ]]; do
+      _zc_rest=''
+      _zoup_more || break
+    done
+    _zc_rest=${_zc_rest#*('-->'|'--!>')}
+    continue
+  fi
+  if [[ $_zc_rest == ('<!'*|'<?'*) ]]; then
+    # Declarations and processing instructions carry no reader content.
+    while [[ $_zc_rest != *'>'* ]]; do
+      _zc_rest=''
+      _zoup_more || break
+    done
+    _zc_rest=${_zc_rest#*'>'}
+    continue
+  fi
+  if [[ $_zc_rest != ('<'[a-zA-Z]*|'</'[a-zA-Z]*) ]]; then
+    [[ -z $_zc_drop ]] && _zc_parts+=( '&lt;' )
+    _zc_rest=${_zc_rest[2,-1]}
+    continue
+  fi
+  _zoup_tag || return $?
+  if [[ -n $_zc_drop ]]; then
+    if [[ $_zt_name == $_zc_drop ]]; then
+      if (( _zt_close )); then
+        (( --_zc_drop_depth )) || _zc_drop=''
+      elif (( ! _zt_self )) || [[ $_zc_drop == template ]]; then
+        (( _zc_drop_depth++ ))
+      fi
+    fi
+    if (( ! _zt_close )) && [[ $_zt_name == (script|style|iframe|xmp|noembed|noframes) ]]; then
+      _zc_raw=$_zt_name _zc_raw_keep=0
+      _zc_script_state=data
+    fi
+    continue
+  fi
+  if (( ! _zt_close )); then
+    case $_zt_name in
+      script|style|iframe|noembed|noframes)
+        _zc_raw=$_zt_name _zc_raw_keep=0 _zc_script_state=data; continue ;;
+      xmp)
+        _zc_parts+=( '<pre>' )
+        _zc_raw=xmp _zc_raw_output=pre _zc_raw_keep=1 _zc_raw_escape=literal
+        continue ;;
+      plaintext)
+        _zc_parts+=( '<pre>' )
+        while true; do
+          _zoup_escape "$_zc_rest" literal
+          _zc_parts+=( "$_zoup_escaped" )
+          _zc_rest=''
+          _zoup_more || break
+        done
+        _zc_parts+=( '</pre>' )
+        break ;;
+      svg|math|template)
+        if (( ! _zt_self )) || [[ $_zt_name == template ]]; then
+          _zc_drop=$_zt_name _zc_drop_depth=1
+        fi
+        continue ;;
+      img)
+        _zoup_escape "${_zt_attrs[alt]-}"
+        _zc_parts+=( "$_zoup_escaped" )
+        continue ;;
+    esac
+  fi
+  # Keep useful structure, including div/span boundaries. Unsupported wrappers
+  # (including noscript, picture, video, audio, object, canvas) are unwrapped.
+  case $_zt_name in
+    html|head|body|title|base|main|article|section|nav|aside|header|footer|address|div|span|p|h[1-6]|br|hr|wbr|pre|code|kbd|samp|var|blockquote|q|cite|em|strong|b|i|u|s|small|sub|sup|mark|abbr|dfn|time|data|del|ins|ul|ol|li|dl|dt|dd|menu|a|table|caption|colgroup|col|thead|tbody|tfoot|tr|th|td|form|label|input|button|select|optgroup|option|textarea|fieldset|legend|datalist|output|progress|meter|details|summary|figure|figcaption|bdi|bdo|ruby|rt|rp) ;;
+    *) continue ;;
+  esac
+  if (( _zt_close )); then
+    [[ $_zt_name == (base|br|hr|wbr|col|input) ]] || _zc_parts+=( "</$_zt_name>" )
+    continue
+  fi
+  _zc_tag="<$_zt_name"
+  for _zc_attr in "${_zt_order[@]}"; do
+    case $_zc_attr in
+      id|title|lang|dir|role|aria-label|aria-labelledby|aria-describedby|hidden) ;;
+      *)
+        case $_zt_name:$_zc_attr in
+          a:href|a:name|base:href|blockquote:cite|q:cite|del:cite|ins:cite|del:datetime|ins:datetime|time:datetime|data:value|ol:start|ol:reversed|ol:type|li:value|th:colspan|th:rowspan|th:headers|th:scope|th:abbr|td:colspan|td:rowspan|td:headers|col:span|colgroup:span|form:action|form:method|form:enctype|form:accept-charset|form:name|label:for|input:type|input:name|input:value|input:checked|input:disabled|input:readonly|input:required|input:placeholder|input:min|input:max|input:step|input:minlength|input:maxlength|input:multiple|input:accept|input:form|input:list|button:type|button:name|button:value|button:disabled|button:form|select:name|select:multiple|select:disabled|select:required|select:form|select:size|option:value|option:selected|option:disabled|option:label|optgroup:label|optgroup:disabled|textarea:name|textarea:rows|textarea:cols|textarea:disabled|textarea:readonly|textarea:required|textarea:placeholder|textarea:maxlength|textarea:form|fieldset:disabled|fieldset:name|fieldset:form|output:for|output:name|output:form|progress:value|progress:max|meter:value|meter:min|meter:max|meter:low|meter:high|meter:optimum|details:open) ;;
+          *) continue ;;
+        esac ;;
+    esac
+    _zc_value=$_zt_attrs[$_zc_attr]
+    if [[ $_zc_attr == (href|action|cite) ]]; then
+      _zoup_url "$_zc_value" || continue
+    fi
+    _zoup_escape "$_zc_value"
+    _zc_tag+=" $_zc_attr=\"$_zoup_escaped\""
+  done
+  _zc_parts+=( "$_zc_tag>" )
+  if [[ $_zt_name == (title|textarea) ]]; then
+    _zc_raw=$_zt_name _zc_raw_output=$_zt_name _zc_raw_keep=1 _zc_raw_escape=''
+  fi
+done
+_zoup_output=${(j::)_zc_parts}
+return 0

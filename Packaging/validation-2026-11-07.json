@@ -1,0 +1,200 @@
+{
+  "date": "2026-11-07",
+  "release": "5.9.2-f6d4ff0a0cde",
+  "prefix": "/usr/local/psh/releases/5.9.2-f6d4ff0a0cde",
+  "public_executable": "/usr/local/bin/psh",
+  "core_version": "5.9.2",
+  "configure": [
+    "./configure",
+    "--prefix=/usr/local/psh/releases/5.9.2-f6d4ff0a0cde",
+    "--program-transform-name=s/zsh/psh/",
+    "--enable-dynamic",
+    "--enable-multibyte",
+    "--enable-zsh-debug",
+    "--enable-pcre",
+    "--enable-etcdir=/usr/local/psh/etc",
+    "--enable-site-fndir=no",
+    "--enable-additional-fpath=/usr/local/psh/site-functions"
+  ],
+  "cflags": "-O2 -g",
+  "shell_sha256": "6666aed71ae10becfe9d1cd74502d6812640dac30e935e9504f44a64fa3fe994",
+  "native_sha256": {
+    "zdraw": "c80ee28718a5c3d20cbccc9e08e69f0b78238f1ea29952b9f42a149aacc5ea63",
+    "zmdown": "ed2ea6a25d0641e595479ca8d80d1d90be745d2e0c9d0dc13a5a0b26438072e3",
+    "zcurl": "35fec7a460d5fb3fda7a0a0ac46eb6a28785b490ed9acc7071110b2a3db60823"
+  },
+  "vendor_commits": {
+    "zdraw": "a6fba85b72b31d1a465d60402f7e329d2991e650",
+    "zjson": "acf233b21cfa4ae0844639486f7724058c7fb3e3",
+    "zcurl": "3f175149e9ddd877f13de6f1e16712fb00c36925",
+    "zmdown": "13ec9554a53197aec58d9dd20948814bf7992c8b",
+    "zhtml2md": "2a2f8139e4fb3a0b8c45f4828a7c504ee267bda9",
+    "zoup": "d48f666969d7060dd9f6bb07bc8d3bbe9e12ba5c"
+  },
+  "suites": {
+    "core": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ],
+      "seconds": [
+        91.282
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-core-0.log"
+      ],
+      "successful_scripts": 63,
+      "failed_scripts": 0,
+      "skipped_scripts": 2,
+      "skips": [
+        "privileged tests require super-user privileges",
+        "zsh/db/gdbm is not built; it is also absent from the system module inventory"
+      ]
+    },
+    "zdraw": {
+      "passed": true,
+      "exit_statuses": [
+        0,
+        0
+      ],
+      "seconds": [
+        0.032,
+        395.468
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zdraw-0.log",
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zdraw-1.log"
+      ],
+      "unittest_tests": 190
+    },
+    "zmdown": {
+      "passed": true,
+      "exit_statuses": [
+        0,
+        0
+      ],
+      "seconds": [
+        0.032,
+        9.277
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zmdown-0.log",
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zmdown-1.log"
+      ],
+      "module_tests": 38,
+      "build_tests": 3,
+      "commonmark_examples": 652,
+      "terminal_renders": 5216,
+      "grapheme_cases": 766,
+      "unicode_property_codepoints": 1114112,
+      "structured_layouts": 20864
+    },
+    "zcurl": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ],
+      "seconds": [
+        21.291
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zcurl-0.log"
+      ],
+      "passing_integration_sections": 47
+    },
+    "zjson": {
+      "passed": true,
+      "exit_statuses": [
+        0,
+        0
+      ],
+      "seconds": [
+        0.715,
+        0.715
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zjson-0.log",
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zjson-1.log"
+      ],
+      "checks_per_locale": 14237,
+      "locales": [
+        "C",
+        "C.UTF-8"
+      ]
+    },
+    "zhtml2md": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ],
+      "seconds": [
+        23.946
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zhtml2md-0.log"
+      ],
+      "checks": 307
+    },
+    "zoup": {
+      "passed": true,
+      "exit_statuses": [
+        0
+      ],
+      "seconds": [
+        1.816
+      ],
+      "logs": [
+        ".work/package/5.9.2-f6d4ff0a0cde/logs/test-zoup-0.log"
+      ],
+      "clean_checks": 101,
+      "stream_checks": 9
+    }
+  },
+  "stock_modules_preserved": [
+    "zsh/attr.so",
+    "zsh/cap.so",
+    "zsh/clone.so",
+    "zsh/compctl.so",
+    "zsh/complete.so",
+    "zsh/complist.so",
+    "zsh/computil.so",
+    "zsh/curses.so",
+    "zsh/datetime.so",
+    "zsh/deltochar.so",
+    "zsh/example.so",
+    "zsh/files.so",
+    "zsh/langinfo.so",
+    "zsh/mapfile.so",
+    "zsh/mathfunc.so",
+    "zsh/nearcolor.so",
+    "zsh/net/socket.so",
+    "zsh/net/tcp.so",
+    "zsh/newuser.so",
+    "zsh/param/private.so",
+    "zsh/parameter.so",
+    "zsh/pcre.so",
+    "zsh/regex.so",
+    "zsh/rlimits.so",
+    "zsh/sched.so",
+    "zsh/stat.so",
+    "zsh/system.so",
+    "zsh/termcap.so",
+    "zsh/terminfo.so",
+    "zsh/watch.so",
+    "zsh/zftp.so",
+    "zsh/zle.so",
+    "zsh/zleparameter.so",
+    "zsh/zprof.so",
+    "zsh/zpty.so",
+    "zsh/zselect.so",
+    "zsh/zutil.so"
+  ],
+  "stable_protected_entries": 11828,
+  "stable_unchanged_after_activation": true,
+  "login_shell_changed": false,
+  "etc_shells_added": "/usr/local/bin/psh",
+  "startup": "interactive login PTY and all five original startup filenames passed",
+  "installed_smoke": "all six packages, lazy first and repeated calls, source entry points, PCRE capture, default lookup paths and /proc module mappings passed outside the source tree",
+  "zcoder_loader_smoke": "existing native loaders retain the preloaded psh modules; full interactive application not run",
+  "source_changes": "packaging and pinned imports; existing Src/ and Test/ unchanged in this installation change"
+}
