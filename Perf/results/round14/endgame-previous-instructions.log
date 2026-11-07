@@ -1,0 +1,93 @@
+--------------------------------------------------------------------------------
+Profile data file '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round14/endgame-previous.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 338001319
+Trigger: Program termination
+Profiled target:  /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh -df Perf/customer-workload.zsh endgame-world /home/stig/dev/challenge/endgame 2 (PID 1199006, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       95
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+1,387,328,181 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+181,679,798 (13.10%)  .work/candidate/Src/../../../Src/math.c:mathparse'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+130,086,149 ( 9.38%)  Src/utils.c:itype_end [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+125,060,432 ( 9.01%)  .work/candidate/Src/../../../Src/math.c:op [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+113,599,982 ( 8.19%)  .work/candidate/Src/../../../Src/math.c:zzlex [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 63,145,764 ( 4.55%)  .work/candidate/Src/../../../Src/math.c:checkunary [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 61,210,711 ( 4.41%)  Src/utils.c:mb_metacharlenconv [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 59,648,781 ( 4.30%)  Src/utils.c:zstrtol_underscore [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 56,427,591 ( 4.07%)  .work/candidate/Src/../../../Src/mem.c:zhalloc [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 48,655,080 ( 3.51%)  .work/candidate/Src/../../../Src/math.c:pop [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 38,805,421 ( 2.80%)  .work/candidate/Src/../../../Src/math.c:lexconstant [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 33,706,699 ( 2.43%)  Src/params.c:fetchvalue [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 26,134,371 ( 1.88%)  Src/exec.c:execlist'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 23,642,184 ( 1.70%)  .work/candidate/Src/../../../Src/math.c:mathparse [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 17,582,975 ( 1.27%)  .work/candidate/Src/../../../Src/input.c:ingetc.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 17,235,440 ( 1.24%)  .work/candidate/Src/../../../Src/hashtable.c:hasher [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 16,241,275 ( 1.17%)  ???:__strcmp_avx2 [/usr/lib64/libc.so.6]
+ 16,113,503 ( 1.16%)  Src/subst.c:paramsubst [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 15,318,369 ( 1.10%)  ???:__memcpy_avx_unaligned_erms [/usr/lib64/libc.so.6]
+ 15,055,092 ( 1.09%)  .work/candidate/Src/../../../Src/string.c:dupstrpfx [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 13,250,136 ( 0.96%)  .work/candidate/Src/../../../Src/hashtable.c:gethashnode2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 12,983,584 ( 0.94%)  Src/exec.c:execsimple'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 12,750,666 ( 0.92%)  ???:__strcpy_avx2 [/usr/lib64/libc.so.6]
+ 12,168,708 ( 0.88%)  .work/candidate/Src/../../../Src/math.c:getmathparam [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 11,411,991 ( 0.82%)  .work/candidate/Src/../../../Src/lex.c:dquote_parse [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+ 10,382,026 ( 0.75%)  ???:free [/usr/lib64/libc.so.6]
+ 10,329,558 ( 0.74%)  Src/params.c:getparamnode [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  9,726,885 ( 0.70%)  .work/candidate/Src/../../../Src/math.c:mathevall [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  9,593,709 ( 0.69%)  ???:malloc [/usr/lib64/libc.so.6]
+  8,222,184 ( 0.59%)  Src/params.c:getnumvalue [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  7,969,002 ( 0.57%)  Src/params.c:getarg [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  7,831,659 ( 0.56%)  ???:__strlen_avx2 [/usr/lib64/libc.so.6]
+  7,724,405 ( 0.56%)  ???:_int_malloc [/usr/lib64/libc.so.6]
+  7,457,324 ( 0.54%)  Src/subst.c:paramsubst'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  6,846,453 ( 0.49%)  Src/subst.c:stringsubst [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  6,728,744 ( 0.49%)  .work/candidate/Src/../../../Src/mem.c:zalloc [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  5,994,776 ( 0.43%)  Src/subst.c:prefork [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  4,623,296 ( 0.33%)  .work/candidate/Src/../../../Src/loop.c:execif [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  4,523,190 ( 0.33%)  Src/exec.c:addvars [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  4,478,914 ( 0.32%)  ???:__strcspn_sse42 [/usr/lib64/libc.so.6]
+  4,470,967 ( 0.32%)  .work/candidate/Src/../../../Src/parse.c:ecgetstr [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  4,287,739 ( 0.31%)  Src/params.c:getstrvalue [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  4,085,978 ( 0.29%)  Src/exec.c:untokenize.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,704,948 ( 0.27%)  Src/exec.c:execarith [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,697,326 ( 0.27%)  Src/params.c:getindex [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,667,496 ( 0.26%)  Src/params.c:fetchvalue'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,653,632 ( 0.26%)  Src/glob.c:remnulargs [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,642,717 ( 0.26%)  Src/exec.c:untokenize_tail [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,080,048 ( 0.22%)  .work/candidate/Src/../../../Src/lex.c:add [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,056,321 ( 0.22%)  Src/subst.c:strcatsub [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  3,045,308 ( 0.22%)  .work/candidate/Src/../../../Src/math.c:matheval [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,968,002 ( 0.21%)  .work/candidate/Src/../../../Src/hist.c:hist_context_restore [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,913,039 ( 0.21%)  .work/candidate/Src/../../../Src/context.c:zcontext_restore_partial [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,913,039 ( 0.21%)  .work/candidate/Src/../../../Src/hist.c:hist_context_save [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,870,960 ( 0.21%)  .work/candidate/Src/../../../Src/input.c:inpoptop [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,859,480 ( 0.21%)  .work/candidate/Src/../../../Src/hist.c:hend [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,832,236 ( 0.20%)  Src/params.c:assignstrvalue.part.0 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,803,113 ( 0.20%)  .work/candidate/Src/../../../Src/context.c:zcontext_save_partial [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,802,312 ( 0.20%)  Src/params.c:convbase_ptr [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,697,707 ( 0.19%)  Src/params.c:assignsparam [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,543,080 ( 0.18%)  .work/candidate/Src/../../../Src/input.c:inungetc [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,528,302 ( 0.18%)  .work/candidate/Src/../../../Src/parse.c:parse_context_restore [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,394,688 ( 0.17%)  Src/subst.c:stringsubst'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,289,832 ( 0.17%)  Src/subst.c:prefork'2 [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,275,482 ( 0.16%)  .work/candidate/Src/../../../Src/lex.c:parse_subscript [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,271,332 ( 0.16%)  .work/candidate/Src/../../../Src/string.c:dupstring [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,267,136 ( 0.16%)  .work/candidate/Src/../../../Src/string.c:ztrdup [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+  2,253,454 ( 0.16%)  .work/candidate/Src/../../../Src/input.c:inpush [/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round13/psh]
+

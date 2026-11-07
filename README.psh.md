@@ -60,6 +60,10 @@ and refines the null-marker probe; its
 The [thirteenth experiment](Perf/round13.md) groups pointer-array scans; its
 [patch](Perf/0013-grouped-array-scans.patch) applies after the twelfth.
 
+The [fourteenth experiment](Perf/round14.md) avoids general conversion for ASCII
+classification, guided by the expanded [customer workloads](Perf/customer-projects.md);
+its [patch](Perf/0014-ascii-classification.patch) applies after the thirteenth.
+
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
 storage-format change. Array append scaling remains an open investigation.
@@ -77,7 +81,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all thirteen changes; the fourth experiment compares against
+executable includes all fourteen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -144,3 +148,9 @@ individually checked pointer steps. It requires no padding, keeps existing
 unsigned-bound behavior, and changes no array representation or public API.
 Late reads and slices improve on large arrays; complete application timings
 remain close. Measurements compare against the preserved twelfth executable.
+
+The fourteenth change applies the converter's existing ASCII width directly in
+`itype_end()`, retaining live character classification, token precedence and
+conversion state. Measurements now include actual input, world generation,
+race simulation and geometry binning functions from the customer's projects.
+Native checks compare with the original scanner across five encodings.

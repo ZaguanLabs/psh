@@ -5,6 +5,10 @@ as the compatibility contract**. Changes are measured against a pristine build
 and checked for expansion, quoting, option, emulation, capture, native API and
 signal behavior. Measurements include gains and regressions.
 
+The author's Zsh projects are the primary customer workloads. Their profiles
+guide optimization priorities; project kernels and controls accompany focused
+shell benchmarks.
+
 ```sh
 git clone git@github.com:ZaguanLabs/psh.git
 cd psh
@@ -24,10 +28,11 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
-- [Project details and the thirteen experiments](README.psh.md)
+- [Project details and the fourteen experiments](README.psh.md)
 - [Build, comparison and benchmark workflow](Perf/README.md)
+- [Customer project workloads and remaining coverage](Perf/customer-projects.md)
 - [Source-review coverage](Perf/audit.md)
-- [Latest measurements and compatibility evidence](Perf/round13.md)
+- [Latest measurements and compatibility evidence](Perf/round14.md)
 - [Upstream bug report, backported fix and reproducer](Perf/upstream-terminator-read.md)
 
 The review is ongoing. Test results are evidence of compatibility, not proof of

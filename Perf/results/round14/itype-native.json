@@ -1,0 +1,131 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/itype-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/itype-module/psh_itype_fixture.so"
+  ],
+  "source_sha256": "50c4b71b8872330c61baa27cae0a3429fb36b20c6e891b83bf03e2874373ffc8",
+  "reference_sha256": "b89477c13e3320f9b15deeff82df3c71ef6cc7a6d5b1fe6453c1c038008518e4",
+  "module_sha256": "e766388f22fc31aa09ede9e0f6f52f2d6bb7fef5b0533ca02388e3586aff9841",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "wide_setting_hex": "",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "wide_setting_hex": "e7958c",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "ja_JP.eucjp",
+      "charmap": "EUC-JP",
+      "wide_setting_hex": "b3a6",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "zh_CN.GB18030",
+      "charmap": "GB18030",
+      "wide_setting_hex": "bde7",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "zh_TW.EUC-TW",
+      "charmap": "EUC-TW",
+      "wide_setting_hex": "d2cc",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "wide_setting_hex": "",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "7641da8be487d1fce76ad5d0bc079cc1e9978b37504fe71c28da613114feb17a"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "wide_setting_hex": "e7958c",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "7641da8be487d1fce76ad5d0bc079cc1e9978b37504fe71c28da613114feb17a"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "ja_JP.eucjp",
+      "charmap": "EUC-JP",
+      "wide_setting_hex": "b3a6",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "7641da8be487d1fce76ad5d0bc079cc1e9978b37504fe71c28da613114feb17a"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "zh_CN.GB18030",
+      "charmap": "GB18030",
+      "wide_setting_hex": "bde7",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "7641da8be487d1fce76ad5d0bc079cc1e9978b37504fe71c28da613114feb17a"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "zh_TW.EUC-TW",
+      "charmap": "EUC-TW",
+      "wide_setting_hex": "d2cc",
+      "checks": 378752,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/posixidentifiers/default\nchecks=43040\nmultibyte/posixidentifiers/changed\nchecks=51648\nmultibyte/noposixidentifiers/default\nchecks=43040\nmultibyte/noposixidentifiers/changed\nchecks=51648\nnomultibyte/posixidentifiers/default\nchecks=43040\nnomultibyte/posixidentifiers/changed\nchecks=51648\nnomultibyte/noposixidentifiers/default\nchecks=43040\nnomultibyte/noposixidentifiers/changed\nchecks=51648\n",
+      "binary_sha256": "7641da8be487d1fce76ad5d0bc079cc1e9978b37504fe71c28da613114feb17a"
+    }
+  ]
+}

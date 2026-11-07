@@ -575,3 +575,27 @@ The benchmark measures reads, short slices and length queries at empty, small,
 medium and large sizes. Setup and warm-up precede timing, and expected values
 are checked before and after. Run timings with builds, tests and profilers
 idle. See [round13.md](round13.md) for gains, unchanged controls and limits.
+
+
+## Customer workloads and ASCII classification
+
+Use [customer-projects.md](customer-projects.md) to see the measured project
+kernels and the remaining native-module, graphics, terminal and network cases.
+The round-fourteen ASCII shortcut is guided by those profiles and validated
+against the original release scanner:
+
+```sh
+python3 Perf/check-itype-module.py .work/baseline/Src/zsh ./psh \
+  --memcheck --output .work/logs/itype-native.json
+python3 Perf/customer-benchmark.py /path/to/previous/psh ./psh --cpu 2 \
+  --labs /path/to/labs --challenge /path/to/challenge \
+  --output .work/logs/customer-benchmarks.json
+```
+
+The native fixture builds with pristine headers, reconstructs the original
+scanner's private wide sets from public values, and checks classifications,
+exact allocation ends, unchanged buffers and subsequent conversion state.
+Defaults cover C and C.UTF-8; repeat `--locale` for other installed encodings.
+The benchmark uses real project functions and independent expected-result
+checks, records every sample/source hash, and compares resulting state.
+See [round14.md](round14.md) for gains, controls and harness corrections.

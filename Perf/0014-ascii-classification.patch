@@ -1,0 +1,17 @@
+diff --git a/Src/utils.c b/Src/utils.c
+index c3177b9..b634db0 100644
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -4393,6 +4393,12 @@ itype_end(const char *ptr, int itype, int once)
+ 		len = 1;
+ 		if (!zistype(*ptr,itype))
+ 		    break;
++	    } else if ((unsigned char)*ptr <= 0x7f) {
++		/* The converter's ASCII path has width one and leaves its
++		 * shift state unchanged.  Keep the live classification. */
++		len = 1;
++		if (!zistype(*ptr,itype))
++		    break;
+ 	    } else {
+ 		wint_t wc;
+ 		len = mb_metacharlenconv(ptr, &wc);
