@@ -1243,6 +1243,18 @@ isident(char *s)
  * the character in question; subtract *prevcharlen if necessary.
  */
 
+/* Short-circuit in address order: a NUL or non-ASCII byte stops the probe
+ * before any later byte is read.  No allocation padding is required. */
+#define ASCII_INDEX8(p) \
+    ((unsigned char)(p)[0] - 1U < 127U && \
+     (unsigned char)(p)[1] - 1U < 127U && \
+     (unsigned char)(p)[2] - 1U < 127U && \
+     (unsigned char)(p)[3] - 1U < 127U && \
+     (unsigned char)(p)[4] - 1U < 127U && \
+     (unsigned char)(p)[5] - 1U < 127U && \
+     (unsigned char)(p)[6] - 1U < 127U && \
+     (unsigned char)(p)[7] - 1U < 127U)
+
 /**/
 static zlong
 getarg(char **str, int *inv, Value v, int a2, zlong *w,
@@ -1511,10 +1523,18 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
 		/* Match mb_metacharlenconv()'s ASCII and byte-mode widths,
 		 * which do not change conversion state.  Keep other characters
 		 * on its existing multibyte path. */
-		for (t = s; nchars && *t; nchars--)
-		    t += (lastcharlen = (unsigned char)*t <= 0x7f ?
-			  1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
-			  MB_METACHARLEN(t));
+		for (t = s; nchars && *t;) {
+		    if (nchars >= 8 && ASCII_INDEX8(t)) {
+			t += 8;
+			nchars -= 8;
+			lastcharlen = 1;
+		    } else {
+			t += (lastcharlen = (unsigned char)*t <= 0x7f ?
+			      1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
+			      MB_METACHARLEN(t));
+			nchars--;
+		    }
+		}
 		/* for consistency, keep any remainder off the end */
 		r = (zlong)(t - s) + nchars;
 		if (prevcharlen && !nchars /* ignore if off the end */)
@@ -1536,10 +1556,18 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
 		    r -= (zlong)strlen(s);
 		} else {
 		    MB_METACHARINIT();
-		    for (t = s; nchars && *t; nchars--)
-			t += (lastcharlen = (unsigned char)*t <= 0x7f ?
-			      1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
-			      MB_METACHARLEN(t));
+		    for (t = s; nchars && *t;) {
+			if (nchars >= 8 && ASCII_INDEX8(t)) {
+			    t += 8;
+			    nchars -= 8;
+			    lastcharlen = 1;
+			} else {
+			    t += (lastcharlen = (unsigned char)*t <= 0x7f ?
+				  1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
+				  MB_METACHARLEN(t));
+			    nchars--;
+			}
+		    }
 		    r = - (zlong)strlen(t); /* keep negative */
 		    if (prevcharlen)
 			*prevcharlen = lastcharlen;
@@ -1883,6 +1911,8 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
     }
     return r;
 }
+
+#undef ASCII_INDEX8
 
 /*
  * Parse a subscript.

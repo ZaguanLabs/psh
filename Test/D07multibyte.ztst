@@ -726,3 +726,25 @@ F:support character sets outside the portable 7-bit range.
     [[ $out == 1 && $MATCH == "$s" && $MEND == 33 ]]
   }
 0:Terminal-star ASCII runs preserve mixed Unicode, embedded NUL and incomplete-tail match state
+
+  () {
+    emulate -L zsh
+    local n s t prefix suffix
+    for n in 0 1 7 8 9 15 16 17 31 32 33 63 64 65; do
+      prefix=${(l:$n::a:)} suffix=${(l:$n::b:)}
+      s=${prefix}é界😀é${suffix}
+      [[ ${s[n+1]} == é && ${s[n+1,n+3]} == é界😀 &&
+         ${s[-n-5]} == é && ${s[2*n+6]} == '' ]] || return 1
+      if (( n )); then
+        [[ ${s[-1]} == b && ${s[2*n+5]} == b ]] || return 1
+        t=$s
+        t[2*n+5]=X
+        [[ $t == ${prefix}é界😀é${(l:$((n-1))::b:)}X ]] || return 1
+      fi
+      s[n+2,n+3]=Q
+      [[ $s == ${prefix}éQé${suffix} ]] || return 1
+      s[-n-4,-n-3]=W
+      [[ $s == ${prefix}Wé${suffix} ]] || return 1
+    done
+  }
+0:Scalar block prefixes preserve Unicode widths and positive and negative assignment boundaries

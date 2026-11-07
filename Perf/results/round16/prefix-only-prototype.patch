@@ -1,0 +1,58 @@
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1242,6 +1242,18 @@
+  * been taken into account).  This actually gives the offset *after*
+  * the character in question; subtract *prevcharlen if necessary.
+  */
++
++/* Short-circuit in address order: a NUL or non-ASCII byte stops the probe
++ * before any later byte is read.  No allocation padding is required. */
++#define ASCII_INDEX8(p) \
++    ((unsigned char)(p)[0] - 1U < 127U && \
++     (unsigned char)(p)[1] - 1U < 127U && \
++     (unsigned char)(p)[2] - 1U < 127U && \
++     (unsigned char)(p)[3] - 1U < 127U && \
++     (unsigned char)(p)[4] - 1U < 127U && \
++     (unsigned char)(p)[5] - 1U < 127U && \
++     (unsigned char)(p)[6] - 1U < 127U && \
++     (unsigned char)(p)[7] - 1U < 127U)
+ 
+ /**/
+ static zlong
+@@ -1511,7 +1523,12 @@
+ 		/* Match mb_metacharlenconv()'s ASCII and byte-mode widths,
+ 		 * which do not change conversion state.  Keep other characters
+ 		 * on its existing multibyte path. */
+-		for (t = s; nchars && *t; nchars--)
++		t = s;
++		while (nchars >= 8 && ASCII_INDEX8(t)) {
++		    t += 8;
++		    nchars -= 8;
++		}
++		for (; nchars && *t; nchars--)
+ 		    t += (lastcharlen = (unsigned char)*t <= 0x7f ?
+ 			  1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
+ 			  MB_METACHARLEN(t));
+@@ -1536,7 +1553,12 @@
+ 		    r -= (zlong)strlen(s);
+ 		} else {
+ 		    MB_METACHARINIT();
+-		    for (t = s; nchars && *t; nchars--)
++		    t = s;
++		    while (nchars >= 8 && ASCII_INDEX8(t)) {
++			t += 8;
++			nchars -= 8;
++		    }
++		    for (; nchars && *t; nchars--)
+ 			t += (lastcharlen = (unsigned char)*t <= 0x7f ?
+ 			      1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
+ 			      MB_METACHARLEN(t));
+@@ -1883,6 +1905,8 @@
+     }
+     return r;
+ }
++
++#undef ASCII_INDEX8
+ 
+ /*
+  * Parse a subscript.

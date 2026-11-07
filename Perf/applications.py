@@ -29,6 +29,9 @@ def main():
     script = Path(__file__).resolve().with_name("application-workload.zsh")
     env = {"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8", "LANG": "C.UTF-8"}
     report = {"shells": shells, "cpu_affinity": sorted(os.sched_getaffinity(0)),
+              "binary_sha256": [hashlib.sha256(Path(s).read_bytes()).hexdigest() for s in shells],
+              "worker_sha256": hashlib.sha256(script.read_bytes()).hexdigest(),
+              "samples": args.samples, "environment": env,
               "locale": "C.UTF-8", "cases": []}
     cases = [("zjson", args.zjson, 3), ("navigation", args.z3dfx, 10)]
     if args.arrays:
@@ -54,6 +57,8 @@ def main():
                 states.add(hashlib.sha256(state).hexdigest())
         if len(states) != 1:
             raise RuntimeError(f"{operation}: application state differs")
+        if hashes != {str(f): hashlib.sha256(f.read_bytes()).hexdigest() for f in sources}:
+            raise RuntimeError(f"{operation}: application sources changed")
         medians = [statistics.median(s) for s in samples]
         report["cases"].append({"operation": operation, "source_sha256": hashes,
                                 "samples_ms_per_call": samples, "median_ms": medians,
@@ -61,6 +66,8 @@ def main():
         print(f"{operation}: {medians[0]:.3f} -> {medians[1]:.3f} ms/call; "
               "identical state", flush=True)
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    if report["binary_sha256"] != [hashlib.sha256(Path(s).read_bytes()).hexdigest() for s in shells]:
+        raise RuntimeError("application benchmark binaries changed")
     args.output.write_text(json.dumps(report, indent=2) + "\n")
 
 

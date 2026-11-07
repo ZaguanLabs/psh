@@ -559,3 +559,21 @@ F:In math, (($i)) should be the same as ((i)), see workers/47748.
     done
   }
 0:Array lengths and end slices retain terminator boundaries with native and zero-based indices
+
+  () {
+    emulate -L zsh -o nomultibyte
+    local n s out
+    local -i i
+    for n in 1 7 8 9 15 16 17 31 32 33 63 64 65; do
+      s=${(l:$n::x:)}
+      [[ ${s[n]} == x && ${s[n+1]} == '' &&
+         ${s[-1]} == x && ${s[-n]} == x ]] || return 1
+    done
+    s=${(l:32::a:)}$'\0\203\377'${(l:32::b:)}
+    i=31
+    out=${s[$((++i)),$((i+=4))]}
+    [[ $out == $'a\0\203\377b' && $i == 36 ]] || return 1
+    s[32,36]=X
+    [[ $s == ${(l:31::a:)}X${(l:31::b:)} ]]
+  }
+0:Scalar indices retain ASCII block ends, Meta escapes and arithmetic effects

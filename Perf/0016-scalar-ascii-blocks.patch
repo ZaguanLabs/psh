@@ -1,0 +1,134 @@
+diff --git a/Src/params.c b/Src/params.c
+index 951ea6f..7d432ae 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1243,6 +1243,18 @@ isident(char *s)
+  * the character in question; subtract *prevcharlen if necessary.
+  */
+ 
++/* Short-circuit in address order: a NUL or non-ASCII byte stops the probe
++ * before any later byte is read.  No allocation padding is required. */
++#define ASCII_INDEX8(p) \
++    ((unsigned char)(p)[0] - 1U < 127U && \
++     (unsigned char)(p)[1] - 1U < 127U && \
++     (unsigned char)(p)[2] - 1U < 127U && \
++     (unsigned char)(p)[3] - 1U < 127U && \
++     (unsigned char)(p)[4] - 1U < 127U && \
++     (unsigned char)(p)[5] - 1U < 127U && \
++     (unsigned char)(p)[6] - 1U < 127U && \
++     (unsigned char)(p)[7] - 1U < 127U)
++
+ /**/
+ static zlong
+ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+@@ -1511,10 +1523,18 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+ 		/* Match mb_metacharlenconv()'s ASCII and byte-mode widths,
+ 		 * which do not change conversion state.  Keep other characters
+ 		 * on its existing multibyte path. */
+-		for (t = s; nchars && *t; nchars--)
+-		    t += (lastcharlen = (unsigned char)*t <= 0x7f ?
+-			  1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
+-			  MB_METACHARLEN(t));
++		for (t = s; nchars && *t;) {
++		    if (nchars >= 8 && ASCII_INDEX8(t)) {
++			t += 8;
++			nchars -= 8;
++			lastcharlen = 1;
++		    } else {
++			t += (lastcharlen = (unsigned char)*t <= 0x7f ?
++			      1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
++			      MB_METACHARLEN(t));
++			nchars--;
++		    }
++		}
+ 		/* for consistency, keep any remainder off the end */
+ 		r = (zlong)(t - s) + nchars;
+ 		if (prevcharlen && !nchars /* ignore if off the end */)
+@@ -1536,10 +1556,18 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+ 		    r -= (zlong)strlen(s);
+ 		} else {
+ 		    MB_METACHARINIT();
+-		    for (t = s; nchars && *t; nchars--)
+-			t += (lastcharlen = (unsigned char)*t <= 0x7f ?
+-			      1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
+-			      MB_METACHARLEN(t));
++		    for (t = s; nchars && *t;) {
++			if (nchars >= 8 && ASCII_INDEX8(t)) {
++			    t += 8;
++			    nchars -= 8;
++			    lastcharlen = 1;
++			} else {
++			    t += (lastcharlen = (unsigned char)*t <= 0x7f ?
++				  1 : unset(MULTIBYTE) ? 1 + (*t == Meta) :
++				  MB_METACHARLEN(t));
++			    nchars--;
++			}
++		    }
+ 		    r = - (zlong)strlen(t); /* keep negative */
+ 		    if (prevcharlen)
+ 			*prevcharlen = lastcharlen;
+@@ -1884,6 +1912,8 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+     return r;
+ }
+ 
++#undef ASCII_INDEX8
++
+ /*
+  * Parse a subscript.
+  *
+diff --git a/Test/D06subscript.ztst b/Test/D06subscript.ztst
+index 3bbc57e..acdd39a 100644
+--- a/Test/D06subscript.ztst
++++ b/Test/D06subscript.ztst
+@@ -559,3 +559,21 @@ F:In math, (($i)) should be the same as ((i)), see workers/47748.
+     done
+   }
+ 0:Array lengths and end slices retain terminator boundaries with native and zero-based indices
++
++  () {
++    emulate -L zsh -o nomultibyte
++    local n s out
++    local -i i
++    for n in 1 7 8 9 15 16 17 31 32 33 63 64 65; do
++      s=${(l:$n::x:)}
++      [[ ${s[n]} == x && ${s[n+1]} == '' &&
++         ${s[-1]} == x && ${s[-n]} == x ]] || return 1
++    done
++    s=${(l:32::a:)}$'\0\203\377'${(l:32::b:)}
++    i=31
++    out=${s[$((++i)),$((i+=4))]}
++    [[ $out == $'a\0\203\377b' && $i == 36 ]] || return 1
++    s[32,36]=X
++    [[ $s == ${(l:31::a:)}X${(l:31::b:)} ]]
++  }
++0:Scalar indices retain ASCII block ends, Meta escapes and arithmetic effects
+diff --git a/Test/D07multibyte.ztst b/Test/D07multibyte.ztst
+index 653d35c..e15bff2 100644
+--- a/Test/D07multibyte.ztst
++++ b/Test/D07multibyte.ztst
+@@ -726,3 +726,25 @@ F:support character sets outside the portable 7-bit range.
+     [[ $out == 1 && $MATCH == "$s" && $MEND == 33 ]]
+   }
+ 0:Terminal-star ASCII runs preserve mixed Unicode, embedded NUL and incomplete-tail match state
++
++  () {
++    emulate -L zsh
++    local n s t prefix suffix
++    for n in 0 1 7 8 9 15 16 17 31 32 33 63 64 65; do
++      prefix=${(l:$n::a:)} suffix=${(l:$n::b:)}
++      s=${prefix}é界😀é${suffix}
++      [[ ${s[n+1]} == é && ${s[n+1,n+3]} == é界😀 &&
++         ${s[-n-5]} == é && ${s[2*n+6]} == '' ]] || return 1
++      if (( n )); then
++        [[ ${s[-1]} == b && ${s[2*n+5]} == b ]] || return 1
++        t=$s
++        t[2*n+5]=X
++        [[ $t == ${prefix}é界😀é${(l:$((n-1))::b:)}X ]] || return 1
++      fi
++      s[n+2,n+3]=Q
++      [[ $s == ${prefix}éQé${suffix} ]] || return 1
++      s[-n-4,-n-3]=W
++      [[ $s == ${prefix}Wé${suffix} ]] || return 1
++    done
++  }
++0:Scalar block prefixes preserve Unicode widths and positive and negative assignment boundaries

@@ -622,3 +622,33 @@ byte-mode wrapper behavior and expected malformed-Meta diagnostics are checked.
 The customer driver now includes UTF-8 wide-character layout in both editors.
 See [round15.md](round15.md) for URL-encoding gains, the slower scalar controls,
 all recorded samples and comparison evidence.
+
+## Scalar indexing through ASCII groups
+
+Round sixteen advances numeric scalar traversal eight characters at a time
+when every stored byte is nonzero ASCII. The ordered short-circuit probe stops
+at a NUL or non-ASCII byte before reading a later address. Other characters use
+the existing converter or Meta width. Groups can resume after these characters;
+the previous-character width is explicitly restored to one after a group.
+
+```sh
+python3 Perf/scalar-compare.py .work/baseline/Src/zsh ./psh \
+  --assignments --prefixes --locale C --locale C.UTF-8 \
+  --locale ja_JP.eucjp --locale zh_CN.GB18030 --locale zh_TW.EUC-TW \
+  --output .work/logs/scalar-prefixes.json
+python3 Perf/check-scalar-index-module.py .work/baseline/Src/zsh ./psh \
+  --memcheck --output .work/logs/scalar-index-native.json
+```
+
+The extra scalar matrices include ASCII block boundaries, actual locale-encoded
+wide characters, incomplete endings, ASCII tails, emulation modes and isolated
+assignments. The native fixture uses custom getters returning exact-ending
+allocations and original public converter boundaries as the oracle. It checks
+input preservation and getter counts as well as selected bytes. Select matching
+headers with `--headers-build .work/no-mb-baseline` for a no-multibyte pair.
+
+The parser timing driver accepts repeated `--case` selections, such as
+`--case json-repair-100k`, for investigating individual controls. Application
+timings now retain binary/worker hashes and check that sources and binaries
+stay unchanged. See [round16.md](round16.md) for all results, including slower
+controls and the separately validated installed package.

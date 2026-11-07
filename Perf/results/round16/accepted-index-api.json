@@ -1,0 +1,60 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scalar-index-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/scalar-index-module-baseline/psh_scalar_index_fixture.so"
+  ],
+  "source_sha256": "a669cc86819e31ba992975d42971b6b86963888043d751b019ceb89e316afe13",
+  "module_sha256": "3dde0908431e5c3ebd42817367a7822729a22c1221525ceefa249159198a58d8",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "890f96b478dc6a689a633f1553690961cead3b2437526ea4f2201cf2b8b37ed5"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "890f96b478dc6a689a633f1553690961cead3b2437526ea4f2201cf2b8b37ed5"
+    }
+  ]
+}

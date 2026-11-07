@@ -18,6 +18,8 @@ def main():
         p.add_argument("--" + project, type=Path, required=True)
     p.add_argument("--cpu", type=int)
     p.add_argument("--samples", type=int, default=9)
+    p.add_argument("--case", action="append", choices=("html-comment-1m", "html-prose-100k",
+                   "json-repair-100k", "html-clean-128"), help="select individual controls")
     p.add_argument("--output", type=Path, required=True)
     args = p.parse_args()
     if args.samples < 3:
@@ -44,6 +46,8 @@ def main():
          b"\xff" + b"x" * 99999, b'"\xef\xbf\xbd' + b"x" * 99999 + b'"', 3),
         ("html-clean-128", "clean", soup_root, section * 128, None, 3),
     ]
+    if args.case:
+        cases = [case for case in cases if case[0] in args.case]
     env = {"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8", "LANG": "C.UTF-8"}
     report = {"shells": shells, "cpu_affinity": sorted(os.sched_getaffinity(0)),
               "binary_sha256": [hashlib.sha256(Path(s).read_bytes()).hexdigest() for s in shells],

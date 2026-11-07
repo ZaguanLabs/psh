@@ -1,0 +1,60 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scalar-index-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/scalar-index-module-no-mb-baseline/psh_scalar_index_fixture.so"
+  ],
+  "source_sha256": "a669cc86819e31ba992975d42971b6b86963888043d751b019ceb89e316afe13",
+  "module_sha256": "167ef57bf17c3a6eacc0815930ebc83a768a1a750a8d6f16a1bd7a0ff551c21d",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-baseline/Src/zsh",
+      "locale": "C",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "a7d443a64a26e7abffaf96018dd459d8a2f977b446ffb00bab85b9d99bdd168b"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "a7d443a64a26e7abffaf96018dd459d8a2f977b446ffb00bab85b9d99bdd168b"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-candidate/Src/zsh",
+      "locale": "C",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "115d6b8d051730e3a59de21f3da3b9900aff24d4f73acebaea9bb6d325371ab3"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 191568,
+      "getter_calls": 383136,
+      "stdout": "multibyte\nchecks=95784 getters=191568\nnomultibyte\nchecks=95784 getters=191568\n",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "115d6b8d051730e3a59de21f3da3b9900aff24d4f73acebaea9bb6d325371ab3"
+    }
+  ]
+}

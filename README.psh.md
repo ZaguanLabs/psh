@@ -73,6 +73,11 @@ The [fifteenth experiment](Perf/round15.md) skips plain prefixes in whole
 metafied byte counts; its [patch](Perf/0015-byte-length-prefix.patch) applies
 after the fourteenth.
 
+The [sixteenth experiment](Perf/round16.md) advances numeric scalar indices
+through guarded groups of eight ASCII characters, including runs following
+Unicode or Meta escapes. Its [patch](Perf/0016-scalar-ascii-blocks.patch) applies
+after the fifteenth.
+
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
 storage-format change. Array append scaling remains an open investigation.
@@ -90,7 +95,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all fifteen changes; the fourth experiment compares against
+executable includes all sixteen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -169,3 +174,9 @@ byte-count loop, or uses the standard byte length when there is no escape.
 It improves the measured URL-encoding workload and retains diagnostic behavior.
 Wide editor layout joins the customer controls; a slower Unicode scalar slice
 is reported alongside the gains.
+
+The sixteenth change groups character traversal while preserving conversion,
+callback and allocation boundaries. Its project gains include URL encoding,
+large HTML comment conversion and malformed-UTF-8 repair; slower controls are
+retained. The accepted source is also packaged with matching native modules
+for the installed daily driver.

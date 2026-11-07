@@ -1,0 +1,125 @@
+{
+  "cases": [
+    {
+      "mode": "zsh",
+      "multibyte": "multibyte",
+      "locale": "C",
+      "script": "emulate -R zsh\nsetopt multibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "85a11ee3e7fd28aa9ed3ba01d67995dca87e2269cbaae27e55063016d7da6535",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "zsh",
+      "multibyte": "multibyte",
+      "locale": "C.UTF-8",
+      "script": "emulate -R zsh\nsetopt multibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "32913f62a1898594b1f76c07d999f135f2ec55a2506490d70211fee9990a987f",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "zsh",
+      "multibyte": "nomultibyte",
+      "locale": "C",
+      "script": "emulate -R zsh\nsetopt nomultibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "85a11ee3e7fd28aa9ed3ba01d67995dca87e2269cbaae27e55063016d7da6535",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "zsh",
+      "multibyte": "nomultibyte",
+      "locale": "C.UTF-8",
+      "script": "emulate -R zsh\nsetopt nomultibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "85a11ee3e7fd28aa9ed3ba01d67995dca87e2269cbaae27e55063016d7da6535",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "ksh",
+      "multibyte": "multibyte",
+      "locale": "C",
+      "script": "emulate -R ksh\nsetopt multibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "ksh",
+      "multibyte": "multibyte",
+      "locale": "C.UTF-8",
+      "script": "emulate -R ksh\nsetopt multibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "ksh",
+      "multibyte": "nomultibyte",
+      "locale": "C",
+      "script": "emulate -R ksh\nsetopt nomultibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "ksh",
+      "multibyte": "nomultibyte",
+      "locale": "C.UTF-8",
+      "script": "emulate -R ksh\nsetopt nomultibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "sh",
+      "multibyte": "multibyte",
+      "locale": "C",
+      "script": "emulate -R sh\nsetopt multibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "sh",
+      "multibyte": "multibyte",
+      "locale": "C.UTF-8",
+      "script": "emulate -R sh\nsetopt multibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "sh",
+      "multibyte": "nomultibyte",
+      "locale": "C",
+      "script": "emulate -R sh\nsetopt nomultibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    },
+    {
+      "mode": "sh",
+      "multibyte": "nomultibyte",
+      "locale": "C.UTF-8",
+      "script": "emulate -R sh\nsetopt nomultibyte\ns=${(l:33::x:)}$'\\0\\203\\377\u00e9\u754c'yyyyyyyyyyyyyyyy\nfor i in 2147483647 2147483648 4294967295 4294967296 9223372036854775807 -2147483648 -4294967296 -9223372036854775808; do\n  printf '%s\\0' \"${s[i]}\" \"${s[i,i]}\" \"${s[1,i]}\" \"${s[i,-1]}\"\ndone\nprint -r -- extreme-done\n",
+      "status": 0,
+      "checks": 32,
+      "stdout_sha256": "44c7a73045c83f482d57fabf6805d49208202737395e722b1efa1bf484f8d052",
+      "stderr_sha256": "678e72f6e180d1c64885f86a51a0b4ede8c6a4a95017fe26c72bd72dc6721360"
+    }
+  ],
+  "checks": 384
+}

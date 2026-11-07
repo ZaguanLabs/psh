@@ -1,0 +1,86 @@
+[
+  {
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round15/psh",
+      ".work/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--samples",
+      "9",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--output",
+      ".work/logs/round16/customer-benchmarks-final.json"
+    ],
+    "status": 0,
+    "seconds": 26.361951795988716,
+    "driver_sha256": "ab677fbaac5842293a886ed7e3e054e070438721316f8cc5f808a5eace3f3f6f"
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/slice-benchmark.py",
+      ".work/round15/psh",
+      ".work/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--samples",
+      "9",
+      "--indices",
+      "--output",
+      ".work/logs/round16/slice-benchmarks-final.json"
+    ],
+    "status": 0,
+    "seconds": 8.098805155023001,
+    "driver_sha256": "79147a3af6f9bdee119e4b0c4acd1f29d33f71b0ed43a6640f229d1f4228b39f"
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round15/psh",
+      ".work/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--samples",
+      "9",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--output",
+      ".work/logs/round16/application-benchmarks-final.json"
+    ],
+    "status": 0,
+    "seconds": 23.57869627303444,
+    "driver_sha256": "a00964e0ec872c403460d696ea70ac7b25630d3c7f759524886513231e08fdf2"
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      ".work/round15/psh",
+      ".work/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--samples",
+      "9",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--output",
+      ".work/logs/round16/parser-benchmarks-final.json"
+    ],
+    "status": 0,
+    "seconds": 43.336543679004535,
+    "driver_sha256": "445a0f5846c60c0ede68e06be5941b8562c50ed292fbc7ebc7ce740dfab81c55"
+  }
+]

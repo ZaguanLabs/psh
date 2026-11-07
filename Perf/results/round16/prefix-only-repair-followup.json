@@ -1,0 +1,62 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round15/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh"
+  ],
+  "cpu_affinity": [
+    2
+  ],
+  "binary_sha256": [
+    "d8397ad5d608fe40fce66fe5f8f7398d0f2b2e96d02aaffe223577466a7b4262",
+    "31c6cb8f1c32d0b5c4e817b172de017e9a0f159b095d73b2688fb4334521372e"
+  ],
+  "locale": "C.UTF-8",
+  "samples": 9,
+  "cases": [
+    {
+      "case": "json-repair-100k",
+      "input_bytes": 100000,
+      "input_sha256": "21c9bab2c87b88bfbc9046f7efdbc018d3ea4c370e145f3fe73b451816aadcb4",
+      "output_bytes": 100004,
+      "output_sha256": "d82af65911e20a24e189396c3a9f56a4c82b977f139b8344aea59de00a692766",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "samples_ms_per_call": [
+        [
+          21.049333333333333,
+          21.087333333333333,
+          21.154,
+          21.47366666666667,
+          21.563666666666666,
+          21.238333333333333,
+          21.083333333333332,
+          21.154999999999998,
+          21.377
+        ],
+        [
+          22.575666666666663,
+          22.956,
+          22.727333333333334,
+          23.03333333333333,
+          23.675666666666668,
+          22.915000000000003,
+          23.096666666666668,
+          22.631666666666664,
+          23.11966666666667
+        ]
+      ],
+      "iterations": 3,
+      "median_ms": [
+        21.154999999999998,
+        22.956
+      ],
+      "speedup": 0.9215455654295173
+    }
+  ]
+}

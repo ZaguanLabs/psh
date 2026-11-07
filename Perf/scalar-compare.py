@@ -58,6 +58,39 @@ def cases(include_assignments=False):
                    len(indices) ** 2 * 3)
 
 
+def prefix_cases(assignments, wide):
+    lengths = (0, 1, 6, 7, 8, 9, 14, 15, 16, 17, 30, 31, 32, 33,
+               62, 63, 64, 65, 127, 128, 129, 255)
+    tails = ("''", "'é界😀é'", "$'\\0\\203\\377'", "$'\\303'",
+             "$'\\xf0\\x9f\\xa6'", "$'" + "".join(f"\\{b:03o}" for b in wide) + "'")
+    for mode, mb, tail, ending in itertools.product(("zsh", "ksh", "sh"),
+            ("multibyte", "nomultibyte"), tails, ("", "yyyyyyyy")):
+        script = f"emulate -R {mode}\nsetopt {mb}\n"
+        script += "for n in " + " ".join(map(str, lengths)) + "; do\n"
+        script += f"  original=\"${{(l:$n::x:)}}\"{tail}{ending}\n  s=$original\n"
+        script += '''  for i in 0 1 7 8 9 15 16 17 "$n" "$((n+1))" "$((n+2))" -1 -8 -9 "$((-n-1))" 1000; do
+    for j in "$i" "$((i+1))" -1 "$((n+4))"; do
+      out="${s[i,j]}"
+      printf '%s\\0' "$out"
+    done
+  done
+'''
+        count = len(lengths) * 16 * 4
+        if assignments:
+            script += '''  for i in 8 "$((n+1))" -8 "$((-n-1))"; do
+    for j in "$i" "$((i+1))"; do
+      for replacement in '' $'\\0é'; do
+        ( s=$original; s[i,j]=$replacement; typeset -p s )
+        print -r -- mutation-status=$?
+      done
+    done
+  done
+'''
+            count += len(lengths) * 4 * 2 * 2
+        script += "done\nprint -r -- matrix-done\n"
+        yield (f"prefix/{mode}/{mb}/{tail}/ending={ending}", script, count)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("baseline", type=Path)
@@ -65,17 +98,27 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--assignments", action="store_true",
                    help="also compare isolated scalar slice assignments")
+    p.add_argument("--prefixes", action="store_true", help="add ASCII block boundary matrices")
+    p.add_argument("--locale", action="append", dest="locales")
     args = p.parse_args()
+    driver_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     shells = [str(s.resolve(strict=True)) for s in (args.baseline, args.candidate)]
     failures = []
     checks = invocations = 0
-    for locale in ("C", "C.UTF-8"):
+    for locale in args.locales or ("C", "C.UTF-8"):
         env = {"PATH": "/usr/bin:/bin", "LC_ALL": locale, "LANG": locale}
-        for label, script, count in cases(args.assignments):
+        wide = b""
+        if args.prefixes:
+            charmap = subprocess.check_output(["locale", "charmap"], env=env, text=True).strip()
+            if charmap != "ANSI_X3.4-1968":
+                wide = subprocess.check_output(["iconv", "-f", "UTF-8", "-t", charmap],
+                                               input="界".encode())
+        scripts = itertools.chain(cases(args.assignments), prefix_cases(args.assignments, wide)) if args.prefixes else cases(args.assignments)
+        for label, script, count in scripts:
             results = []
             for shell in shells:
                 r = subprocess.run([shell, "-dfc", script, "comparison"],
-                                   env=env, capture_output=True, timeout=20)
+                                   env=env, capture_output=True, timeout=60)
                 results.append((r.returncode, r.stdout, r.stderr))
             invocations += 2
             checks += count
@@ -87,6 +130,7 @@ def main():
                                              for rc, out, err in results]})
         print(f"{locale}: {checks} cumulative checks, {len(failures)} differences", flush=True)
     report = {"shells": shells, "checks": checks, "processes": invocations,
+              "driver_sha256": driver_sha,
               "differences": failures,
               "source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,50 @@
+{
+  "previous_snapshot": ".work/round15",
+  "previous_sha256": "d8397ad5d608fe40fce66fe5f8f7398d0f2b2e96d02aaffe223577466a7b4262",
+  "candidate_sha256": "890f96b478dc6a689a633f1553690961cead3b2437526ea4f2201cf2b8b37ed5",
+  "source_sha256": {
+    "Src/params.c": "0fcbe35f1fee3c1d335b0261e0d7fd90cfd95257d35b20ae80361e5be0f62cd3",
+    "Test/D06subscript.ztst": "6a7c7936e3e06b8d599b6a5d4533bba7b64b6effe9be9dff7a453aeb07d29dcd",
+    "Test/D07multibyte.ztst": "a1776a3c6133040c93197f426318d58c83cc330870b7813f49597ccfe216d619",
+    "Perf/scalar-compare.py": "77d00665992f131a69bd6539e3f606c7927e2469256af6e0297df3aab60d19c8",
+    "Perf/scalar-index-module.c": "a669cc86819e31ba992975d42971b6b86963888043d751b019ceb89e316afe13",
+    "Perf/check-scalar-index-module.py": "8f4b046326a94067afef6b45e92cc09429892581fd488006e81c008a502875ad",
+    "Perf/applications.py": "eb87fce6300e8f839eb0a9141f340cc6b9c3693f531e5e482903fbe8c0e50de8",
+    "Perf/parser-benchmark.py": "445a0f5846c60c0ede68e06be5941b8562c50ed292fbc7ebc7ce740dfab81c55",
+    "Perf/customer-workload.zsh": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+    "Perf/customer-benchmark.py": "ab677fbaac5842293a886ed7e3e054e070438721316f8cc5f808a5eace3f3f6f"
+  },
+  "configure": [
+    "--enable-multibyte",
+    "--enable-zsh-debug",
+    "CFLAGS=-O2 -g"
+  ],
+  "compiler": "gcc (Mageia 15.2.0-1.mga10) 15.2.0",
+  "cpu": "AMD Ryzen 9 5950X 16-Core Processor",
+  "timing_cpu": 2,
+  "samples_per_build": 9,
+  "timing_jobs_sequential": true,
+  "own_builds_tests_profilers_idle_during_timings": true,
+  "scalar_comparisons": 704585,
+  "no_multibyte_scalar_comparisons": 281834,
+  "native_development_memcheck_checks": 1532544,
+  "native_packaging_memcheck_checks": 766272,
+  "memcheck_leak_checking": false,
+  "pristine_verified_files": 1847,
+  "previous_snapshot_verified": true,
+  "dynamic_exported_names_types_unchanged": true,
+  "dynamic_symbol_count": 1055,
+  "public_declarations_unchanged": [
+    "exec",
+    "glob",
+    "params",
+    "utils",
+    "pattern",
+    "subst"
+  ],
+  "incremental_patch_verified": true,
+  "rejected_prototype": "Prefix-only traversal left the malformed-UTF8 repair control slower; accepted traversal resumes grouping after non-ASCII characters.",
+  "profiling_includes_startup_and_warmup": true,
+  "application_harness_followup": "All four application cases repeated after adding binary/worker hashes; initial full run retained separately.",
+  "extreme_index_comparisons": 384
+}
