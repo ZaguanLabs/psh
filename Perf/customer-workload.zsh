@@ -6,7 +6,7 @@ integer psh_iterations=$3
 psh-reset() { return 0; }
 
 case $psh_operation in
-  coder-paste|chat-paste|coder-layout|chat-layout)
+  coder-paste|chat-paste|coder-layout|chat-layout|coder-wide-layout|chat-wide-layout)
     source "$psh_project/lib/util.zsh" || exit 1
     source "$psh_project/lib/input.zsh" || exit 1
     typeset psh_expected=${(l:10000::x:)}
@@ -24,6 +24,12 @@ case $psh_operation in
       check-result() { [[ $INPUT_EVENT_ACTION == paste && $INPUT_EVENT_TEXT == "$psh_expected" ]]; }
       dump-result() { typeset -p INPUT_EVENT_ACTION INPUT_EVENT_TEXT; }
     else
+      integer psh_rows=136 psh_column=10
+      if [[ $psh_operation == *-wide-layout ]]; then
+        [[ ${LC_ALL:-} == C.UTF-8 ]] || exit 2
+        psh_expected=${(l:10000::界:)}
+        psh_rows=271 psh_column=20
+      fi
       input_reset
       INPUT_BUF=$psh_expected INPUT_POS=10000
       run-workload() {
@@ -32,7 +38,8 @@ case $psh_operation in
       }
       check-result() {
         [[ ${(j::)INPUT_VISUAL_LINES} == "$psh_expected" ]] &&
-          (( ${#INPUT_VISUAL_LINES} == 136 && INPUT_CURSOR_ROW == 136 && INPUT_CURSOR_COL == 10 ))
+          (( ${#INPUT_VISUAL_LINES} == psh_rows && INPUT_CURSOR_ROW == psh_rows &&
+             INPUT_CURSOR_COL == psh_column && INPUT_VISUAL_STARTS[-1] == 9990 ))
       }
       dump-result() { typeset -p INPUT_VISUAL_LINES INPUT_VISUAL_STARTS INPUT_VISUAL_LENGTHS INPUT_CURSOR_ROW INPUT_CURSOR_COL; }
     fi

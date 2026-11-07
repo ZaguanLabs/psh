@@ -64,6 +64,10 @@ The [fourteenth experiment](Perf/round14.md) avoids general conversion for ASCII
 classification, guided by the expanded [customer workloads](Perf/customer-projects.md);
 its [patch](Perf/0014-ascii-classification.patch) applies after the thirteenth.
 
+The [fifteenth experiment](Perf/round15.md) skips plain prefixes in whole
+metafied byte counts; its [patch](Perf/0015-byte-length-prefix.patch) applies
+after the fourteenth.
+
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
 storage-format change. Array append scaling remains an open investigation.
@@ -81,7 +85,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all fourteen changes; the fourth experiment compares against
+executable includes all fifteen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -154,3 +158,9 @@ The fourteenth change applies the converter's existing ASCII width directly in
 conversion state. Measurements now include actual input, world generation,
 race simulation and geometry binning functions from the customer's projects.
 Native checks compare with the original scanner across five encodings.
+
+The fifteenth change finds the first Meta escape before entering the original
+byte-count loop, or uses the standard byte length when there is no escape.
+It improves the measured URL-encoding workload and retains diagnostic behavior.
+Wide editor layout joins the customer controls; a slower Unicode scalar slice
+is reported alongside the gains.

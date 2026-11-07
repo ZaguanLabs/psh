@@ -2924,3 +2924,14 @@ F:output ignorable as long as not an error
     [[ $out == "$data" ]]
   }
 0:Long token-free prefixes retain quote roundtrips, NUL bytes and literal substitution text
+
+  () {
+    emulate -L zsh -o nomultibyte
+    local prefix=${(l:4096::x:)} suffix=$'\0\203\377\xc3\xa9' s tail empty=''
+    s=$prefix$suffix
+    tail=${s[4097,-1]}
+    [[ $tail == "$suffix" ]] || return 1
+    printf '%s\n' "${#s}:${#tail}:${#${s//x/}}:${#empty}"
+  }
+0:Byte lengths after long plain prefixes preserve NUL, Meta, invalid bytes and UTF-8 octets
+>4101:5:5:0

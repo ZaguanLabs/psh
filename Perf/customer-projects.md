@@ -14,8 +14,8 @@ frame rates. Original project sources are read only.
 
 | Project | Current evidence or next representative workload |
 | --- | --- |
-| zcoder.zsh | 10,000-character bracketed paste and forced editor layout through the real input/util libraries. Existing `tests/benchmark.zsh` and `tests/benchmark_json.zsh` also provide context, payload, streaming and redraw fixtures to integrate next. |
-| zchat.zsh | The same paste/layout workload through its own libraries; its input implementation differs from zcoder's. Native grapheme and actual terminal paths remain separate coverage. |
+| zcoder.zsh | 10,000-character bracketed paste, ASCII layout and UTF-8 wide-character layout through the real input/util libraries. Existing `tests/benchmark.zsh` and `tests/benchmark_json.zsh` also provide context, payload, streaming and redraw fixtures to integrate next. |
+| zchat.zsh | The same paste/ASCII/wide-character layout workloads through its own libraries; its input implementation differs from zcoder's. Native grapheme and actual terminal paths remain separate coverage. |
 | endgame | Generate the complete 72×38 world with `ew-new`, including real creature/adventure initialization. Check map size and game state; battles, save/load and 3D client remain separate future workloads. |
 | z3dfx.mario | 120 race simulation steps through the real track and engine libraries. Check elapsed simulation time and speed; retain player, AI and coin state. Rendering is excluded. |
 | z3dfx | 60 active simulation steps, with its input library supplying focus state, plus the existing navigation-rebuild workload. Assert simulation time advanced and navigation covers the map. |
@@ -68,3 +68,11 @@ The native graphics and terminal cases above are pending work. A launcher that
 switches binaries, a mock renderer, or an unverified foreign module must not
 be presented as an end-to-end psh benchmark. State these limits beside gains
 so the remaining coverage is clear.
+
+
+Round fifteen adds UTF-8 layout of 10,000 `界` characters as a customer Unicode
+control. Each occupies two cells: at width 74, independently expected geometry
+is 271 rows, a final cursor column of 20, and a last-row character offset of
+9,990. Joining the rows must recover the original buffer. These cases require
+C.UTF-8; the existing eleven cases also receive pristine comparisons in C.
+The current default customer driver has thirteen cases across nine projects.

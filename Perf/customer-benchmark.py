@@ -12,8 +12,10 @@ import subprocess
 CASES = [
     ("coder-paste", "labs", "zcoder.zsh", 1),
     ("coder-layout", "labs", "zcoder.zsh", 2),
+    ("coder-wide-layout", "labs", "zcoder.zsh", 2),
     ("chat-paste", "labs", "zchat.zsh", 1),
     ("chat-layout", "labs", "zchat.zsh", 2),
+    ("chat-wide-layout", "labs", "zchat.zsh", 2),
     ("endgame-world", "challenge", "endgame", 2),
     ("mario-race", "challenge", "z3dfx.mario", 120),
     ("shooter-step", "challenge", "z3dfx", 60),

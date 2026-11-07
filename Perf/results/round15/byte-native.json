@@ -1,0 +1,64 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/byte-length-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/byte-length-module-baseline/psh_byte_length_fixture.so"
+  ],
+  "source_sha256": "67578da9e80a684dcdf8abea5b873fe6292e9a1ee6c733210c31acaf1e9a06e4",
+  "module_sha256": "38d41c66ea946113e6c5528a2fa49b8130898073d065ba78d33df240c25dc5d0",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "checks": 111208,
+      "malformed_diagnostics": 144,
+      "stdout": "multibyte\nchecks=55604 malformed=72\nnomultibyte\nchecks=55604 malformed=72\n",
+      "stderr_sha256": "83c78722578d931a7b361b5b9d190c8641f78c4ff9f0d46f156954ead947bba7",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 61240,
+      "malformed_diagnostics": 144,
+      "stdout": "multibyte\nchecks=5636 malformed=72\nnomultibyte\nchecks=55604 malformed=72\n",
+      "stderr_sha256": "83c78722578d931a7b361b5b9d190c8641f78c4ff9f0d46f156954ead947bba7",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C",
+      "checks": 111208,
+      "malformed_diagnostics": 144,
+      "stdout": "multibyte\nchecks=55604 malformed=72\nnomultibyte\nchecks=55604 malformed=72\n",
+      "stderr_sha256": "83c78722578d931a7b361b5b9d190c8641f78c4ff9f0d46f156954ead947bba7",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "d8397ad5d608fe40fce66fe5f8f7398d0f2b2e96d02aaffe223577466a7b4262"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 61240,
+      "malformed_diagnostics": 144,
+      "stdout": "multibyte\nchecks=5636 malformed=72\nnomultibyte\nchecks=55604 malformed=72\n",
+      "stderr_sha256": "83c78722578d931a7b361b5b9d190c8641f78c4ff9f0d46f156954ead947bba7",
+      "status": 0,
+      "memcheck": true,
+      "binary_sha256": "d8397ad5d608fe40fce66fe5f8f7398d0f2b2e96d02aaffe223577466a7b4262"
+    }
+  ]
+}

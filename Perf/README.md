@@ -599,3 +599,26 @@ Defaults cover C and C.UTF-8; repeat `--locale` for other installed encodings.
 The benchmark uses real project functions and independent expected-result
 checks, records every sample/source hash, and compares resulting state.
 See [round14.md](round14.md) for gains, controls and harness corrections.
+
+
+## Whole metafied byte counts
+
+Round fifteen changes `ztrlen()`: a standard-library search skips the prefix
+before the first Meta escape, or an escape-free string uses `strlen()`. The
+original pair loop and debug diagnostic remain in place. This counts bytes;
+Unicode character and width conversion retain their existing paths.
+
+```sh
+python3 Perf/check-byte-length-module.py .work/baseline/Src/zsh ./psh \
+  --memcheck --output .work/logs/byte-length-native.json
+```
+
+For an existing no-multibyte pair, select its matching headers with
+`--headers-build .work/no-mb-baseline`. The checker keeps those modules in
+separate folders so multibyte/no-multibyte checks can run independently. Known
+raw lengths are the oracle; exact allocation ends, whole-buffer preservation,
+byte-mode wrapper behavior and expected malformed-Meta diagnostics are checked.
+
+The customer driver now includes UTF-8 wide-character layout in both editors.
+See [round15.md](round15.md) for URL-encoding gains, the slower scalar controls,
+all recorded samples and comparison evidence.

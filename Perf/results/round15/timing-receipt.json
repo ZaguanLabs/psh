@@ -1,0 +1,105 @@
+[
+  {
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round14/psh",
+      ".work/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round15/customer-benchmarks.json"
+    ],
+    "status": 0,
+    "elapsed_seconds": 19.8511088170344,
+    "retained_report": "pre-wide-customer-benchmarks.json",
+    "retained_worker": "pre-wide-customer-workload.zsh"
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round14/psh",
+      ".work/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--samples",
+      "9",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round15/application-benchmarks.json"
+    ],
+    "status": 0,
+    "elapsed_seconds": 23.131975793046877
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      ".work/round14/psh",
+      ".work/candidate/Src/zsh",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--samples",
+      "9",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round15/parser-benchmarks.json"
+    ],
+    "status": 0,
+    "elapsed_seconds": 45.393586899968795
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/slice-benchmark.py",
+      ".work/round14/psh",
+      ".work/candidate/Src/zsh",
+      "--indices",
+      "--samples",
+      "9",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round15/slice-benchmarks.json"
+    ],
+    "status": 0,
+    "elapsed_seconds": 8.915823166025802
+  },
+  {
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round14/psh",
+      ".work/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round15/customer-benchmarks.json"
+    ],
+    "status": 0,
+    "reason": "Added actual wide-character customer controls after a slower Unicode scalar control; original eleven-case samples retained as pre-wide-*",
+    "retained_report": "customer-benchmarks.json"
+  }
+]

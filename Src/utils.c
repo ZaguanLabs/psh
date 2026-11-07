@@ -5116,8 +5116,14 @@ mod_export int
 ztrlen(char const *s)
 {
     int l;
+    char const *meta = strchr(s, Meta);
 
-    for (l = 0; *s; l++) {
+    if (!meta)
+	return (int)strlen(s);
+
+    l = meta - s;
+    s = meta;
+    for (; *s; l++) {
 	if (*s++ == Meta) {
 #ifdef DEBUG
 	    if (! *s) {
