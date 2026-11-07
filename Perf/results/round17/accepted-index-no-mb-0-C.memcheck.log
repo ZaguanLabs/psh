@@ -1,0 +1,15 @@
+==3649293== Memcheck, a memory error detector
+==3649293== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3649293== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3649293== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-mb-baseline/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_scalar_index_fixture\ ||\ exit\ 1_for\ mode\ in\ multibyte\ nomultibyte;\ do_\ \ setopt\ $mode_\ \ print\ -r\ --\ "$mode"_\ \ psh-index-check\ ||\ exit\ 1_done_zmodload\ -u\ psh_scalar_index_fixture\ ||\ exit\ 1_if\ whence\ psh-index-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/scalar-index-module-no-mb-baseline
+==3649293== Parent PID: 3648279
+==3649293== 
+==3649293== 
+==3649293== HEAP SUMMARY:
+==3649293==     in use at exit: 46,135 bytes in 748 blocks
+==3649293==   total heap usage: 413,445 allocs, 412,697 frees, 114,111,688 bytes allocated
+==3649293== 
+==3649293== For a detailed leak analysis, rerun with: --leak-check=full
+==3649293== 
+==3649293== For lists of detected and suppressed errors, rerun with: -s
+==3649293== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

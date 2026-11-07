@@ -19,6 +19,8 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--indices", action="store_true",
                    help="include late multibyte and negative-index controls")
+    p.add_argument("--counts", action="store_true",
+                   help="include multibyte character-count operations and controls")
     args = p.parse_args()
     if args.samples < 3:
         p.error("at least three samples are required")
@@ -30,6 +32,8 @@ def main():
     report = {"platform": platform.platform(), "cpu_affinity": sorted(os.sched_getaffinity(0)),
               "shells": shells, "locale": "C.UTF-8", "samples": args.samples,
               "binary_sha256": [hashlib.sha256(Path(s).read_bytes()).hexdigest() for s in shells],
+              "worker_sha256": hashlib.sha256(workload.read_bytes()).hexdigest(),
+              "environment": env,
               "cases": []}
     # Large late indices already spend milliseconds walking the source per
     # call. Keep those batches comparable in duration to the prefix batches.
@@ -43,6 +47,9 @@ def main():
                   ("mixed-suffix", 10000, 20),
                   ("nul-suffix", 10000, 20),
                   ("negative", 1000000, 20)]
+    if args.counts:
+        specs += [("count-" + op, 1000000 if op == "ascii" else 10000, 100)
+                  for op in ("ascii", "wide", "mixed", "nul", "nul-tail", "meta", "invalid", "incomplete")]
     for op, size, iterations in specs:
         times = [[], []]
         for sample in range(args.samples):
@@ -59,6 +66,9 @@ def main():
         report["cases"].append(case)
         print(f"{op:8} {size:8}: {medians[0]:9.3f} -> {medians[1]:9.3f} ms "
               f"({case['speedup']:.2f}x)", flush=True)
+    if report["binary_sha256"] != [hashlib.sha256(Path(s).read_bytes()).hexdigest() for s in shells] or \
+            report["worker_sha256"] != hashlib.sha256(workload.read_bytes()).hexdigest():
+        raise RuntimeError("binary or worker changed during measurements")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
 

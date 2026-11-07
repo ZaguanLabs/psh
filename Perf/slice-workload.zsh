@@ -3,6 +3,14 @@ setopt nomultibyte
 typeset operation=$1 s out expected
 integer size=$2 iterations=$3 first last
 case $operation in
+  count-ascii) setopt multibyte; s=${(l:$size::x:)} ;;
+  count-wide) setopt multibyte; s=${(l:$size::é:)} ;;
+  count-mixed) setopt multibyte; s=${(l:$size::abcdefgé:)} ;;
+  count-nul) setopt multibyte; typeset unit=$'\0'; s=${(pl:$size::$unit:)} ;;
+  count-nul-tail) setopt multibyte; s=$'\0'${(l:$((size-1))::x:)} ;;
+  count-meta) setopt multibyte; typeset unit=$'\203'; s=${(pl:$size::$unit:)} ;;
+  count-invalid) setopt multibyte; s=$'\xff'${(l:$((size-1))::x:)} ;;
+  count-incomplete) setopt multibyte; s=${(l:$((size-1))::x:)}$'\xc3' ;;
   unicode) setopt multibyte; s=${(l:$size::é:)} ;;
   late-unicode) setopt multibyte; s=${(l:$size::é:)} ;;
   mixed-suffix) setopt multibyte; s=${(l:$size::abcdefghé:)} ;;
@@ -11,6 +19,17 @@ case $operation in
        [[ $s[1] == "$unit" && $s[-1] == "$unit" && ${#s} == $size ]] || exit 1 ;;
   *) s=${(l:$size::x:)} ;;
 esac
+if [[ $operation == count-* ]]; then
+  [[ ${#s} == $size ]] || exit 1
+  run-count() { repeat $iterations out=${#s}; }
+  run-count
+  float -F 9 SECONDS=0
+  run-count
+  float elapsed=$SECONDS
+  [[ $out == $size ]] || exit 1
+  printf '%.9f\n' $elapsed
+  exit
+fi
 case $operation in
   prefix|unicode|nul) first=1 last=8 ;;
   middle) first=$((size / 2)) last=$((first + 7)) ;;

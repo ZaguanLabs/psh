@@ -78,6 +78,11 @@ through guarded groups of eight ASCII characters, including runs following
 Unicode or Meta escapes. Its [patch](Perf/0016-scalar-ascii-blocks.patch) applies
 after the fifteenth.
 
+The [seventeenth experiment](Perf/round17.md) counts complete-boundary ASCII
+runs in the multibyte length/width helper. Its
+[patch](Perf/0017-character-count-ascii.patch) applies after the sixteenth;
+Unicode conversion and Meta handling retain their original loops.
+
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
 storage-format change. Array append scaling remains an open investigation.
@@ -95,7 +100,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all sixteen changes; the fourth experiment compares against
+executable includes all seventeen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -180,3 +185,9 @@ callback and allocation boundaries. Its project gains include URL encoding,
 large HTML comment conversion and malformed-UTF-8 repair; slower controls are
 retained. The accepted source is also packaged with matching native modules
 for the installed daily driver.
+
+The seventeenth change reduces character-count bookkeeping on raw ASCII runs,
+resuming after completed multibyte handling. Long ASCII counts improve while
+Unicode, Meta/NUL, explicit endpoints and conversion-state behavior are checked
+against the original release implementation. Customer paste gains are smaller;
+slower synthetic and application controls remain in the report.

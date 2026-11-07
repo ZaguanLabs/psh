@@ -1,0 +1,16 @@
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -5677,6 +5677,13 @@
+ 	     * multibyte handling if we have such a character.
+ 	     */
+ 	    num++;
++	    /* Further nonzero ASCII bytes have the same state-free count.
++	     * Keep explicit-end checks before each additional read. */
++	    while ((!eptr || ptr < eptr) &&
++		   (unsigned char)*ptr - 1U < 127U) {
++		ptr++;
++		num++;
++	    }
+ 	    laststart = ptr;
+ 	    num_in_char = 0;
+ 	    continue;

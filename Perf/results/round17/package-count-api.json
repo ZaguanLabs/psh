@@ -1,0 +1,65 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/mb-length-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/mb-length-module/psh_mb_length_fixture.so"
+  ],
+  "source_sha256": "0101f7b7433873fe3cfe558692dd8959d34ee91caa7aa513136f4c5d9e256fa2",
+  "reference_sha256": "ecddfc7f10e18dd5e5f76645c3635d3af06f2835e704f3fdd4445434fd15cea6",
+  "module_sha256": "9efb6d23f308cfc09f229b8712f7ddfa08eb86a1161f5c23bae55dc8ee24e5e7",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "wide_setting_hex": "",
+      "checks": 2048800,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte\nchecks=1024400\nnomultibyte\nchecks=1024400\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "wide_setting_hex": "e7958c",
+      "checks": 2045040,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte\nchecks=1022520\nnomultibyte\nchecks=1022520\n",
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d"
+    },
+    {
+      "shell": "/usr/local/psh/releases/5.9.2-38c0e71e2244/bin/psh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "wide_setting_hex": "",
+      "checks": 2048800,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte\nchecks=1024400\nnomultibyte\nchecks=1024400\n",
+      "binary_sha256": "fd4eca79e0b12d9a1b108ee156d151bff3578dc4d30a0e7a8d0b448ef7f496aa"
+    },
+    {
+      "shell": "/usr/local/psh/releases/5.9.2-38c0e71e2244/bin/psh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "wide_setting_hex": "e7958c",
+      "checks": 2045040,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte\nchecks=1022520\nnomultibyte\nchecks=1022520\n",
+      "binary_sha256": "fd4eca79e0b12d9a1b108ee156d151bff3578dc4d30a0e7a8d0b448ef7f496aa"
+    }
+  ]
+}

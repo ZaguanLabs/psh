@@ -1,0 +1,15 @@
+==4098060== Memcheck, a memory error detector
+==4098060== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==4098060== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==4098060== Command: /usr/local/psh/releases/5.9.2-38c0e71e2244/bin/psh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_mb_length_fixture\ ||\ exit\ 1_for\ mb\ in\ multibyte\ nomultibyte;\ do_\ \ setopt\ $mb_\ \ print\ -r\ --\ "$mb"_\ \ psh-mb-length-check\ "$2"\ ||\ exit\ 1_done_zmodload\ -u\ psh_mb_length_fixture\ ||\ exit\ 1_if\ whence\ psh-mb-length-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/mb-length-module 
+==4098060== Parent PID: 4079689
+==4098060== 
+==4098060== 
+==4098060== HEAP SUMMARY:
+==4098060==     in use at exit: 46,067 bytes in 749 blocks
+==4098060==   total heap usage: 26,143 allocs, 25,394 frees, 1,394,133 bytes allocated
+==4098060== 
+==4098060== For a detailed leak analysis, rerun with: --leak-check=full
+==4098060== 
+==4098060== For lists of detected and suppressed errors, rerun with: -s
+==4098060== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

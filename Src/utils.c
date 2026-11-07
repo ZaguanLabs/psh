@@ -5664,6 +5664,23 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
     complete = 1;
 
     memset(&mb_shiftstate, 0, sizeof(mb_shiftstate));
+
+    /* At a complete-character boundary, raw nonzero ASCII has the same
+     * state-free count for every width mode. Resume here after multibyte
+     * handling; leave the original Meta/ASCII loop below unchanged. */
+ count_ascii:
+    if (eptr) {
+	while (ptr < eptr && (unsigned char)*ptr - 1U < 127U) {
+	    ptr++;
+	    num++;
+	}
+    } else {
+	while ((unsigned char)*ptr - 1U < 127U) {
+	    ptr++;
+	    num++;
+	}
+    }
+    laststart = ptr;
     while (*ptr && !(eptr && ptr >= eptr)) {
 	if (*ptr == Meta)
 	    inchar = *++ptr ^ 32;
@@ -5725,6 +5742,7 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
 	    laststart = ptr;
 	    num_in_char = 0;
 	    complete = 1;
+	    goto count_ascii;
 	}
     }
 

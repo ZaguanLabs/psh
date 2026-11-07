@@ -1,0 +1,64 @@
+diff --git a/Src/utils.c b/Src/utils.c
+index 2712bd9..4f99f6d 100644
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -5664,6 +5664,23 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
+     complete = 1;
+ 
+     memset(&mb_shiftstate, 0, sizeof(mb_shiftstate));
++
++    /* At a complete-character boundary, raw nonzero ASCII has the same
++     * state-free count for every width mode. Resume here after multibyte
++     * handling; leave the original Meta/ASCII loop below unchanged. */
++ count_ascii:
++    if (eptr) {
++	while (ptr < eptr && (unsigned char)*ptr - 1U < 127U) {
++	    ptr++;
++	    num++;
++	}
++    } else {
++	while ((unsigned char)*ptr - 1U < 127U) {
++	    ptr++;
++	    num++;
++	}
++    }
++    laststart = ptr;
+     while (*ptr && !(eptr && ptr >= eptr)) {
+ 	if (*ptr == Meta)
+ 	    inchar = *++ptr ^ 32;
+@@ -5725,6 +5742,7 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
+ 	    laststart = ptr;
+ 	    num_in_char = 0;
+ 	    complete = 1;
++	    goto count_ascii;
+ 	}
+     }
+ 
+diff --git a/Test/D07multibyte.ztst b/Test/D07multibyte.ztst
+index e15bff2..b6f209a 100644
+--- a/Test/D07multibyte.ztst
++++ b/Test/D07multibyte.ztst
+@@ -748,3 +748,23 @@ F:support character sets outside the portable 7-bit range.
+     done
+   }
+ 0:Scalar block prefixes preserve Unicode widths and positive and negative assignment boundaries
++
++  () {
++    emulate -L zsh
++    local s prefix suffix
++    local -i n
++    for n in 0 1 7 8 9 15 16 17 31 32 33 63 64 65 127 128 129; do
++      prefix=${(l:$n::a:)} suffix=${(l:$n::b:)}
++      s=${prefix}é界😀é${suffix}
++      (( ${#s} == 2*n+5 )) || return 1
++      s=${prefix}$'\0\203\177\t'${suffix}
++      (( ${#s} == 2*n+4 )) || return 1
++      s=${prefix}$'\303'
++      (( ${#s} == n+1 )) || return 1
++      s=${prefix}$'\303'${suffix}
++      (( ${#s} == 2*n+1 )) || return 1
++      s=${prefix}$'\377'${suffix}
++      (( ${#s} == 2*n+1 )) || return 1
++    done
++  }
++0:Character counts preserve ASCII runs, Meta escapes, controls and incomplete or invalid UTF-8
