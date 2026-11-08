@@ -9,8 +9,9 @@ The current project version is **1.0.0-rc0**. `psh --version` reports
 `psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
-The [release-profile iteration](../Releases/rc0-release-profile.md) records the
-current private build; the project version stays rc0 until public release.
+The [array-bound iteration](../Perf/round22.md) records the current private
+build; [release-profile notes](../Releases/rc0-release-profile.md) describe its
+configuration and debugger symbols. The project version stays rc0 until public release.
 
 The [first installed release's validation record](validation-2026-11-07.json)
 contains executable and native-module hashes, pinned revisions, suite results,

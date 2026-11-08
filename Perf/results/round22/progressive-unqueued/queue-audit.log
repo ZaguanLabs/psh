@@ -1,0 +1,54 @@
+Breakpoint 1 at 0x46b620: array_length_ge. (2 locations)
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+array cache queue level: 0
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:717
+#1  0x0000000000470a32 in issetvar (name=<optimized out>) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:799
+#2  0x0000000000427e80 in evalcond (state=state@entry=0x7fffffffc220, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+#3  0x0000000000428ba6 in execcond (state=0x7fffffffc220, do_exec=<optimized out>) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/exec.c:5239
+array cache queue level: 0
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:719
+#1  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:714
+#2  0x0000000000470a32 in issetvar (name=<optimized out>) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:799
+#3  0x0000000000427e80 in evalcond (state=state@entry=0x7fffffffc220, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+array cache queue level: 0
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:717
+#1  0x0000000000470a32 in issetvar (name=<optimized out>) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:799
+#2  0x0000000000427e80 in evalcond (state=state@entry=0x7fffffffc220, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+#3  0x0000000000428ba6 in execcond (state=0x7fffffffc220, do_exec=<optimized out>) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/exec.c:5239
+array cache queue level: 0
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:719
+#1  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:714
+#2  0x0000000000470a32 in issetvar (name=<optimized out>) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:799
+#3  0x0000000000427e80 in evalcond (state=state@entry=0x7fffffffc220, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+array cache queue level: 3
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:717
+#1  0x0000000000492df8 in paramsubst (l=l@entry=0x7ffff7fa6d48, n=n@entry=0x7ffff7fa6d78, str=str@entry=0x7fffffffb8c0, qt=qt@entry=1, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:2727
+#2  0x0000000000497fed in stringsubst (list=list@entry=0x7ffff7fa6d48, node=0x7ffff7fa6d78, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4, asssub=asssub@entry=0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:329
+#3  0x0000000000498759 in prefork (list=list@entry=0x7ffff7fa6d48, flags=flags@entry=0, ret_flags=0x7fffffffb9f4, ret_flags@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:142
+array cache queue level: 3
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:719
+#1  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:714
+#2  0x0000000000492df8 in paramsubst (l=l@entry=0x7ffff7fa6d48, n=n@entry=0x7ffff7fa6d78, str=str@entry=0x7fffffffb8c0, qt=qt@entry=1, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:2727
+#3  0x0000000000497fed in stringsubst (list=list@entry=0x7ffff7fa6d48, node=0x7ffff7fa6d78, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4, asssub=asssub@entry=0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:329
+array cache queue level: 3
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:717
+#1  0x000000000046dbd1 in getstrvalue (v=v@entry=0x7fffffffb810) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:2350
+#2  0x0000000000492e30 in paramsubst (l=l@entry=0x7ffff7fa6d48, n=n@entry=0x7ffff7fa6d78, str=str@entry=0x7fffffffb8c0, qt=qt@entry=1, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:2740
+#3  0x0000000000497fed in stringsubst (list=list@entry=0x7ffff7fa6d48, node=0x7ffff7fa6d78, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4, asssub=asssub@entry=0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:329
+array cache queue level: 3
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:719
+#1  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:714
+#2  0x000000000046dbd1 in getstrvalue (v=v@entry=0x7fffffffb810) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:2350
+#3  0x0000000000492e30 in paramsubst (l=l@entry=0x7ffff7fa6d48, n=n@entry=0x7ffff7fa6d78, str=str@entry=0x7fffffffb8c0, qt=qt@entry=1, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:2740
+array cache queue level: 3
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:717
+#1  0x000000000046c185 in getarrvalue_internal (v=v@entry=0x7fffffffb810, expose=expose@entry=0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:2567
+#2  0x000000000046cac7 in getarrvaluereadonly (v=v@entry=0x7fffffffb810) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:2599
+#3  0x0000000000491f05 in paramsubst (l=l@entry=0x7ffff7fa6d48, n=n@entry=0x7ffff7fa6d90, str=str@entry=0x7fffffffb8c0, qt=qt@entry=1, pf_flags=pf_flags@entry=0, ret_flags=ret_flags@entry=0x7fffffffb9f4) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c:2701
+array cache queue level: 3
+#0  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:719
+#1  array_length_ge (pm=0x509f50, arr=0x4fff40, bound=500) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:714
+#2  0x000000000046c185 in getarrvalue_internal (v=v@entry=0x7fffffffb810, expose=expose@entry=0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:2567
+#3  0x000000000046cac7 in getarrvaluereadonly (v=v@entry=0x7fffffffb810) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:2599
+[Inferior 1 (process 3814694) exited normally]

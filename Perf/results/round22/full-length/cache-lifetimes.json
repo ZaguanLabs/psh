@@ -1,0 +1,499 @@
+{
+  "passed": true,
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native/psh_array_cache_fixture.so"
+  ],
+  "runs": [
+    {
+      "script": "array-cache-lifetimes.zsh",
+      "mode": "zsh",
+      "locale": "C",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "8da9089c624556a852ee8e8e8cafea739dcc7c3511c7367c306d5a6f7aa4e0f1",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-lifetimes.zsh-previous-zsh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-lifetimes.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native"
+      ]
+    },
+    {
+      "script": "array-cache-lifetimes.zsh",
+      "mode": "zsh",
+      "locale": "C",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "8da9089c624556a852ee8e8e8cafea739dcc7c3511c7367c306d5a6f7aa4e0f1",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-lifetimes.zsh-candidate-zsh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-lifetimes.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native"
+      ]
+    },
+    {
+      "script": "array-cache-lifetimes.zsh",
+      "mode": "zsh",
+      "locale": "C.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "8da9089c624556a852ee8e8e8cafea739dcc7c3511c7367c306d5a6f7aa4e0f1",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-lifetimes.zsh-previous-zsh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-lifetimes.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native"
+      ]
+    },
+    {
+      "script": "array-cache-lifetimes.zsh",
+      "mode": "zsh",
+      "locale": "C.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "8da9089c624556a852ee8e8e8cafea739dcc7c3511c7367c306d5a6f7aa4e0f1",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-lifetimes.zsh-candidate-zsh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-lifetimes.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native"
+      ]
+    },
+    {
+      "script": "array-cache-lifetimes.zsh",
+      "mode": "zsh",
+      "locale": "fr_BE.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "8da9089c624556a852ee8e8e8cafea739dcc7c3511c7367c306d5a6f7aa4e0f1",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-lifetimes.zsh-previous-zsh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-lifetimes.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native"
+      ]
+    },
+    {
+      "script": "array-cache-lifetimes.zsh",
+      "mode": "zsh",
+      "locale": "fr_BE.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "8da9089c624556a852ee8e8e8cafea739dcc7c3511c7367c306d5a6f7aa4e0f1",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-lifetimes.zsh-candidate-zsh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-lifetimes.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/native"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "zsh",
+      "locale": "C",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "79d4fdb3c120c5b85915cefc0c573ef3785ba232b6bc0f5ae5810d2fb6549614",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-zsh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "zsh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "zsh",
+      "locale": "C",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "79d4fdb3c120c5b85915cefc0c573ef3785ba232b6bc0f5ae5810d2fb6549614",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-zsh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "zsh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "zsh",
+      "locale": "C.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "79d4fdb3c120c5b85915cefc0c573ef3785ba232b6bc0f5ae5810d2fb6549614",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-zsh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "zsh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "zsh",
+      "locale": "C.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "79d4fdb3c120c5b85915cefc0c573ef3785ba232b6bc0f5ae5810d2fb6549614",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-zsh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "zsh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "zsh",
+      "locale": "fr_BE.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "79d4fdb3c120c5b85915cefc0c573ef3785ba232b6bc0f5ae5810d2fb6549614",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-zsh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "zsh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "zsh",
+      "locale": "fr_BE.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "79d4fdb3c120c5b85915cefc0c573ef3785ba232b6bc0f5ae5810d2fb6549614",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-zsh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "zsh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "ksh",
+      "locale": "C",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-ksh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "ksh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "ksh",
+      "locale": "C",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-ksh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "ksh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "ksh",
+      "locale": "C.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-ksh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "ksh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "ksh",
+      "locale": "C.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-ksh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "ksh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "ksh",
+      "locale": "fr_BE.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-ksh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "ksh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "ksh",
+      "locale": "fr_BE.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-ksh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "ksh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "sh",
+      "locale": "C",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-sh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "sh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "sh",
+      "locale": "C",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-sh-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "sh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "sh",
+      "locale": "C.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-sh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "sh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "sh",
+      "locale": "C.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-sh-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "sh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "sh",
+      "locale": "fr_BE.UTF-8",
+      "host": "previous",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-previous-sh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "sh"
+      ]
+    },
+    {
+      "script": "array-cache-mutations.zsh",
+      "mode": "sh",
+      "locale": "fr_BE.UTF-8",
+      "host": "candidate",
+      "status": 0,
+      "in_place_reallocations": 0,
+      "stdout_sha256": "084e29011c01392ac2e80e1dfa9f6b97afe39392a48584de14d5a0a2a02cf0e9",
+      "binary_sha256": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/array-cache-mutations.zsh-candidate-sh-fr_BE.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh",
+        "sh"
+      ]
+    }
+  ]
+}

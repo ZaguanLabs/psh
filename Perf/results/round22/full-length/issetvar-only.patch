@@ -1,0 +1,311 @@
+diff --git a/Src/params.c b/Src/params.c
+index 7d432ae..684b324 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -663,6 +663,40 @@ paramvalarr(HashTable ht, int flags)
+     return paramvals;
+ }
+ 
++/* Length metadata is private and never used to address array storage. A
++ * mutable getter loan disables it for that allocation, even after eviction.
++ * The normal setter and parameter destructor invalidate pointer identities.
++ */
++static struct {
++    Param pm;
++    char **array;
++    int length;
++} array_lengths[64];
++
++static char *nullarray = NULL;
++
++/**/
++static void
++invalidate_array_length(Param pm)
++{
++    unsigned slot = ((size_t)pm >> 4) & 63;
++    if (array_lengths[slot].pm == pm)
++	array_lengths[slot].pm = NULL;
++}
++
++/* Interpreter-owned read: the returned vector must not escape to mutable
++ * native callers. Custom getters retain their original callback path.
++ */
++/**/
++char **
++getarrayreadonly(Param pm)
++{
++    if (pm->gsu.a == &stdarray_gsu)
++	return pm->u.arr ? pm->u.arr : &nullarray;
++    pm->node.flags |= PM_ARRAY_EXPOSED;
++    return pm->gsu.a->getfn(pm);
++}
++
+ /* Return the full array (no indexing) referred to by a Value. *
+  * The array value is cached for the lifetime of the Value.    */
+ 
+@@ -673,7 +707,7 @@ getvaluearr(Value v)
+     if (v->arr)
+ 	return v->arr;
+     else if (PM_TYPE(v->pm->node.flags) == PM_ARRAY)
+-	return v->arr = v->pm->gsu.a->getfn(v->pm);
++	return v->arr = getarrayreadonly(v->pm);
+     else if (PM_TYPE(v->pm->node.flags) == PM_HASHED) {
+ 	v->arr = paramvalarr(v->pm->gsu.h->getfn(v->pm), v->isarr);
+ 	/* Can't take numeric slices of associative arrays */
+@@ -694,7 +728,7 @@ issetvar(char *name)
+ {
+     struct value vbuf;
+     Value v;
+-    int slice;
++    int slice, cacheable;
+     char **arr;
+ 
+     if (!(v = getvalue(&vbuf, &name, 1)) || *name)
+@@ -708,9 +742,29 @@ issetvar(char *name)
+ 
+     if (!v->end) /* empty array slice */
+ 	return 0;
++    cacheable = v->end > 0 && v->pm->gsu.a == &stdarray_gsu &&
++	!(v->pm->node.flags & (PM_SPECIAL|PM_TIED|PM_HASHELEM|PM_ARRAY_EXPOSED)) &&
++	!v->pm->ename && v->pm->node.nam && *v->pm->node.nam;
+     /* get the array and check end is within range */
+     if (!(arr = getvaluearr(v)))
+ 	return 0;
++    if (cacheable && arr == v->pm->u.arr) {
++	unsigned slot = ((size_t)v->pm >> 4) & 63;
++	if (array_lengths[slot].pm == v->pm &&
++	    array_lengths[slot].array == arr) {
++	    if (array_lengths[slot].length >= 0)
++		return array_lengths[slot].length >= v->end;
++	    if (v->end >= 64) {
++		array_lengths[slot].length = arrlen(arr);
++		return array_lengths[slot].length >= v->end;
++	    }
++	} else if (v->end >= 64) {
++	    /* Avoid scanning an entire large array for a one-off small probe. */
++	    array_lengths[slot].pm = v->pm;
++	    array_lengths[slot].array = arr;
++	    array_lengths[slot].length = -1;
++	}
++    }
+     return arrlen_ge(arr, v->end < 0 ? - v->end : v->end);
+ }
+ 
+@@ -1162,7 +1216,7 @@ copyparam(Param tpm, Param pm, int fakecopy)
+ 	tpm->u.dval = pm->gsu.f->getfn(pm);
+ 	break;
+     case PM_ARRAY:
+-	tpm->u.arr = zarrdup(pm->gsu.a->getfn(pm));
++	tpm->u.arr = zarrdup(getarrayreadonly(pm));
+ 	break;
+     case PM_HASHED:
+ 	tpm->u.hash = copyparamtable(pm->gsu.h->getfn(pm), pm->node.nam);
+@@ -1646,7 +1700,7 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+ 		}
+ 		scanprog = NULL;
+ 	    } else
+-		ta = getarrvalue(v);
++		ta = getarrvaluereadonly(v);
+ 	    if (!ta || !*ta)
+ 		return !down;
+ 	    if (!ishash && !down && beg >= 0) {
+@@ -2439,8 +2493,8 @@ getstrvalue(Value v)
+ static char *nular[] = {"", NULL};
+ 
+ /**/
+-mod_export char **
+-getarrvalue(Value v)
++static char **
++getarrvalue_internal(Value v, int expose)
+ {
+     char **s;
+ 
+@@ -2456,6 +2510,9 @@ getarrvalue(Value v)
+ 	s[0] = dupstring(buf);
+ 	return s;
+     }
++    if (expose && PM_TYPE(v->pm->node.flags) == PM_ARRAY &&
++	v->start == 0 && v->end == -1)
++	v->pm->node.flags |= PM_ARRAY_EXPOSED;
+     s = getvaluearr(v);
+     if (v->start == 0 && v->end == -1)
+ 	return s;
+@@ -2491,6 +2548,20 @@ getarrvalue(Value v)
+     return s;
+ }
+ 
++/**/
++mod_export char **
++getarrvalue(Value v)
++{
++    return getarrvalue_internal(v, 1);
++}
++
++/**/
++char **
++getarrvaluereadonly(Value v)
++{
++    return getarrvalue_internal(v, 0);
++}
++
+ /**/
+ mod_export zlong
+ getintvalue(Value v)
+@@ -2500,7 +2571,7 @@ getintvalue(Value v)
+     if (v->flags & VALFLAG_INV)
+ 	return v->start;
+     if (v->isarr) {
+-	char **arr = getarrvalue(v);
++        char **arr = getarrvaluereadonly(v);
+ 	if (arr) {
+ 	    char *scal = sepjoin(arr, NULL, 1);
+ 	    return mathevali(scal);
+@@ -2527,7 +2598,7 @@ getnumvalue(Value v)
+     } else if (v->flags & VALFLAG_INV) {
+ 	mn.u.l = v->start;
+     } else if (v->isarr) {
+-	char **arr = getarrvalue(v);
++	char **arr = getarrvaluereadonly(v);
+ 	if (arr) {
+ 	    char *scal = sepjoin(arr, NULL, 1);
+ 	    return matheval(scal);
+@@ -2840,7 +2911,7 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
+ 	     v->pm->node.nam);
+ 	return;
+     } else {
+-	char **const old = v->pm->gsu.a->getfn(v->pm);
++	char **const old = getarrayreadonly(v->pm);
+ 	char **new;
+ 	char **p, **q, **r; /* index variables */
+ 	const int value_length = arrlen(val);
+@@ -3046,8 +3117,10 @@ getaparam(char *s)
+     Value v;
+ 
+     if (!idigit(*s) && (v = getvalue(&vbuf, &s, 0)) &&
+-	PM_TYPE(v->pm->node.flags) == PM_ARRAY)
++	PM_TYPE(v->pm->node.flags) == PM_ARRAY) {
++	v->pm->node.flags |= PM_ARRAY_EXPOSED;
+ 	return v->pm->gsu.a->getfn(v->pm);
++    }
+     return NULL;
+ }
+ 
+@@ -3223,7 +3296,7 @@ assignsparam(char *s, char *val, int flags)
+ 		return v->pm; /* avoid later setstrvalue() call */
+ 	    case PM_ARRAY:
+ 	    	if (unset(KSHARRAYS)) {
+-		    v->start = arrlen(v->pm->gsu.a->getfn(v->pm));
++		    v->start = arrlen(getarrayreadonly(v->pm));
+ 		    v->end = v->start + 1;
+ 		} else {
+ 		    /* ksh appends scalar to first element */
+@@ -3373,7 +3446,7 @@ assignaparam(char *s, char **val, int flags)
+ 	    zlong *subscripts = (zlong *)zhalloc(arrlen(val) * sizeof(zlong));
+ 	    zlong *iptr = subscripts;
+ 	    if (flags & ASSPM_AUGMENT) {
+-		origptr = v->pm->gsu.a->getfn(v->pm);
++		origptr = getarrayreadonly(v->pm);
+ 		maxlen = origlen = arrlen(origptr);
+ 	    } else {
+ 		maxlen = origlen = 0;
+@@ -3492,7 +3565,7 @@ assignaparam(char *s, char **val, int flags)
+ 		int reuse_length = v->pm->gsu.a == &stdarray_gsu &&
+ 		    !(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) &&
+ 		    !v->pm->ename;
+-	    	v->start = arrlen(v->pm->gsu.a->getfn(v->pm));
++		v->start = arrlen(getarrayreadonly(v->pm));
+ 	    	v->end = v->start + 1;
+ 		if (reuse_length)
+ 		    pre_assignment_length = v->start;
+@@ -3502,7 +3575,7 @@ assignaparam(char *s, char **val, int flags)
+ 	    if (v->end > 0)
+ 		v->start = v->end--;
+ 	    else if (PM_TYPE(v->pm->node.flags) & PM_ARRAY) {
+-		v->end = arrlen(v->pm->gsu.a->getfn(v->pm)) + v->end;
++		v->end = arrlen(getarrayreadonly(v->pm)) + v->end;
+ 		v->start = v->end + 1;
+ 	    }
+ 	}
+@@ -3938,12 +4011,11 @@ strsetfn(Param pm, char *x)
+ 
+ /* Function to get value of an array parameter */
+ 
+-static char *nullarray = NULL;
+-
+ /**/
+ mod_export char **
+ arrgetfn(Param pm)
+ {
++    pm->node.flags |= PM_ARRAY_EXPOSED;
+     return pm->u.arr ? pm->u.arr : &nullarray;
+ }
+ 
+@@ -3953,6 +4025,9 @@ arrgetfn(Param pm)
+ mod_export void
+ arrsetfn(Param pm, char **x)
+ {
++    invalidate_array_length(pm);
++    if (!x || (pm->u.arr && pm->u.arr != x))
++	pm->node.flags &= ~PM_ARRAY_EXPOSED;
+     if (pm->u.arr && pm->u.arr != x)
+ 	freearray(pm->u.arr);
+     if (pm->node.flags & PM_UNIQUE)
+@@ -5852,6 +5927,7 @@ void
+ freeparamnode(HashNode hn)
+ {
+     Param pm = (Param) hn;
++    invalidate_array_length(pm);
+  
+     /* The second argument of unsetfn() is used by modules to
+      * differentiate "exp"licit unset from implicit unset, as when
+@@ -5940,7 +6016,7 @@ printparamvalue(Param p, int printflags)
+ 	    if (!(printflags & PRINT_LINE))
+ 		putchar(' ');
+ 	}
+-	u = p->gsu.a->getfn(p);
++	u = getarrayreadonly(p);
+ 	if(*u) {
+ 	    if (printflags & PRINT_LINE) {
+ 		if (printflags & PRINT_KV_PAIR)
+diff --git a/Src/subst.c b/Src/subst.c
+index f66c2de..809e80e 100644
+--- a/Src/subst.c
++++ b/Src/subst.c
+@@ -2698,7 +2698,7 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
+ 		isarr = v->isarr = 0;
+ 		val = dupstring(v->pm->node.nam);
+ 	    } else
+-		aval = getarrvalue(v);
++		aval = getarrvaluereadonly(v);
+ 	} else {
+ 	    /* Value retrieved from parameter/subexpression is scalar */
+ 	    if (v->pm->node.flags & PM_ARRAY) {
+@@ -2717,14 +2717,14 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
+ 		int tmplen = -1;
+ 
+ 		if (v->start < 0) {
+-		    tmplen = arrlen(v->pm->gsu.a->getfn(v->pm));
++		    tmplen = arrlen(getarrayreadonly(v->pm));
+ 		    v->start += tmplen + ((v->flags & VALFLAG_INV) ? 1 : 0);
+ 		}
+ 		if (!(v->flags & VALFLAG_INV))
+ 		    if (v->start < 0 ||
+ 			(tmplen != -1
+ 			 ? v->start >= tmplen
+-			 : arrlen_le(v->pm->gsu.a->getfn(v->pm), v->start)))
++			 : arrlen_le(getarrayreadonly(v->pm), v->start)))
+ 		    vunset = 1;
+ 	    }
+ 	    if (!vunset) {
+diff --git a/Src/zsh.h b/Src/zsh.h
+index 8fab0eb..35b4d61 100644
+--- a/Src/zsh.h
++++ b/Src/zsh.h
+@@ -1929,6 +1929,7 @@ struct tieddata {
+ 				 */
+ #define PM_HASHELEM     (1<<28) /* is a hash-element */
+ #define PM_NAMEDDIR     (1<<29) /* has a corresponding nameddirtab entry    */
++#define PM_ARRAY_EXPOSED (1<<30) /* mutable array vector borrowed by native code */
+ 
+ /* The option string corresponds to the first of the variables above */
+ #define TYPESET_OPTSTR "aiEFALRZlurtxUhHTkz"

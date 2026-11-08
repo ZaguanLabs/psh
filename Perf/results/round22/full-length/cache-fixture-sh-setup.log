@@ -1,0 +1,14 @@
+array-cache-lifetimes.zsh zsh C matched
+array-cache-lifetimes.zsh zsh C.UTF-8 matched
+array-cache-lifetimes.zsh zsh fr_BE.UTF-8 matched
+array-cache-mutations.zsh zsh C matched
+array-cache-mutations.zsh zsh C.UTF-8 matched
+array-cache-mutations.zsh zsh fr_BE.UTF-8 matched
+array-cache-mutations.zsh ksh C matched
+array-cache-mutations.zsh ksh C.UTF-8 matched
+array-cache-mutations.zsh ksh fr_BE.UTF-8 matched
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/check-cache.py", line 14, in <module>
+    assert r.returncode==0 and not r.stderr,(script,label,mode,locale,r.returncode,r.stdout[-300:],r.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('array-cache-mutations.zsh', 'previous', 'sh', 'C', 31, b":0:$''\nexists=1\nsize=2\n64:0:$''\nexists=1\n65:0:$''\nexists=1\n128:0:$''\nexists=1\n255:0:$''\nexists=1\n256:0:$''\nexists=1\n257:0:$''\nexists=1\n511:0:$''\nexists=1\n512:0:$''\nexists=1\n513:0:$''\nexists=1\n1000:0:$''\nexists=1\n1001:0:$''\nexists=1\n0:1:$'new'\nexists=0\n-1:1:$'array'\nexists=0\n-3:0:$''\nexists=1\nsize=2\n", b'/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-mutations.zsh:shift:30: shift count must be <= $#\n')

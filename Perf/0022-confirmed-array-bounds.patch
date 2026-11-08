@@ -1,0 +1,947 @@
+psh round 22: confirmed array bounds inside existing signal queue regions.
+Base: 4d82600983d23820b56be336e687b2cac2af0cea
+Native ownership contract and migration are included in COMPATIBILITY.md.
+
+diff --git a/COMPATIBILITY.md b/COMPATIBILITY.md
+index 08147df..96de091 100644
+--- a/COMPATIBILITY.md
++++ b/COMPATIBILITY.md
+@@ -48,8 +48,8 @@ evidence and slower controls, affected scripts or native interfaces, migration
+ or fallback, and the unchanged-OMZ validation. Upstream/differential tests remain
+ useful for finding differences; intentional changes get explicit expectations
+ instead of silently disabling checks. Native interface changes require matching
+-SDKs and rebuilt modules. No new intentional language break is introduced by
+-the round-twenty-one policy/test changes.
++SDKs and rebuilt modules. Round twenty-two introduces no intended shell-language
++change; its native array-ownership rules are described below.
+ 
+ ## Deliberate differences
+ 
+@@ -68,9 +68,47 @@ Different distribution patches, compiler flags, optional dependencies and locale
+ implementations can also affect behavior. The pristine comparison baseline is
+ the imported release, not an arbitrary distribution's configured Zsh package.
+ 
++## Native array ownership
++
++Round twenty-two caches confirmed array prefixes, using private parameter flag
++bit 30, `PM_ARRAY_EXPOSED`, to track mutable vector loans. The parameter/value
++structures retain their layout. Calling `getaparam()`, the ordinary array getter,
++or whole-array `getarrvalue()` marks the allocation exposed. Such vectors retain
++ordinary scanning, including when a module keeps the loan across interpreter
++calls, cache eviction, a same-vector setter, or an in-place append reallocation.
++Replacing the allocation through its setter permits caching again.
++
++Native modules must obtain mutable vectors through those accessors and change
++owned parameter allocations through their setters. Do not silently replace,
++free, resize or change the terminator of `pm->u.arr` through a raw field alias
++while bypassing both the getters and setter. That bypass is outside psh's
++supported native contract: it can leave confirmed bounds stale. Migrate it to
++`getaparam(name)` or `pm->gsu.a->getfn(pm)` before retaining a mutable vector,
++and use `pm->gsu.a->setfn(pm, replacement)` for ownership transfer. Preserve
++private flag bits when changing unrelated attributes. The new read-only helpers
++are internal to the interpreter and must not provide mutable native loans.
++
++This is an explicit native integration constraint, not a claim that arbitrary
++Zsh binary modules remain interchangeable. Rebuild and test third-party modules
++against the matching SDK. The bundled native modules are rebuilt and tested;
++the retained-loan fixture additionally uses the preceding SDK with both shells.
++The [round-twenty-two report](Perf/round22.md) records the ownership tests and
++performance controls. Unsafe ownership remains a bug, not an accepted tradeoff.
++
++The explicit negative control is `Perf/array-cache-raw-alias.zsh`, using
++`Perf/array-cache-module.c`: warm element 1000, take a raw `pm->u.arr` alias,
++temporarily put the terminator at element 4, then query element 1000. The
++preceding psh/Zsh scan path prints `raw:present=0:value=`; cached psh prints
++`raw:present=1:value=item`. Both exit zero. Replacing the raw loan with the
++normal getter prints `getter:present=0:value=` in both interpreters. The fixture
++keeps the allocation and tail alive and restores them. This demonstrates the
++unsupported bypass and its migration; it is not a supported mutation pattern.
++Cache metadata is used only inside already queued signal regions; unqueued
++queries retain scanning and the caller's signal-delivery boundaries.
++
+ ## What has and has not been checked
+ 
+-The [source-review map](Perf/audit.md) describes focused coverage. Nineteen
++The [source-review map](Perf/audit.md) describes focused coverage. Twenty
+ accepted optimizations change a limited set of core paths: arrays/subscripts,
+ metafied strings, character scanning, terminal-star matching, substitution and
+ arithmetic. This is not a completed audit of the complete interpreter.
+diff --git a/Src/params.c b/Src/params.c
+index 7d432ae..f8ac1bd 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -663,6 +663,93 @@ paramvalarr(HashTable ht, int flags)
+     return paramvals;
+ }
+ 
++/* Private confirmed bounds for interpreter-owned vectors. A mutable getter
++ * loan disables it for that allocation, even after cache eviction.
++ * The normal setter and parameter destructor invalidate pointer identities.
++ */
++static struct {
++    Param pm;
++    char **array;
++    unsigned bound;
++} array_lengths[64];
++
++static char *nullarray = NULL;
++
++/**/
++static void
++invalidate_array_length(Param pm)
++{
++    unsigned slot = ((size_t)pm >> 4) & 63;
++    if (array_lengths[slot].pm == pm)
++	array_lengths[slot].pm = NULL;
++}
++
++/* Interpreter-owned read: the returned vector must not escape to mutable
++ * native callers. Custom getters retain their original callback path.
++ */
++/**/
++char **
++getarrayreadonly(Param pm)
++{
++    if (pm->gsu.a == &stdarray_gsu)
++	return pm->u.arr ? pm->u.arr : &nullarray;
++    pm->node.flags |= PM_ARRAY_EXPOSED;
++    return pm->gsu.a->getfn(pm);
++}
++
++/**/
++static int
++array_length_owned(Param pm)
++{
++    return pm->gsu.a == &stdarray_gsu &&
++	!(pm->node.flags & (PM_SPECIAL|PM_TIED|PM_HASHELEM|PM_ARRAY_EXPOSED)) &&
++	!pm->ename && pm->node.nam && *pm->node.nam;
++}
++
++/* Call only after an owned, callback-free read. A cached snapshot may differ
++ * from the current vector; such snapshots retain the original scan.
++ */
++/**/
++static int
++array_length_ge(Param pm, char **arr, unsigned bound)
++{
++    unsigned slot, prefix = 0;
++    /* Do not publish or consume shared metadata where a trap can run in the
++     * middle of a probe. Preserve the caller's existing signal boundary. */
++    if (!queue_signal_level())
++	return arrlen_ge(arr, bound);
++    if (arr != pm->u.arr)
++	return arrlen_ge(arr, bound);
++    slot = ((size_t)pm >> 4) & 63;
++
++    if (array_lengths[slot].pm == pm && array_lengths[slot].array == arr) {
++	prefix = array_lengths[slot].bound;
++	if (prefix >= bound)
++	    return 1;
++    }
++    /* Ownership/invalidation guarantee prefix live entries. The following
++     * pointer may be the terminator; the bounded scan still checks it. */
++    if (!arrlen_ge(arr + prefix, bound - prefix))
++	return 0;
++    if (bound >= 64) {
++	/* Remember only the prefix this query actually validated. Never count
++	 * an entire large vector merely to answer a small index query. */
++	array_lengths[slot].pm = pm;
++	array_lengths[slot].array = arr;
++	array_lengths[slot].bound = bound;
++    }
++    return 1;
++}
++
++/**/
++int
++arrayparaminrange(Param pm, unsigned bound)
++{
++    int owned = array_length_owned(pm);
++    char **arr = getarrayreadonly(pm);
++    return owned ? array_length_ge(pm, arr, bound) : arrlen_ge(arr, bound);
++}
++
+ /* Return the full array (no indexing) referred to by a Value. *
+  * The array value is cached for the lifetime of the Value.    */
+ 
+@@ -673,7 +760,7 @@ getvaluearr(Value v)
+     if (v->arr)
+ 	return v->arr;
+     else if (PM_TYPE(v->pm->node.flags) == PM_ARRAY)
+-	return v->arr = v->pm->gsu.a->getfn(v->pm);
++	return v->arr = getarrayreadonly(v->pm);
+     else if (PM_TYPE(v->pm->node.flags) == PM_HASHED) {
+ 	v->arr = paramvalarr(v->pm->gsu.h->getfn(v->pm), v->isarr);
+ 	/* Can't take numeric slices of associative arrays */
+@@ -694,7 +781,7 @@ issetvar(char *name)
+ {
+     struct value vbuf;
+     Value v;
+-    int slice;
++    int slice, cacheable;
+     char **arr;
+ 
+     if (!(v = getvalue(&vbuf, &name, 1)) || *name)
+@@ -708,9 +795,12 @@ issetvar(char *name)
+ 
+     if (!v->end) /* empty array slice */
+ 	return 0;
++    cacheable = v->end > 0 && array_length_owned(v->pm);
+     /* get the array and check end is within range */
+     if (!(arr = getvaluearr(v)))
+ 	return 0;
++    if (cacheable)
++	return array_length_ge(v->pm, arr, v->end);
+     return arrlen_ge(arr, v->end < 0 ? - v->end : v->end);
+ }
+ 
+@@ -1162,7 +1252,7 @@ copyparam(Param tpm, Param pm, int fakecopy)
+ 	tpm->u.dval = pm->gsu.f->getfn(pm);
+ 	break;
+     case PM_ARRAY:
+-	tpm->u.arr = zarrdup(pm->gsu.a->getfn(pm));
++	tpm->u.arr = zarrdup(getarrayreadonly(pm));
+ 	break;
+     case PM_HASHED:
+ 	tpm->u.hash = copyparamtable(pm->gsu.h->getfn(pm), pm->node.nam);
+@@ -1646,7 +1736,7 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+ 		}
+ 		scanprog = NULL;
+ 	    } else
+-		ta = getarrvalue(v);
++		ta = getarrvaluereadonly(v);
+ 	    if (!ta || !*ta)
+ 		return !down;
+ 	    if (!ishash && !down && beg >= 0) {
+@@ -2233,7 +2323,7 @@ getstrvalue(Value v)
+ {
+     char *s, **ss;
+     char buf[BDIGBUFSIZE];
+-    int len;
++    int len, array_owned;
+ 
+     if (!v)
+ 	return hcalloc(1);
+@@ -2254,13 +2344,15 @@ getstrvalue(Value v)
+ 	    return s;
+ 	} /* else fall through */
+     case PM_ARRAY:
++	array_owned = PM_TYPE(v->pm->node.flags) == PM_ARRAY && array_length_owned(v->pm);
+ 	ss = getvaluearr(v);
+ 	if (v->isarr)
+ 	    s = sepjoin(ss, NULL, 1);
+ 	else {
+ 	    if (v->start < 0)
+ 		v->start += arrlen(ss);
+-	    s = (arrlen_le(ss, v->start) || v->start < 0) ?
++	    s = (!(array_owned ? array_length_ge(v->pm, ss, (unsigned)v->start + 1) :
++		   arrlen_ge(ss, (unsigned)v->start + 1)) || v->start < 0) ?
+ 		(char *) hcalloc(1) : ss[v->start];
+ 	}
+ 	return s;
+@@ -2439,10 +2531,11 @@ getstrvalue(Value v)
+ static char *nular[] = {"", NULL};
+ 
+ /**/
+-mod_export char **
+-getarrvalue(Value v)
++static char **
++getarrvalue_internal(Value v, int expose)
+ {
+     char **s;
++    int array_owned;
+ 
+     if (!v)
+ 	return arrdup(nular);
+@@ -2456,6 +2549,10 @@ getarrvalue(Value v)
+ 	s[0] = dupstring(buf);
+ 	return s;
+     }
++    if (expose && PM_TYPE(v->pm->node.flags) == PM_ARRAY &&
++	v->start == 0 && v->end == -1)
++	v->pm->node.flags |= PM_ARRAY_EXPOSED;
++    array_owned = PM_TYPE(v->pm->node.flags) == PM_ARRAY && array_length_owned(v->pm);
+     s = getvaluearr(v);
+     if (v->start == 0 && v->end == -1)
+ 	return s;
+@@ -2471,7 +2568,8 @@ getarrvalue(Value v)
+     else if (v->start < 0) {
+ 	s = arrdup_max(nular, 1);
+     }
+-    else if (arrlen_le(s, v->start)) {
++    else if (!(array_owned ? array_length_ge(v->pm, s, (unsigned)v->start + 1) :
++	       arrlen_ge(s, (unsigned)v->start + 1))) {
+ 	/* Handle $ary[i,i] consistently for any $i > $#ary
+ 	 * and $ary[i,j] consistently for any $j > $i > $#ary
+ 	 */
+@@ -2491,6 +2589,20 @@ getarrvalue(Value v)
+     return s;
+ }
+ 
++/**/
++mod_export char **
++getarrvalue(Value v)
++{
++    return getarrvalue_internal(v, 1);
++}
++
++/**/
++char **
++getarrvaluereadonly(Value v)
++{
++    return getarrvalue_internal(v, 0);
++}
++
+ /**/
+ mod_export zlong
+ getintvalue(Value v)
+@@ -2500,7 +2612,7 @@ getintvalue(Value v)
+     if (v->flags & VALFLAG_INV)
+ 	return v->start;
+     if (v->isarr) {
+-	char **arr = getarrvalue(v);
++	char **arr = getarrvaluereadonly(v);
+ 	if (arr) {
+ 	    char *scal = sepjoin(arr, NULL, 1);
+ 	    return mathevali(scal);
+@@ -2527,7 +2639,7 @@ getnumvalue(Value v)
+     } else if (v->flags & VALFLAG_INV) {
+ 	mn.u.l = v->start;
+     } else if (v->isarr) {
+-	char **arr = getarrvalue(v);
++	char **arr = getarrvaluereadonly(v);
+ 	if (arr) {
+ 	    char *scal = sepjoin(arr, NULL, 1);
+ 	    return matheval(scal);
+@@ -2840,7 +2952,7 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
+ 	     v->pm->node.nam);
+ 	return;
+     } else {
+-	char **const old = v->pm->gsu.a->getfn(v->pm);
++	char **const old = getarrayreadonly(v->pm);
+ 	char **new;
+ 	char **p, **q, **r; /* index variables */
+ 	const int value_length = arrlen(val);
+@@ -3046,8 +3158,10 @@ getaparam(char *s)
+     Value v;
+ 
+     if (!idigit(*s) && (v = getvalue(&vbuf, &s, 0)) &&
+-	PM_TYPE(v->pm->node.flags) == PM_ARRAY)
++	PM_TYPE(v->pm->node.flags) == PM_ARRAY) {
++	v->pm->node.flags |= PM_ARRAY_EXPOSED;
+ 	return v->pm->gsu.a->getfn(v->pm);
++    }
+     return NULL;
+ }
+ 
+@@ -3223,7 +3337,7 @@ assignsparam(char *s, char *val, int flags)
+ 		return v->pm; /* avoid later setstrvalue() call */
+ 	    case PM_ARRAY:
+ 	    	if (unset(KSHARRAYS)) {
+-		    v->start = arrlen(v->pm->gsu.a->getfn(v->pm));
++		    v->start = arrlen(getarrayreadonly(v->pm));
+ 		    v->end = v->start + 1;
+ 		} else {
+ 		    /* ksh appends scalar to first element */
+@@ -3373,7 +3487,7 @@ assignaparam(char *s, char **val, int flags)
+ 	    zlong *subscripts = (zlong *)zhalloc(arrlen(val) * sizeof(zlong));
+ 	    zlong *iptr = subscripts;
+ 	    if (flags & ASSPM_AUGMENT) {
+-		origptr = v->pm->gsu.a->getfn(v->pm);
++		origptr = getarrayreadonly(v->pm);
+ 		maxlen = origlen = arrlen(origptr);
+ 	    } else {
+ 		maxlen = origlen = 0;
+@@ -3492,7 +3606,7 @@ assignaparam(char *s, char **val, int flags)
+ 		int reuse_length = v->pm->gsu.a == &stdarray_gsu &&
+ 		    !(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) &&
+ 		    !v->pm->ename;
+-	    	v->start = arrlen(v->pm->gsu.a->getfn(v->pm));
++		v->start = arrlen(getarrayreadonly(v->pm));
+ 	    	v->end = v->start + 1;
+ 		if (reuse_length)
+ 		    pre_assignment_length = v->start;
+@@ -3502,7 +3616,7 @@ assignaparam(char *s, char **val, int flags)
+ 	    if (v->end > 0)
+ 		v->start = v->end--;
+ 	    else if (PM_TYPE(v->pm->node.flags) & PM_ARRAY) {
+-		v->end = arrlen(v->pm->gsu.a->getfn(v->pm)) + v->end;
++		v->end = arrlen(getarrayreadonly(v->pm)) + v->end;
+ 		v->start = v->end + 1;
+ 	    }
+ 	}
+@@ -3938,12 +4052,11 @@ strsetfn(Param pm, char *x)
+ 
+ /* Function to get value of an array parameter */
+ 
+-static char *nullarray = NULL;
+-
+ /**/
+ mod_export char **
+ arrgetfn(Param pm)
+ {
++    pm->node.flags |= PM_ARRAY_EXPOSED;
+     return pm->u.arr ? pm->u.arr : &nullarray;
+ }
+ 
+@@ -3953,6 +4066,9 @@ arrgetfn(Param pm)
+ mod_export void
+ arrsetfn(Param pm, char **x)
+ {
++    invalidate_array_length(pm);
++    if (!x || (pm->u.arr && pm->u.arr != x))
++	pm->node.flags &= ~PM_ARRAY_EXPOSED;
+     if (pm->u.arr && pm->u.arr != x)
+ 	freearray(pm->u.arr);
+     if (pm->node.flags & PM_UNIQUE)
+@@ -5852,6 +5968,7 @@ void
+ freeparamnode(HashNode hn)
+ {
+     Param pm = (Param) hn;
++    invalidate_array_length(pm);
+  
+     /* The second argument of unsetfn() is used by modules to
+      * differentiate "exp"licit unset from implicit unset, as when
+@@ -5940,7 +6057,7 @@ printparamvalue(Param p, int printflags)
+ 	    if (!(printflags & PRINT_LINE))
+ 		putchar(' ');
+ 	}
+-	u = p->gsu.a->getfn(p);
++	u = getarrayreadonly(p);
+ 	if(*u) {
+ 	    if (printflags & PRINT_LINE) {
+ 		if (printflags & PRINT_KV_PAIR)
+diff --git a/Src/subst.c b/Src/subst.c
+index f66c2de..c7d4c85 100644
+--- a/Src/subst.c
++++ b/Src/subst.c
+@@ -2698,7 +2698,7 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
+ 		isarr = v->isarr = 0;
+ 		val = dupstring(v->pm->node.nam);
+ 	    } else
+-		aval = getarrvalue(v);
++		aval = getarrvaluereadonly(v);
+ 	} else {
+ 	    /* Value retrieved from parameter/subexpression is scalar */
+ 	    if (v->pm->node.flags & PM_ARRAY) {
+@@ -2717,14 +2717,14 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
+ 		int tmplen = -1;
+ 
+ 		if (v->start < 0) {
+-		    tmplen = arrlen(v->pm->gsu.a->getfn(v->pm));
++		    tmplen = arrlen(getarrayreadonly(v->pm));
+ 		    v->start += tmplen + ((v->flags & VALFLAG_INV) ? 1 : 0);
+ 		}
+ 		if (!(v->flags & VALFLAG_INV))
+ 		    if (v->start < 0 ||
+ 			(tmplen != -1
+ 			 ? v->start >= tmplen
+-			 : arrlen_le(v->pm->gsu.a->getfn(v->pm), v->start)))
++			 : !arrayparaminrange(v->pm, (unsigned)v->start + 1)))
+ 		    vunset = 1;
+ 	    }
+ 	    if (!vunset) {
+diff --git a/Src/zsh.h b/Src/zsh.h
+index 8fab0eb..35b4d61 100644
+--- a/Src/zsh.h
++++ b/Src/zsh.h
+@@ -1929,6 +1929,7 @@ struct tieddata {
+ 				 */
+ #define PM_HASHELEM     (1<<28) /* is a hash-element */
+ #define PM_NAMEDDIR     (1<<29) /* has a corresponding nameddirtab entry    */
++#define PM_ARRAY_EXPOSED (1<<30) /* mutable array vector borrowed by native code */
+ 
+ /* The option string corresponds to the first of the variables above */
+ #define TYPESET_OPTSTR "aiEFALRZlurtxUhHTkz"
+diff --git a/Perf/array-bound-benchmark.py b/Perf/array-bound-benchmark.py
+new file mode 100644
+index 0000000..d1ed215
+--- /dev/null
++++ b/Perf/array-bound-benchmark.py
+@@ -0,0 +1,56 @@
++#!/usr/bin/env python3
++"""Cold and repeated array bound controls, including a large shallow query."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import statistics
++import subprocess
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("baseline", type=Path)
++    parser.add_argument("candidate", type=Path)
++    parser.add_argument("--cpu", type=int, required=True)
++    parser.add_argument("--samples", type=int, default=9)
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    os.sched_setaffinity(0, {args.cpu})
++    worker = Path(__file__).with_name("array-bound-workload.zsh")
++    shells = [p.resolve(strict=True) for p in [args.baseline, args.candidate]]
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    fingerprints = {str(p): sha(p) for p in shells + [worker]}
++    rows = []
++    for name, size, index, reads in [("cold-shallow-large", 262144, 64, 2),
++            ("cold-deep-large", 262144, 200000, 1),
++            ("repeated-in-range", 1024, 1000, 5000),
++            ("repeated-out-of-range", 1024, 2000, 100)]:
++        samples = [[], []]
++        states = set()
++        for sample in range(args.samples):
++            for which in ([0, 1] if sample % 2 == 0 else [1, 0]):
++                cmd = [str(shells[which]), "-df", str(worker), str(size), str(index), str(reads)]
++                result = subprocess.run(cmd, env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"},
++                                        capture_output=True, timeout=120)
++                if result.returncode or result.stderr:
++                    raise RuntimeError((cmd, result.returncode, result.stderr))
++                elapsed, state = result.stdout.split(b"\n", 1)
++                samples[which].append(float(elapsed) * 1000)
++                states.add(hashlib.sha256(state).hexdigest())
++        if len(states) != 1:
++            raise RuntimeError((name, "state mismatch"))
++        medians = [statistics.median(values) for values in samples]
++        rows.append(dict(case=name, size=size, index=index, reads=reads,
++            samples_ms=samples, median_ms=medians, state_sha256=states.pop()))
++        print(name, " -> ".join(f"{value:.6f}" for value in medians), "ms", flush=True)
++    if fingerprints != {str(p): sha(p) for p in shells + [worker]}:
++        raise RuntimeError("measurement inputs changed")
++    args.output.write_text(json.dumps(dict(fingerprints=fingerprints, cpu=args.cpu,
++        samples=args.samples, scope="query loop only; array construction excluded", cases=rows),
++        indent=2) + "\n")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Perf/array-bound-workload.zsh b/Perf/array-bound-workload.zsh
+new file mode 100644
+index 0000000..2e9bc8f
+--- /dev/null
++++ b/Perf/array-bound-workload.zsh
+@@ -0,0 +1,12 @@
++emulate -R zsh
++integer size=$1 index=$2 reads=$3
++typeset -a a
++# Only fixed numeric fixture arguments from the driver enter this expression.
++eval "a=( {1..$size} )"
++typeset -F 9 SECONDS=0 started elapsed
++typeset value
++started=$SECONDS
++repeat $reads; do value=${a[$index]}; done
++elapsed=$(( SECONDS - started ))
++print -r -- "$elapsed"
++print -r -- "$size:$index:$reads:${#a}:$value"
+diff --git a/Perf/array-cache-lifetimes.zsh b/Perf/array-cache-lifetimes.zsh
+new file mode 100644
+index 0000000..94530a2
+--- /dev/null
++++ b/Perf/array-cache-lifetimes.zsh
+@@ -0,0 +1,56 @@
++emulate -R zsh
++module_path=("$1" $module_path)
++zmodload psh_array_cache_fixture || exit 1
++integer checks=0 i j
++for kind in getaparam getter getarrvalue; do
++  psh-cache-fixture init || exit 1
++  repeat 4; do
++    [[ -v 'psh_cache_array[1000]' && ${psh_cache_array[1000]} == item ]] || exit 2
++  done
++  psh-cache-fixture loan $kind || exit 3
++  # Keep the native loan alive while interpreter queries populate/evict caches.
++  repeat 4; do
++    [[ -v 'psh_cache_array[1000]' ]] || exit 4
++    : "${psh_cache_array[1000]}"
++  done
++  for (( i=0; i<192; i++ )); do
++    eval "psh_cache_other$i=( {1..128} )"
++    typeset other_name="psh_cache_other${i}[100]"
++    repeat 3; do
++      [[ -v $other_name ]] || exit 5
++      : "${(P)other_name}"
++    done
++  done
++  psh-cache-fixture cut || exit 6
++  repeat 4; do
++    [[ ! -v 'psh_cache_array[1000]' && ! -v 'psh_cache_array[1001]' &&
++       ${+psh_cache_array[1000]} == 0 && -z ${psh_cache_array[1000]} &&
++       -z ${psh_cache_array[1001]} ]] || exit 7
++    (( checks++ ))
++  done
++  psh-cache-fixture restore || exit 8
++  psh-cache-fixture same-set || exit 9
++  repeat 4; do
++    [[ -v 'psh_cache_array[1000]' ]] || exit 10
++    : "${psh_cache_array[1000]}"
++  done
++  psh-cache-fixture cut || exit 11
++  [[ ! -v 'psh_cache_array[1000]' && -z ${psh_cache_array[1000]} ]] || exit 12
++  (( checks++ ))
++  psh-cache-fixture restore || exit 13
++  # The fixture overallocates initially, exercising an in-place realloc on
++  # this host. If allocation moves, the old loan is invalid and is reacquired.
++  psh_cache_array+=(tail)
++  [[ ${#psh_cache_array} == 1025 && ${psh_cache_array[1025]} == tail ]] || exit 14
++  if ! psh-cache-fixture same; then psh-cache-fixture loan $kind || exit 15; fi
++  repeat 4; do
++    [[ -v 'psh_cache_array[1000]' ]] || exit 16
++    : "${psh_cache_array[1000]}"
++  done
++  psh-cache-fixture cut || exit 17
++  [[ ! -v 'psh_cache_array[1000]' && -z ${psh_cache_array[1000]} ]] || exit 18
++  (( checks++ ))
++  psh-cache-fixture restore || exit 19
++done
++zmodload -u psh_array_cache_fixture || exit 20
++print -r -- "checks=$checks"
+diff --git a/Perf/array-cache-module.c b/Perf/array-cache-module.c
+new file mode 100644
+index 0000000..faa0ee0
+--- /dev/null
++++ b/Perf/array-cache-module.c
+@@ -0,0 +1,88 @@
++/* Native lifetime tests, compiled against the preceding unmodified SDK. */
++#include "zsh.mdh"
++
++static char array_name[] = "psh_cache_array";
++static char **loan;
++static char *saved_tail;
++static int cut_at;
++
++static void
++restore_loan(void)
++{
++    if (saved_tail) {
++        loan[cut_at] = saved_tail;
++        saved_tail = NULL;
++    }
++}
++
++static int
++bin_cache_fixture(UNUSED(char *name), char **args, UNUSED(Options ops), UNUSED(int func))
++{
++    Param pm = (Param)gethashnode2(paramtab, array_name);
++    if (!strcmp(args[0], "init")) {
++        char **value = (char **)zalloc(2049 * sizeof(char *));
++        int i;
++        restore_loan();
++        for (i = 0; i < 1024; i++) value[i] = ztrdup("item");
++        for (; i <= 2048; i++) value[i] = NULL;
++        loan = NULL;
++        return setaparam(array_name, value) ? 0 : 1;
++    }
++    if (!pm) return 2;
++    if (!strcmp(args[0], "loan")) {
++        if (!args[1]) return 2;
++        if (!strcmp(args[1], "getaparam")) loan = getaparam(array_name);
++        else if (!strcmp(args[1], "getter")) loan = pm->gsu.a->getfn(pm);
++        /* Deliberate contract-bypass reproducer, never a supported loan. */
++        else if (!strcmp(args[1], "raw")) loan = pm->u.arr;
++        else if (!strcmp(args[1], "getarrvalue")) {
++            struct value v;
++            memset(&v, 0, sizeof(v));
++            v.pm = pm;
++            v.isarr = SCANPM_ARRONLY;
++            v.end = -1;
++            loan = getarrvalue(&v);
++        } else return 2;
++        return loan ? 0 : 1;
++    }
++    if (!strcmp(args[0], "same")) {
++        int same = loan == pm->u.arr;
++        printf("same_pointer=%d\n", same);
++        fflush(stdout);
++        return !same;
++    }
++    if (!strcmp(args[0], "same-set")) {
++        if (!loan || loan != pm->u.arr) return 2;
++        pm->gsu.a->setfn(pm, loan);
++        return 0;
++    }
++    if (!strcmp(args[0], "cut")) {
++        if (!loan || loan != pm->u.arr || saved_tail) return 2;
++        cut_at = 3;
++        saved_tail = loan[cut_at];
++        loan[cut_at] = NULL;
++        return 0;
++    }
++    if (!strcmp(args[0], "restore")) {
++        if (!loan || loan != pm->u.arr) return 2;
++        restore_loan();
++        return 0;
++    }
++    return 2;
++}
++
++static struct builtin bintab[] = {
++    BUILTIN("psh-cache-fixture", 0, bin_cache_fixture, 1, 2, 0, NULL, NULL)
++};
++static struct features module_features = { bintab, 1, NULL, 0, NULL, 0, NULL, 0, 0 };
++int setup_(UNUSED(Module m)) { return 0; }
++int features_(Module m, char ***features) {
++    *features = featuresarray(m, &module_features); return 0;
++}
++int enables_(Module m, int **enables) { return handlefeatures(m, &module_features, enables); }
++int boot_(UNUSED(Module m)) { return 0; }
++int cleanup_(Module m) {
++    restore_loan(); loan = NULL; unsetparam(array_name);
++    return setfeatureenables(m, &module_features, NULL);
++}
++int finish_(UNUSED(Module m)) { return 0; }
+diff --git a/Perf/array-cache-mutations.zsh b/Perf/array-cache-mutations.zsh
+new file mode 100644
+index 0000000..407e738
+--- /dev/null
++++ b/Perf/array-cache-mutations.zsh
+@@ -0,0 +1,57 @@
++emulate -R $1
++setopt braceexpand # authored fixture data; keep indexing/emulation options
++typeset -a a
++_psh_cache_probe() {
++  typeset n
++  for n in 64 65 128 255 256 257 511 512 513 1000 1001 0 -1 -3; do
++    print -r -- "$n:${+a[$n]}:${(qqqq)a[$n]}"
++    [[ -v "a[$n]" ]]
++    print -r -- "exists=$?"
++  done
++  print -r -- "size=${#a[@]}"
++}
++_psh_cache_local() {
++  typeset -a a=( {1..128} )
++  _psh_cache_probe
++  a[65,127]=()
++  _psh_cache_probe
++}
++for action in identity append sparse replace shrink prefix-delete middle-delete tail-delete shift unique attributes read-only-expansions shadow unset-recreate type-change; do
++  a=( {1..512} )
++  repeat 3; do _psh_cache_probe; done
++  case $action in
++    identity) ;;
++    append) a+=( {1..512} ) ;;
++    sparse) a[1000]=tail ;;
++    replace) a[100]=replacement ;;
++    shrink) a=(one two three) ;;
++    prefix-delete) a[1,100]=() ;;
++    middle-delete) a[64,400]=() ;;
++    tail-delete) a[64,-1]=() ;;
++    shift) shift 400 a ;;
++    unique) a=( ${(l:512::x:)} ); a=( ${(s::)a[1]} ); repeat 3; do _psh_cache_probe; done; typeset -U a ;;
++    attributes) typeset -L 4 a; typeset +L a ;;
++    read-only-expansions) : "${(u)a[@]}" "${(O)a[@]}" "${a[(I)3*]}" "${(j:,:)a}" ;;
++    shadow) _psh_cache_local ;;
++    unset-recreate) unset a; typeset -a a=(short) ;;
++    type-change) unset a; typeset a=scalar; unset a; typeset -a a=(new array) ;;
++  esac
++  print -r -- "action=$action"
++  repeat 3; do _psh_cache_probe; done
++  typeset +U a 2>/dev/null
++done
++integer outer
++for (( outer=0; outer<500; outer++ )); do
++  () {
++    typeset -a transient=( {1..256} )
++    [[ -v 'transient[200]' ]] || exit 31
++    [[ -v 'transient[200]' ]] || exit 32
++    # Expansions run inside prefork's queue boundary; bare -v probes do not
++    # populate the cache in the guarded implementation.
++    : "${transient[200]}"
++    transient=(short)
++    [[ ! -v 'transient[200]' ]] || exit 33
++    [[ -z ${transient[200]} ]] || exit 34
++  } || exit $?
++done
++print -r -- mutation-checks-complete
+diff --git a/Perf/array-cache-raw-alias.zsh b/Perf/array-cache-raw-alias.zsh
+new file mode 100644
+index 0000000..c5bba0c
+--- /dev/null
++++ b/Perf/array-cache-raw-alias.zsh
+@@ -0,0 +1,17 @@
++# Negative control: demonstrate the documented raw-field native incompatibility
++# and its getter migration. The allocation/tail stay alive and are restored.
++emulate -R zsh
++module_path=("$1" $module_path)
++zmodload psh_array_cache_fixture || exit 1
++for kind in raw getter; do
++  psh-cache-fixture init || exit 2
++  repeat 4; do
++    [[ -v 'psh_cache_array[1000]' ]] || exit 3
++    : "${psh_cache_array[1000]}"
++  done
++  psh-cache-fixture loan $kind || exit 4
++  psh-cache-fixture cut || exit 5
++  print -r -- "$kind:present=${+psh_cache_array[1000]}:value=${psh_cache_array[1000]}"
++  psh-cache-fixture restore || exit 6
++done
++zmodload -u psh_array_cache_fixture || exit 7
+diff --git a/Perf/check-array-cache-signals.py b/Perf/check-array-cache-signals.py
+new file mode 100644
+index 0000000..01d20c4
+--- /dev/null
++++ b/Perf/check-array-cache-signals.py
+@@ -0,0 +1,64 @@
++#!/usr/bin/env python3
++"""Verify unqueued [[ -v ]] calls leave private array cache metadata unchanged."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import subprocess
++import tempfile
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("shell", type=Path, help="shell with debugger symbols available")
++    parser.add_argument("--expect-writes", action="store_true",
++                        help="negative control for the rejected unguarded prototype")
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    shell = args.shell.resolve(strict=True)
++    output = args.output.resolve()
++    output.parent.mkdir(parents=True, exist_ok=True)
++    output.unlink(missing_ok=True)
++    # The expansion between the second and third condition populates a cache
++    # entry inside prefork's existing queue boundary. Neither cold nor warm
++    # unqueued probes may publish metadata or change signal queueing policy.
++    script = "a=({1..1024}); [[ -v 'a[500]' ]]; [[ -v 'a[600]' ]]; : \"${a[500]}\"; [[ -v 'a[700]' ]]"
++    with tempfile.TemporaryDirectory(prefix="psh-cache-signals-") as scratch:
++        driver = Path(scratch) / "check.gdb"
++        inner = f'''import gdb, json
++rows = []
++bp = gdb.Breakpoint("issetvar")
++gdb.execute("run")
++while gdb.selected_inferior().pid:
++    level = int(gdb.parse_and_eval("queueing_enabled"))
++    before = str(gdb.parse_and_eval("array_lengths"))
++    bp.enabled = False
++    gdb.execute("finish")
++    after = str(gdb.parse_and_eval("array_lengths"))
++    rows.append(dict(queue_level=level, cache_unchanged=(before == after)))
++    bp.enabled = True
++    gdb.execute("continue")
++expected_writes = {args.expect_writes!r}
++observed_writes = any(not row["cache_unchanged"] for row in rows)
++passed = len(rows) == 3 and all(row["queue_level"] == 0 for row in rows) and observed_writes == expected_writes
++report = dict(passed=passed, shell={str(shell)!r}, binary_sha256={hashlib.sha256(shell.read_bytes()).hexdigest()!r},
++              expected_writes=expected_writes, observed_writes=observed_writes, calls=rows)
++with open({str(output)!r}, "w") as out:
++    json.dump(report, out, indent=2)
++    out.write("\\n")
++if not passed:
++    raise gdb.GdbError("array cache signal-boundary check failed")
++'''
++        driver.write_text("set pagination off\nset confirm off\npython\n" + inner + "end\n")
++        command = ["gdb", "--batch", "--nx", "--quiet", "-x", str(driver),
++                   "--args", str(shell), "-dfc", script]
++        result = subprocess.run(command, env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"},
++                                capture_output=True, timeout=60)
++        output.with_suffix(".gdb.log").write_bytes(result.stdout + result.stderr)
++        if result.returncode or not output.exists() or not json.loads(output.read_text())["passed"]:
++            raise RuntimeError("signal-boundary check failed: " + str(output.with_suffix(".gdb.log")))
++    print("Unqueued cache-write expectation verified:", args.expect_writes)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Perf/check-array-cache.py b/Perf/check-array-cache.py
+new file mode 100644
+index 0000000..14d931a
+--- /dev/null
++++ b/Perf/check-array-cache.py
+@@ -0,0 +1,94 @@
++#!/usr/bin/env python3
++"""Exercise array mutations and native vector loans using the preceding SDK."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import shlex
++import subprocess
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("baseline", type=Path)
++    parser.add_argument("candidate", type=Path)
++    parser.add_argument("--headers-build", type=Path, required=True)
++    parser.add_argument("--headers-source", type=Path, required=True)
++    parser.add_argument("--cc", default="cc")
++    parser.add_argument("--locale", action="append", dest="locales")
++    parser.add_argument("--memcheck", action="store_true")
++    parser.add_argument("--raw-contract", action="store_true",
++                        help="also assert the documented raw-field difference and getter migration")
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    root = Path(__file__).resolve().parent
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    output = args.output.resolve()
++    output.parent.mkdir(parents=True, exist_ok=True)
++    output.unlink(missing_ok=True)
++    folder = output.parent / (output.stem + "-native")
++    folder.mkdir(exist_ok=True)
++    module = folder / "psh_array_cache_fixture.so"
++    source = root / "array-cache-module.c"
++    command = shlex.split(args.cc) + ["-O2", "-g", "-shared", "-fPIC", "-DMODULE",
++        "-DHAVE_CONFIG_H", "-I" + str(args.headers_build.resolve() / "Src"),
++        "-I" + str(args.headers_source.resolve() / "Src"), str(source), "-o", str(module)]
++    subprocess.run(command, check=True)
++    shells = [args.baseline.resolve(strict=True), args.candidate.resolve(strict=True)]
++    scripts = [root / "array-cache-lifetimes.zsh", root / "array-cache-mutations.zsh"]
++    if args.raw_contract:
++        scripts.append(root / "array-cache-raw-alias.zsh")
++    fingerprints = {str(p): sha(p) for p in shells + scripts + [source]}
++    rows = []
++    # Ordinary malloc is needed to cover in-place realloc. Memcheck's realloc
++    # commonly moves instead; both lifetimes are valid and tested separately.
++    for memcheck in ([False, True] if args.memcheck else [False]):
++        for script in scripts[:2]:
++            for mode in (["zsh"] if "lifetimes" in script.name else ["zsh", "ksh", "sh"]):
++                for locale in args.locales or ["C", "C.UTF-8", "fr_BE.UTF-8"]:
++                    values = []
++                    for host, shell in zip(["baseline", "candidate"], shells):
++                        cmd = [str(shell), "-df", str(script),
++                               str(folder) if "lifetimes" in script.name else mode]
++                        if memcheck:
++                            log = folder / f"{script.stem}-{host}-{mode}-{locale}.memcheck.log"
++                            cmd = ["valgrind", "--error-exitcode=97", "--leak-check=no",
++                                   "--log-file=" + str(log)] + cmd
++                        result = subprocess.run(cmd, capture_output=True, timeout=300,
++                            env={"PATH": "/usr/bin:/bin", "LC_ALL": locale})
++                        if result.returncode or result.stderr:
++                            raise RuntimeError((cmd, result.returncode, result.stdout, result.stderr))
++                        physical = [int(line.split(b"=")[1]) for line in result.stdout.splitlines()
++                                    if line.startswith(b"same_pointer=")]
++                        normalized = b"\n".join(line for line in result.stdout.splitlines()
++                                               if not line.startswith(b"same_pointer="))
++                        values.append(normalized)
++                        rows.append(dict(script=script.name, mode=mode, locale=locale,
++                            host=host, memcheck=memcheck, status=0, command=cmd,
++                            in_place_reallocations=sum(physical),
++                            stdout_sha256=hashlib.sha256(result.stdout).hexdigest()))
++                    if values[0] != values[1]:
++                        raise RuntimeError((script, mode, locale, "different results"))
++                    print(script.name, mode, locale, "memcheck" if memcheck else "malloc",
++                          "matched", flush=True)
++    raw_contract = []
++    if args.raw_contract:
++        expected = [b"raw:present=0:value=\ngetter:present=0:value=\n",
++                    b"raw:present=1:value=item\ngetter:present=0:value=\n"]
++        for host, shell, value in zip(["baseline", "candidate"], shells, expected):
++            cmd = [str(shell), "-df", str(scripts[2]), str(folder)]
++            result = subprocess.run(cmd, capture_output=True, timeout=30,
++                                    env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"})
++            if result.returncode or result.stderr or result.stdout != value:
++                raise RuntimeError((cmd, result.returncode, result.stdout, result.stderr))
++            raw_contract.append(dict(host=host, command=cmd, status=0,
++                                     stdout=result.stdout.decode()))
++    if fingerprints != {str(p): sha(p) for p in shells + scripts + [source]}:
++        raise RuntimeError("test inputs changed")
++    output.write_text(json.dumps(dict(passed=True, compile_command=command,
++        module_sha256=sha(module), fingerprints=fingerprints, runs=rows,
++        raw_contract=raw_contract), indent=2) + "\n")
++
++
++if __name__ == "__main__":
++    main()

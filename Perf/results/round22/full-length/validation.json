@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "arrays",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/arrays.json"
+      ],
+      "status": 0,
+      "seconds": 8.838
+    },
+    {
+      "name": "search",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--scalars",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/search.json"
+      ],
+      "status": 0,
+      "seconds": 2.613
+    },
+    {
+      "name": "patterns",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--extended",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/patterns.json"
+      ],
+      "status": 0,
+      "seconds": 4.932
+    },
+    {
+      "name": "substitution",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/substitution.json"
+      ],
+      "status": 0,
+      "seconds": 5.397
+    },
+    {
+      "name": "numeric-api",
+      "command": [
+        "python3",
+        "Perf/check-math-locale-module.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--headers-build",
+        ".work/round22/previous",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "fr_BE.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/numeric-api.json"
+      ],
+      "status": 0,
+      "seconds": 10.184
+    },
+    {
+      "name": "accessors",
+      "command": [
+        "python3",
+        "Perf/check-append-module.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--search",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/accessors.json"
+      ],
+      "status": 0,
+      "seconds": 0.246
+    },
+    {
+      "name": "completion",
+      "command": [
+        "python3",
+        "Perf/check-completion-prefix.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/completion.json"
+      ],
+      "status": 0,
+      "seconds": 4.075
+    },
+    {
+      "name": "customer",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/customer-correctness.py"
+      ],
+      "status": 0,
+      "seconds": 9.387
+    },
+    {
+      "name": "math",
+      "command": [
+        "python3",
+        "Perf/math-compare.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--syntax",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/math.json"
+      ],
+      "status": 0,
+      "seconds": 65.328
+    },
+    {
+      "name": "scalars",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        ".work/round22/previous/Src/zsh",
+        ".work/round22/candidate/Src/zsh",
+        "--assignments",
+        "--prefixes",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/scalars.json"
+      ],
+      "status": 0,
+      "seconds": 89.888
+    }
+  ],
+  "failures": [],
+  "binary_sha256": {
+    ".work/round22/previous/Src/zsh": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+    ".work/round22/candidate/Src/zsh": "15a41fcede640ac798f3ff3bba5ab6cdef9e290c0c891bdb56b2b3e9ae1de34b"
+  }
+}

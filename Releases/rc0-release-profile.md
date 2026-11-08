@@ -1,9 +1,12 @@
 # Private rc0 iteration: release build profile
 
 The project version remains **psh 1.0.0-rc0 (zsh 5.9.2)** throughout private
-validation. The active build is `1.0.0-rc0-1d099d21957d`; `psh-config --build-id`
-returns `1d099d21957d`. This iteration adds no Zsh language optimization and
+validation. This report describes build `1.0.0-rc0-1d099d21957d`; its
+`psh-config --build-id` returns `1d099d21957d`. This iteration adds no Zsh language optimization and
 changes no Zsh C implementation or public structure definition.
+
+The subsequent [array-bound optimization](../Perf/round22.md) records the newer
+private daily-driver build and its validation, using this same release profile.
 
 The original `v1.0.0-rc0` tag, draft and source archive remain an initial
 checkpoint. Work continues on `main`, identified by source commit and build

@@ -96,12 +96,18 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes nineteen accepted optimizations.
+The executable now includes twenty accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
 adds an inline hint to the existing checker, keeping its complete function body.
 Two extracted diagnostic-handler variants were rejected on project controls.
+
+The [twenty-second investigation](Perf/round22.md) caches confirmed bounds for
+ordinary interpreter-owned arrays. It targets repeated indexed reads in the
+author's editor/chat layout and drawing code. Native mutable getters disable
+the cache for the loaned allocation; the [native ownership contract](COMPATIBILITY.md#native-array-ownership)
+is explicit. The cache does not count a whole array for a shallow query.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -120,7 +126,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all nineteen changes; the fourth experiment compares against
+executable includes all twenty changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -226,3 +232,12 @@ repeated call; other compilers may choose differently. Endgame uses fewer
 instructions and CPU cycles, while project wall-time results and slower library
 controls are retained, including a noisy first editor timing run and its repeat.
 Expanded syntax comparisons check diagnostics and complete-case execution.
+
+The twentieth accepted change remembers a validated array prefix in a small
+private cache, so later in-range reads can avoid scanning that prefix again.
+Setters and parameter destruction invalidate it; native mutable loans remain
+on the scan path, including through cache eviction and in-place reallocation.
+Special/custom/tied arrays and temporary anonymous arrays retain the original
+path. No parameter layout or intended shell-language change is introduced.
+Raw native field aliases must follow the documented ownership contract.
+Unqueued calls use the original scan; no signal queue boundary is added.

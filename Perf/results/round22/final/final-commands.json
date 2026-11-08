@@ -1,0 +1,170 @@
+[
+  {
+    "name": "stage-modules",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "stage-modules"
+    ],
+    "status": 0,
+    "seconds": 0.04879286186769605
+  },
+  {
+    "name": "refresh-modules",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "refresh-modules"
+    ],
+    "status": 0,
+    "seconds": 0.21992125594988465
+  },
+  {
+    "name": "package-verification",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "verify"
+    ],
+    "status": 0,
+    "seconds": 9.273637534119189
+  },
+  {
+    "name": "bound-controls",
+    "command": [
+      "python3",
+      "Perf/array-bound-benchmark.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/bound-controls.json"
+    ],
+    "status": 0,
+    "seconds": 1.2569630658254027
+  },
+  {
+    "name": "customer-benchmarks",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/customer-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 25.083688417915255
+  },
+  {
+    "name": "library-benchmarks",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/library-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 23.703530902974308
+  },
+  {
+    "name": "parser-benchmarks",
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/parser-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 41.406373088946566
+  },
+  {
+    "name": "array-length-benchmarks",
+    "command": [
+      "python3",
+      "Perf/array-length-benchmark.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/array-length-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 4.252989599015564
+  },
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/customer-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 24.456173608079553
+  },
+  {
+    "name": "hardware",
+    "command": [
+      "python3",
+      "Perf/hardware-benchmark.py",
+      ".work/round22/previous/Src/zsh",
+      ".work/round22/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--case",
+      "zcoder.zsh/coder-wide-layout",
+      "--case",
+      "zchat.zsh/chat-wide-layout",
+      "--case",
+      "z3dfx.drawing/drawing-binning",
+      "--case",
+      "endgame/endgame-world",
+      "--cpu",
+      "2",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round22/final/hardware.json"
+    ],
+    "status": 0,
+    "seconds": 8.501250270055607
+  }
+]

@@ -45,7 +45,8 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
-- [Current private rc0 release-profile iteration](Releases/rc0-release-profile.md)
+- [Current private rc0 optimization, measurements and installed build](Perf/round22.md)
+- [Release profile and binary-size details](Releases/rc0-release-profile.md)
 - [Oh My Zsh compatibility gate and fresh release-build profiles](Perf/round21.md)
 - [Original RC notes, binary-size explanation and validation](Releases/1.0.0-rc0.md)
 - [Compatibility policy and reporting regressions](COMPATIBILITY.md)
@@ -53,7 +54,6 @@ git fetch origin tag upstream/zsh-5.9.2
 - [Build, comparison and benchmark workflow](Perf/README.md)
 - [Customer project workloads and remaining coverage](Perf/customer-projects.md)
 - [Source-review coverage](Perf/audit.md)
-- [Latest accepted measurements and compatibility evidence](Perf/round20.md)
 - [Deeper review: arithmetic, locale costs, arrays and allocation](Perf/round19.md)
 - [Daily installation and bundled packages](Packaging/README.md)
 - [Upstream bug report, backported fix and reproducer](Perf/upstream-terminator-read.md)

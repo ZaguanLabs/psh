@@ -1,0 +1,152 @@
+{
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh": "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh": "ad01af80b65a44d0ef594544285d337ee3f129ffa6ad319c1026eba68970a375",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-bound-workload.zsh": "2df6309d354ed001f676f9a32fce72c022d55de87030b952cc704f2848bb22e0"
+  },
+  "cpu": 2,
+  "samples": 9,
+  "scope": "query loop only; array construction excluded",
+  "cases": [
+    {
+      "case": "cold-shallow-large",
+      "size": 262144,
+      "index": 64,
+      "reads": 2,
+      "samples_ms": [
+        [
+          0.033,
+          0.020999999999999998,
+          0.027,
+          0.023,
+          0.028,
+          0.025,
+          0.026,
+          0.028,
+          0.024
+        ],
+        [
+          0.028,
+          0.029,
+          0.028,
+          0.024,
+          0.028,
+          0.026,
+          0.030000000000000002,
+          0.029,
+          0.073
+        ]
+      ],
+      "median_ms": [
+        0.026,
+        0.028
+      ],
+      "state_sha256": "e71bb5a63e8c1bb1b87c044d712dd8c6df975e14d60edc1031307c4c52897ee2"
+    },
+    {
+      "case": "cold-deep-large",
+      "size": 262144,
+      "index": 200000,
+      "reads": 1,
+      "samples_ms": [
+        [
+          0.13799999999999998,
+          0.132,
+          0.121,
+          0.14300000000000002,
+          0.128,
+          0.116,
+          0.122,
+          0.127,
+          0.11699999999999999
+        ],
+        [
+          0.092,
+          0.088,
+          0.108,
+          0.085,
+          0.08399999999999999,
+          0.101,
+          0.089,
+          0.094,
+          0.095
+        ]
+      ],
+      "median_ms": [
+        0.127,
+        0.092
+      ],
+      "state_sha256": "8d9f1019d50e7471f3ce61f0f28645c39950fbda2b5a7afa0ffa42d5845e25f0"
+    },
+    {
+      "case": "repeated-in-range",
+      "size": 1024,
+      "index": 1000,
+      "reads": 5000,
+      "samples_ms": [
+        [
+          5.036,
+          4.961,
+          5.123,
+          5.042,
+          5.004,
+          4.982,
+          5.011,
+          5.149,
+          5.113
+        ],
+        [
+          3.734,
+          3.621,
+          4.204000000000001,
+          3.665,
+          3.665,
+          3.599,
+          3.666,
+          3.843,
+          3.639
+        ]
+      ],
+      "median_ms": [
+        5.036,
+        3.665
+      ],
+      "state_sha256": "546f164ee14c908200f6aac7a141a9d57542ace0aa6219ee38b8b05860441d98"
+    },
+    {
+      "case": "repeated-out-of-range",
+      "size": 1024,
+      "index": 2000,
+      "reads": 100,
+      "samples_ms": [
+        [
+          0.126,
+          0.094,
+          0.095,
+          0.094,
+          0.095,
+          0.096,
+          0.095,
+          0.095,
+          0.096
+        ],
+        [
+          0.09899999999999999,
+          0.09899999999999999,
+          0.098,
+          0.097,
+          0.09899999999999999,
+          0.098,
+          0.09899999999999999,
+          0.098,
+          0.09899999999999999
+        ]
+      ],
+      "median_ms": [
+        0.095,
+        0.09899999999999999
+      ],
+      "state_sha256": "31b87b41a8e9955b23ef69d68aa6a7adea9a707a728bdef1e80da405d120de24"
+    }
+  ]
+}

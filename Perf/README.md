@@ -759,3 +759,25 @@ Zsh a required interactive activation gate. Broad Zsh compatibility remains
 useful, while measured, documented breaking changes are allowed. Private
 iterations stay on rc0. The new profiles identify array bounds, arithmetic and
 scope bookkeeping as targets; they are not new speedup measurements.
+
+The [round-twenty-two cache](round22.md) accelerates confirmed array bounds
+inside existing queued signal regions. Native mutable loans and unqueued calls
+retain scanning. Reproduce the focused ownership, cold-query and signal checks
+with matching release-profile builds:
+
+```sh
+python3 Perf/check-array-cache.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --headers-build /path/to/previous --headers-source /path/to/previous-source \
+  --memcheck --raw-contract --output .work/logs/array-cache.json
+python3 Perf/check-array-cache-signals.py /path/to/candidate/Src/zsh \
+  --output .work/logs/array-cache-signals.json
+python3 Perf/array-bound-benchmark.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --cpu 2 --output .work/logs/array-bound-benchmarks.json
+```
+
+The raw-contract mode expects the documented unsupported raw-field difference
+and passing getter migration. The signal check requires GDB and available debug
+symbols; `--expect-writes` is only for the rejected unguarded prototype. Run
+timings after builds, tests and profilers finish. The 23-case
+`array-length-benchmark.py` supplies empty, small/large, negative/out-of-range,
+slice and length controls alongside the actual project benchmarks.

@@ -2698,7 +2698,7 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
 		isarr = v->isarr = 0;
 		val = dupstring(v->pm->node.nam);
 	    } else
-		aval = getarrvalue(v);
+		aval = getarrvaluereadonly(v);
 	} else {
 	    /* Value retrieved from parameter/subexpression is scalar */
 	    if (v->pm->node.flags & PM_ARRAY) {
@@ -2717,14 +2717,14 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
 		int tmplen = -1;
 
 		if (v->start < 0) {
-		    tmplen = arrlen(v->pm->gsu.a->getfn(v->pm));
+		    tmplen = arrlen(getarrayreadonly(v->pm));
 		    v->start += tmplen + ((v->flags & VALFLAG_INV) ? 1 : 0);
 		}
 		if (!(v->flags & VALFLAG_INV))
 		    if (v->start < 0 ||
 			(tmplen != -1
 			 ? v->start >= tmplen
-			 : arrlen_le(v->pm->gsu.a->getfn(v->pm), v->start)))
+			 : !arrayparaminrange(v->pm, (unsigned)v->start + 1)))
 		    vunset = 1;
 	    }
 	    if (!vunset) {

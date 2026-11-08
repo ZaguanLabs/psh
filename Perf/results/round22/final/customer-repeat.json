@@ -1,0 +1,755 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous/Src/zsh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/candidate/Src/zsh"
+  ],
+  "binary_sha256": [
+    "d4701a76f55b4a4de780e59ab17a346cfc1906759349dd661f00bec3f0e79f22",
+    "3f202c9a0865aa5126d75619b087e78f16b1494fc0d78140c0ec73eb37bc9efa"
+  ],
+  "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+  "samples": 9,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "cpu_affinity": [
+    2
+  ],
+  "cases": [
+    {
+      "case": "zcoder.zsh/coder-paste",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "source_sha256": {
+        "lib/acp.zsh": "00e8849428de1a5e64ed6961dac716e0d0d5cd905234a66c9e043bf2051e7f39",
+        "lib/agent.zsh": "6501bb86cced52aff53e8a6887455b216a87f0acf5a57d2787fbd0914ab71d31",
+        "lib/agent_lfm.zsh": "a237ad35834c6fd5ee3a8ba925c393760c5eaea864db8c81f78d383227925f47",
+        "lib/agent_loop.zsh": "96ff422b908f0f90e614c9c23166a9f5fd20d972b95713d9ab5117fc2a1de6f9",
+        "lib/agent_prompts.zsh": "2dc60229db8dab8c05c16781d4a4a8eb7a5e0def63709d47430cb43778dd2140",
+        "lib/command_dispatch.zsh": "987565404517ca3040ef8f6ffb5b8dc5352560d84b9c0fe814c28f7755131f97",
+        "lib/command_safety.zsh": "b4647d732c439eab2c9fdd4459c112954fd261138dec8a0ca7fff78c49ae1475",
+        "lib/commands.zsh": "858b68ff45f1ac0f87a986e2c7b18daaf4797e14c6917a3469fb82a653ff784c",
+        "lib/compact.zsh": "803b0645fc3ecc277436abbfee3574b3b33fb26d5bfa8c23e4313ddd5d5aacb1",
+        "lib/curses.zsh": "cda85cde43fbe94fdca8f9b3a1a093f4da4a3916762f8aa4c965055f9375294b",
+        "lib/delegate.zsh": "c33d397cf012709eb77596494e8cf43a84bf73689ce524809bdbd85fe64ec495",
+        "lib/diff.zsh": "ad3c0b18e98d19d4e3ef3c96c971decb6252a7290ef993bb91eac08e6daa56a9",
+        "lib/document_context.zsh": "27140e727b12226b1060c40a64586dd631cdc571bfddbacc3514366b40a3049c",
+        "lib/document_files.zsh": "64e2b07e02a4060006987321ade9468112f8967f4a1bf379de5bfa6c1b677ab3",
+        "lib/document_tabs.zsh": "e55efd42d4683655fef9324f7ba62a8c004dbf0aace99683674f8c9879be123d",
+        "lib/document_view.zsh": "0e077bccb213d9611d43a04f7fe3cc87eb5c9674ba93e56bdc388445096ffaed",
+        "lib/drawing.zsh": "343572193aaf3726bf14bdd3bb20de2e53f68b13002476b2540a0d1f3851b1f2",
+        "lib/goal.zsh": "35b95ad2611152d234a6bac35e24fe22d44896382e864040639bf9cc4e655aca",
+        "lib/harnesses.zsh": "e1959df7612bd64f3b29669cf0ac115368b62c0a68140b890ff62ce509b2bfbc",
+        "lib/http.zsh": "ec719de8de15fbbacec66acfa5a7fedcd8ebd6378da9e8124a93e2a0d96802bd",
+        "lib/input.zsh": "b0398a5d303ff1944dd350e770754a305061f5482a5b552714b4860147289879",
+        "lib/input_queue.zsh": "680c6aa921c0a0b88a89e13450a546f74c05c172437db19afd18e89b03570d8c",
+        "lib/instructions.zsh": "4bb7bf1d5e15e543115ce34d0e1020e843841ecdb487b3d94db9e240576bf71d",
+        "lib/json.zsh": "85cb47b5397de9aff0714122e7f87fd067631497af61c7c0f9f07b7244603e62",
+        "lib/markdown.zsh": "5169dd713e40fc2ce06b523ebbc5705768ef5b6d64947bf86b18574712e90872",
+        "lib/markdown_native.zsh": "3efe8eee8a1060480736bac043f3b08c6e18c944b48838552f75583a4d3b466d",
+        "lib/mcp.zsh": "a518f89091bcf8f9176ab75406a5b7b8399cb742fa94d4ca01076f7f7372b6a4",
+        "lib/overlays.zsh": "6fa8b8fa42ef275ceaab3028c2eda950d3e356c1a2ab3c9498653b53abe068ed",
+        "lib/process.zsh": "a6f79fff6cfe42e60a768b5ecaf865b537299780d81568b4d09c3f363a59c6aa",
+        "lib/relay.zsh": "2c1e78a1857aef088b2189fcfca9884162838cb31e061d4cbf1aed8b14b5c462",
+        "lib/remote.zsh": "30872e1f5ff5db096746832fbfebe97ad7f07b0cec1e1236a8686fa20380f4ff",
+        "lib/remote_client.zsh": "a6a75a92640dc959405bffd326dfa780452c8b723be017a50ec65b8ce68d3a8c",
+        "lib/remote_server.zsh": "c143c499bb7d8baec621c69bb81ce380523440cd7e7802c1ac9f27b10f18d21d",
+        "lib/remote_server_agent.zsh": "1f9d1eebbc44a6a00b2233abe477b5494ef39d1fcde315ee94ba570a8fa3acc0",
+        "lib/runtime.zsh": "8eebc234158998756f01a0c479ff7726c9c30ce53d459ac52bac9a022e75948a",
+        "lib/search.zsh": "711aa27797c1f2e84ca50b3fe04c221f78118598e48f1c2f7e9b2a7ad0cfc68f",
+        "lib/selection.zsh": "26903b1106de89b57ba4e4010e67b30270d66d2a00fb7196f6ef8fe9defc013a",
+        "lib/skills.zsh": "cfee75b3f1817a180d50d7a6b17cbfd1c86808bc3ff387638928341531bd4786",
+        "lib/state.zsh": "c4d02c2db8c39cf18011406ede6960932c44a14259087b9239a743181c96f819",
+        "lib/stream.zsh": "6529134ae4631e9c3450b207faa134fc7bf755f460bc0b4415e980e13306290e",
+        "lib/tasks.zsh": "7b24ce4f2780b702879bcd0b11e4446b8006b7e3520bcb51e883fcb2cc1ae3cc",
+        "lib/terminal.zsh": "9730807372507698c0784cd5b614abd94dc84248d161f9b6f386298c14f92e67",
+        "lib/tools.zsh": "9550e0e1c70fbb1825612de140950929dd27c14997783181345797e68655aa6a",
+        "lib/transcript.zsh": "70858f0931331727aa56cdd64a5a9f78895d98b2dc742a1c14fa1c1e5ae739f7",
+        "lib/tui.zsh": "8300fe98f58ebba21962e153f1083c9f063cde94c18b2a283934d67fa7b3c140",
+        "lib/ui.zsh": "e215a1cde05ff10db867ce9bc95d8ef3a0690a204e03f21b9ceed24b793f4c8b",
+        "lib/ui_preferences.zsh": "d22a49ba92fd2000e3fcb3197b881d29270d30d0dd108caa346ef2a5ae430625",
+        "lib/util.zsh": "48252a050a00bff3f48dbecfe7c0ab372cb7f9bdbfd9a8b4bcd64334f8ce96c4"
+      },
+      "iterations": 1,
+      "samples_ms_per_batch": [
+        [
+          116.575,
+          117.467,
+          117.975,
+          119.693,
+          117.87599999999999,
+          124.222,
+          116.738,
+          118.301,
+          119.107
+        ],
+        [
+          116.952,
+          116.71,
+          120.84599999999999,
+          120.321,
+          119.662,
+          116.0,
+          117.616,
+          118.37,
+          117.59400000000001
+        ]
+      ],
+      "median_ms": [
+        117.975,
+        117.616
+      ],
+      "speedup": 1.0030523058087335,
+      "state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf"
+    },
+    {
+      "case": "zcoder.zsh/coder-layout",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "source_sha256": {
+        "lib/acp.zsh": "00e8849428de1a5e64ed6961dac716e0d0d5cd905234a66c9e043bf2051e7f39",
+        "lib/agent.zsh": "6501bb86cced52aff53e8a6887455b216a87f0acf5a57d2787fbd0914ab71d31",
+        "lib/agent_lfm.zsh": "a237ad35834c6fd5ee3a8ba925c393760c5eaea864db8c81f78d383227925f47",
+        "lib/agent_loop.zsh": "96ff422b908f0f90e614c9c23166a9f5fd20d972b95713d9ab5117fc2a1de6f9",
+        "lib/agent_prompts.zsh": "2dc60229db8dab8c05c16781d4a4a8eb7a5e0def63709d47430cb43778dd2140",
+        "lib/command_dispatch.zsh": "987565404517ca3040ef8f6ffb5b8dc5352560d84b9c0fe814c28f7755131f97",
+        "lib/command_safety.zsh": "b4647d732c439eab2c9fdd4459c112954fd261138dec8a0ca7fff78c49ae1475",
+        "lib/commands.zsh": "858b68ff45f1ac0f87a986e2c7b18daaf4797e14c6917a3469fb82a653ff784c",
+        "lib/compact.zsh": "803b0645fc3ecc277436abbfee3574b3b33fb26d5bfa8c23e4313ddd5d5aacb1",
+        "lib/curses.zsh": "cda85cde43fbe94fdca8f9b3a1a093f4da4a3916762f8aa4c965055f9375294b",
+        "lib/delegate.zsh": "c33d397cf012709eb77596494e8cf43a84bf73689ce524809bdbd85fe64ec495",
+        "lib/diff.zsh": "ad3c0b18e98d19d4e3ef3c96c971decb6252a7290ef993bb91eac08e6daa56a9",
+        "lib/document_context.zsh": "27140e727b12226b1060c40a64586dd631cdc571bfddbacc3514366b40a3049c",
+        "lib/document_files.zsh": "64e2b07e02a4060006987321ade9468112f8967f4a1bf379de5bfa6c1b677ab3",
+        "lib/document_tabs.zsh": "e55efd42d4683655fef9324f7ba62a8c004dbf0aace99683674f8c9879be123d",
+        "lib/document_view.zsh": "0e077bccb213d9611d43a04f7fe3cc87eb5c9674ba93e56bdc388445096ffaed",
+        "lib/drawing.zsh": "343572193aaf3726bf14bdd3bb20de2e53f68b13002476b2540a0d1f3851b1f2",
+        "lib/goal.zsh": "35b95ad2611152d234a6bac35e24fe22d44896382e864040639bf9cc4e655aca",
+        "lib/harnesses.zsh": "e1959df7612bd64f3b29669cf0ac115368b62c0a68140b890ff62ce509b2bfbc",
+        "lib/http.zsh": "ec719de8de15fbbacec66acfa5a7fedcd8ebd6378da9e8124a93e2a0d96802bd",
+        "lib/input.zsh": "b0398a5d303ff1944dd350e770754a305061f5482a5b552714b4860147289879",
+        "lib/input_queue.zsh": "680c6aa921c0a0b88a89e13450a546f74c05c172437db19afd18e89b03570d8c",
+        "lib/instructions.zsh": "4bb7bf1d5e15e543115ce34d0e1020e843841ecdb487b3d94db9e240576bf71d",
+        "lib/json.zsh": "85cb47b5397de9aff0714122e7f87fd067631497af61c7c0f9f07b7244603e62",
+        "lib/markdown.zsh": "5169dd713e40fc2ce06b523ebbc5705768ef5b6d64947bf86b18574712e90872",
+        "lib/markdown_native.zsh": "3efe8eee8a1060480736bac043f3b08c6e18c944b48838552f75583a4d3b466d",
+        "lib/mcp.zsh": "a518f89091bcf8f9176ab75406a5b7b8399cb742fa94d4ca01076f7f7372b6a4",
+        "lib/overlays.zsh": "6fa8b8fa42ef275ceaab3028c2eda950d3e356c1a2ab3c9498653b53abe068ed",
+        "lib/process.zsh": "a6f79fff6cfe42e60a768b5ecaf865b537299780d81568b4d09c3f363a59c6aa",
+        "lib/relay.zsh": "2c1e78a1857aef088b2189fcfca9884162838cb31e061d4cbf1aed8b14b5c462",
+        "lib/remote.zsh": "30872e1f5ff5db096746832fbfebe97ad7f07b0cec1e1236a8686fa20380f4ff",
+        "lib/remote_client.zsh": "a6a75a92640dc959405bffd326dfa780452c8b723be017a50ec65b8ce68d3a8c",
+        "lib/remote_server.zsh": "c143c499bb7d8baec621c69bb81ce380523440cd7e7802c1ac9f27b10f18d21d",
+        "lib/remote_server_agent.zsh": "1f9d1eebbc44a6a00b2233abe477b5494ef39d1fcde315ee94ba570a8fa3acc0",
+        "lib/runtime.zsh": "8eebc234158998756f01a0c479ff7726c9c30ce53d459ac52bac9a022e75948a",
+        "lib/search.zsh": "711aa27797c1f2e84ca50b3fe04c221f78118598e48f1c2f7e9b2a7ad0cfc68f",
+        "lib/selection.zsh": "26903b1106de89b57ba4e4010e67b30270d66d2a00fb7196f6ef8fe9defc013a",
+        "lib/skills.zsh": "cfee75b3f1817a180d50d7a6b17cbfd1c86808bc3ff387638928341531bd4786",
+        "lib/state.zsh": "c4d02c2db8c39cf18011406ede6960932c44a14259087b9239a743181c96f819",
+        "lib/stream.zsh": "6529134ae4631e9c3450b207faa134fc7bf755f460bc0b4415e980e13306290e",
+        "lib/tasks.zsh": "7b24ce4f2780b702879bcd0b11e4446b8006b7e3520bcb51e883fcb2cc1ae3cc",
+        "lib/terminal.zsh": "9730807372507698c0784cd5b614abd94dc84248d161f9b6f386298c14f92e67",
+        "lib/tools.zsh": "9550e0e1c70fbb1825612de140950929dd27c14997783181345797e68655aa6a",
+        "lib/transcript.zsh": "70858f0931331727aa56cdd64a5a9f78895d98b2dc742a1c14fa1c1e5ae739f7",
+        "lib/tui.zsh": "8300fe98f58ebba21962e153f1083c9f063cde94c18b2a283934d67fa7b3c140",
+        "lib/ui.zsh": "e215a1cde05ff10db867ce9bc95d8ef3a0690a204e03f21b9ceed24b793f4c8b",
+        "lib/ui_preferences.zsh": "d22a49ba92fd2000e3fcb3197b881d29270d30d0dd108caa346ef2a5ae430625",
+        "lib/util.zsh": "48252a050a00bff3f48dbecfe7c0ab372cb7f9bdbfd9a8b4bcd64334f8ce96c4"
+      },
+      "iterations": 2,
+      "samples_ms_per_batch": [
+        [
+          5.953,
+          5.803,
+          5.7,
+          5.760999999999999,
+          5.763,
+          5.689,
+          5.681,
+          5.831,
+          5.785
+        ],
+        [
+          5.569,
+          5.607,
+          5.577,
+          5.588,
+          5.494,
+          5.572,
+          5.646,
+          5.577,
+          5.54
+        ]
+      ],
+      "median_ms": [
+        5.763,
+        5.577
+      ],
+      "speedup": 1.033351264120495,
+      "state_sha256": "64924155cfb1997fe5d269955bb385bd181e75dc488e9aae98a9927289148866"
+    },
+    {
+      "case": "zcoder.zsh/coder-wide-layout",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "source_sha256": {
+        "lib/acp.zsh": "00e8849428de1a5e64ed6961dac716e0d0d5cd905234a66c9e043bf2051e7f39",
+        "lib/agent.zsh": "6501bb86cced52aff53e8a6887455b216a87f0acf5a57d2787fbd0914ab71d31",
+        "lib/agent_lfm.zsh": "a237ad35834c6fd5ee3a8ba925c393760c5eaea864db8c81f78d383227925f47",
+        "lib/agent_loop.zsh": "96ff422b908f0f90e614c9c23166a9f5fd20d972b95713d9ab5117fc2a1de6f9",
+        "lib/agent_prompts.zsh": "2dc60229db8dab8c05c16781d4a4a8eb7a5e0def63709d47430cb43778dd2140",
+        "lib/command_dispatch.zsh": "987565404517ca3040ef8f6ffb5b8dc5352560d84b9c0fe814c28f7755131f97",
+        "lib/command_safety.zsh": "b4647d732c439eab2c9fdd4459c112954fd261138dec8a0ca7fff78c49ae1475",
+        "lib/commands.zsh": "858b68ff45f1ac0f87a986e2c7b18daaf4797e14c6917a3469fb82a653ff784c",
+        "lib/compact.zsh": "803b0645fc3ecc277436abbfee3574b3b33fb26d5bfa8c23e4313ddd5d5aacb1",
+        "lib/curses.zsh": "cda85cde43fbe94fdca8f9b3a1a093f4da4a3916762f8aa4c965055f9375294b",
+        "lib/delegate.zsh": "c33d397cf012709eb77596494e8cf43a84bf73689ce524809bdbd85fe64ec495",
+        "lib/diff.zsh": "ad3c0b18e98d19d4e3ef3c96c971decb6252a7290ef993bb91eac08e6daa56a9",
+        "lib/document_context.zsh": "27140e727b12226b1060c40a64586dd631cdc571bfddbacc3514366b40a3049c",
+        "lib/document_files.zsh": "64e2b07e02a4060006987321ade9468112f8967f4a1bf379de5bfa6c1b677ab3",
+        "lib/document_tabs.zsh": "e55efd42d4683655fef9324f7ba62a8c004dbf0aace99683674f8c9879be123d",
+        "lib/document_view.zsh": "0e077bccb213d9611d43a04f7fe3cc87eb5c9674ba93e56bdc388445096ffaed",
+        "lib/drawing.zsh": "343572193aaf3726bf14bdd3bb20de2e53f68b13002476b2540a0d1f3851b1f2",
+        "lib/goal.zsh": "35b95ad2611152d234a6bac35e24fe22d44896382e864040639bf9cc4e655aca",
+        "lib/harnesses.zsh": "e1959df7612bd64f3b29669cf0ac115368b62c0a68140b890ff62ce509b2bfbc",
+        "lib/http.zsh": "ec719de8de15fbbacec66acfa5a7fedcd8ebd6378da9e8124a93e2a0d96802bd",
+        "lib/input.zsh": "b0398a5d303ff1944dd350e770754a305061f5482a5b552714b4860147289879",
+        "lib/input_queue.zsh": "680c6aa921c0a0b88a89e13450a546f74c05c172437db19afd18e89b03570d8c",
+        "lib/instructions.zsh": "4bb7bf1d5e15e543115ce34d0e1020e843841ecdb487b3d94db9e240576bf71d",
+        "lib/json.zsh": "85cb47b5397de9aff0714122e7f87fd067631497af61c7c0f9f07b7244603e62",
+        "lib/markdown.zsh": "5169dd713e40fc2ce06b523ebbc5705768ef5b6d64947bf86b18574712e90872",
+        "lib/markdown_native.zsh": "3efe8eee8a1060480736bac043f3b08c6e18c944b48838552f75583a4d3b466d",
+        "lib/mcp.zsh": "a518f89091bcf8f9176ab75406a5b7b8399cb742fa94d4ca01076f7f7372b6a4",
+        "lib/overlays.zsh": "6fa8b8fa42ef275ceaab3028c2eda950d3e356c1a2ab3c9498653b53abe068ed",
+        "lib/process.zsh": "a6f79fff6cfe42e60a768b5ecaf865b537299780d81568b4d09c3f363a59c6aa",
+        "lib/relay.zsh": "2c1e78a1857aef088b2189fcfca9884162838cb31e061d4cbf1aed8b14b5c462",
+        "lib/remote.zsh": "30872e1f5ff5db096746832fbfebe97ad7f07b0cec1e1236a8686fa20380f4ff",
+        "lib/remote_client.zsh": "a6a75a92640dc959405bffd326dfa780452c8b723be017a50ec65b8ce68d3a8c",
+        "lib/remote_server.zsh": "c143c499bb7d8baec621c69bb81ce380523440cd7e7802c1ac9f27b10f18d21d",
+        "lib/remote_server_agent.zsh": "1f9d1eebbc44a6a00b2233abe477b5494ef39d1fcde315ee94ba570a8fa3acc0",
+        "lib/runtime.zsh": "8eebc234158998756f01a0c479ff7726c9c30ce53d459ac52bac9a022e75948a",
+        "lib/search.zsh": "711aa27797c1f2e84ca50b3fe04c221f78118598e48f1c2f7e9b2a7ad0cfc68f",
+        "lib/selection.zsh": "26903b1106de89b57ba4e4010e67b30270d66d2a00fb7196f6ef8fe9defc013a",
+        "lib/skills.zsh": "cfee75b3f1817a180d50d7a6b17cbfd1c86808bc3ff387638928341531bd4786",
+        "lib/state.zsh": "c4d02c2db8c39cf18011406ede6960932c44a14259087b9239a743181c96f819",
+        "lib/stream.zsh": "6529134ae4631e9c3450b207faa134fc7bf755f460bc0b4415e980e13306290e",
+        "lib/tasks.zsh": "7b24ce4f2780b702879bcd0b11e4446b8006b7e3520bcb51e883fcb2cc1ae3cc",
+        "lib/terminal.zsh": "9730807372507698c0784cd5b614abd94dc84248d161f9b6f386298c14f92e67",
+        "lib/tools.zsh": "9550e0e1c70fbb1825612de140950929dd27c14997783181345797e68655aa6a",
+        "lib/transcript.zsh": "70858f0931331727aa56cdd64a5a9f78895d98b2dc742a1c14fa1c1e5ae739f7",
+        "lib/tui.zsh": "8300fe98f58ebba21962e153f1083c9f063cde94c18b2a283934d67fa7b3c140",
+        "lib/ui.zsh": "e215a1cde05ff10db867ce9bc95d8ef3a0690a204e03f21b9ceed24b793f4c8b",
+        "lib/ui_preferences.zsh": "d22a49ba92fd2000e3fcb3197b881d29270d30d0dd108caa346ef2a5ae430625",
+        "lib/util.zsh": "48252a050a00bff3f48dbecfe7c0ab372cb7f9bdbfd9a8b4bcd64334f8ce96c4"
+      },
+      "iterations": 2,
+      "samples_ms_per_batch": [
+        [
+          95.65899999999999,
+          94.07600000000001,
+          94.94,
+          94.31200000000001,
+          94.13199999999999,
+          94.428,
+          93.977,
+          94.306,
+          94.273
+        ],
+        [
+          63.947,
+          62.873,
+          62.962,
+          62.723,
+          64.352,
+          62.913999999999994,
+          63.794000000000004,
+          62.916,
+          63.11899999999999
+        ]
+      ],
+      "median_ms": [
+        94.306,
+        62.962
+      ],
+      "speedup": 1.497824084368349,
+      "state_sha256": "94b37dc408550913157cbce866ce49b7d9a355c6a6e2dbe75458f3364d92b9ef"
+    },
+    {
+      "case": "zchat.zsh/chat-paste",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zchat.zsh",
+      "source_sha256": {
+        "lib/api.zsh": "7adadf9a42e00ec3a48328f678bda75221e7b4452f68c2a31bfe98555967f052",
+        "lib/commands.zsh": "a2b4d75359697976715ff2e41d21313af48f4b0a640e1ebaf4666c1a7ad36e76",
+        "lib/compact.zsh": "ef7ec5b61cd7e3fb9a68f516afa7654a45bb4c5fc14db4e71d3d61c0f9d59bf8",
+        "lib/draw.zsh": "9e3a821269c6447862723803652f19ea9d6ea010245526e29bc9064df32ad573",
+        "lib/drawing.zsh": "d81c1bf723cb1a18205491313eb0c55f6df740bce7f61424c3924b212dc5dab5",
+        "lib/http.zsh": "f2712b6032eade822d16a299bbb441d5a452abfcc5614f2b03a36c3934bbfa33",
+        "lib/input.zsh": "c078ccf122b1cdc48c4a23821e7f23286e53503e7d1a1935d8e4fc650f3fad8a",
+        "lib/json.zsh": "6cddd3526da8bc78e19b26fdfb0acbe2f8f6f34295d67bf82f7800eb27dafe9f",
+        "lib/modal.zsh": "8bb91ad99a9d1c0cdff0f7ade8c0896890812833d6790064cb081ee3f28c304c",
+        "lib/remote.zsh": "e826ba9bbf2de7295632500b9eddab261ac75781c4a3a170a4382832ed7d6b24",
+        "lib/remote_json.zsh": "f22b1f3d198f7864ea395fc97b395b81a2b0e8330887d7c00e0c85bdcc46ee3e",
+        "lib/remote_stream.zsh": "8c586213ef1a651e9adc3647ca4881f367d1ae149b9bb4fbd1e70aaefbd05608",
+        "lib/remote_worker.zsh": "4ac27f743a4696211e0916f0ce778877a8b977903522e493c42839c66f7b43fb",
+        "lib/render.zsh": "0ca3613446517db9108c9fd7774146650d40d873cb4ca3947d93b3a263f25a08",
+        "lib/state.zsh": "b00ae7f98989a4dd01c35124fdb3809a30665ada41f32c94a18ce100900b5f49",
+        "lib/terminal.zsh": "70fef855bd731fac67b93fcb6afa5296bfc50ffcfd01006a9338ae56076b50b2",
+        "lib/ui.zsh": "aa992af9707432963558ecb74fca33cf32267067debbab987860b037a619f11b",
+        "lib/ui_preferences.zsh": "9c9a6e7fbeb7813b8a5cb9319c1110145f05bcc2594658c6945244356c53167b",
+        "lib/util.zsh": "dacbc695363bed0b07c9c40027f51c957e324ab6726ee0c22315b41b409f306d"
+      },
+      "iterations": 1,
+      "samples_ms_per_batch": [
+        [
+          205.088,
+          207.286,
+          212.641,
+          209.067,
+          211.84300000000002,
+          214.744,
+          210.22,
+          211.477,
+          214.673
+        ],
+        [
+          213.858,
+          215.215,
+          217.067,
+          213.60899999999998,
+          218.68099999999998,
+          217.271,
+          218.164,
+          214.65699999999998,
+          221.012
+        ]
+      ],
+      "median_ms": [
+        211.477,
+        217.067
+      ],
+      "speedup": 0.9742475825436386,
+      "state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf"
+    },
+    {
+      "case": "zchat.zsh/chat-layout",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zchat.zsh",
+      "source_sha256": {
+        "lib/api.zsh": "7adadf9a42e00ec3a48328f678bda75221e7b4452f68c2a31bfe98555967f052",
+        "lib/commands.zsh": "a2b4d75359697976715ff2e41d21313af48f4b0a640e1ebaf4666c1a7ad36e76",
+        "lib/compact.zsh": "ef7ec5b61cd7e3fb9a68f516afa7654a45bb4c5fc14db4e71d3d61c0f9d59bf8",
+        "lib/draw.zsh": "9e3a821269c6447862723803652f19ea9d6ea010245526e29bc9064df32ad573",
+        "lib/drawing.zsh": "d81c1bf723cb1a18205491313eb0c55f6df740bce7f61424c3924b212dc5dab5",
+        "lib/http.zsh": "f2712b6032eade822d16a299bbb441d5a452abfcc5614f2b03a36c3934bbfa33",
+        "lib/input.zsh": "c078ccf122b1cdc48c4a23821e7f23286e53503e7d1a1935d8e4fc650f3fad8a",
+        "lib/json.zsh": "6cddd3526da8bc78e19b26fdfb0acbe2f8f6f34295d67bf82f7800eb27dafe9f",
+        "lib/modal.zsh": "8bb91ad99a9d1c0cdff0f7ade8c0896890812833d6790064cb081ee3f28c304c",
+        "lib/remote.zsh": "e826ba9bbf2de7295632500b9eddab261ac75781c4a3a170a4382832ed7d6b24",
+        "lib/remote_json.zsh": "f22b1f3d198f7864ea395fc97b395b81a2b0e8330887d7c00e0c85bdcc46ee3e",
+        "lib/remote_stream.zsh": "8c586213ef1a651e9adc3647ca4881f367d1ae149b9bb4fbd1e70aaefbd05608",
+        "lib/remote_worker.zsh": "4ac27f743a4696211e0916f0ce778877a8b977903522e493c42839c66f7b43fb",
+        "lib/render.zsh": "0ca3613446517db9108c9fd7774146650d40d873cb4ca3947d93b3a263f25a08",
+        "lib/state.zsh": "b00ae7f98989a4dd01c35124fdb3809a30665ada41f32c94a18ce100900b5f49",
+        "lib/terminal.zsh": "70fef855bd731fac67b93fcb6afa5296bfc50ffcfd01006a9338ae56076b50b2",
+        "lib/ui.zsh": "aa992af9707432963558ecb74fca33cf32267067debbab987860b037a619f11b",
+        "lib/ui_preferences.zsh": "9c9a6e7fbeb7813b8a5cb9319c1110145f05bcc2594658c6945244356c53167b",
+        "lib/util.zsh": "dacbc695363bed0b07c9c40027f51c957e324ab6726ee0c22315b41b409f306d"
+      },
+      "iterations": 2,
+      "samples_ms_per_batch": [
+        [
+          5.6979999999999995,
+          5.7010000000000005,
+          5.713,
+          5.677,
+          5.709,
+          5.6979999999999995,
+          5.692,
+          5.715999999999999,
+          5.742
+        ],
+        [
+          5.525,
+          5.517,
+          5.5360000000000005,
+          5.551,
+          5.51,
+          5.443,
+          5.497,
+          5.539,
+          5.49
+        ]
+      ],
+      "median_ms": [
+        5.7010000000000005,
+        5.517
+      ],
+      "speedup": 1.0333514591263369,
+      "state_sha256": "64924155cfb1997fe5d269955bb385bd181e75dc488e9aae98a9927289148866"
+    },
+    {
+      "case": "zchat.zsh/chat-wide-layout",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zchat.zsh",
+      "source_sha256": {
+        "lib/api.zsh": "7adadf9a42e00ec3a48328f678bda75221e7b4452f68c2a31bfe98555967f052",
+        "lib/commands.zsh": "a2b4d75359697976715ff2e41d21313af48f4b0a640e1ebaf4666c1a7ad36e76",
+        "lib/compact.zsh": "ef7ec5b61cd7e3fb9a68f516afa7654a45bb4c5fc14db4e71d3d61c0f9d59bf8",
+        "lib/draw.zsh": "9e3a821269c6447862723803652f19ea9d6ea010245526e29bc9064df32ad573",
+        "lib/drawing.zsh": "d81c1bf723cb1a18205491313eb0c55f6df740bce7f61424c3924b212dc5dab5",
+        "lib/http.zsh": "f2712b6032eade822d16a299bbb441d5a452abfcc5614f2b03a36c3934bbfa33",
+        "lib/input.zsh": "c078ccf122b1cdc48c4a23821e7f23286e53503e7d1a1935d8e4fc650f3fad8a",
+        "lib/json.zsh": "6cddd3526da8bc78e19b26fdfb0acbe2f8f6f34295d67bf82f7800eb27dafe9f",
+        "lib/modal.zsh": "8bb91ad99a9d1c0cdff0f7ade8c0896890812833d6790064cb081ee3f28c304c",
+        "lib/remote.zsh": "e826ba9bbf2de7295632500b9eddab261ac75781c4a3a170a4382832ed7d6b24",
+        "lib/remote_json.zsh": "f22b1f3d198f7864ea395fc97b395b81a2b0e8330887d7c00e0c85bdcc46ee3e",
+        "lib/remote_stream.zsh": "8c586213ef1a651e9adc3647ca4881f367d1ae149b9bb4fbd1e70aaefbd05608",
+        "lib/remote_worker.zsh": "4ac27f743a4696211e0916f0ce778877a8b977903522e493c42839c66f7b43fb",
+        "lib/render.zsh": "0ca3613446517db9108c9fd7774146650d40d873cb4ca3947d93b3a263f25a08",
+        "lib/state.zsh": "b00ae7f98989a4dd01c35124fdb3809a30665ada41f32c94a18ce100900b5f49",
+        "lib/terminal.zsh": "70fef855bd731fac67b93fcb6afa5296bfc50ffcfd01006a9338ae56076b50b2",
+        "lib/ui.zsh": "aa992af9707432963558ecb74fca33cf32267067debbab987860b037a619f11b",
+        "lib/ui_preferences.zsh": "9c9a6e7fbeb7813b8a5cb9319c1110145f05bcc2594658c6945244356c53167b",
+        "lib/util.zsh": "dacbc695363bed0b07c9c40027f51c957e324ab6726ee0c22315b41b409f306d"
+      },
+      "iterations": 2,
+      "samples_ms_per_batch": [
+        [
+          94.383,
+          94.125,
+          94.14500000000001,
+          95.373,
+          94.283,
+          93.78999999999999,
+          93.92,
+          94.908,
+          95.435
+        ],
+        [
+          62.967999999999996,
+          63.605,
+          63.207,
+          62.785,
+          63.082,
+          62.812000000000005,
+          63.760999999999996,
+          63.18600000000001,
+          63.342999999999996
+        ]
+      ],
+      "median_ms": [
+        94.283,
+        63.18600000000001
+      ],
+      "speedup": 1.4921501598455353,
+      "state_sha256": "94b37dc408550913157cbce866ce49b7d9a355c6a6e2dbe75458f3364d92b9ef"
+    },
+    {
+      "case": "endgame/endgame-world",
+      "project_root": "/home/stig/dev/challenge/endgame",
+      "source_sha256": {
+        "lib/adventure.zsh": "1a2904170518e81f618273a389a35722e62cbfb55f2ea4303be13672f1e9ede0",
+        "lib/art.zsh": "a52adc4af0bd5c946e84cda8c4817802c5071a3ddca7f7a08fd6da6840af36a2",
+        "lib/data.zsh": "f85d09ed342f6714bf2edac96969aff0048c1c3af17a93fcb715825b79d75814",
+        "lib/engine.zsh": "735ff895344d264e3025c980933d886fa9b1a96fdba969d4d8b11dbc77d29bb7",
+        "lib/expedition.zsh": "09bf2032c1239b7aed0544c95376dd4b81c3b958ea7efa2fd787f710a66fdcdb",
+        "lib/observatory.zsh": "3cb45623d579b259767d372fd1205afc895992825d7f2b3df17ee673337ad881",
+        "lib/pixels.zsh": "7cc8ed88b364492b924fc1f9286d52b15904ca9337fb117d7c2c7296ca8b2619",
+        "lib/runtime.zsh": "ed2fbc00dc164b56c32c14ab7bc7be37c07450ea8fa84caff19e1f17a15e148e",
+        "lib/save.zsh": "c7a4ef245897ca490e2918244197aaea5b8938745d7d9011c7de82818b5407eb",
+        "lib/shaders.zsh": "cfcde8882681090c2fce5fa998af2f22217b31d2ffb44a568a071e57419b05fd",
+        "lib/ui.zsh": "8b48ac86ccfec87826278594bc992735faced344668b5bd8696d0ad1fc90da56",
+        "lib/vista.zsh": "022a90bcb0da2f72b4816b671ce9694f5becc89a1d816284e17e038c28580dc6"
+      },
+      "iterations": 2,
+      "samples_ms_per_batch": [
+        [
+          45.962,
+          45.693999999999996,
+          45.871,
+          46.291,
+          45.852,
+          46.799,
+          45.424,
+          46.123,
+          46.321
+        ],
+        [
+          45.632,
+          44.778999999999996,
+          45.323,
+          45.605,
+          45.063,
+          45.424,
+          45.185,
+          45.428000000000004,
+          46.311
+        ]
+      ],
+      "median_ms": [
+        45.962,
+        45.424
+      ],
+      "speedup": 1.0118439591405426,
+      "state_sha256": "6299c35a068a34015a5c807070152d168e7d3604771a24d83d9bed2a4da3fead"
+    },
+    {
+      "case": "z3dfx.mario/mario-race",
+      "project_root": "/home/stig/dev/challenge/z3dfx.mario",
+      "source_sha256": {
+        "lib/display.zsh": "e927ba1322070f9c6b0d8cd2ca77b05c3a37fd29c5330a06f5259447bcba33b4",
+        "lib/engine.zsh": "1eb639ea4d62ba846c78c54d0128e9e7aa53842a7eeececc5834f4afc466910e",
+        "lib/input.zsh": "304fcc6dd1552e0d445899b35b699543662a44a7ce5e3f682ea60f1cfbef5528",
+        "lib/render.zsh": "8db01f3d3e23122667f9435c4480e6b8e7e07f8d232d63c71849af06f2e5042a",
+        "lib/timing.zsh": "a4741544731e10636aeafbd0833c4e37917add88c3f2711e3d2fe7861b3353ef",
+        "lib/track.zsh": "ab6612898cf3a00f03f392a57bdfd102fcd9a32bac506a73c0e9bece86acd51b"
+      },
+      "iterations": 120,
+      "samples_ms_per_batch": [
+        [
+          20.307,
+          20.087,
+          20.076,
+          19.956000000000003,
+          20.448999999999998,
+          19.84,
+          20.216,
+          20.195999999999998,
+          20.069
+        ],
+        [
+          20.156,
+          20.119999999999997,
+          20.129,
+          20.157999999999998,
+          20.081000000000003,
+          20.255,
+          20.36,
+          20.188000000000002,
+          20.327
+        ]
+      ],
+      "median_ms": [
+        20.087,
+        20.157999999999998
+      ],
+      "speedup": 0.9964778251810696,
+      "state_sha256": "07ac3a55aba8ffa02f364b643943700996ee235e789fe35d6cb8f967a4155b2e"
+    },
+    {
+      "case": "z3dfx/shooter-step",
+      "project_root": "/home/stig/dev/challenge/z3dfx",
+      "source_sha256": {
+        "levels/relay.zsh": "682e9566cd99ff272084fdbb3d7e3326dde5dd95e50aa67de1176e23d660ca36",
+        "lib/art.zsh": "658a1fc8560c263fdaa21ef6d7c8966fadce5483d2db58d5166db6e0697bbf3e",
+        "lib/display.zsh": "7ffef4f9c19c35cfeb096f6a59138c797544a5862455453fc907f55c339220b5",
+        "lib/engine.zsh": "d49cddd5cf8f4352dfb5ed187e109e640f29a6b7f16c8bbc74bd4e10b479e3ee",
+        "lib/input.zsh": "2e558cb82e8725f1bd801337ec99c23a82c08c6382336b67b7974e8d9bf1f3ee",
+        "lib/render.zsh": "f40cf9d6bd0529cc3b8e466d4a72627928723f83af9fc34851886945c0547711",
+        "lib/timing.zsh": "a4741544731e10636aeafbd0833c4e37917add88c3f2711e3d2fe7861b3353ef"
+      },
+      "iterations": 60,
+      "samples_ms_per_batch": [
+        [
+          11.9,
+          12.183,
+          11.953,
+          11.673,
+          11.94,
+          11.561,
+          12.165000000000001,
+          11.775,
+          11.866
+        ],
+        [
+          11.700000000000001,
+          11.562,
+          11.747,
+          12.043999999999999,
+          11.902,
+          11.641,
+          11.834000000000001,
+          11.93,
+          11.821
+        ]
+      ],
+      "median_ms": [
+        11.9,
+        11.821
+      ],
+      "speedup": 1.0066830217409695,
+      "state_sha256": "56e08f7c9d23eb03dbef6b7edb4cb04a2338900a504fc96fbc8121cb45b057bb"
+    },
+    {
+      "case": "z3dfx.agy/shooter-step",
+      "project_root": "/home/stig/dev/challenge/z3dfx.agy",
+      "source_sha256": {
+        "levels/relay.zsh": "682e9566cd99ff272084fdbb3d7e3326dde5dd95e50aa67de1176e23d660ca36",
+        "lib/art.zsh": "0826e3d83954c5b5fac86cfd1758ccf4f6206146a38af014dd36ae7f2db9bc45",
+        "lib/display.zsh": "a25f1eca0fd9bae5568bb3f03aaced5823d120c1d14bbd5643f73382a8d4c71f",
+        "lib/engine.zsh": "d49cddd5cf8f4352dfb5ed187e109e640f29a6b7f16c8bbc74bd4e10b479e3ee",
+        "lib/input.zsh": "2e558cb82e8725f1bd801337ec99c23a82c08c6382336b67b7974e8d9bf1f3ee",
+        "lib/render.zsh": "952c2b00ba356a43f20744c7c7b2421650622fa958170f78e8c58cca1d576050",
+        "lib/timing.zsh": "a4741544731e10636aeafbd0833c4e37917add88c3f2711e3d2fe7861b3353ef"
+      },
+      "iterations": 60,
+      "samples_ms_per_batch": [
+        [
+          11.751,
+          11.772,
+          11.993,
+          11.953,
+          11.745999999999999,
+          11.652,
+          11.756,
+          12.556,
+          11.879000000000001
+        ],
+        [
+          11.762,
+          12.231,
+          11.596,
+          11.972999999999999,
+          11.700999999999999,
+          12.011000000000001,
+          11.745000000000001,
+          11.818999999999999,
+          11.844000000000001
+        ]
+      ],
+      "median_ms": [
+        11.772,
+        11.818999999999999
+      ],
+      "speedup": 0.9960233522294611,
+      "state_sha256": "56e08f7c9d23eb03dbef6b7edb4cb04a2338900a504fc96fbc8121cb45b057bb"
+    },
+    {
+      "case": "z3dfx.grok/shooter-step",
+      "project_root": "/home/stig/dev/challenge/z3dfx.grok",
+      "source_sha256": {
+        "levels/relay.zsh": "682e9566cd99ff272084fdbb3d7e3326dde5dd95e50aa67de1176e23d660ca36",
+        "lib/art.zsh": "0826e3d83954c5b5fac86cfd1758ccf4f6206146a38af014dd36ae7f2db9bc45",
+        "lib/display.zsh": "a25f1eca0fd9bae5568bb3f03aaced5823d120c1d14bbd5643f73382a8d4c71f",
+        "lib/engine.zsh": "d49cddd5cf8f4352dfb5ed187e109e640f29a6b7f16c8bbc74bd4e10b479e3ee",
+        "lib/input.zsh": "2e558cb82e8725f1bd801337ec99c23a82c08c6382336b67b7974e8d9bf1f3ee",
+        "lib/render.zsh": "952c2b00ba356a43f20744c7c7b2421650622fa958170f78e8c58cca1d576050",
+        "lib/timing.zsh": "a4741544731e10636aeafbd0833c4e37917add88c3f2711e3d2fe7861b3353ef"
+      },
+      "iterations": 60,
+      "samples_ms_per_batch": [
+        [
+          11.901,
+          11.584000000000001,
+          11.767,
+          11.852,
+          11.582,
+          11.574,
+          11.589,
+          11.584999999999999,
+          11.783999999999999
+        ],
+        [
+          11.908999999999999,
+          11.699,
+          11.551,
+          12.057,
+          11.812,
+          11.598,
+          11.568999999999999,
+          11.608,
+          11.671000000000001
+        ]
+      ],
+      "median_ms": [
+        11.589,
+        11.671000000000001
+      ],
+      "speedup": 0.9929740382143775,
+      "state_sha256": "56e08f7c9d23eb03dbef6b7edb4cb04a2338900a504fc96fbc8121cb45b057bb"
+    },
+    {
+      "case": "zfetch/fetch-encode",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zfetch",
+      "source_sha256": {
+        "lib/config.zsh": "2d6c2d1f3bf97b0a25c225d13578d2d49fd495f01f0755907ca9b235bc2b6962",
+        "lib/http.zsh": "a732a68d4e89a812fdbf6e523c7b15b7172b81a50e71270cdf4a4a3d57b16e8a",
+        "lib/server.zsh": "ac8c8b9c489d19199899962857b0bc42a697e82f38dd43badf900220e4700670",
+        "lib/tools.zsh": "7bf0ad238ebc34dade85a70e3753686ead12887cbce8b7449e70daff98a32224"
+      },
+      "iterations": 3,
+      "samples_ms_per_batch": [
+        [
+          13.215,
+          13.22,
+          13.195,
+          13.168,
+          13.332,
+          13.223,
+          13.461,
+          13.561,
+          13.291
+        ],
+        [
+          13.153,
+          13.075,
+          13.469999999999999,
+          13.181,
+          13.206000000000001,
+          13.457,
+          13.549,
+          14.05,
+          13.303
+        ]
+      ],
+      "median_ms": [
+        13.223,
+        13.303
+      ],
+      "speedup": 0.9939863188754416,
+      "state_sha256": "eba833dbb04b17d6d495177d868ab4a2bcb341c657e7f10df8effb6b34cd152d"
+    },
+    {
+      "case": "z3dfx.drawing/drawing-binning",
+      "project_root": "/home/stig/dev/challenge/z3dfx.drawing",
+      "source_sha256": {
+        "lib/brushwork.zsh": "71940db7cfe57f46a627573335720aff15667a44e97e52a7dae938f6802dac7f",
+        "lib/cache.zsh": "1b373cbcbdd6e66b74acc1e1787605c50531567ba7caa6b12403e244936dde60",
+        "lib/details.zsh": "aa520fb7ec645c23e225759762c20fff6bf247e26e08d883f6d83b4c4750ac94",
+        "lib/native-painting.zsh": "58d0bf30219d66057f28528976783d9a97962b4dcdd338198d9ab32b0a0d308a",
+        "lib/paint.zsh": "b30c804f3fdf7233dde00ee61e57978a7d32b2d910db8c0f32fc346ab7eb9a9d",
+        "lib/painting.zsh": "2b4e9815c8b9c6ed04ff51e94edb5281f065efc1a6435fa50f64205b70380678",
+        "lib/scene.zsh": "1d70b82e2b76fa255122dacfe049ecb6c115a99b990d7d9f8cbb9f69077ea576",
+        "lib/view.zsh": "193310f798db7eca3d72c7220d832a63b9d14f2eda09e28c4214d292d25e49f9"
+      },
+      "iterations": 3,
+      "samples_ms_per_batch": [
+        [
+          14.709,
+          14.404,
+          14.085,
+          14.531,
+          14.44,
+          14.205,
+          14.19,
+          14.38,
+          14.532
+        ],
+        [
+          12.933,
+          12.818,
+          12.581999999999999,
+          12.567,
+          12.616,
+          12.514000000000001,
+          12.5,
+          12.697,
+          12.838000000000001
+        ]
+      ],
+      "median_ms": [
+        14.404,
+        12.616
+      ],
+      "speedup": 1.1417247939124922,
+      "state_sha256": "aeb9d274b31e6046b8d5b0ca1c08a8c9341e4d357a94a4b6e2132a4f079ebcb8"
+    }
+  ]
+}

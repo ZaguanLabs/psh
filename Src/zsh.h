@@ -1929,6 +1929,7 @@ struct tieddata {
 				 */
 #define PM_HASHELEM     (1<<28) /* is a hash-element */
 #define PM_NAMEDDIR     (1<<29) /* has a corresponding nameddirtab entry    */
+#define PM_ARRAY_EXPOSED (1<<30) /* mutable array vector borrowed by native code */
 
 /* The option string corresponds to the first of the variables above */
 #define TYPESET_OPTSTR "aiEFALRZlurtxUhHTkz"

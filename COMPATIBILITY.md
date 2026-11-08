@@ -48,8 +48,8 @@ evidence and slower controls, affected scripts or native interfaces, migration
 or fallback, and the unchanged-OMZ validation. Upstream/differential tests remain
 useful for finding differences; intentional changes get explicit expectations
 instead of silently disabling checks. Native interface changes require matching
-SDKs and rebuilt modules. No new intentional language break is introduced by
-the round-twenty-one policy/test changes.
+SDKs and rebuilt modules. Round twenty-two introduces no intended shell-language
+change; its native array-ownership rules are described below.
 
 ## Deliberate differences
 
@@ -68,9 +68,47 @@ Different distribution patches, compiler flags, optional dependencies and locale
 implementations can also affect behavior. The pristine comparison baseline is
 the imported release, not an arbitrary distribution's configured Zsh package.
 
+## Native array ownership
+
+Round twenty-two caches confirmed array prefixes, using private parameter flag
+bit 30, `PM_ARRAY_EXPOSED`, to track mutable vector loans. The parameter/value
+structures retain their layout. Calling `getaparam()`, the ordinary array getter,
+or whole-array `getarrvalue()` marks the allocation exposed. Such vectors retain
+ordinary scanning, including when a module keeps the loan across interpreter
+calls, cache eviction, a same-vector setter, or an in-place append reallocation.
+Replacing the allocation through its setter permits caching again.
+
+Native modules must obtain mutable vectors through those accessors and change
+owned parameter allocations through their setters. Do not silently replace,
+free, resize or change the terminator of `pm->u.arr` through a raw field alias
+while bypassing both the getters and setter. That bypass is outside psh's
+supported native contract: it can leave confirmed bounds stale. Migrate it to
+`getaparam(name)` or `pm->gsu.a->getfn(pm)` before retaining a mutable vector,
+and use `pm->gsu.a->setfn(pm, replacement)` for ownership transfer. Preserve
+private flag bits when changing unrelated attributes. The new read-only helpers
+are internal to the interpreter and must not provide mutable native loans.
+
+This is an explicit native integration constraint, not a claim that arbitrary
+Zsh binary modules remain interchangeable. Rebuild and test third-party modules
+against the matching SDK. The bundled native modules are rebuilt and tested;
+the retained-loan fixture additionally uses the preceding SDK with both shells.
+The [round-twenty-two report](Perf/round22.md) records the ownership tests and
+performance controls. Unsafe ownership remains a bug, not an accepted tradeoff.
+
+The explicit negative control is `Perf/array-cache-raw-alias.zsh`, using
+`Perf/array-cache-module.c`: warm element 1000, take a raw `pm->u.arr` alias,
+temporarily put the terminator at element 4, then query element 1000. The
+preceding psh/Zsh scan path prints `raw:present=0:value=`; cached psh prints
+`raw:present=1:value=item`. Both exit zero. Replacing the raw loan with the
+normal getter prints `getter:present=0:value=` in both interpreters. The fixture
+keeps the allocation and tail alive and restores them. This demonstrates the
+unsupported bypass and its migration; it is not a supported mutation pattern.
+Cache metadata is used only inside already queued signal regions; unqueued
+queries retain scanning and the caller's signal-delivery boundaries.
+
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Nineteen
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
 arithmetic. This is not a completed audit of the complete interpreter.

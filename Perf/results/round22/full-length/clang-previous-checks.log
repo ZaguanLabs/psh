@@ -1,0 +1,185 @@
+if test x/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/functions != x && test x/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/functions != xno; then \
+  test x/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/site-functions != xno && \
+    /bin/sh /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/mkinstalldirs /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/site-functions; \
+  sdir_top="/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source" fndir="/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/functions" dir_top="." \
+  scriptdir="/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/scripts" runhelpdir="/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/help" \
+  FUNCTIONS_SUBDIRS="no" \
+  INSTALL_DATA="/usr/bin/install -c -m 644" \
+  INSTALL_PROGRAM="/usr/bin/install -c" \
+  DESTDIR="" VERSION="5.9.2" \
+  /bin/sh /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Config/installfns.sh || exit 1; \
+fi; \
+exit 0
+mkdir -m 755 -p -- /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/site-functions
+mkdir -m 755 -p -- /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/functions
+mkdir -m 755 -p -- /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/runtime-clang-previous/share/zsh/5.9.2/scripts
+cd Test ; make check
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/clang-previous/Test'
+if test -n "clang -std=gnu23"; then \
+  cd .. && DESTDIR= \
+  make MODDIR=`pwd`/Test/Modules install.modules > /dev/null; \
+fi
+if test -z "$ZTST_handler"; then \
+  ZTST_handler=runtests.zsh; \
+fi; \
+if ZTST_testlist="`for f in /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/*.ztst; \
+           do echo $f; done`" \
+ ZTST_srcdir="/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test" \
+ ZTST_exe=../Src/zsh \
+ ../Src/zsh +Z -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/$ZTST_handler; then \
+ stat=0; \
+else \
+ stat=1; \
+fi; \
+sleep 1; \
+rm -rf Modules .zcompdump; \
+exit $stat
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A01grammar.ztst: starting.
+This test hangs the shell when it fails...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A01grammar.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A02alias.ztst: starting.
+This test hangs the shell when it fails...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A02alias.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A03quoting.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A03quoting.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A04redirect.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A04redirect.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A05execution.ztst: starting.
+Unable to change MONITOR option
+This test takes 5 seconds to fail...
+Skipping pipe leak test, requires MONITOR option
+This test takes 3 seconds and hangs the shell when it fails...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A05execution.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A06assign.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A06assign.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A07control.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A07control.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A09zwc.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/A09zwc.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B01cd.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B01cd.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B02typeset.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B02typeset.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B03print.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B03print.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B04read.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B04read.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B05eval.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B05eval.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B06fc.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B06fc.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B07emulate.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B07emulate.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B08shift.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B08shift.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B09hash.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B09hash.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B10getopts.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B10getopts.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B11kill.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B11kill.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B12limit.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B12limit.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B13whence.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/B13whence.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C01arith.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C01arith.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C02cond.ztst: starting.
+This test may take two seconds...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C02cond.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C03traps.ztst: starting.
+This test takes at least three seconds...
+This test, too, takes at least three seconds...
+Another test that takes three seconds
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C03traps.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C04funcdef.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C04funcdef.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C05debug.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/C05debug.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D01prompt.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D01prompt.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D02glob.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D02glob.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D03procsubst.ztst: starting.
+This test hangs the shell when it fails...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D03procsubst.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D04parameter.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D04parameter.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D05array.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D05array.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D06subscript.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D06subscript.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D07multibyte.ztst: starting.
+Testing multibyte with locale en_US.UTF-8
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D07multibyte.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D08cmdsubst.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D08cmdsubst.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D09brace.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/D09brace.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/E01options.ztst: starting.
+This test hangs the shell when it fails...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/E01options.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/E02xtrace.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/E02xtrace.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/E03posix.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/E03posix.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/P01privileged.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/P01privileged.ztst: skipped (PRIVILEGED tests require super-user privileges (or env var))
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V01zmodload.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V01zmodload.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V02zregexparse.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V02zregexparse.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V03mathfunc.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V03mathfunc.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V04features.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V04features.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V05styles.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V05styles.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V06parameter.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V06parameter.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V07pcre.ztst: starting.
+Testing PCRE multibyte with locale en_US.UTF-8
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V07pcre.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V08zpty.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V08zpty.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V09datetime.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V09datetime.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V10private.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V10private.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V11db_gdbm.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V11db_gdbm.ztst: skipped (can't load zsh/db/gdbm module for testing)
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V12zparseopts.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V12zparseopts.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V13zformat.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V13zformat.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V14system.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/V14system.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/W01history.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/W01history.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/W02jobs.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/W02jobs.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/W03jobparameters.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/W03jobparameters.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/X02zlevi.ztst: starting.
+This test may hang the shell when it fails...
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/X02zlevi.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/X03zlebindkey.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/X03zlebindkey.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/X04zlehighlight.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/X04zlehighlight.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Y01completion.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Y01completion.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Y02compmatch.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Y02compmatch.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Y03arguments.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Y03arguments.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Z01is-at-least.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Z01is-at-least.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Z02zmathfunc.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Z02zmathfunc.ztst: all tests successful.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Z03run-help.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/previous-source/Test/Z03run-help.ztst: all tests successful.
+**************************************
+63 successful test scripts, 0 failures, 2 skipped
+**************************************
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round22/clang-previous/Test'
