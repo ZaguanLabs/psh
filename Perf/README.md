@@ -834,3 +834,23 @@ when comparing two releases that both already implement the round-twenty-two
 ownership rule; that optional mode expects a pre-cache baseline. The GDB
 `--search` probe checks all cache entries at three unqueued calls, including
 after a queued call has warmed the cache. These debugger checks require symbols.
+
+## Classification branch merge (round twenty-five)
+
+The [round twenty-five report](round25.md) follows the live class tests in
+`itype_end()`. The native fixture compares against the original release function,
+including converter state after each call, changed public classification tables,
+combined class masks, exact-ending allocations and four `once` values.
+
+```sh
+python3 Perf/check-itype-module.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --headers-build /path/to/previous --headers-source /path/to/previous-source \
+  --memcheck --locale C --locale C.UTF-8 --locale ja_JP.eucjp \
+  --locale zh_CN.GB18030 --locale zh_TW.EUC-TW \
+  --output .work/logs/classifier.json
+```
+
+Use configured headers matching the host profile. The default paths refer to
+the pristine debug baseline; release hosts omit debug-only exports required by
+a fixture built from debug headers. No native interface change is introduced.
+The expanded fixture performs 1,299,456 checks per host/locale on this build.

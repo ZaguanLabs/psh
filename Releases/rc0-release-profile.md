@@ -18,6 +18,9 @@ checkpoint. Work continues on `main`, identified by source commit and build
 digest. Previous installed releases and source artifacts are retained. This
 iteration is not a new project version or a public release.
 
+The [classification iteration](../Perf/round25.md) continues the release profile
+and preserves the original tag, draft and assets.
+
 ## Configuration and debugger symbols
 
 Daily-driver packaging now defaults to `--profile release`, using upstream's

@@ -9,21 +9,23 @@ import subprocess
 
 
 def main():
+    root = Path(__file__).resolve().parent.parent
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("baseline", type=Path)
     parser.add_argument("candidate", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--memcheck", action="store_true")
     parser.add_argument("--locale", action="append", dest="locales")
+    parser.add_argument("--headers-build", type=Path, default=root / ".work/baseline")
+    parser.add_argument("--headers-source", type=Path, default=root / ".work/pristine")
     args = parser.parse_args()
-    root = Path(__file__).resolve().parent.parent
     folder = root / ".work/itype-module"
     folder.mkdir(exist_ok=True)
     source = root / "Perf/itype-module.c"
     module = folder / "psh_itype_fixture.so"
     command = ["cc", "-O2", "-g", "-shared", "-fPIC", "-DMODULE", "-DHAVE_CONFIG_H",
-               "-I" + str(root / ".work/baseline/Src"),
-               "-I" + str(root / ".work/pristine/Src"), str(source), "-o", str(module)]
+               "-I" + str(args.headers_build.resolve(strict=True) / "Src"),
+               "-I" + str(args.headers_source.resolve(strict=True) / "Src"), str(source), "-o", str(module)]
     subprocess.run(command, check=True)
     script = '''emulate -R zsh
 module_path=("$1" $module_path)

@@ -4388,14 +4388,10 @@ itype_end(const char *ptr, int itype, int once)
 	mb_charinit();
 	while (*ptr) {
 	    int len;
-	    if (itok(*ptr)) {
-		/* Not untokenised yet --- can happen in raw command line */
-		len = 1;
-		if (!zistype(*ptr,itype))
-		    break;
-	    } else if ((unsigned char)*ptr <= 0x7f) {
-		/* The converter's ASCII path has width one and leaves its
-		 * shift state unchanged.  Keep the live classification. */
+	    if ((unsigned char)*ptr <= 0x7f || itok(*ptr)) {
+		/* ASCII and unexpanded tokens both have width one and
+		 * leave the conversion state unchanged.  Test ASCII first
+		 * to avoid the extra token-class test on the common path. */
 		len = 1;
 		if (!zistype(*ptr,itype))
 		    break;

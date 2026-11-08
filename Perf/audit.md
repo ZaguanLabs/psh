@@ -86,3 +86,11 @@ measurements identify costs in actual project kernels; they do not establish
 that every array walk or allocation is redundant. The small zjson scaling probe
 is approximately linear over its measured range, so it does not substantiate
 a general quadratic-runtime claim.
+
+[Round twenty-five](round25.md) revisits the multibyte `itype_end()` loop using
+fresh release profiles. Its ASCII and internal-token branches have identical
+width and live-classification work; merging them lets ASCII avoid the token
+flag check. Conversion initialization, non-ASCII processing, byte mode and
+signal boundaries remain unchanged. Native coverage adds combined class masks,
+more prefix lengths and non-boolean `once` values, checked against the original
+release implementation and subsequent converter state.

@@ -1,0 +1,15 @@
+==3417504== Memcheck, a memory error detector
+==3417504== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3417504== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3417504== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/candidate/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_itype_fixture\ ||\ exit\ 1_for\ mb\ in\ multibyte\ nomultibyte;\ do_\ \ for\ posix\ in\ posixidentifiers\ noposixidentifiers;\ do_\ \ \ \ setopt\ $mb\ $posix_\ \ \ \ for\ config\ in\ default\ changed;\ do_\ \ \ \ \ \ if\ [[\ $config\ ==\ default\ ]];\ then_\ \ \ \ \ \ \ \ unset\ IFS\ WORDCHARS_\ \ \ \ \ \ else_\ \ \ \ \ \ \ \ IFS="\ :$2"\ WORDCHARS="_-$2"_\ \ \ \ \ \ fi_\ \ \ \ \ \ print\ -r\ --\ "$mb/$posix/$config"_\ \ \ \ \ \ psh-itype-check\ ||\ exit\ 1_\ \ \ \ done_\ \ done_done_zmodload\ -u\ psh_itype_fixture\ ||\ exit\ 1_if\ whence\ psh-itype-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/itype-module __
+==3417504== Parent PID: 3329725
+==3417504== 
+==3417504== 
+==3417504== HEAP SUMMARY:
+==3417504==     in use at exit: 47,337 bytes in 769 blocks
+==3417504==   total heap usage: 42,007 allocs, 41,238 frees, 698,845 bytes allocated
+==3417504== 
+==3417504== For a detailed leak analysis, rerun with: --leak-check=full
+==3417504== 
+==3417504== For lists of detected and suppressed errors, rerun with: -s
+==3417504== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

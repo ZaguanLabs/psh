@@ -1,0 +1,46 @@
+[
+  {
+    "phase": "configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/previous-source/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/runtime-clang-previous",
+      "--enable-dynamic",
+      "--enable-multibyte",
+      "--disable-zsh-debug",
+      "--enable-pcre",
+      "CC=clang",
+      "CFLAGS=-O2 -g",
+      "LDFLAGS=-g"
+    ],
+    "status": 0,
+    "seconds": 16.991
+  },
+  {
+    "phase": "build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "status": 0,
+    "seconds": 27.731
+  },
+  {
+    "phase": "modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/runtime-clang-previous/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "status": 0,
+    "seconds": 0.09
+  },
+  {
+    "phase": "functions",
+    "command": [
+      "make",
+      "install.fns"
+    ],
+    "status": 0,
+    "seconds": 4.077
+  }
+]

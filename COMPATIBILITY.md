@@ -55,6 +55,9 @@ language or native-interface difference.
 Round twenty-four extends confirmed-prefix reuse to forward array search starts,
 under the same ownership and signal guards; it adds no new intended difference.
 
+Round twenty-five merges identical ASCII/token classification branches. It adds
+no intended language or native-interface difference.
+
 ## Deliberate differences
 
 | Surface | Difference and practical consequence |
@@ -115,7 +118,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-two
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-three
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
 arithmetic. This is not a completed audit of the complete interpreter.

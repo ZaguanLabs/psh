@@ -1,0 +1,80 @@
+[
+  {
+    "name": "previous-endgame",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round25/previous-endgame.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round25/previous-endgame-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/previous/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "endgame-world",
+      "/home/stig/dev/challenge/endgame",
+      "2"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "05765916dbf44135beea9f1853aa6d91522a2e083a5eed357205f7cee66fb0ad",
+    "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+    "source_sha256": {
+      "lib/adventure.zsh": "1a2904170518e81f618273a389a35722e62cbfb55f2ea4303be13672f1e9ede0",
+      "lib/art.zsh": "a52adc4af0bd5c946e84cda8c4817802c5071a3ddca7f7a08fd6da6840af36a2",
+      "lib/data.zsh": "f85d09ed342f6714bf2edac96969aff0048c1c3af17a93fcb715825b79d75814",
+      "lib/engine.zsh": "735ff895344d264e3025c980933d886fa9b1a96fdba969d4d8b11dbc77d29bb7",
+      "lib/expedition.zsh": "09bf2032c1239b7aed0544c95376dd4b81c3b958ea7efa2fd787f710a66fdcdb",
+      "lib/observatory.zsh": "3cb45623d579b259767d372fd1205afc895992825d7f2b3df17ee673337ad881",
+      "lib/pixels.zsh": "7cc8ed88b364492b924fc1f9286d52b15904ca9337fb117d7c2c7296ca8b2619",
+      "lib/runtime.zsh": "ed2fbc00dc164b56c32c14ab7bc7be37c07450ea8fa84caff19e1f17a15e148e",
+      "lib/save.zsh": "c7a4ef245897ca490e2918244197aaea5b8938745d7d9011c7de82818b5407eb",
+      "lib/shaders.zsh": "cfcde8882681090c2fce5fa998af2f22217b31d2ffb44a568a071e57419b05fd",
+      "lib/ui.zsh": "8b48ac86ccfec87826278594bc992735faced344668b5bd8696d0ad1fc90da56",
+      "lib/vista.zsh": "022a90bcb0da2f72b4816b671ce9694f5becc89a1d816284e17e038c28580dc6"
+    },
+    "instructions": 1169346849,
+    "output_state_sha256": "6299c35a068a34015a5c807070152d168e7d3604771a24d83d9bed2a4da3fead",
+    "status": 0
+  },
+  {
+    "name": "candidate-endgame",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round25/candidate-endgame.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round25/candidate-endgame-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/candidate/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "endgame-world",
+      "/home/stig/dev/challenge/endgame",
+      "2"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "a5c85c2fd9003e872eea1788940c767c6fc226cd28260e8ea0039a50dd81cd54",
+    "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+    "source_sha256": {
+      "lib/adventure.zsh": "1a2904170518e81f618273a389a35722e62cbfb55f2ea4303be13672f1e9ede0",
+      "lib/art.zsh": "a52adc4af0bd5c946e84cda8c4817802c5071a3ddca7f7a08fd6da6840af36a2",
+      "lib/data.zsh": "f85d09ed342f6714bf2edac96969aff0048c1c3af17a93fcb715825b79d75814",
+      "lib/engine.zsh": "735ff895344d264e3025c980933d886fa9b1a96fdba969d4d8b11dbc77d29bb7",
+      "lib/expedition.zsh": "09bf2032c1239b7aed0544c95376dd4b81c3b958ea7efa2fd787f710a66fdcdb",
+      "lib/observatory.zsh": "3cb45623d579b259767d372fd1205afc895992825d7f2b3df17ee673337ad881",
+      "lib/pixels.zsh": "7cc8ed88b364492b924fc1f9286d52b15904ca9337fb117d7c2c7296ca8b2619",
+      "lib/runtime.zsh": "ed2fbc00dc164b56c32c14ab7bc7be37c07450ea8fa84caff19e1f17a15e148e",
+      "lib/save.zsh": "c7a4ef245897ca490e2918244197aaea5b8938745d7d9011c7de82818b5407eb",
+      "lib/shaders.zsh": "cfcde8882681090c2fce5fa998af2f22217b31d2ffb44a568a071e57419b05fd",
+      "lib/ui.zsh": "8b48ac86ccfec87826278594bc992735faced344668b5bd8696d0ad1fc90da56",
+      "lib/vista.zsh": "022a90bcb0da2f72b4816b671ce9694f5becc89a1d816284e17e038c28580dc6"
+    },
+    "instructions": 1154944301,
+    "output_state_sha256": "6299c35a068a34015a5c807070152d168e7d3604771a24d83d9bed2a4da3fead",
+    "status": 0
+  }
+]

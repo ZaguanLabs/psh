@@ -1,0 +1,45 @@
+[
+  {
+    "phase": "configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/previous-source/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/runtime-previous",
+      "--enable-dynamic",
+      "--enable-multibyte",
+      "--disable-zsh-debug",
+      "--enable-pcre",
+      "CFLAGS=-O2 -g",
+      "LDFLAGS=-g"
+    ],
+    "status": 0,
+    "seconds": 10.412
+  },
+  {
+    "phase": "build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "status": 0,
+    "seconds": 34.208
+  },
+  {
+    "phase": "modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round25/runtime-previous/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "status": 0,
+    "seconds": 0.098
+  },
+  {
+    "phase": "functions",
+    "command": [
+      "make",
+      "install.fns"
+    ],
+    "status": 0,
+    "seconds": 2.573
+  }
+]

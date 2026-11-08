@@ -1,11 +1,14 @@
 /* Test-only public classification API fixture, built with pristine headers. */
 #include "zsh.mdh"
+#include <limits.h>
 #include "itype-reference.c"
 
 static int
 check_buffer(const char *source, unsigned *checks)
 {
-    static const int types[] = {IIDENT, IUSER, ISEP, IWORD, IALNUM, IDIGIT};
+    static const int types[] = {IIDENT, IUSER, ISEP, IWORD, IALNUM, IDIGIT,
+                                0, ITOK, IIDENT | IUSER, ISEP | IWORD, -1};
+    static const int once_values[] = {0, 1, -7, INT_MAX};
     static const char probe[] = "\xc3\xa9";
     unsigned offset, type, once, seed;
     size_t n = strlen(source);
@@ -20,25 +23,25 @@ check_buffer(const char *source, unsigned *checks)
 	    /* The byte-mode API requires its terminator not to match. */
 	    if (zistype(0, types[type]))
 		continue;
-	    for (once = 0; once < 2; once++) {
+	    for (once = 0; once < sizeof(once_values)/sizeof(once_values[0]); once++) {
 		for (seed = 0; seed < 2; seed++) {
 		    char *expected, *actual;
 		    wint_t expected_wc, actual_wc;
 		    int expected_len, actual_len;
 		    mb_charinit();
 		    if (seed) mb_metacharlenconv("\xc3", NULL);
-		    expected = reference_itype_end(s, types[type], once ? -7 : 0);
+		    expected = reference_itype_end(s, types[type], once_values[once]);
 		    expected_len = mb_metacharlenconv(probe, &expected_wc);
 		    mb_charinit();
 		    if (seed) mb_metacharlenconv("\xc3", NULL);
-		    actual = itype_end(s, types[type], once ? -7 : 0);
+		    actual = itype_end(s, types[type], once_values[once]);
 		    actual_len = mb_metacharlenconv(probe, &actual_wc);
 		    (*checks)++;
 		    if (actual != expected || actual < s || actual > s + n ||
 			expected_len != actual_len || expected_wc != actual_wc ||
 			memcmp(before, allocation, bytes)) {
-			fprintf(stderr, "itype mismatch: n=%lu type=%d once=%u seed=%u\n",
-				(unsigned long)n, types[type], once, seed);
+			fprintf(stderr, "itype mismatch: n=%lu type=%d once=%d seed=%u\n",
+				(unsigned long)n, types[type], once_values[once], seed);
 			zfree(before, bytes);
 			zfree(allocation, bytes);
 			return 1;
@@ -55,7 +58,9 @@ check_buffer(const char *source, unsigned *checks)
 static int
 bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(int func))
 {
-    static const unsigned lengths[] = {0, 1, 7, 31, 32, 33, 63, 64, 65, 127, 128, 129, 1024};
+    static const unsigned lengths[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17,
+                                      31, 32, 33, 63, 64, 65, 127, 128, 129,
+                                      255, 256, 257, 1024};
     short saved[256];
     unsigned variant, byte, i, checks = 0;
     int failed = 0;

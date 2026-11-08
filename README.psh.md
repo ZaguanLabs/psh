@@ -96,7 +96,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-two accepted optimizations.
+The executable now includes twenty-three accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -126,7 +126,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-two changes; the fourth experiment compares against
+executable includes all twenty-three changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -257,3 +257,10 @@ old walk. JSON parsing improves about 8–9% and validation about 10% in the
 measured workloads. Slightly slower simulation/drawing controls are retained in
 the [round-twenty-four report](Perf/round24.md). The existing native ownership
 contract and signal boundaries remain unchanged.
+
+The twenty-third accepted change merges the ASCII and internal-token branches
+of the multibyte character classifier. ASCII reaches the same live class test
+without first testing its token flag; conversion state and non-ASCII handling
+remain unchanged. Endgame takes about 2% less time and Mario about 1–2% less in
+two runs. Library controls are mixed; the [round-twenty-five report](Perf/round25.md)
+retains all samples and the expanded native classification checks.

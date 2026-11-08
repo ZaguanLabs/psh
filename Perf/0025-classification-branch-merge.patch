@@ -1,0 +1,142 @@
+Round twenty-five: merge identical ASCII and token classification branches
+Parent: 5cdb994b00ed4c49bc57a115ca29b71d1193fb2d
+
+diff --git a/COMPATIBILITY.md b/COMPATIBILITY.md
+index 8f73c30..fba64a3 100644
+--- a/COMPATIBILITY.md
++++ b/COMPATIBILITY.md
+@@ -55,6 +55,9 @@ language or native-interface difference.
+ Round twenty-four extends confirmed-prefix reuse to forward array search starts,
+ under the same ownership and signal guards; it adds no new intended difference.
+ 
++Round twenty-five merges identical ASCII/token classification branches. It adds
++no intended language or native-interface difference.
++
+ ## Deliberate differences
+ 
+ | Surface | Difference and practical consequence |
+@@ -115,7 +118,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
+ 
+ ## What has and has not been checked
+ 
+-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-two
++The [source-review map](Perf/audit.md) describes focused coverage. Twenty-three
+ accepted optimizations change a limited set of core paths: arrays/subscripts,
+ metafied strings, character scanning, terminal-star matching, substitution and
+ arithmetic. This is not a completed audit of the complete interpreter.
+diff --git a/Perf/check-itype-module.py b/Perf/check-itype-module.py
+index 7763074..8cd07b5 100644
+--- a/Perf/check-itype-module.py
++++ b/Perf/check-itype-module.py
+@@ -9,21 +9,23 @@ import subprocess
+ 
+ 
+ def main():
++    root = Path(__file__).resolve().parent.parent
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument("baseline", type=Path)
+     parser.add_argument("candidate", type=Path)
+     parser.add_argument("--output", type=Path, required=True)
+     parser.add_argument("--memcheck", action="store_true")
+     parser.add_argument("--locale", action="append", dest="locales")
++    parser.add_argument("--headers-build", type=Path, default=root / ".work/baseline")
++    parser.add_argument("--headers-source", type=Path, default=root / ".work/pristine")
+     args = parser.parse_args()
+-    root = Path(__file__).resolve().parent.parent
+     folder = root / ".work/itype-module"
+     folder.mkdir(exist_ok=True)
+     source = root / "Perf/itype-module.c"
+     module = folder / "psh_itype_fixture.so"
+     command = ["cc", "-O2", "-g", "-shared", "-fPIC", "-DMODULE", "-DHAVE_CONFIG_H",
+-               "-I" + str(root / ".work/baseline/Src"),
+-               "-I" + str(root / ".work/pristine/Src"), str(source), "-o", str(module)]
++               "-I" + str(args.headers_build.resolve(strict=True) / "Src"),
++               "-I" + str(args.headers_source.resolve(strict=True) / "Src"), str(source), "-o", str(module)]
+     subprocess.run(command, check=True)
+     script = '''emulate -R zsh
+ module_path=("$1" $module_path)
+diff --git a/Perf/itype-module.c b/Perf/itype-module.c
+index 6f89fde..20b7864 100644
+--- a/Perf/itype-module.c
++++ b/Perf/itype-module.c
+@@ -1,11 +1,14 @@
+ /* Test-only public classification API fixture, built with pristine headers. */
+ #include "zsh.mdh"
++#include <limits.h>
+ #include "itype-reference.c"
+ 
+ static int
+ check_buffer(const char *source, unsigned *checks)
+ {
+-    static const int types[] = {IIDENT, IUSER, ISEP, IWORD, IALNUM, IDIGIT};
++    static const int types[] = {IIDENT, IUSER, ISEP, IWORD, IALNUM, IDIGIT,
++                                0, ITOK, IIDENT | IUSER, ISEP | IWORD, -1};
++    static const int once_values[] = {0, 1, -7, INT_MAX};
+     static const char probe[] = "\xc3\xa9";
+     unsigned offset, type, once, seed;
+     size_t n = strlen(source);
+@@ -20,25 +23,25 @@ check_buffer(const char *source, unsigned *checks)
+ 	    /* The byte-mode API requires its terminator not to match. */
+ 	    if (zistype(0, types[type]))
+ 		continue;
+-	    for (once = 0; once < 2; once++) {
++	    for (once = 0; once < sizeof(once_values)/sizeof(once_values[0]); once++) {
+ 		for (seed = 0; seed < 2; seed++) {
+ 		    char *expected, *actual;
+ 		    wint_t expected_wc, actual_wc;
+ 		    int expected_len, actual_len;
+ 		    mb_charinit();
+ 		    if (seed) mb_metacharlenconv("\xc3", NULL);
+-		    expected = reference_itype_end(s, types[type], once ? -7 : 0);
++		    expected = reference_itype_end(s, types[type], once_values[once]);
+ 		    expected_len = mb_metacharlenconv(probe, &expected_wc);
+ 		    mb_charinit();
+ 		    if (seed) mb_metacharlenconv("\xc3", NULL);
+-		    actual = itype_end(s, types[type], once ? -7 : 0);
++		    actual = itype_end(s, types[type], once_values[once]);
+ 		    actual_len = mb_metacharlenconv(probe, &actual_wc);
+ 		    (*checks)++;
+ 		    if (actual != expected || actual < s || actual > s + n ||
+ 			expected_len != actual_len || expected_wc != actual_wc ||
+ 			memcmp(before, allocation, bytes)) {
+-			fprintf(stderr, "itype mismatch: n=%lu type=%d once=%u seed=%u\n",
+-				(unsigned long)n, types[type], once, seed);
++			fprintf(stderr, "itype mismatch: n=%lu type=%d once=%d seed=%u\n",
++				(unsigned long)n, types[type], once_values[once], seed);
+ 			zfree(before, bytes);
+ 			zfree(allocation, bytes);
+ 			return 1;
+@@ -55,7 +58,9 @@ check_buffer(const char *source, unsigned *checks)
+ static int
+ bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(int func))
+ {
+-    static const unsigned lengths[] = {0, 1, 7, 31, 32, 33, 63, 64, 65, 127, 128, 129, 1024};
++    static const unsigned lengths[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17,
++                                      31, 32, 33, 63, 64, 65, 127, 128, 129,
++                                      255, 256, 257, 1024};
+     short saved[256];
+     unsigned variant, byte, i, checks = 0;
+     int failed = 0;
+diff --git a/Src/utils.c b/Src/utils.c
+index 4f99f6d..7e15c35 100644
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -4388,14 +4388,10 @@ itype_end(const char *ptr, int itype, int once)
+ 	mb_charinit();
+ 	while (*ptr) {
+ 	    int len;
+-	    if (itok(*ptr)) {
+-		/* Not untokenised yet --- can happen in raw command line */
+-		len = 1;
+-		if (!zistype(*ptr,itype))
+-		    break;
+-	    } else if ((unsigned char)*ptr <= 0x7f) {
+-		/* The converter's ASCII path has width one and leaves its
+-		 * shift state unchanged.  Keep the live classification. */
++	    if ((unsigned char)*ptr <= 0x7f || itok(*ptr)) {
++		/* ASCII and unexpanded tokens both have width one and
++		 * leave the conversion state unchanged.  Test ASCII first
++		 * to avoid the extra token-class test on the common path. */
+ 		len = 1;
+ 		if (!zistype(*ptr,itype))
+ 		    break;
