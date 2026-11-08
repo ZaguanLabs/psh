@@ -753,3 +753,9 @@ to `--profile release`, without Zsh debug assertions. The `Perf/build.py`
 development builds retain their existing assertions. Debugger symbols are
 independent of that setting. Compare matched profiles for new performance
 claims; older debug-build timings remain historical evidence.
+
+The [round-twenty-one contract and profiles](round21.md) make unchanged Oh My
+Zsh a required interactive activation gate. Broad Zsh compatibility remains
+useful, while measured, documented breaking changes are allowed. Private
+iterations stay on rc0. The new profiles identify array bounds, arithmetic and
+scope bookkeeping as targets; they are not new speedup measurements.

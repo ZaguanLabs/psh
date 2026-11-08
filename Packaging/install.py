@@ -110,6 +110,18 @@ def main():
             raise RuntimeError("release has no passing validation receipt")
         if manifest(prefix) != expected or receipt["payload_manifest"] != expected:
             raise RuntimeError("release differs from the tested payload")
+        # Run framework code only in the unprivileged verifier. Activation
+        # consumes its evidence and binds it to this exact installed shell.
+        omz_file = work / "ohmyzsh.json"
+        if not omz_file.is_file():
+            raise RuntimeError("missing required Oh My Zsh evidence; run Packaging/verify.py ohmyzsh as your normal user")
+        omz = json.loads(omz_file.read_text())
+        if (not omz.get("passed")
+                or omz.get("binary_sha256", {}).get("candidate") != sha(prefix / "bin/psh")
+                or omz.get("shells", {}).get("candidate") != str((prefix / "bin/psh").resolve())
+                or omz.get("driver_sha256") != sha(ROOT / "Packaging/check-ohmyzsh.py")
+                or omz.get("session_sha256") != sha(ROOT / "Perf/ohmyzsh-session.zsh")):
+            raise RuntimeError("Oh My Zsh evidence is failed, stale or selects a different shell; rerun Packaging/verify.py ohmyzsh")
         links = [(BASE / "current", Path("releases") / b["release"]),
                  (Path("/usr/local/bin/psh"), BASE / "current/bin/psh"),
                  (Path("/usr/local/bin/psh-config"), BASE / "current/bin/psh-config")]

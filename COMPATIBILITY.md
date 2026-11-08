@@ -1,12 +1,55 @@
 # Compatibility policy for psh 1.0.0-rc0
 
-psh targets the language and public module interfaces of **upstream Zsh 5.9.2**.
-It is an experimental performance fork. **We have not established 100% drop-in
-compatibility for arbitrary scripts, configurations, modules or platforms.**
-Passing tests establish coverage of those cases; they do not establish that an
-unknown script will work. An undocumented language, status, diagnostic, option,
-expansion or evaluation difference is a compatibility bug, including one found
-outside the author's own projects.
+psh is a performance-first fork based on **Zsh 5.9.2**. Broad compatibility is
+valuable, but deliberate breaking changes are allowed when they deliver a
+measured benefit and their behavior and migration are documented. The user's
+“90% compatibility” direction is not an established percentage or a quota of
+tests that may fail. **100% drop-in compatibility with arbitrary Zsh scripts,
+native modules, configurations or platforms is not promised.**
+
+**Oh My Zsh working unchanged is a hard requirement.** A known framework,
+theme, plugin, completion, history, prompt, hook or async regression blocks
+adoption. A workaround requiring edits to Oh My Zsh or the user's OMZ setup
+does not satisfy the requirement. The user's configured stack is the primary
+integration target; representative additional plugins extend its coverage.
+
+Passing tests establishes coverage, not universal proof for every plugin,
+future update or platform. Undocumented or accidental behavioral differences
+remain bugs, including those found outside the author's projects. Memory
+corruption and unsafe ownership are never accepted as compatibility tradeoffs.
+
+## Required Oh My Zsh gate
+
+`Packaging/check-ohmyzsh.py` sources the installed framework, theme, plugins
+and configured syntax highlighter unchanged in real interactive terminals.
+It compares psh with system Zsh using isolated homes, histories and caches.
+The personal startup file supplies literal theme/plugin choices; the test does
+not source that file, private keys or unrelated startup integrations. Update
+checks are disabled only in the test environment; completion security auditing
+remains enabled.
+
+Coverage includes configured and extra plugins, login and non-login startup,
+inherited `FPATH`, cold/warm and cross-interpreter compiled completion caches,
+actual completion buffers, rendered syntax highlights, history navigation,
+prompt configuration, blocked async handlers and callbacks, and Ctrl-C recovery.
+[The recorded baseline](Perf/round21.md) identifies exact revisions and coverage.
+New failing OMZ cases must be investigated and added to the gate; existing
+passing cases are not permission to accept a known untested regression.
+
+The normal package verifier requires this gate. Activation requires a passing
+report bound to the exact installed executable and current test driver. No
+framework code runs as root. An existing release or rollback candidate can be
+rechecked with `Packaging/verify.py ohmyzsh --build PATH`.
+
+## Accepting a deliberate Zsh difference
+
+Record its trigger and standard-Zsh versus psh output/status, the performance
+evidence and slower controls, affected scripts or native interfaces, migration
+or fallback, and the unchanged-OMZ validation. Upstream/differential tests remain
+useful for finding differences; intentional changes get explicit expectations
+instead of silently disabling checks. Native interface changes require matching
+SDKs and rebuilt modules. No new intentional language break is introduced by
+the round-twenty-one policy/test changes.
 
 ## Deliberate differences
 

@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "case": "missing",
+      "status": 1,
+      "activation_blocked": true,
+      "active_shell_and_shells_file_unchanged": true,
+      "reason": "RuntimeError: missing required Oh My Zsh evidence; run Packaging/verify.py ohmyzsh as your normal user"
+    },
+    {
+      "case": "failed",
+      "status": 1,
+      "activation_blocked": true,
+      "active_shell_and_shells_file_unchanged": true,
+      "reason": "RuntimeError: Oh My Zsh evidence is failed, stale or selects a different shell; rerun Packaging/verify.py ohmyzsh"
+    },
+    {
+      "case": "wrong-shell",
+      "status": 1,
+      "activation_blocked": true,
+      "active_shell_and_shells_file_unchanged": true,
+      "reason": "RuntimeError: Oh My Zsh evidence is failed, stale or selects a different shell; rerun Packaging/verify.py ohmyzsh"
+    },
+    {
+      "case": "stale-driver",
+      "status": 1,
+      "activation_blocked": true,
+      "active_shell_and_shells_file_unchanged": true,
+      "reason": "RuntimeError: Oh My Zsh evidence is failed, stale or selects a different shell; rerun Packaging/verify.py ohmyzsh"
+    }
+  ],
+  "valid_evidence_allows_activation": true,
+  "active_prefix": "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d",
+  "candidate_sha256": "8002b6169e851cdf2a166cdac8afd9ff6cc7ed36b3f2eb09a06fd87fe5549af1",
+  "failed_rerun_invalidates_previous_passing_evidence": true
+}

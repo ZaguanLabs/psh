@@ -1,11 +1,13 @@
 # psh — Performance SHell
 
-psh 1.0.0-rc0 is based on the Zsh 5.9.2 release source. Preserving observable
-Zsh language behavior is the compatibility target, not a certification of 100%
-drop-in compatibility. See [the policy and intentional differences](COMPATIBILITY.md). Optimizations must preserve expansion,
-quoting, options and emulation, dynamic scope, arithmetic effects, diagnostics,
-exit status, traps, and signal handling. Public API/ABI changes require separate
-review. Test results are evidence of compatibility, not proof of equivalence.
+psh 1.0.0-rc0 is a performance-first fork based on Zsh 5.9.2. Deliberate breaking
+changes are allowed when their measured benefit and migration are documented;
+broad compatibility remains useful. **Oh My Zsh must work unchanged**, including
+the user's theme, plugins and interactive behavior. See [the compatibility
+policy](COMPATIBILITY.md) and [the mandatory terminal gate](Perf/round21.md).
+Unexpected differences, memory corruption and unsafe ownership remain bugs.
+Native API/ABI changes require matching SDKs and rebuilt modules. Test results
+are evidence of the covered behavior, not a universal compatibility certificate.
 
 The local executable is `./psh`. Upstream build targets, `ZSH_VERSION`, module
 names (`zsh/*`) and personal startup filenames retain their Zsh identities.

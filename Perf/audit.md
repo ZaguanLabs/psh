@@ -37,8 +37,17 @@ workload families, not interchangeable scores:
   research but does not establish behavior-preserving interpreter changes.
 
 For each future candidate: reproduce the cost, inspect ownership and semantics,
-make a bounded change, compare against pristine behavior, run relevant upstream
-and application checks, then measure gains and control cases on idle builds.
+make a bounded change, compare against pristine behavior, classify any deliberate
+divergence under the current compatibility policy, run relevant upstream and
+application checks and the required unchanged-OMZ gate, then measure gains and
+control cases on idle builds. Full Zsh equivalence is no longer mandatory;
+known Oh My Zsh regressions still block adoption.
+
+[Round twenty-one](round21.md) establishes the required interactive Oh My Zsh
+gate and refreshes five customer/library instruction profiles on the actual
+release build. Array-existence scans, arithmetic parsing and scope-table walks
+remain concrete targets. These profiles are not new speedup measurements or
+adopted representation/cache changes.
 
 Round-six Memcheck coverage also found an [existing scalar-search terminator
 read](upstream-terminator-read.md), reproduced in pristine Zsh. Mikael Magnusson’s two bounds guards have since been backported in a separate

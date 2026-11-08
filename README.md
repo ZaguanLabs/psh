@@ -1,9 +1,10 @@
 # psh — Performance SHell
 
 **psh 1.0.0-rc0**, based on Zsh 5.9.2, is an experimental performance fork.
-The compatibility target is Zsh's language and public module interfaces;
-**100% drop-in compatibility has not been established**. Undocumented language
-or evaluation differences are treated as bugs. See the
+Performance takes priority, with broad Zsh compatibility and documented breaking
+changes allowed where their benefits justify them. **Oh My Zsh must work
+unchanged.** Universal drop-in compatibility is not promised; undocumented or
+accidental language/evaluation differences remain bugs. See the
 [compatibility policy and intentional differences](COMPATIBILITY.md).
 
 Changes are measured against a pristine build and checked for expansion,
@@ -45,6 +46,7 @@ git fetch origin tag upstream/zsh-5.9.2
 ```
 
 - [Current private rc0 release-profile iteration](Releases/rc0-release-profile.md)
+- [Oh My Zsh compatibility gate and fresh release-build profiles](Perf/round21.md)
 - [Original RC notes, binary-size explanation and validation](Releases/1.0.0-rc0.md)
 - [Compatibility policy and reporting regressions](COMPATIBILITY.md)
 - [Project details and accepted optimizations](README.psh.md)

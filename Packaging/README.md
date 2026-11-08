@@ -91,6 +91,28 @@ are published only after successful validation. Activation appends exactly
 `/usr/local/bin/psh` to `/etc/shells`, preserving the existing entries and saving
 a backup. It refuses unrelated existing public entries.
 
+Oh My Zsh is now a required compatibility gate for private development and
+activation. The normal-user verifier tests the checkout at `~/.oh-my-zsh`, with
+the literal theme/plugin choices and numeric history limits from `.zshrc`, plus its configured syntax
+highlighter, in isolated interactive homes. Personal startup files, secrets and
+unrelated startup programs are not sourced. All framework/theme/plugin files
+remain unchanged; update checks are disabled only in those test sessions and
+completion security auditing stays enabled. Use `--ohmyzsh-root PATH` with the
+verifier to select another checkout.
+
+Activation refuses missing, failed, stale or different-executable OMZ evidence.
+Only the unprivileged verifier executes framework code. Refresh the gate for an
+existing release, including a rollback candidate, without rerunning its build:
+
+```sh
+python3 Packaging/verify.py ohmyzsh --build /path/to/build.json
+```
+
+The standalone test supports explicit `--theme`, repeated `--plugin` and
+`--syntax-highlighting` inputs when configuration cannot be read as literal
+values. The [coverage report](../Perf/round21.md) records the tested revisions,
+interactive operations and limitations.
+
 Build inputs determine the release digest. An existing build directory is
 retained rather than overwritten. Each command accepts `--build PATH` to select
 a previous `build.json`; the default is `.work/package/latest.json`. Logs,

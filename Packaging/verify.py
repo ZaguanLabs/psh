@@ -26,6 +26,26 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def check_ohmyzsh(build, omz_root):
+    work = Path(build["work"])
+    log = work / "logs/ohmyzsh.log"
+    report = work / "ohmyzsh.json"
+    report.unlink(missing_ok=True)
+    shell = Path(build["prefix"]) / "bin/psh"
+    with log.open("wb") as out:
+        result = subprocess.run(["python3", str(ROOT / "Packaging/check-ohmyzsh.py"),
+                                 "--candidate", str(shell), "--omz", str(omz_root),
+                                 "--output", str(report)],
+                                stdout=out, stderr=subprocess.STDOUT, timeout=600)
+    if result.returncode:
+        raise RuntimeError(f"required Oh My Zsh compatibility check failed; see {log}")
+    evidence = json.loads(report.read_text())
+    assert evidence["passed"] and evidence["binary_sha256"]["candidate"] == sha(shell)
+    return {"passed": True, "report": str(report), "report_sha256": sha(report),
+            "sessions": len(evidence["runs"]), "omz": evidence["omz"],
+            "theme": evidence["theme"], "configured_plugins": evidence["configured_plugins"]}
+
+
 def startup(shell):
     with tempfile.TemporaryDirectory(prefix="psh-startup-") as directory:
         home = Path(directory)
@@ -79,8 +99,9 @@ def startup(shell):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["snapshot", "stage-modules", "verify"])
+    parser.add_argument("action", choices=["snapshot", "stage-modules", "verify", "ohmyzsh"])
     parser.add_argument("--build", type=Path, default=ROOT / ".work/package/latest.json")
+    parser.add_argument("--ohmyzsh-root", type=Path, default=Path.home() / ".oh-my-zsh")
     args = parser.parse_args()
     b = json.loads(args.build.read_text())
     work, prefix, payload = map(Path, [b["work"], b["prefix"], b["payload"]])
@@ -90,6 +111,10 @@ def main():
             with (work / name).open("x") as out:
                 out.write(value)
         print("Saved local-only stable Zsh and login-shell snapshots")
+        return
+    if args.action == "ohmyzsh":
+        evidence = check_ohmyzsh(b, args.ohmyzsh_root)
+        print(f"Required Oh My Zsh gate passed: {evidence['sessions']} interactive sessions")
         return
     reports = {name: json.loads((work / f"test-{name}.json").read_text()) for name in SUITES}
     shell = prefix / "bin/psh"
@@ -222,11 +247,13 @@ done < /proc/$$/maps
     if components.returncode != 0:
         raise RuntimeError(f"installed component tests failed; see {component_log}")
     startup_result = startup(shell)
+    omz_result = check_ohmyzsh(b, args.ohmyzsh_root)
     receipt = {"passed": True, "release": b["release"], "payload_manifest": expected,
                "shell_sha256": sha(shell), "native_sha256": {name: sha(file) for name, file in tested.items()},
                "suites": reports, "stable_protected_entries": len(before), "stable_unchanged": True,
                "login_shell_unchanged": True, "mapped_modules": mapped, "startup": startup_result,
                "stock_modules_preserved": sorted(stable_modules),
+               "ohmyzsh": omz_result,
                "installed_component_tests": "file hashes, relative dependencies and change-gutter PTY rendering passed"}
     if b.get("project_version"):
         receipt.update(project_version=b["project_version"], zsh_version=b["zsh_version"],
@@ -239,6 +266,7 @@ done < /proc/$$/maps
     print(f"Verified {len(before)} protected entries unchanged; all seven suites passed")
     print(startup_result)
     print("Installed zdraw components: source loading and native change-gutter rendering passed")
+    print(f"Oh My Zsh: {omz_result['sessions']} interactive sessions passed")
     print("Validation receipt:", work / "validation.json")
 
 
