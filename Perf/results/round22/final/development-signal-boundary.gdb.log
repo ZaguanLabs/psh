@@ -1,0 +1,23 @@
+Breakpoint 1 at 0x473ba0: file /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c, line 787.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+
+Breakpoint 1, issetvar (name=0x7ffff7fa6de8 "a[500]") at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:787
+787	    if (!(v = getvalue(&vbuf, &name, 1)) || *name)
+0x0000000000428bfc in evalcond (state=state@entry=0x7fffffffea60, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+362		return (!issetvar(left));
+Value returned is $1 = 1
+
+Breakpoint 1, issetvar (name=0x7ffff7fa6e10 "a[600]") at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:787
+787	    if (!(v = getvalue(&vbuf, &name, 1)) || *name)
+0x0000000000428bfc in evalcond (state=state@entry=0x7fffffffea60, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+362		return (!issetvar(left));
+Value returned is $2 = 1
+
+Breakpoint 1, issetvar (name=0x7ffff7fa6f00 "a[700]") at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:787
+787	    if (!(v = getvalue(&vbuf, &name, 1)) || *name)
+0x0000000000428bfc in evalcond (state=state@entry=0x7fffffffea60, fromtest=fromtest@entry=0x0) at /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c:362
+362		return (!issetvar(left));
+Value returned is $3 = 1
+[Inferior 1 (process 337687) exited normally]
+gdb: warning: Couldn't determine a path for the index cache directory.

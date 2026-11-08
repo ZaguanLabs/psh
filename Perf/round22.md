@@ -183,6 +183,11 @@ historical evidence rather than being relabeled as a fresh comparison.
   zero failures, two expected skips** on this Mageia x86-64 host. The preceding
   Clang build passes the same suite. This round does not certify other platforms
   or a no-multibyte configuration.
+- The default local `./psh` development build is refreshed with debug assertions
+  enabled. It passes **62 upstream scripts, zero failures, three expected skips**;
+  its extra skip is PCRE, disabled by the development configure defaults.
+  Its reference-SDK native fixture and debugger signal-boundary checks pass too.
+  These are configuration checks, not additional performance measurements.
 - Final GCC differential groups pass **110,100 arithmetic**, **704,585 scalar**,
   **5,192 array/append**, **193,236 search**, **159,600 pattern** and **2,640
   substitution** comparisons, with recorded encodings/emulations and diagnostics.
@@ -193,8 +198,9 @@ historical evidence rather than being relabeled as a fresh comparison.
   entries unchanged, including after a queued expansion has populated one.
   The rejected unguarded binary is retained as the corresponding negative
   control. Existing signal queueing is preserved.
-- The array-cache fixture is built against the preceding SDK and loaded by
-  both shells. GCC, Clang and the exact installed pair each pass **48 processes**:
+- The array-cache fixture is built against the reference SDK and loaded by
+  both shells. GCC/Clang release builds, the default debug build and the exact
+  installed pair each pass **48 processes**:
   ordinary malloc plus Memcheck, three locales, retained mutable loans and
   mutation scripts in native/ksh/sh modes. The ordinary-malloc runs observe
   three in-place reallocations per lifetime process; Memcheck observes moved
