@@ -741,6 +741,29 @@ array_length_ge(Param pm, char **arr, unsigned bound)
     return 1;
 }
 
+/* Called before matching, with signals queued and arr owned by pm. Reuse
+ * only a confirmed prefix, then walk once to the start or the terminator. */
+/**/
+static zlong
+array_search_start(Param pm, char **arr, zlong begin)
+{
+    unsigned slot = ((size_t)pm >> 4) & 63;
+    int same = array_lengths[slot].pm == pm && array_lengths[slot].array == arr;
+    zlong prefix = same ? array_lengths[slot].bound : 0;
+    char **p;
+
+    if (prefix >= begin)
+	return begin;
+    for (p = arr + prefix; prefix < begin && *p; prefix++, p++);
+    if (prefix >= 64 && (zulong)prefix <= (unsigned)-1 &&
+	(!same || (zulong)prefix > array_lengths[slot].bound)) {
+	array_lengths[slot].pm = pm;
+	array_lengths[slot].array = arr;
+	array_lengths[slot].bound = (unsigned)prefix;
+    }
+    return prefix;
+}
+
 /**/
 int
 arrayparaminrange(Param pm, unsigned bound)
@@ -1351,7 +1374,7 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
        int *prevcharlen, int *nextcharlen, int flags)
 {
     int hasbeg = 0, word = 0, rev = 0, ind = 0, down = 0, l, i, ishash;
-    int keymatch = 0, needtok = 0, arglen, len, inpar = 0;
+    int keymatch = 0, needtok = 0, arglen, len, inpar = 0, cache_start = 0;
     char *s = *str, *sep = NULL, *t, sav, *d, **ta, **p, *tt, c;
     zlong num = 1, beg = 0, r = 0, quote_arg = 0;
     Patprog pprog = NULL;
@@ -1735,15 +1758,25 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
 		    return 1;
 		}
 		scanprog = NULL;
-	    } else
+	    } else {
+		/* Capture eligibility before any custom getter can replace or
+		 * remove the parameter. Small starts retain the original walk. */
+		cache_start = !down && beg >= 64 && queue_signal_level() &&
+		    array_length_owned(v->pm);
 		ta = getarrvaluereadonly(v);
+	    }
 	    if (!ta || !*ta)
 		return !down;
 	    if (!ishash && !down && beg >= 0) {
 		/* A forward search can stop at its match without first
 		 * counting the unused suffix.  Walk to the start safely;
 		 * reaching the terminator also gives the missing index. */
-		for (r = 1, p = ta; r <= beg && *p; r++, p++);
+		if (cache_start && queue_signal_level() && ta == v->pm->u.arr) {
+		    r = array_search_start(v->pm, ta, beg);
+		    p = ta + r;
+		    r++;
+		} else
+		    for (r = 1, p = ta; r <= beg && *p; r++, p++);
 		for (; *p; r++, p++)
 		    if (pprog && pattry(pprog, *p) && !--num)
 			return r;

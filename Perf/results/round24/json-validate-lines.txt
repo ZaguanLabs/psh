@@ -1,0 +1,3390 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/logs/round23/json-validate.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 1018579630
+Trigger: Program termination
+Profiled target:  /usr/local/psh/releases/1.0.0-rc0-ac4028c278e1/bin/psh -df /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh zjson /home/stig/dev/ai/zaguan/labs/zjson 3 (PID 496922, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       14
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+3,993,985,905 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+552,972,396 (13.85%)  .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getarg [/usr/local/psh/releases/1.0.0-rc0-ac4028c278e1/bin/psh]
+299,869,044 ( 7.51%)  .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:scanmatchtable [/usr/local/psh/releases/1.0.0-rc0-ac4028c278e1/bin/psh]
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c
+--------------------------------------------------------------------------------
+Ir                  
+
+-- line 85 ----------------------------------------
+         .           mod_export unsigned
+         .           hasher(const char *str)
+         .           {
+ 4,772,572 ( 0.12%)      unsigned hashval = 0, c;
+         .           
+88,741,902 ( 2.22%)      while ((c = *((unsigned char *) str++)))
+26,929,202 ( 0.67%)  	hashval += (hashval << 5) + c;
+         .           
+         .               return hashval;
+         7 ( 0.00%)  }
+         .           
+         .           /* Get a new hash table */
+         .           
+-- line 97 ----------------------------------------
+-- line 98 ----------------------------------------
+         .           /**/
+         .           mod_export HashTable
+         .           newhashtable(int size, UNUSED(char const *name), UNUSED(PrintTableStats printinfo))
+        20 ( 0.00%)  {
+         .               HashTableImpl ht;
+         .           
+        38 ( 0.00%)      ht = (HashTableImpl) zshcalloc(sizeof *ht);
+       241 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zshcalloc (1x)
+         .           #ifdef ZSH_HASH_DEBUG
+         .               ht->next = NULL;
+         .               if(!firstht)
+-- line 107 ----------------------------------------
+-- line 113 ----------------------------------------
+         .               ht->printinfo = printinfo ? printinfo : printhashtabinfo;
+         .               ht->tablename = ztrdup(name);
+         .           #endif /* ZSH_HASH_DEBUG */
+        38 ( 0.00%)      ht->pub.nodes = (HashNode *) zshcalloc(size * sizeof(HashNode));
+     4,996 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zshcalloc (1x)
+        16 ( 0.00%)      ht->pub.hsize = size;
+         .               ht->pub.ct = 0;
+        11 ( 0.00%)      ht->scan = NULL;
+        11 ( 0.00%)      ht->pub.scantab = NULL;
+         .               return &ht->pub;
+        25 ( 0.00%)  }
+         .           
+         .           /* Delete a hash table.  After this function has been used, any *
+         .            * existing pointers to the hash table are invalid.             */
+-- line 125 ----------------------------------------
+-- line 155 ----------------------------------------
+         .           /**/
+         .           mod_export void
+         .           addhashnode(HashTable ht, char *nam, void *nodeptr)
+   241,286 ( 0.01%)  {
+   120,647 ( 0.00%)      HashNode oldnode = addhashnode2(ht, nam, nodeptr);
+18,112,164 ( 0.45%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode2 (120,629x)
+   241,288 ( 0.01%)      if (oldnode)
+         .           	ht->freenode(oldnode);
+   241,286 ( 0.01%)  }
+         .           
+         .           /* Add a node to a hash table, returning the old node on replacement. */
+         .           
+-- line 165 ----------------------------------------
+-- line 166 ----------------------------------------
+         .           /**/
+         .           HashNode
+         .           addhashnode2(HashTable ht, char *nam, void *nodeptr)
+   844,508 ( 0.02%)  {
+         .               unsigned hashval;
+         .               HashNode hn, hp, hq;
+         .           
+         .               hn = (HashNode) nodeptr;
+   120,644 ( 0.00%)      hn->nam = nam;
+         .           
+   361,932 ( 0.01%)      hashval = ht->hash(hn->nam) % ht->hsize;
+ 8,113,840 ( 0.20%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:hasher (120,630x)
+   723,864 ( 0.02%)      hp = ht->nodes[hashval];
+         .           
+         .               /* check if this is the first node for this hash value */
+   241,288 ( 0.01%)      if (!hp) {
+       319 ( 0.00%)  	hn->next = NULL;
+       319 ( 0.00%)  	ht->nodes[hashval] = hn;
+     1,916 ( 0.00%)  	if (++ht->ct >= ht->hsize * 2 && !impl(ht)->scan)
+         3 ( 0.00%)  	    expandhashtable(ht);
+     3,362 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:expandhashtable (1x)
+   120,644 ( 0.00%)  	return NULL;
+         .               }
+         .           
+         .               /* else check if the first node contains the same key */
+   842,279 ( 0.02%)      if (ht->cmpnodes(hp->nam, hn->nam) == 0) {
+ 2,665,822 ( 0.07%)  => ???:__strcmp_avx2 (120,323x)
+     1,024 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+         .           	ht->nodes[hashval] = hn;
+         .           	replacing:
+         .           	hn->next = hp->next;
+-- line 192 ----------------------------------------
+-- line 205 ----------------------------------------
+         .           
+         .               /* else run through the list and check all the keys */
+         .               hq = hp;
+   120,325 ( 0.00%)      hp = hp->next;
+   505,487 ( 0.01%)      for (; hp; hq = hp, hp = hp->next) {
+   288,912 ( 0.01%)  	if (ht->cmpnodes(hp->nam, hn->nam) == 0) {
+   988,218 ( 0.02%)  => ???:__strcmp_avx2 (48,152x)
+         .           	    hq->next = hn;
+         .           	    goto replacing;
+         .           	}
+-- line 213 ----------------------------------------
+-- line 214 ----------------------------------------
+         .               }
+         .           
+         .               /* else just add it at the front of the list */
+   360,975 ( 0.01%)      hn->next = ht->nodes[hashval];
+   120,325 ( 0.00%)      ht->nodes[hashval] = hn;
+   842,275 ( 0.02%)      if (++ht->ct >= ht->hsize * 2 && !impl(ht)->scan)
+         .                   expandhashtable(ht);
+         .               return NULL;
+   844,508 ( 0.02%)  }
+         .           
+         .           /* Get an enabled entry in a hash table.  *
+         .            * If successful, it returns a pointer to *
+-- line 225 ----------------------------------------
+-- line 229 ----------------------------------------
+         .           /**/
+         .           mod_export HashNode
+         .           gethashnode(HashTable ht, const char *nam)
+ 1,750,300 ( 0.04%)  {
+         .               unsigned hashval;
+         .               HashNode hp;
+         .           
+   700,120 ( 0.02%)      hashval = ht->hash(nam) % ht->hsize;
+26,227,544 ( 0.66%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:hasher (350,060x)
+ 2,958,410 ( 0.07%)      for (hp = ht->nodes[hashval]; hp; hp = hp->next) {
+ 3,042,012 ( 0.08%)  	if (ht->cmpnodes(hp->nam, nam) == 0) {
+10,806,030 ( 0.27%)  => ???:__strcmp_avx2 (507,002x)
+   482,192 ( 0.01%)  	    if (hp->flags & DISABLED)
+   108,964 ( 0.00%)  		return NULL;
+         .           	    else
+         .           		return hp;
+         .           	}
+         .               }
+         .               return NULL;
+ 1,750,300 ( 0.04%)  }
+         .           
+         .           /* Get an entry in a hash table.  It will *
+         .            * ignore the DISABLED flag and return a  *
+-- line 249 ----------------------------------------
+-- line 253 ----------------------------------------
+         .           /**/
+         .           mod_export HashNode
+         .           gethashnode2(HashTable ht, const char *nam)
+ 4,985,695 ( 0.12%)  {
+         .               unsigned hashval;
+         .               HashNode hp;
+         .           
+ 1,994,278 ( 0.05%)      hashval = ht->hash(nam) % ht->hsize;
+77,759,352 ( 1.95%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:hasher (997,139x)
+ 7,568,911 ( 0.19%)      for (hp = ht->nodes[hashval]; hp; hp = hp->next) {
+ 7,999,638 ( 0.20%)  	if (ht->cmpnodes(hp->nam, nam) == 0)
+30,075,142 ( 0.75%)  => ???:__strcmp_avx2 (1,333,273x)
+         .           	    return hp;
+         .               }
+   192,497 ( 0.00%)      return NULL;
+ 4,985,695 ( 0.12%)  }
+         .           
+         .           /* Remove an entry from a hash table.           *
+         .            * If successful, it removes the node from the  *
+-- line 269 ----------------------------------------
+-- line 273 ----------------------------------------
+         .           /**/
+         .           mod_export HashNode
+         .           removehashnode(HashTable ht, const char *nam)
+   840,462 ( 0.02%)  {
+         .               unsigned hashval;
+         .               HashNode hp, hq;
+         .           
+   240,132 ( 0.01%)      hashval = ht->hash(nam) % ht->hsize;
+ 8,067,984 ( 0.20%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:hasher (120,066x)
+   480,264 ( 0.01%)      hp = ht->nodes[hashval];
+         .           
+         .               /* if no nodes at this hash value, return NULL */
+   240,132 ( 0.01%)      if (!hp)
+         .           	return NULL;
+         .           
+         .               /* else check if the key in the first one matches */
+   840,462 ( 0.02%)      if (ht->cmpnodes(hp->nam, nam) == 0) {
+ 2,673,326 ( 0.07%)  => ???:__strcmp_avx2 (120,066x)
+   480,264 ( 0.01%)  	ht->nodes[hashval] = hp->next;
+         .           	gotit:
+   120,066 ( 0.00%)  	ht->ct--;
+   360,198 ( 0.01%)  	if(impl(ht)->scan) {
+   324,198 ( 0.01%)  	    if(impl(ht)->scan->sorted) {
+   108,066 ( 0.00%)  		HashNode *hashtab = impl(ht)->scan->u.s.hashtab;
+         .           		int i;
+         .           		for(i = impl(ht)->scan->u.s.ct; i--; )
+         .           		    if(hashtab[i] == hp)
+         .           			hashtab[i] = NULL;
+   216,132 ( 0.01%)  	    } else if(impl(ht)->scan->u.u == hp)
+         .           		impl(ht)->scan->u.u = hp->next;
+         .           	}
+         .           	return hp;
+-- line 302 ----------------------------------------
+-- line 314 ----------------------------------------
+         .           
+         .               /* else it is not in the list, so return NULL */
+         .               return NULL;
+   840,462 ( 0.02%)  }
+         .           
+         .           /* Disable a node in a hash table */
+         .           
+-- line 320 ----------------------------------------
+-- line 372 ----------------------------------------
+         .           mod_export int
+         .           scanmatchtable(HashTable ht, Patprog pprog, int sorted,
+         .           	       int flags1, int flags2, ScanFunc scanfunc, int scanflags)
+   865,080 ( 0.02%)  {
+   216,270 ( 0.01%)      int match = 0;
+         .               struct scanstatus st;
+         .           
+         .               /*
+-- line 379 ----------------------------------------
+-- line 382 ----------------------------------------
+         .                * other objects.  Note the fact that in this case pprog,
+         .                * sorted, flags1 and flags2 are ignore.
+         .                */
+   360,450 ( 0.01%)      if (!pprog && ht->scantab) {
+         .           	ht->scantab(ht, scanfunc, scanflags);
+         .           	return ht->ct;
+         .               }
+   144,180 ( 0.00%)      if (sorted) {
+         .           	int i, ct = ht->ct;
+         .           	VARARR(HashNode, hnsorttab, ct);
+         .           	HashNode *htp, hn;
+-- line 392 ----------------------------------------
+-- line 417 ----------------------------------------
+         .           
+         .           	impl(ht)->scan = NULL;
+         .               } else {
+   144,180 ( 0.00%)  	int i, hsize = ht->hsize;
+    72,090 ( 0.00%)  	HashNode *nodes = ht->nodes;
+         .           
+    72,090 ( 0.00%)  	st.sorted = 0;
+   144,180 ( 0.00%)  	impl(ht)->scan = &st;
+         .           
+27,466,290 ( 0.69%)  	for (i = 0; i < hsize; i++)
+77,496,516 ( 1.94%)  	    for (st.u.u = nodes[i]; st.u.u; ) {
+         .           		HashNode hn = st.u.u;
+27,442,104 ( 0.69%)  		st.u.u = st.u.u->next;
+68,605,260 ( 1.72%)  		if ((!flags1 || (hn->flags & flags1)) && !(hn->flags & flags2)
+27,442,104 ( 0.69%)  		    && (!pprog || pattry(pprog, hn->nam))) {
+13,721,052 ( 0.34%)  		    match++;
+54,884,208 ( 1.37%)  		    scanfunc(hn, scanflags);
+71,001,534 ( 1.78%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:scanendscope (6,620,187x)
+69,675,623 ( 1.74%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/options.c:setemulate (7,100,865x)
+         .           		}
+         .           	    }
+         .           
+   144,180 ( 0.00%)  	impl(ht)->scan = NULL;
+         .               }
+         .           
+         .               return match;
+   648,810 ( 0.02%)  }
+         .           
+         .           
+         .           /**/
+-- line 444 ----------------------------------------
+-- line 445 ----------------------------------------
+         .           mod_export int
+         .           scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
+         .           	      ScanFunc scanfunc, int scanflags)
+    72,090 ( 0.00%)  {
+   504,630 ( 0.01%)      return scanmatchtable(ht, NULL, sorted, flags1, flags2,
+440,546,201 (11.03%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:scanmatchtable (72,090x)
+         .           			  scanfunc, scanflags);
+   144,180 ( 0.00%)  }
+         .           
+         .           /* Expand hash tables when they get too many entries. *
+         .            * The new size is 4 times the previous size.         */
+-- line 454 ----------------------------------------
+-- line 456 ----------------------------------------
+         .           /**/
+         .           static void
+         .           expandhashtable(HashTable ht)
+         8 ( 0.00%)  {
+         .               struct hashnode **onodes, **ha, *hn, *hp;
+         .               int i, osize;
+         .           
+         1 ( 0.00%)      osize = ht->hsize;
+         1 ( 0.00%)      onodes = ht->nodes;
+         .           
+         2 ( 0.00%)      ht->hsize = osize * 4;
+         4 ( 0.00%)      ht->nodes = (HashNode *) zshcalloc(ht->hsize * sizeof(HashNode));
+       498 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zshcalloc (1x)
+         1 ( 0.00%)      ht->ct = 0;
+         .           
+         .               /* scan through the old list of nodes, and *
+         .                * rehash them into the new list of nodes  */
+        27 ( 0.00%)      for (i = 0, ha = onodes; i < osize; i++, ha++) {
+        55 ( 0.00%)  	for (hn = *ha; hn;) {
+        28 ( 0.00%)  	    hp = hn->next;
+        42 ( 0.00%)  	    ht->addnode(ht, hn->nam, hn);
+     2,648 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode'2 (14x)
+         .           	    hn = hp;
+         .           	}
+         .               }
+         3 ( 0.00%)      zfree(onodes, osize * sizeof(HashNode));
+        37 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zfree (1x)
+         7 ( 0.00%)  }
+         .           
+         .           /* Empty the hash table and resize it if necessary */
+         .           
+-- line 483 ----------------------------------------
+-- line 484 ----------------------------------------
+         .           /**/
+         .           static void
+         .           resizehashtable(HashTable ht, int newsize)
+         7 ( 0.00%)  {
+         .               struct hashnode **ha, *hn, *hp;
+         .               int i;
+         .           
+         .               /* free all the hash nodes */
+         1 ( 0.00%)      ha = ht->nodes;
+       608 ( 0.00%)      for (i = 0; i < ht->hsize; i++, ha++) {
+       603 ( 0.00%)  	for (hn = *ha; hn;) {
+         .           	    hp = hn->next;
+         .           	    ht->freenode(hn);
+         .           	    hn = hp;
+-- line 497 ----------------------------------------
+-- line 500 ----------------------------------------
+         .           
+         .               /* If new size desired is different from current size, *
+         .                * we free it and allocate a new nodes array.          */
+         2 ( 0.00%)      if (ht->hsize != newsize) {
+         1 ( 0.00%)  	zfree(ht->nodes, ht->hsize * sizeof(HashNode));
+         2 ( 0.00%)  	ht->nodes = (HashNode *) zshcalloc(newsize * sizeof(HashNode));
+         .           	ht->hsize = newsize;
+         .               } else {
+         .           	/* else we just re-zero the current nodes array */
+         5 ( 0.00%)  	memset(ht->nodes, 0, newsize * sizeof(HashNode));
+       106 ( 0.00%)  => ???:__memset_avx2_unaligned_erms (1x)
+         .               }
+         .           
+         1 ( 0.00%)      ht->ct = 0;
+         6 ( 0.00%)  }
+         .           
+         .           /* Generic method to empty a hash table */
+         .           
+-- line 516 ----------------------------------------
+-- line 518 ----------------------------------------
+         .           mod_export void
+         .           emptyhashtable(HashTable ht)
+         .           {
+         2 ( 0.00%)      resizehashtable(ht, ht->hsize);
+     1,342 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:resizehashtable (1x)
+         .           }
+         .           
+         .           /**/
+-- line 524 ----------------------------------------
+-- line 599 ----------------------------------------
+         .           /**/
+         .           void
+         .           createcmdnamtable(void)
+         7 ( 0.00%)  {
+         1 ( 0.00%)      cmdnamtab = newhashtable(201, "cmdnamtab", NULL);
+         .           
+        15 ( 0.00%)      cmdnamtab->hash        = hasher;
+         .               cmdnamtab->emptytable  = emptycmdnamtable;
+         .               cmdnamtab->filltable   = fillcmdnamtable;
+         .               cmdnamtab->cmpnodes    = strcmp;
+-- line 608 ----------------------------------------
+-- line 615 ----------------------------------------
+         .               cmdnamtab->freenode    = freecmdnamnode;
+         .               cmdnamtab->printnode   = printcmdnamnode;
+         .           
+         2 ( 0.00%)      pathchecked = path;
+         3 ( 0.00%)  }
+         .           
+         .           /**/
+         .           static void
+         .           emptycmdnamtable(HashTable ht)
+         1 ( 0.00%)  {
+         .               emptyhashtable(ht);
+         2 ( 0.00%)      pathchecked = path;
+         2 ( 0.00%)  }
+         .           
+         .           /* Add all commands in a given directory *
+         .            * to the command hashtable.             */
+-- line 630 ----------------------------------------
+-- line 810 ----------------------------------------
+         .           /**/
+         .           void
+         .           createshfunctable(void)
+         1 ( 0.00%)  {
+         1 ( 0.00%)      shfunctab = newhashtable(7, "shfunctab", NULL);
+         .           
+        18 ( 0.00%)      shfunctab->hash        = hasher;
+         .               shfunctab->emptytable  = NULL;
+         .               shfunctab->filltable   = NULL;
+         .               shfunctab->cmpnodes    = strcmp;
+-- line 819 ----------------------------------------
+-- line 825 ----------------------------------------
+         .               shfunctab->enablenode  = enableshfuncnode;
+         .               shfunctab->freenode    = freeshfuncnode;
+         .               shfunctab->printnode   = printshfuncnode;
+         2 ( 0.00%)  }
+         .           
+         .           /* Remove an entry from the shell function hash table.   *
+         .            * It checks if the function is a signal trap and if so, *
+-- line 831 ----------------------------------------
+-- line 1058 ----------------------------------------
+         .           mod_export char *
+         .           getshfuncfile(Shfunc shf)
+         .           {
+    72,090 ( 0.00%)      if (shf->node.flags & PM_LOADDIR) {
+    36,045 ( 0.00%)  	return zhtricat(shf->filename, "/", shf->node.nam);
+    72,090 ( 0.00%)      } else if (shf->filename) {
+    72,090 ( 0.00%)  	return dupstring(shf->filename);
+ 3,640,475 ( 0.09%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstring (36,045x)
+         .               } else {
+         .           	return NULL;
+         .               }
+-- line 1067 ----------------------------------------
+-- line 1118 ----------------------------------------
+         .           /**/
+         .           void
+         .           createreswdtable(void)
+         1 ( 0.00%)  {
+         .               Reswd rw;
+         .           
+         1 ( 0.00%)      reswdtab = newhashtable(23, "reswdtab", NULL);
+         .           
+        18 ( 0.00%)      reswdtab->hash        = hasher;
+         .               reswdtab->emptytable  = NULL;
+         .               reswdtab->filltable   = NULL;
+         .               reswdtab->cmpnodes    = strcmp;
+-- line 1129 ----------------------------------------
+-- line 1136 ----------------------------------------
+         .               reswdtab->freenode    = NULL;
+         .               reswdtab->printnode   = printreswdnode;
+         .           
+       131 ( 0.00%)      for (rw = reswds; rw->node.nam; rw++)
+       122 ( 0.00%)  	reswdtab->addnode(reswdtab, rw->node.nam, rw);
+     3,341 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode (31x)
+         2 ( 0.00%)  }
+         .           
+         .           /* Print a reserved word */
+         .           
+-- line 1144 ----------------------------------------
+-- line 1187 ----------------------------------------
+         .           void
+         .           createaliastable(HashTable ht)
+         .           {
+        24 ( 0.00%)      ht->hash        = hasher;
+         .               ht->emptytable  = NULL;
+         .               ht->filltable   = NULL;
+         .               ht->cmpnodes    = strcmp;
+-- line 1193 ----------------------------------------
+-- line 1204 ----------------------------------------
+         .           /**/
+         .           void
+         .           createaliastables(void)
+        21 ( 0.00%)  {
+         .               /* Table for regular and global aliases */
+         .           
+         1 ( 0.00%)      aliastab = newhashtable(23, "aliastab", NULL);
+         .           
+         .               createaliastable(aliastab);
+         .           
+         .               /* add the default aliases */
+         6 ( 0.00%)      aliastab->addnode(aliastab, ztrdup("run-help"), createaliasnode(ztrdup("man"), 0));
+       505 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (2x)
+        11 ( 0.00%)      aliastab->addnode(aliastab, ztrdup("which-command"), createaliasnode(ztrdup("whence"), 0));
+       505 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (2x)
+       154 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode (1x)
+         .           
+         .           
+         .               /* Table for suffix aliases --- make this smaller */
+         .           
+         1 ( 0.00%)      sufaliastab = newhashtable(11, "sufaliastab", NULL);
+         .           
+         .               createaliastable(sufaliastab);
+         5 ( 0.00%)  }
+         .           
+         .           /* Create a new alias node */
+         .           
+-- line 1227 ----------------------------------------
+-- line 1231 ----------------------------------------
+         .           {
+         .               Alias al;
+         .           
+         6 ( 0.00%)      al = (Alias) zshcalloc(sizeof *al);
+       454 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zshcalloc (2x)
+         2 ( 0.00%)      al->node.flags = flags;
+         2 ( 0.00%)      al->text = txt;
+         2 ( 0.00%)      al->inuse = 0;
+         .               return al;
+         .           }
+         .           
+-- line 1240 ----------------------------------------
+-- line 1343 ----------------------------------------
+         .           /**/
+         .           void
+         .           createhisttable(void)
+         7 ( 0.00%)  {
+         1 ( 0.00%)      histtab = newhashtable(599, "histtab", NULL);
+         .           
+        15 ( 0.00%)      histtab->hash        = histhasher;
+         .               histtab->emptytable  = emptyhisttable;
+         .               histtab->filltable   = NULL;
+         .               histtab->cmpnodes    = histstrcmp;
+-- line 1352 ----------------------------------------
+-- line 1358 ----------------------------------------
+         .               histtab->enablenode  = NULL;
+         .               histtab->freenode    = freehistnode;
+         .               histtab->printnode   = NULL;
+         3 ( 0.00%)  }
+         .           
+         .           /**/
+         .           unsigned
+-- line 1364 ----------------------------------------
+-- line 1527 ----------------------------------------
+         .           /**/
+         .           mod_export void
+         .           dircache_set(char **name, char *value)
+         8 ( 0.00%)  {
+         .               struct dircache_entry *dcptr, *dcnew;
+         .           
+         2 ( 0.00%)      if (!value) {
+         3 ( 0.00%)  	if (!*name)
+         .           	    return;
+         3 ( 0.00%)  	if (!dircache_size) {
+         .           	    zsfree(*name);
+         .           	    *name = NULL;
+         .           	    return;
+-- line 1539 ----------------------------------------
+-- line 1572 ----------------------------------------
+         .           		return;
+         .           	    }
+         .           	}
+         1 ( 0.00%)  	zsfree(*name);
+        37 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (1x)
+         1 ( 0.00%)  	*name = NULL;
+         .               } else {
+         .           	/*
+         .           	 * As the function path has been resolved to a particular
+-- line 1579 ----------------------------------------
+-- line 1619 ----------------------------------------
+         .           	dcptr->refs = 1;
+         .           	dircache_lastentry = dcptr;
+         .               }
+         8 ( 0.00%)  }
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c
+--------------------------------------------------------------------------------
+Ir                   
+
+-- line 493 ----------------------------------------
+          .               HashTable ht;
+          .               if (!size)
+          .           	size = 17;
+          4 ( 0.00%)      ht = newhashtable(size, name, NULL);
+        534 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:newhashtable (1x)
+          .           
+         17 ( 0.00%)      ht->hash        = hasher;
+          .               ht->emptytable  = emptyhashtable;
+          .               ht->filltable   = NULL;
+          .               ht->cmpnodes    = strcmp;
+-- line 501 ----------------------------------------
+-- line 514 ----------------------------------------
+          .           /**/
+          .           static HashNode
+          .           getparamnode(HashTable ht, const char *nam)
+  4,323,894 ( 0.11%)  {
+  1,441,298 ( 0.04%)      HashNode hn = gethashnode2(ht, nam);
+ 99,968,435 ( 2.50%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:gethashnode2 (720,649x)
+          .               Param pm = (Param) hn;
+          .           
+  4,851,722 ( 0.12%)      if (pm && pm->u.str && (pm->node.flags & PM_AUTOLOAD)) {
+          .           	char *mn = dupstring(pm->u.str);
+          .           
+          .           	(void)ensurefeature(mn, "p:", (pm->node.flags & PM_AUTOALL) ? NULL :
+-- line 524 ----------------------------------------
+-- line 535 ----------------------------------------
+          .           	}
+          .               }
+          .               return hn;
+  4,323,894 ( 0.11%)  }
+          .           
+          .           /* Copy a parameter hash table */
+          .           
+-- line 541 ----------------------------------------
+-- line 679 ----------------------------------------
+          .           static void
+          .           invalidate_array_length(Param pm)
+          .           {
+    216,186 ( 0.01%)      unsigned slot = ((size_t)pm >> 4) & 63;
+    432,372 ( 0.01%)      if (array_lengths[slot].pm == pm)
+         12 ( 0.00%)  	array_lengths[slot].pm = NULL;
+          .           }
+          .           
+          .           /* Interpreter-owned read: the returned vector must not escape to mutable
+-- line 687 ----------------------------------------
+-- line 691 ----------------------------------------
+          .           char **
+          .           getarrayreadonly(Param pm)
+          .           {
+    216,210 ( 0.01%)      if (pm->gsu.a == &stdarray_gsu)
+    456,149 ( 0.01%)  	return pm->u.arr ? pm->u.arr : &nullarray;
+        207 ( 0.00%)      pm->node.flags |= PM_ARRAY_EXPOSED;
+        123 ( 0.00%)      return pm->gsu.a->getfn(pm);
+        234 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:arrvargetfn (39x)
+          .           }
+          .           
+          .           /**/
+-- line 700 ----------------------------------------
+-- line 701 ----------------------------------------
+          .           static int
+          .           array_length_owned(Param pm)
+          .           {
+    240,113 ( 0.01%)      return pm->gsu.a == &stdarray_gsu &&
+    120,069 ( 0.00%)  	!(pm->node.flags & (PM_SPECIAL|PM_TIED|PM_HASHELEM|PM_ARRAY_EXPOSED)) &&
+    480,302 ( 0.01%)  	!pm->ename && pm->node.nam && *pm->node.nam;
+          .           }
+          .           
+          .           /* Call only after an owned, callback-free read. A cached snapshot may differ
+-- line 709 ----------------------------------------
+-- line 712 ----------------------------------------
+          .           /**/
+          .           static int
+          .           array_length_ge(Param pm, char **arr, unsigned bound)
+    180,036 ( 0.00%)  {
+          .               unsigned slot, prefix = 0;
+          .               /* Do not publish or consume shared metadata where a trap can run in the
+          .                * middle of a probe. Preserve the caller's existing signal boundary. */
+    240,048 ( 0.01%)      if (!queue_signal_level())
+          .           	return arrlen_ge(arr, bound);
+    120,024 ( 0.00%)      if (arr != pm->u.arr)
+          .           	return arrlen_ge(arr, bound);
+    240,048 ( 0.01%)      slot = ((size_t)pm >> 4) & 63;
+          .           
+    516,468 ( 0.01%)      if (array_lengths[slot].pm == pm && array_lengths[slot].array == arr) {
+     59,064 ( 0.00%)  	prefix = array_lengths[slot].bound;
+    118,128 ( 0.00%)  	if (prefix >= bound)
+     60,012 ( 0.00%)  	    return 1;
+          .               }
+          .               /* Ownership/invalidation guarantee prefix live entries. The following
+          .                * pointer may be the terminator; the bounded scan still checks it. */
+    144,576 ( 0.00%)      if (!arrlen_ge(arr + prefix, bound - prefix))
+    458,082 ( 0.01%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:arrlen_ge (24,570x)
+     24,570 ( 0.00%)  	return 0;
+     73,710 ( 0.00%)      if (bound >= 64) {
+          .           	/* Remember only the prefix this query actually validated. Never count
+          .           	 * an entire large vector merely to answer a small index query. */
+     94,512 ( 0.00%)  	array_lengths[slot].pm = pm;
+     47,256 ( 0.00%)  	array_lengths[slot].array = arr;
+     23,628 ( 0.00%)  	array_lengths[slot].bound = bound;
+          .               }
+          .               return 1;
+    120,024 ( 0.00%)  }
+          .           
+          .           /**/
+          .           int
+          .           arrayparaminrange(Param pm, unsigned bound)
+     24,045 ( 0.00%)  {
+          .               int owned = array_length_owned(pm);
+          .               char **arr = getarrayreadonly(pm);
+     72,135 ( 0.00%)      return owned ? array_length_ge(pm, arr, bound) : arrlen_ge(arr, bound);
+  1,519,326 ( 0.04%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:array_length_ge (24,006x)
+        600 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:arrlen_ge (39x)
+     24,084 ( 0.00%)  }
+          .           
+          .           /* Return the full array (no indexing) referred to by a Value. *
+          .            * The array value is cached for the lifetime of the Value.    */
+-- line 754 ----------------------------------------
+-- line 755 ----------------------------------------
+          .           
+          .           /**/
+          .           static char **
+    216,210 ( 0.01%)  getvaluearr(Value v)
+          .           {
+    600,605 ( 0.02%)      if (v->arr)
+  1,008,549 ( 0.03%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getvaluearr.part.0 (48,025x)
+          .           	return v->arr;
+    432,420 ( 0.01%)      else if (PM_TYPE(v->pm->node.flags) == PM_ARRAY)
+     72,070 ( 0.00%)  	return v->arr = getarrayreadonly(v->pm);
+          .               else if (PM_TYPE(v->pm->node.flags) == PM_HASHED) {
+          .           	v->arr = paramvalarr(v->pm->gsu.h->getfn(v->pm), v->isarr);
+          .           	/* Can't take numeric slices of associative arrays */
+-- line 766 ----------------------------------------
+-- line 769 ----------------------------------------
+          .           	return v->arr;
+          .               } else
+          .           	return NULL;
+    216,210 ( 0.01%)  }
+          .           
+          .           /* Return whether the variable is set         *
+          .            * checks that array slices are within range  *
+-- line 775 ----------------------------------------
+-- line 818 ----------------------------------------
+          .               if (!env || !name || !value)
+          .           	return 0;
+          .           
+         40 ( 0.00%)      tenv = strcpy(zhalloc(strlen(env) + 1), env);
+        132 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zhalloc (4x)
+         99 ( 0.00%)  => ???:__strcpy_avx2 (4x)
+         68 ( 0.00%)  => ???:__strlen_avx2 (4x)
+        188 ( 0.00%)      for (str = tenv; *str && *str != '='; str++) {
+         48 ( 0.00%)  	if ((unsigned char) *str >= 128) {
+          .           	    /*
+          .           	     * We'll ignore environment variables with names not
+          .           	     * from the portable character set since we don't
+-- line 826 ----------------------------------------
+-- line 829 ----------------------------------------
+          .           	    return 0;
+          .           	}
+          .               }
+         16 ( 0.00%)      if (str != tenv && *str == '=') {
+          4 ( 0.00%)  	*str = '\0';
+          .           	*name = tenv;
+          4 ( 0.00%)  	*value = str + 1;
+          .           	return 1;
+          .               } else
+          .           	return 0;
+-- line 838 ----------------------------------------
+-- line 850 ----------------------------------------
+          .               if (flags & PM_DONTIMPORT)
+          .           	return 1;
+          .               /* If value already exported */
+          6 ( 0.00%)      if (flags & PM_EXPORTED)
+          .           	return 1;
+          .               /* If security issue when importing and running with some privilege */
+          6 ( 0.00%)      if ((flags & PM_DONTIMPORT_SUID) && isset(PRIVILEGED))
+          .           	return 1;
+          .               /* OK to import */
+          .               return 0;
+-- line 859 ----------------------------------------
+-- line 866 ----------------------------------------
+          .           /**/
+          .           void
+          .           createparamtable(void)
+          5 ( 0.00%)  {
+          .               Param ip, pm;
+          .           #if !defined(HAVE_PUTENV) && !defined(USE_SET_UNSET_ENV)
+          .               char **new_environ;
+-- line 872 ----------------------------------------
+-- line 877 ----------------------------------------
+          .           #endif
+          .               char **envp2, **sigptr, **t;
+          .               char buf[50], *str, *iname, *ivalue, *hostnam;
+          1 ( 0.00%)      int  oae = opts[ALLEXPORT];
+          .           #ifdef HAVE_UNAME
+          .               struct utsname unamebuf;
+          .               char *machinebuf;
+          .           #endif
+          .           
+          2 ( 0.00%)      paramtab = realparamtab = newparamtable(151, "paramtab");
+          .           
+          .               /* Add the special parameters to the hash table */
+        246 ( 0.00%)      for (ip = special_params; ip->node.nam; ip++)
+        418 ( 0.00%)  	paramtab->addnode(paramtab, ztrdup(ip->node.nam), ip);
+     15,277 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (60x)
+      6,628 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode (60x)
+          2 ( 0.00%)      if (EMULATION(EMULATE_SH|EMULATE_KSH)) {
+          .           	for (ip = special_params_sh; ip->node.nam; ip++)
+          .           	    paramtab->addnode(paramtab, ztrdup(ip->node.nam), ip);
+          .               } else {
+        117 ( 0.00%)  	while ((++ip)->node.nam)
+        196 ( 0.00%)  	    paramtab->addnode(paramtab, ztrdup(ip->node.nam), ip);
+      7,144 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (28x)
+      3,442 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode (28x)
+          .               }
+          .           
+          1 ( 0.00%)      argvparam = (Param) &argvparam_pm;
+          .           
+          1 ( 0.00%)      noerrs = 2;
+          .           
+          .               /* Add the standard non-special parameters which have to    *
+          .                * be initialized before we copy the environment variables. *
+          .                * We don't want to override whatever values the user has   *
+          .                * given them in the environment.                           */
+          1 ( 0.00%)      opts[ALLEXPORT] = 0;
+          .               setiparam("MAILCHECK", 60);
+          .               setiparam("KEYTIMEOUT", 40);
+          .               setiparam("LISTMAX", 100);
+-- line 910 ----------------------------------------
+-- line 918 ----------------------------------------
+          .                * So allow the user to set it in the special cases where it's
+          .                * useful.
+          .                */
+          2 ( 0.00%)      setsparam("TMPPREFIX", ztrdup_metafy(DEFAULT_TMPPREFIX));
+        350 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          2 ( 0.00%)      setsparam("TIMEFMT", ztrdup_metafy(DEFAULT_TIMEFMT));
+        649 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          .           
+          3 ( 0.00%)      hostnam = (char *)zalloc(256);
+        202 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zalloc (1x)
+          8 ( 0.00%)      gethostname(hostnam, 256);
+        913 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+         70 ( 0.00%)  => ???:gethostname (1x)
+          2 ( 0.00%)      setsparam("HOST", ztrdup_metafy(hostnam));
+        339 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          3 ( 0.00%)      zfree(hostnam, 256);
+         37 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zfree (1x)
+          .           
+          3 ( 0.00%)      setsparam("LOGNAME",
+          .           #ifndef DISABLE_DYNAMIC_NSS
+         11 ( 0.00%)  	      (str = getlogin()) && *str ? ztrdup_metafy(str) :
+     36,502 ( 0.00%)  => ???:getlogin (1x)
+        309 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+        862 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+          .           #endif
+          .           	      ztrdup(cached_username));
+          .           
+-- line 934 ----------------------------------------
+-- line 942 ----------------------------------------
+          .           #endif
+          .           
+          .               /* Use heap allocation to avoid many small alloc/free calls */
+          1 ( 0.00%)      pushheap();
+        230 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:pushheap (1x)
+          .           
+          .               /* Now incorporate environment variables we are inheriting *
+          .                * into the parameter hash table. Copy them into dynamic   *
+-- line 948 ----------------------------------------
+-- line 951 ----------------------------------------
+          .           #ifndef USE_SET_UNSET_ENV
+          .           	envp = 
+          .           #endif
+         22 ( 0.00%)  	    envp2 = environ; *envp2; envp2++) {
+          .           	if (split_env_string(*envp2, &iname, &ivalue)) {
+         52 ( 0.00%)  	    if (!idigit(*iname) && isident(iname) && !strchr(iname, '[')) {
+        528 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:isident (4x)
+         84 ( 0.00%)  => ???:__strchr_avx2 (4x)
+          .           		/*
+          .           		 * Parameters that aren't already in the parameter table
+          .           		 * aren't special to the shell, so it's always OK to
+          .           		 * import.  Otherwise, check parameter flags.
+          .           		 */
+         24 ( 0.00%)  		if ((!(pm = (Param) paramtab->getnode(paramtab, iname)) ||
+        480 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getparamnode (4x)
+         11 ( 0.00%)  		     !dontimport(pm->node.flags)) &&
+         32 ( 0.00%)  		    (pm = assignsparam(iname, metafy(ivalue, -1, META_DUP),
+      9,147 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assignsparam (4x)
+      1,692 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:metafy (4x)
+          .           				       ASSPM_ENV_IMPORT))) {
+         16 ( 0.00%)  		    pm->node.flags |= PM_EXPORTED;
+          8 ( 0.00%)  		    if (pm->node.flags & PM_SPECIAL)
+         21 ( 0.00%)  			pm->env = mkenvstr (pm->node.nam,
+      1,247 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:mkenvstr (3x)
+          .           					    getsparam(pm->node.nam), pm->node.flags);
+          .           		    else
+          4 ( 0.00%)  			pm->env = ztrdup(*envp2);
+        277 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (1x)
+          .           #ifndef USE_SET_UNSET_ENV
+          .           		    *envp++ = pm->env;
+          .           #endif
+-- line 974 ----------------------------------------
+-- line 976 ----------------------------------------
+          .           	    }
+          .           	}
+          .               }
+          1 ( 0.00%)      popheap();
+         82 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:popheap (1x)
+          .           #ifndef USE_SET_UNSET_ENV
+          .               *envp = NULL;
+          .           #endif
+          1 ( 0.00%)      opts[ALLEXPORT] = oae;
+          .           
+          .               /*
+          .                * For native emulation we always set the variable home
+          .                * (see setupvals()).
+          .                */
+          4 ( 0.00%)      pm = (Param) paramtab->getnode(paramtab, "HOME");
+        114 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getparamnode (1x)
+          2 ( 0.00%)      if (EMULATION(EMULATE_ZSH))
+          .               {
+          4 ( 0.00%)  	pm->node.flags &= ~PM_UNSET;
+          2 ( 0.00%)  	if (!(pm->node.flags & PM_EXPORTED))
+          4 ( 0.00%)  	    addenv(pm, home);
+      2,619 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:addenv (1x)
+          .               } else if (!home)
+          .           	pm->node.flags |= PM_UNSET;
+          4 ( 0.00%)      pm = (Param) paramtab->getnode(paramtab, "LOGNAME");
+        129 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getparamnode (1x)
+          2 ( 0.00%)      if (!(pm->node.flags & PM_EXPORTED))
+          4 ( 0.00%)  	addenv(pm, pm->u.str);
+      1,419 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:addenv (1x)
+          5 ( 0.00%)      pm = (Param) paramtab->getnode(paramtab, "SHLVL");
+        113 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getparamnode (1x)
+         12 ( 0.00%)      sprintf(buf, "%d", (int)++shlvl);
+        882 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+        441 ( 0.00%)  => ???:sprintf (1x)
+          .               /* shlvl value in environment needs updating unconditionally */
+          3 ( 0.00%)      addenv(pm, buf);
+      1,551 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:addenv (1x)
+          .           
+          .               /* Add the standard non-special parameters */
+          1 ( 0.00%)      set_pwd_env();
+      9,389 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/builtin.c:set_pwd_env (1x)
+          .           #ifdef HAVE_UNAME
+          9 ( 0.00%)      if(uname(&unamebuf)) setsparam("CPUTYPE", ztrdup("unknown"));
+        861 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+          6 ( 0.00%)  => ???:uname (1x)
+          .               else
+          .               {
+          2 ( 0.00%)         machinebuf = ztrdup_metafy(unamebuf.machine);
+        329 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          .                  setsparam("CPUTYPE", machinebuf);
+          .               }
+          .           
+-- line 1014 ----------------------------------------
+-- line 1015 ----------------------------------------
+          .           #else
+          .               setsparam("CPUTYPE", ztrdup_metafy("unknown"));
+          .           #endif
+          2 ( 0.00%)      setsparam("MACHTYPE", ztrdup_metafy(MACHTYPE));
+        329 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          2 ( 0.00%)      setsparam("OSTYPE", ztrdup_metafy(OSTYPE));
+        360 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          2 ( 0.00%)      setsparam("TTY", ztrdup_metafy(ttystrname));
+        262 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          2 ( 0.00%)      setsparam("VENDOR", ztrdup_metafy(VENDOR));
+        292 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          2 ( 0.00%)      setsparam("ZSH_ARGZERO", ztrdup(posixzero));
+        277 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (1x)
+          2 ( 0.00%)      setsparam("ZSH_VERSION", ztrdup_metafy(ZSH_VERSION));
+        319 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+          2 ( 0.00%)      setsparam("ZSH_PATCHLEVEL", ztrdup_metafy(ZSH_PATCHLEVEL));
+        468 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (1x)
+         19 ( 0.00%)      setaparam("signals", sigptr = zalloc((TRAPCOUNT + 1) * sizeof(char *)));
+      2,060 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (2x)
+        194 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zalloc (1x)
+          3 ( 0.00%)  => ???:__libc_current_sigrtmax (1x)
+          3 ( 0.00%)  => ???:__libc_current_sigrtmin (1x)
+          1 ( 0.00%)      t = sigs;
+          .           #if defined(SIGRTMIN) && defined(SIGRTMAX)
+        129 ( 0.00%)      while (t - sigs <= SIGCOUNT)
+        160 ( 0.00%)  	*sigptr++ = ztrdup_metafy(*t++);
+      9,882 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (32x)
+          .               {
+          .           	int sig;
+        164 ( 0.00%)  	for (sig = SIGRTMIN; sig <= SIGRTMAX; sig++)
+         96 ( 0.00%)  => ???:__libc_current_sigrtmax (32x)
+          3 ( 0.00%)  => ???:__libc_current_sigrtmin (1x)
+        217 ( 0.00%)  	    *sigptr++ = ztrdup_metafy(rtsigname(sig, 0));
+     10,590 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (31x)
+     16,871 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/signals.c:rtsigname (31x)
+          .               }
+          .           #endif
+         21 ( 0.00%)      while ((*sigptr++ = ztrdup_metafy(*t++))) /* empty */ ;
+        632 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:ztrdup_metafy (3x)
+          .           
+          1 ( 0.00%)      noerrs = 0;
+          6 ( 0.00%)  }
+          .           
+          .           /* assign various functions used for non-special parameters */
+          .           
+-- line 1042 ----------------------------------------
+-- line 1044 ----------------------------------------
+          .           static void
+          .           assigngetset(Param pm)
+          .           {
+    540,795 ( 0.01%)      switch (PM_TYPE(pm->node.flags)) {
+          .               case PM_SCALAR:
+     72,116 ( 0.00%)  	pm->gsu.s = &stdscalar_gsu;
+     72,116 ( 0.00%)  	break;
+          .               case PM_INTEGER:
+     36,031 ( 0.00%)  	pm->gsu.i = &stdinteger_gsu;
+     36,031 ( 0.00%)  	break;
+          .               case PM_EFLOAT:
+          .               case PM_FFLOAT:
+          1 ( 0.00%)  	pm->gsu.f = &stdfloat_gsu;
+          1 ( 0.00%)  	break;
+          .               case PM_ARRAY:
+          9 ( 0.00%)  	pm->gsu.a = &stdarray_gsu;
+          9 ( 0.00%)  	break;
+          .               case PM_HASHED:
+          2 ( 0.00%)  	pm->gsu.h = &stdhash_gsu;
+          .           	break;
+          .               default:
+          .           	DPUTS(1, "BUG: tried to create param node without valid flag");
+          .           	break;
+          .               }
+          2 ( 0.00%)  }
+          .           
+          .           /* Create a parameter, so that it can be assigned to.  Returns NULL if the *
+          .            * parameter already exists or can't be created, otherwise returns the     *
+-- line 1071 ----------------------------------------
+-- line 1078 ----------------------------------------
+          .           /**/
+          .           mod_export Param
+          .           createparam(char *name, int flags)
+    648,966 ( 0.02%)  {
+          .               Param pm, oldpm;
+          .           
+    324,483 ( 0.01%)      if (paramtab != realparamtab)
+          .           	flags = (flags & ~PM_EXPORTED) | PM_HASHELEM;
+          .           
+    216,322 ( 0.01%)      if (name != nulstring) {
+          .           	oldpm = (Param) (paramtab == realparamtab ?
+          .           			 /* gethashnode2() for direct table read */
+    324,483 ( 0.01%)  			 gethashnode2(paramtab, name) :
+ 14,157,217 ( 0.35%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:gethashnode2 (108,161x)
+          .           			 paramtab->getnode(paramtab, name));
+          .           
+          .           	DPUTS(oldpm && oldpm->level > locallevel,
+          .           	      "BUG: old local parameter not deleted");
+    372,487 ( 0.01%)  	if (oldpm && (oldpm->level == locallevel || !(flags & PM_LOCAL))) {
+          8 ( 0.00%)  	    if (isset(POSIXBUILTINS) && (oldpm->node.flags & PM_READONLY)) {
+          .           		zerr("read-only variable: %s", name);
+          2 ( 0.00%)  		return NULL;
+          .           	    }
+          4 ( 0.00%)  	    if ((oldpm->node.flags & PM_RESTRICTED) && isset(RESTRICTED)) {
+          .           		zerr("%s: restricted", name);
+          .           		return NULL;
+          .           	    }
+          8 ( 0.00%)  	    if (!(oldpm->node.flags & PM_UNSET) ||
+          .           		(oldpm->node.flags & PM_SPECIAL) ||
+          .           		/* POSIXBUILTINS horror: we need to retain 'export' flags */
+          .           		(isset(POSIXBUILTINS) && (oldpm->node.flags & PM_EXPORTED))) {
+          4 ( 0.00%)  		if (oldpm->node.flags & PM_RO_BY_DESIGN) {
+          .           		    zerr("%s: can't change parameter attribute",
+          .           			 name);
+          .           		    return NULL;
+          .           		}
+          4 ( 0.00%)  		oldpm->node.flags &= ~PM_UNSET;
+          6 ( 0.00%)  		if ((oldpm->node.flags & PM_SPECIAL) && oldpm->ename) {
+          .           		    Param altpm =
+          .           			(Param) paramtab->getnode(paramtab, oldpm->ename);
+          .           		    if (altpm)
+-- line 1117 ----------------------------------------
+-- line 1124 ----------------------------------------
+          .           	    pm->base = pm->width = 0;
+          .           	    oldpm = pm->old;
+          .           	} else {
+    336,477 ( 0.01%)  	    pm = (Param) zshcalloc(sizeof *pm);
+  9,206,092 ( 0.23%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zshcalloc (108,159x)
+    216,318 ( 0.01%)  	    if ((pm->old = oldpm)) {
+          .           		/*
+          .           		 * needed to avoid freeing oldpm, but we do take it
+          .           		 * out of the environment when it's hidden.
+          .           		 */
+     24,000 ( 0.00%)  		if (oldpm->env)
+          .           		    delenv(oldpm);
+     48,000 ( 0.00%)  		paramtab->removenode(paramtab, name);
+  2,196,000 ( 0.05%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:removehashnode (12,000x)
+          .           	    }
+  1,081,590 ( 0.03%)  	    paramtab->addnode(paramtab, ztrdup(name), pm);
+ 16,698,762 ( 0.42%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode (108,159x)
+ 11,442,780 ( 0.29%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:ztrdup (108,159x)
+          .           	}
+          .           
+    216,318 ( 0.01%)  	if (isset(ALLEXPORT) && !(flags & PM_HASHELEM))
+          .           	    flags |= PM_EXPORTED;
+          .               } else {
+          .           	pm = (Param) hcalloc(sizeof *pm);
+          .           	pm->node.nam = nulstring;
+          .               }
+    324,477 ( 0.01%)      pm->node.flags = flags & ~PM_LOCAL;
+          .           
+    216,318 ( 0.01%)      if(!(pm->node.flags & PM_SPECIAL))
+    216,318 ( 0.01%)  	assigngetset(pm);
+    757,113 ( 0.02%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assigngetset (108,159x)
+          .               return pm;
+    648,966 ( 0.02%)  }
+          .           
+          .           /* Empty dummy function for special hash parameters. */
+          .           
+-- line 1154 ----------------------------------------
+-- line 1276 ----------------------------------------
+          .           /**/
+          .           mod_export int
+          .           isident(char *s)
+    696,894 ( 0.02%)  {
+          .               char *ss;
+          .           
+  1,045,341 ( 0.03%)      if (!*s)			/* empty string is definitely not valid */
+          .           	return 0;
+          .           
+    696,894 ( 0.02%)      if (idigit(*s)) {
+          .           	/* If the first character is `s' is a digit, then all must be */
+          .           	for (ss = ++s; *ss; ss++)
+          .           	    if (!idigit(*ss))
+-- line 1288 ----------------------------------------
+-- line 1289 ----------------------------------------
+          .           		break;
+          .               } else {
+          .           	/* Find the first character in `s' not in the iident type table */
+  1,393,788 ( 0.03%)  	ss = itype_end(s, IIDENT, 0);
+ 37,613,616 ( 0.94%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:itype_end (348,447x)
+          .               }
+          .           
+          .               /* If the next character is not [, then it is *
+          .                * definitely not a valid identifier.         */
+  1,393,788 ( 0.03%)      if (!*ss)
+    348,447 ( 0.01%)  	return 1;
+          .               if (s == ss)
+          .           	return 0;
+          .               if (*ss != '[')
+-- line 1301 ----------------------------------------
+-- line 1306 ----------------------------------------
+          .           	return 0;
+          .               untokenize(s);
+          .               return !ss[1];
+    696,894 ( 0.02%)  }
+          .           
+          .           /*
+          .            * Parse a single argument to a parameter subscript.
+-- line 1312 ----------------------------------------
+-- line 1349 ----------------------------------------
+          .           static zlong
+          .           getarg(char **str, int *inv, Value v, int a2, zlong *w,
+          .                  int *prevcharlen, int *nextcharlen, int flags)
+  1,008,216 ( 0.03%)  {
+    600,150 ( 0.02%)      int hasbeg = 0, word = 0, rev = 0, ind = 0, down = 0, l, i, ishash;
+    252,054 ( 0.01%)      int keymatch = 0, needtok = 0, arglen, len, inpar = 0;
+    336,072 ( 0.01%)      char *s = *str, *sep = NULL, *t, sav, *d, **ta, **p, *tt, c;
+    300,060 ( 0.01%)      zlong num = 1, beg = 0, r = 0, quote_arg = 0;
+          .               Patprog pprog = NULL;
+          .           
+          .               /*
+-- line 1359 ----------------------------------------
+-- line 1361 ----------------------------------------
+          .                * so just pretend everything is a hash for subscript parsing
+          .                */
+          .           
+    336,072 ( 0.01%)      ishash = (unset(EXECOPT) ||
+    504,108 ( 0.01%)  	      (v->pm && PM_TYPE(v->pm->node.flags) == PM_HASHED));
+    168,036 ( 0.00%)      if (prevcharlen)
+     72,018 ( 0.00%)  	*prevcharlen = 1;
+  1,104,270 ( 0.03%)      if (nextcharlen)
+    144,036 ( 0.00%)  	*nextcharlen = 1;
+          .           
+          .               /* first parse any subscription flags */
+    348,066 ( 0.01%)      if (v->pm && (*s == '(' || *s == Inpar)) {
+     36,012 ( 0.00%)  	int escapes = 0;
+  1,080,360 ( 0.03%)  	for (s++; *s != ')' && *s != Outpar && s != *str; s++) {
+    360,120 ( 0.01%)  	    switch (*s) {
+          .           	    case 'r':
+          .           		rev = 1;
+          .           		keymatch = down = ind = 0;
+-- line 1378 ----------------------------------------
+-- line 1392 ----------------------------------------
+          .           		ind = 0;
+          .           		break;
+          .           	    case 'i':
+     72,024 ( 0.00%)  		rev = ind = 1;
+     72,024 ( 0.00%)  		down = keymatch = 0;
+     36,012 ( 0.00%)  		break;
+          .           	    case 'I':
+          .           		rev = ind = down = 1;
+          .           		keymatch = 0;
+-- line 1400 ----------------------------------------
+-- line 1424 ----------------------------------------
+          .           		s = t + arglen - 1;
+          .           		break;
+          .           	    case 'b':
+     36,012 ( 0.00%)  		hasbeg = 1;
+    180,060 ( 0.00%)  		t = get_strarg(++s, &arglen);
+ 12,352,116 ( 0.31%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/subst.c:get_strarg (36,012x)
+    108,036 ( 0.00%)  		if (!*t)
+          .           		    goto flagerr;
+          .           		sav = *t;
+     36,012 ( 0.00%)  		*t = '\0';
+    180,060 ( 0.00%)  		if ((beg = mathevalarg(s + arglen, &d)) > 0)
+ 32,086,703 ( 0.80%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/math.c:mathevalarg (36,012x)
+    180,060 ( 0.00%)  		    beg--;
+     72,024 ( 0.00%)  		*t = sav;
+     72,024 ( 0.00%)  		s = t + arglen - 1;
+     72,024 ( 0.00%)  		break;
+          .           	    case 'p':
+          .           		escapes = 1;
+          .           		break;
+-- line 1440 ----------------------------------------
+-- line 1465 ----------------------------------------
+          .           		s = *str - 1;
+          .           	    }
+          .           	}
+     72,024 ( 0.00%)  	if (s != *str)
+     72,024 ( 0.00%)  	    s++;
+          .               }
+          .               if (num < 0) {
+          .           	down = !down;
+    288,096 ( 0.01%)  	num = -num;
+          .               }
+    252,054 ( 0.01%)      if (v->isarr & SCANPM_WANTKEYS)
+    168,036 ( 0.00%)  	*inv = (ind || !(v->isarr & SCANPM_WANTVALS));
+    168,036 ( 0.00%)      else if (v->isarr & SCANPM_WANTVALS)
+          .           	*inv = 0;
+          .               else {
+    168,036 ( 0.00%)  	if (v->isarr) {
+    216,072 ( 0.01%)  	    if (ind) {
+          .           		v->isarr |= SCANPM_WANTKEYS;
+    144,048 ( 0.00%)  		v->isarr &= ~SCANPM_WANTVALS;
+          .           	    } else if (rev)
+          .           		v->isarr |= SCANPM_WANTVALS;
+          .           	    /*
+-- line 1486 ----------------------------------------
+-- line 1487 ----------------------------------------
+          .           	     * This catches the case where we are using "k" (rather
+          .           	     * than "K") on a hash.
+          .           	     */
+     72,024 ( 0.00%)  	    if (!down && keymatch && ishash)
+          .           		v->isarr &= ~SCANPM_MATCHMANY;
+          .           	}
+    168,036 ( 0.00%)  	*inv = ind;
+          .               }
+          .           
+    288,066 ( 0.01%)      for (t = s, i = 0;
+  4,261,074 ( 0.11%)  	 (c = *t) &&
+  2,472,600 ( 0.06%)  	     ((c != Outbrack && (ishash || c != ',')) || i || inpar);
+    960,246 ( 0.02%)  	 t++) {
+          .           	/* Untokenize inull() except before brackets and double-quotes */
+  3,840,984 ( 0.10%)  	if (inull(c)) {
+    960,246 ( 0.02%)  	    c = t[1];
+          .           	    if (c == '[' || c == ']' ||
+          .           		c == '(' || c == ')' ||
+          .           		c == '{' || c == '}') {
+-- line 1505 ----------------------------------------
+-- line 1513 ----------------------------------------
+          .           	    continue;
+          .           	}
+          .           	/* Inbrack and Outbrack are probably never found here ... */
+  3,768,960 ( 0.09%)  	if (c == '[' || c == Inbrack)
+     36,012 ( 0.00%)  	    i++;
+  1,884,480 ( 0.05%)  	else if (c == ']' || c == Outbrack)
+     36,012 ( 0.00%)  	    i--;
+  3,588,900 ( 0.09%)  	if (c == '(' || c == Inpar)
+          .           	    inpar++;
+  6,721,722 ( 0.17%)  	else if (c == ')' || c == Outpar)
+          .           	    inpar--;
+  2,880,738 ( 0.07%)  	if (ispecial(c))
+          .           	    needtok = 1;
+          .               }
+          .               if (!c)
+          .           	return 0;
+     84,018 ( 0.00%)      *str = tt = t;
+          .           
+          .               /*
+          .                * If in NO_EXEC mode, the parameters won't be set up properly,
+-- line 1532 ----------------------------------------
+-- line 1533 ----------------------------------------
+          .                * so there's no additional sanity checking we can do.
+          .                * Just return 0 now.
+          .                */
+    168,036 ( 0.00%)      if (unset(EXECOPT))
+          .           	return 0;
+          .           
+    672,144 ( 0.02%)      s = dupstrpfx(s, t - s);
+  4,993,056 ( 0.13%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstrpfx (84,018x)
+          .           
+          .               /* If we're NOT reverse subscripting, strip the inull()s so brackets *
+          .                * are not backslashed after parsestr().  Otherwise leave them alone *
+          .                * so that the brackets will be escaped when we patcompile() or when *
+          .                * subscript arithmetic is performed (for nested subscripts).        */
+    252,054 ( 0.01%)      if (ishash && (keymatch || !rev))
+          .           	remnulargs(s);
+    252,054 ( 0.01%)      if (needtok) {
+     72,024 ( 0.00%)  	s = dupstring(s);
+  2,832,936 ( 0.07%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstring (36,012x)
+    216,072 ( 0.01%)  	if (parsestr(&s))
+ 79,876,440 ( 2.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/lex.c:parsestr (36,012x)
+          .           	    return 0;
+     72,024 ( 0.00%)  	singsub(&s);
+ 44,925,584 ( 1.12%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/subst.c:singsub (36,012x)
+    144,018 ( 0.00%)      } else if (rev)
+     36,012 ( 0.00%)  	remnulargs(s);	/* This is probably always a no-op, but ... */
+    144,048 ( 0.00%)      if (!rev) {
+          .           	if (ishash) {
+          .           	    HashTable ht = v->pm->gsu.h->getfn(v->pm);
+          .           	    if (!ht) {
+-- line 1557 ----------------------------------------
+-- line 1573 ----------------------------------------
+          .           	    *w = v->end = -1;
+          .           	    r = isset(KSHARRAYS) ? 1 : 0;
+          .           	} else {
+     48,006 ( 0.00%)  	    r = mathevalarg(s, &s);
+ 47,100,899 ( 1.18%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/math.c:mathevalarg (48,006x)
+    336,042 ( 0.01%)  	    if (isset(KSHARRAYS) && r >= 0)
+          .           		r++;
+          .           	}
+    192,024 ( 0.00%)  	if (word && !v->isarr) {
+          .           	    s = t = getstrvalue(v);
+          .           	    i = wordcount(s, sep, 0);
+          .           	    if (r < 0)
+-- line 1583 ----------------------------------------
+-- line 1596 ----------------------------------------
+          .           		*w = (zlong)(s - t);
+          .           
+          .           	    return (a2 ? s : d + 1) - t;
+     96,012 ( 0.00%)  	} else if (!v->isarr && !word) {
+          .           	    int lastcharlen = 1;
+          .           	    s = getstrvalue(v);
+          .           	    /*
+-- line 1602 ----------------------------------------
+-- line 1667 ----------------------------------------
+          .           	    }
+          .           	}
+          .               } else {
+    144,048 ( 0.00%)  	if (!v->isarr && !word && !quote_arg) {
+     36,012 ( 0.00%)  	    l = strlen(s);
+          .           	    if (a2) {
+          .           		if (!l || *s != '*') {
+          .           		    d = (char *) hcalloc(l + 2);
+-- line 1674 ----------------------------------------
+-- line 1685 ----------------------------------------
+          .           		}
+          .           	    }
+          .           	}
+    108,036 ( 0.00%)  	if (!keymatch) {
+     72,024 ( 0.00%)  	    if (quote_arg) {
+          .           		untokenize(s);
+          .           		/* Scalar (e) needs implicit asterisk tokens */
+     36,012 ( 0.00%)  		if (!v->isarr && !word) {
+          .           		    l = strlen(s);
+          .           		    d = (char *) hcalloc(l + 2);
+          .           		    if (a2) {
+-- line 1695 ----------------------------------------
+-- line 1703 ----------------------------------------
+          .           		    s = d;
+          .           		}
+          .           	    } else
+    108,036 ( 0.00%)  		tokenize(s);
+ 16,059,888 ( 0.40%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/glob.c:tokenize (36,012x)
+    144,048 ( 0.00%)  	    remnulargs(s);
+  2,880,816 ( 0.07%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/glob.c:remnulargs (36,012x)
+    180,060 ( 0.00%)  	    pprog = patcompile(s, 0, NULL);
+ 39,912,504 ( 1.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/pattern.c:patcompile (36,012x)
+          .           	} else
+          .           	    pprog = NULL;
+          .           
+    144,048 ( 0.00%)  	if (v->isarr) {
+     72,024 ( 0.00%)  	    if (ishash) {
+          .           		scanprog = pprog;
+          .           		scanstr = s;
+          .           		if (keymatch)
+-- line 1716 ----------------------------------------
+-- line 1737 ----------------------------------------
+          .           		scanprog = NULL;
+          .           	    } else
+          .           		ta = getarrvaluereadonly(v);
+    180,060 ( 0.00%)  	    if (!ta || !*ta)
+          .           		return !down;
+    180,060 ( 0.00%)  	    if (!ishash && !down && beg >= 0) {
+          .           		/* A forward search can stop at its match without first
+          .           		 * counting the unused suffix.  Walk to the start safely;
+          .           		 * reaching the terminator also gives the missing index. */
+504,252,054 (12.63%)  		for (r = 1, p = ta; r <= beg && *p; r++, p++);
+    264,036 ( 0.01%)  		for (; *p; r++, p++)
+    336,048 ( 0.01%)  		    if (pprog && pattry(pprog, *p) && !--num)
+ 20,655,026 ( 0.52%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/pattern.c:pattry (48,006x)
+          .           			return r;
+          .           		return r;
+          .           	    }
+-- line 1751 ----------------------------------------
+-- line 1753 ----------------------------------------
+          .           	    if (beg < 0)
+          .           		beg += len;
+          .           	    if (down) {
+  1,776,444 ( 0.04%)  		if (beg < 0)
+          .           		    return 0;
+          .           	    } else if (beg >= len)
+          .           		return len + 1;
+-- line 1759 ----------------------------------------
+-- line 2000 ----------------------------------------
+          .           	}
+          .               }
+          .               return r;
+    756,162 ( 0.02%)  }
+          .           
+          .           #undef ASCII_INDEX8
+          .           
+-- line 2006 ----------------------------------------
+-- line 2019 ----------------------------------------
+          .           /**/
+          .           int
+          .           getindex(char **pptr, Value v, int flags)
+    648,162 ( 0.02%)  {
+     72,018 ( 0.00%)      int start, end, inv = 0;
+     72,018 ( 0.00%)      char *s = *pptr, *tbrack;
+          .           
+    144,036 ( 0.00%)      *s++ = '[';
+          .               /* Error handled after untokenizing */
+    360,090 ( 0.01%)      s = parse_subscript(s, flags & SCANPM_DQUOTED, ']');
+227,498,288 ( 5.70%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/lex.c:parse_subscript (72,018x)
+          .               /* Now we untokenize everything except inull() markers so we can check *
+          .                * for the '*' and '@' special subscripts.  The inull()s are removed  *
+          .                * in getarg() after we know whether we're doing reverse indexing.    */
+  9,578,682 ( 0.24%)      for (tbrack = *pptr + 1; *tbrack && tbrack != s; tbrack++) {
+  3,024,852 ( 0.08%)  	if (inull(*tbrack) && !*++tbrack)
+          .           	    break;
+  7,562,130 ( 0.19%)  	if (itok(*tbrack))	/* Need to check for Nularg here? */
+    360,180 ( 0.01%)  	    *tbrack = ztokens[*tbrack - Pound];
+          .               }
+          .               /* If we reached the end of the string (s == NULL) we have an error */
+    144,036 ( 0.00%)      if (*tbrack)
+     72,018 ( 0.00%)  	*tbrack = Outbrack;
+          .               else {
+          .           	zerr("invalid subscript");
+          .           	*pptr = tbrack;
+          .           	return 1;
+          .               }
+    216,054 ( 0.01%)      s = *pptr + 1;
+    360,090 ( 0.01%)      if ((s[0] == '*' || s[0] == '@') && s + 1 == tbrack) {
+          .           	if ((v->isarr || IS_UNSET_VALUE(v)) && s[0] == '@')
+          .           	    v->isarr |= SCANPM_ISVAR_AT;
+          .           	v->start = 0;
+-- line 2050 ----------------------------------------
+-- line 2051 ----------------------------------------
+          .           	v->end = -1;
+          .           	s += 2;
+          .               } else {
+     72,018 ( 0.00%)  	zlong we = 0, dummy;
+          .           	int startprevlen, startnextlen;
+          .           
+    864,216 ( 0.02%)  	start = getarg(&s, &inv, v, 0, &we, &startprevlen, &startnextlen,
+837,945,687 (20.98%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getarg (72,018x)
+          .           		       flags);
+          .           
+    360,090 ( 0.01%)  	if (inv) {
+    108,036 ( 0.00%)  	    if (!v->isarr && start != 0) {
+          .           		char *t, *p;
+          .           		t = getstrvalue(v);
+          .           		/*
+-- line 2064 ----------------------------------------
+-- line 2108 ----------------------------------------
+          .           		    }
+          .           		}
+          .           	    }
+    288,096 ( 0.01%)  	    if (start > 0 && (isset(KSHARRAYS) || (v->pm->node.flags & PM_HASHED)))
+          .           		start--;
+     72,024 ( 0.00%)  	    if (v->isarr != SCANPM_WANTINDEX) {
+     36,012 ( 0.00%)  		v->flags |= VALFLAG_INV;
+     36,012 ( 0.00%)  		v->isarr = 0;
+     36,012 ( 0.00%)  		v->start = start;
+    108,036 ( 0.00%)  		v->end = start + 1;
+          .           	    }
+    144,042 ( 0.00%)  	    if (*s == ',') {
+          .           		zerr("invalid subscript");
+          .           		*tbrack = ']';
+          .           		*pptr = tbrack+1;
+-- line 2122 ----------------------------------------
+-- line 2123 ----------------------------------------
+          .           		return 1;
+          .           	    }
+          .           	    if (s == tbrack)
+    144,048 ( 0.00%)  		s++;
+          .           	} else {
+          .           	    int com;
+          .           
+    168,024 ( 0.00%)  	    if ((com = (*s == ','))) {
+     36,000 ( 0.00%)  		s++;
+    120,000 ( 0.00%)  		end = getarg(&s, &inv, v, 1, &dummy, NULL, NULL, flags);
+ 21,331,553 ( 0.53%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getarg (12,000x)
+          .           	    } else {
+     96,024 ( 0.00%)  		end = we ? we : start;
+          .           	    }
+     48,000 ( 0.00%)  	    if (start != end)
+          .           		com = 1;
+          .           	    /*
+          .           	     * Somehow the logic sometimes forces us to use the previous
+-- line 2139 ----------------------------------------
+-- line 2140 ----------------------------------------
+          .           	     * or next character to what we would expect, which is
+          .           	     * why we had to calculate them in getarg().
+          .           	     */
+     72,012 ( 0.00%)  	    if (start > 0)
+     72,012 ( 0.00%)  		start -= startprevlen;
+          .           	    else if (start == 0 && end == 0)
+          .           	    {
+          .           		/*
+-- line 2147 ----------------------------------------
+-- line 2169 ----------------------------------------
+          .           		    com = 1;
+          .           		}
+          .           	    }
+    144,012 ( 0.00%)  	    if (s == tbrack) {
+     36,006 ( 0.00%)  		s++;
+    204,042 ( 0.01%)  		if (v->isarr && !com &&
+          .           		    (!(v->isarr & SCANPM_MATCHMANY) ||
+          .           		     !(v->isarr & (SCANPM_MATCHKEY | SCANPM_MATCHVAL |
+          .           				   SCANPM_KEYMATCH))))
+     48,012 ( 0.00%)  		    v->isarr = 0;
+     36,006 ( 0.00%)  		v->start = start;
+     72,012 ( 0.00%)  		v->end = end;
+          .           	    } else
+          .           		s = *pptr;
+          .           	}
+          .               }
+     72,018 ( 0.00%)      *tbrack = ']';
+     72,018 ( 0.00%)      *pptr = s;
+     72,018 ( 0.00%)      return 0;
+    504,126 ( 0.01%)  }
+          .           
+          .           
+          .           /**/
+-- line 2191 ----------------------------------------
+-- line 2192 ----------------------------------------
+          .           mod_export Value
+          .           getvalue(Value v, char **pptr, int bracks)
+          .           {
+  1,970,639 ( 0.05%)    return fetchvalue(v, pptr, bracks, 0);
+        885 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:fetchvalue (3x)
+          .           }
+          .           
+          .           /**/
+          .           mod_export Value
+          .           fetchvalue(Value v, char **pptr, int bracks, int flags)
+  7,795,194 ( 0.20%)  {
+          .               char *s, *t, *ie;
+          .               char sav, c;
+          .               int ppar = 0;
+          .           
+  1,417,308 ( 0.04%)      s = t = *pptr;
+          .           
+  2,125,962 ( 0.05%)      if (idigit(c = *s)) {
+         78 ( 0.00%)  	if (bracks >= 0)
+        195 ( 0.00%)  	    ppar = zstrtol(s, &s, 10);
+      2,925 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:zstrtol (39x)
+          .           	else
+          .           	    ppar = *s++ - '0';
+          .               }
+  4,960,305 ( 0.12%)      else if ((ie = itype_end(s, IIDENT, 0)) != s)
+ 71,003,496 ( 1.78%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:itype_end (600,585x)
+    708,597 ( 0.02%)  	s = ie;
+         58 ( 0.00%)      else if (c == Quest)
+          .           	*s++ = '?';
+          .               else if (c == Pound)
+          .           	*s++ = '#';
+-- line 2219 ----------------------------------------
+-- line 2227 ----------------------------------------
+          .           	*s++ = '-';
+          .               else if (c == '#' || c == '?' || c == '$' ||
+          .           	     c == '!' || c == '@' || c == '*')
+         24 ( 0.00%)  	s++;
+          .               else
+        152 ( 0.00%)  	return NULL;
+          .           
+  2,126,141 ( 0.05%)      if ((sav = *s))
+    288,152 ( 0.01%)  	*s = '\0';
+         90 ( 0.00%)      if (ppar) {
+         78 ( 0.00%)  	if (v)
+        156 ( 0.00%)  	    memset(v, 0, sizeof(*v));
+          .           	else
+          .           	    v = (Value) hcalloc(sizeof *v);
+         78 ( 0.00%)  	v->pm = argvparam;
+         39 ( 0.00%)  	v->flags = 0;
+         78 ( 0.00%)  	v->start = ppar - 1;
+         39 ( 0.00%)  	v->end = ppar;
+         78 ( 0.00%)  	if (sav)
+         60 ( 0.00%)  	    *s = sav;
+          .               } else {
+          .           	Param pm;
+          .           	int isvarat;
+          .           
+  2,125,857 ( 0.05%)          isvarat = (t[0] == '@' && !t[1]);
+  5,668,854 ( 0.14%)  	pm = (Param) paramtab->getnode(paramtab, *t == '0' ? "0" : t);
+ 94,883,197 ( 2.38%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getparamnode (600,579x)
+  1,417,218 ( 0.04%)  	if (sav)
+    576,244 ( 0.01%)  	    *s = sav;
+  1,417,218 ( 0.04%)  	*pptr = s;
+  4,251,382 ( 0.11%)  	if (!pm || ((pm->node.flags & PM_UNSET) &&
+          .           		    !(pm->node.flags & PM_DECLARED)))
+          .           	    return NULL;
+  1,417,078 ( 0.04%)  	if (v)
+  2,834,156 ( 0.07%)  	    memset(v, 0, sizeof(*v));
+          .           	else
+          .           	    v = (Value) hcalloc(sizeof *v);
+  1,417,078 ( 0.04%)  	if (PM_TYPE(pm->node.flags) & (PM_ARRAY|PM_HASHED)) {
+          .           	    /* Overload v->isarr as the flag bits for hashed arrays. */
+    288,270 ( 0.01%)  	    v->isarr = flags | (isvarat ? SCANPM_ISVAR_AT : 0);
+          .           	    /* If no flags were passed, we need something to represent *
+          .           	     * `true' yet differ from an explicit WANTVALS.  Use a     *
+          .           	     * special flag for this case.                             */
+    144,108 ( 0.00%)  	    if (!v->isarr)
+     36,018 ( 0.00%)  		v->isarr = SCANPM_ARRONLY;
+          .           	}
+    708,539 ( 0.02%)  	v->pm = pm;
+    708,539 ( 0.02%)  	v->flags = 0;
+          .           	v->start = 0;
+    708,539 ( 0.02%)  	v->end = -1;
+  5,632,288 ( 0.14%)  	if (bracks > 0 && (*s == '[' || *s == Inbrack)) {
+    288,072 ( 0.01%)  	    if (getindex(&s, v, flags)) {
+1,113,530,878 (27.88%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getindex (72,018x)
+    144,036 ( 0.00%)  		*pptr = s;
+          .           		return v;
+          .           	    }
+  3,182,521 ( 0.08%)  	} else if (!(flags & SCANPM_ASSIGNING) && v->isarr &&
+         66 ( 0.00%)  		   itype_end(t, IIDENT, 1) != t && isset(KSHARRAYS))
+        378 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:itype_end (13x)
+          .           	    v->end = 1, v->isarr = 0;
+          .               }
+        158 ( 0.00%)      if (!bracks && *s)
+          .           	return NULL;
+    708,590 ( 0.02%)      *pptr = s;
+          .           #if 0
+          .               /*
+          .                * Check for large subscripts that might be erroneous.
+-- line 2290 ----------------------------------------
+-- line 2315 ----------------------------------------
+          .               }
+          .           #endif
+          .               return v;
+  6,377,886 ( 0.16%)  }
+          .           
+          .           /**/
+          .           mod_export char *
+          .           getstrvalue(Value v)
+  2,497,384 ( 0.06%)  {
+          .               char *s, **ss;
+          .               char buf[BDIGBUFSIZE];
+          .               int len, array_owned;
+          .           
+    624,346 ( 0.02%)      if (!v)
+          .           	return hcalloc(1);
+          .           
+  1,632,889 ( 0.04%)      if ((v->flags & VALFLAG_INV) && !(v->pm->node.flags & PM_HASHED)) {
+    216,072 ( 0.01%)  	sprintf(buf, "%d", v->start);
+ 17,147,154 ( 0.43%)  => ???:sprintf (36,012x)
+    108,036 ( 0.00%)  	s = dupstring(buf);
+  2,955,648 ( 0.07%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstring (36,012x)
+          .           	return s;
+          .               }
+          .           
+  1,380,805 ( 0.03%)      switch(PM_TYPE(v->pm->node.flags)) {
+          .               case PM_HASHED:
+          .           	/* (!v->isarr) should be impossible unless emulating ksh */
+          .           	if (!v->isarr && EMULATION(EMULATE_KSH)) {
+-- line 2340 ----------------------------------------
+-- line 2344 ----------------------------------------
+          .           	    return s;
+          .           	} /* else fall through */
+          .               case PM_ARRAY:
+     24,045 ( 0.00%)  	array_owned = PM_TYPE(v->pm->node.flags) == PM_ARRAY && array_length_owned(v->pm);
+          .           	ss = getvaluearr(v);
+     72,135 ( 0.00%)  	if (v->isarr)
+          .           	    s = sepjoin(ss, NULL, 1);
+          .           	else {
+     72,135 ( 0.00%)  	    if (v->start < 0)
+          .           		v->start += arrlen(ss);
+     96,063 ( 0.00%)  	    s = (!(array_owned ? array_length_ge(v->pm, ss, (unsigned)v->start + 1) :
+    667,644 ( 0.02%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:array_length_ge (24,006x)
+     72,330 ( 0.00%)  		   arrlen_ge(ss, (unsigned)v->start + 1)) || v->start < 0) ?
+        600 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:arrlen_ge (39x)
+    120,147 ( 0.00%)  		(char *) hcalloc(1) : ss[v->start];
+          .           	}
+     24,045 ( 0.00%)  	return s;
+          .               case PM_INTEGER:
+    144,063 ( 0.00%)  	convbase(buf, v->pm->gsu.i->getfn(v->pm), v->pm->base);
+     96,030 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:intgetfn (48,015x)
+         78 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:poundgetfn (6x)
+    192,084 ( 0.00%)  	s = dupstring(buf);
+  3,976,410 ( 0.10%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstring (48,021x)
+     48,021 ( 0.00%)  	break;
+          .               case PM_EFLOAT:
+          .               case PM_FFLOAT:
+         18 ( 0.00%)  	s = convfloat(v->pm->gsu.f->getfn(v->pm),
+     20,082 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:convfloat (2x)
+         27 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:floatsecondsgetfn (1x)
+          2 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:floatgetfn (1x)
+          .           		      v->pm->base, v->pm->node.flags, NULL);
+          2 ( 0.00%)  	break;
+          .               case PM_SCALAR:
+    816,372 ( 0.02%)  	s = v->pm->gsu.s->getfn(v->pm);
+    816,368 ( 0.02%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:strgetfn (204,092x)
+        252 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:colonarrgetfn (1x)
+    204,093 ( 0.01%)  	break;
+          .               default:
+          .           	s = "";
+          .           	DPUTS(1, "BUG: param node without valid type");
+-- line 2373 ----------------------------------------
+-- line 2374 ----------------------------------------
+          .           	break;
+          .               }
+          .           
+    756,348 ( 0.02%)      if (v->flags & VALFLAG_SUBST) {
+  1,260,560 ( 0.03%)  	if (v->pm->node.flags & (PM_LEFT|PM_RIGHT_B|PM_RIGHT_Z)) {
+          .           	    size_t fwidth = v->pm->width ? (unsigned int)v->pm->width : MB_METASTRLEN(s);
+          .           	    switch (v->pm->node.flags & (PM_LEFT | PM_RIGHT_B | PM_RIGHT_Z)) {
+          .           		char *t, *tend;
+-- line 2381 ----------------------------------------
+-- line 2490 ----------------------------------------
+          .           		break;
+          .           	    }
+          .           	}
+  1,260,560 ( 0.03%)  	switch (v->pm->node.flags & (PM_LOWER | PM_UPPER)) {
+          .           	case PM_LOWER:
+          .           	    s = casemodify(s, CASMOD_LOWER);
+          .           	    break;
+-- line 2496 ----------------------------------------
+-- line 2499 ----------------------------------------
+          .           	    break;
+          .           	}
+          .               }
+  1,512,696 ( 0.04%)      if (v->start == 0 && v->end == -1)
+          .           	return s;
+          .           
+          .               len = strlen(s);
+-- line 2505 ----------------------------------------
+-- line 2526 ----------------------------------------
+          .               if (v->end - v->start < len)
+          .           	len = v->end - v->start;
+          .               return dupstring_wlen(s + v->start, len);
+  2,809,557 ( 0.07%)  }
+          .           
+          .           static char *nular[] = {"", NULL};
+          .           
+-- line 2532 ----------------------------------------
+-- line 2533 ----------------------------------------
+          .           /**/
+          .           static char **
+          .           getarrvalue_internal(Value v, int expose)
+    144,075 ( 0.00%)  {
+          .               char **s;
+          .               int array_owned;
+          .           
+     96,050 ( 0.00%)      if (!v)
+          .           	return arrdup(nular);
+    528,275 ( 0.01%)      else if (IS_UNSET_VALUE(v))
+          .           	return arrdup(&nular[1]);
+    192,100 ( 0.00%)      if (v->flags & VALFLAG_INV) {
+          .           	char buf[DIGBUFSIZE];
+          .           
+          .           	s = arrdup(nular);
+-- line 2547 ----------------------------------------
+-- line 2549 ----------------------------------------
+          .           	s[0] = dupstring(buf);
+          .           	return s;
+          .               }
+    144,075 ( 0.00%)      if (expose && PM_TYPE(v->pm->node.flags) == PM_ARRAY &&
+          .           	v->start == 0 && v->end == -1)
+          .           	v->pm->node.flags |= PM_ARRAY_EXPOSED;
+    336,151 ( 0.01%)      array_owned = PM_TYPE(v->pm->node.flags) == PM_ARRAY && array_length_owned(v->pm);
+          .               s = getvaluearr(v);
+    276,150 ( 0.01%)      if (v->start == 0 && v->end == -1)
+          .           	return s;
+     12,000 ( 0.00%)      if (v->start < 0)
+          .           	v->start += arrlen(s);
+     24,000 ( 0.00%)      if (v->end < 0)
+          .           	v->end += arrlen(s) + 1;
+          .           
+          .               /* Null if 1) array too short, 2) index still negative */
+     36,000 ( 0.00%)      if (v->end <= v->start) {
+          .           	s = arrdup_max(nular, 0);
+          .               }
+     24,000 ( 0.00%)      else if (v->start < 0) {
+          .           	s = arrdup_max(nular, 1);
+          .               }
+    144,000 ( 0.00%)      else if (!(array_owned ? array_length_ge(v->pm, s, (unsigned)v->start + 1) :
+    333,216 ( 0.01%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:array_length_ge (12,000x)
+          .           	       arrlen_ge(s, (unsigned)v->start + 1))) {
+          .           	/* Handle $ary[i,i] consistently for any $i > $#ary
+          .           	 * and $ary[i,j] consistently for any $j > $i > $#ary
+-- line 2574 ----------------------------------------
+-- line 2583 ----------------------------------------
+          .                    * which means that there are exactly the same number of
+          .                    * elements as the value of the above *0-based* index.
+          .                    */
+     60,000 ( 0.00%)  	s = arrdup_max(s + v->start, v->end - v->start);
+ 61,955,826 ( 1.55%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:arrdup_max (12,000x)
+          .               }
+          .           
+          .               return s;
+    168,100 ( 0.00%)  }
+          .           
+          .           /**/
+          .           mod_export char **
+-- line 2593 ----------------------------------------
+-- line 2600 ----------------------------------------
+          .           char **
+          .           getarrvaluereadonly(Value v)
+          .           {
+    168,074 ( 0.00%)      return getarrvalue_internal(v, 0);
+ 63,429,979 ( 1.59%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getarrvalue_internal (12,013x)
+          .           }
+          .           
+          .           /**/
+-- line 2606 ----------------------------------------
+-- line 2629 ----------------------------------------
+          .           /**/
+          .           mnumber
+          .           getnumvalue(Value v)
+    144,060 ( 0.00%)  {
+          .               mnumber mn;
+    288,120 ( 0.01%)      mn.type = MN_INTEGER;
+          .           
+          .           
+    288,120 ( 0.01%)      if (!v) {
+          .           	mn.u.l = 0;
+    432,180 ( 0.01%)      } else if (v->flags & VALFLAG_INV) {
+          .           	mn.u.l = v->start;
+    432,180 ( 0.01%)      } else if (v->isarr) {
+          .           	char **arr = getarrvaluereadonly(v);
+          .           	if (arr) {
+          .           	    char *scal = sepjoin(arr, NULL, 1);
+-- line 2644 ----------------------------------------
+-- line 2645 ----------------------------------------
+          .           	    return matheval(scal);
+          .           	} else
+          .           	    mn.u.l = 0;
+    864,360 ( 0.02%)      } else if (PM_TYPE(v->pm->node.flags) == PM_INTEGER) {
+    576,240 ( 0.01%)  	mn.u.l = v->pm->gsu.i->getfn(v->pm);
+    288,120 ( 0.01%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:intgetfn (144,060x)
+          .               } else if (v->pm->node.flags & (PM_EFLOAT|PM_FFLOAT)) {
+          .           	mn.type = MN_FLOAT;
+          .           	mn.u.d = v->pm->gsu.f->getfn(v->pm);
+          .               } else
+          .           	return matheval(getstrvalue(v));
+    288,120 ( 0.01%)      return mn;
+    288,120 ( 0.01%)  }
+          .           
+          .           /**/
+          .           void
+-- line 2659 ----------------------------------------
+-- line 2693 ----------------------------------------
+          .           
+          .           /**/
+          .           static void
+  2,018,568 ( 0.05%)  assignstrvalue(Value v, char *val, int flags)
+          .           {
+  1,465,842 ( 0.04%)      if (unset(EXECOPT))
+ 57,744,761 ( 1.45%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assignstrvalue.part.0 (240,300x)
+          .           	return;
+  1,009,284 ( 0.03%)      if (v->pm->node.flags & PM_READONLY) {
+          .           	zerr("read-only variable: %s", v->pm->node.nam);
+          .           	zsfree(val);
+          .           	return;
+          .               }
+    504,644 ( 0.01%)      if ((v->pm->node.flags & PM_RESTRICTED) && isset(RESTRICTED)) {
+          .           	zerr("%s: restricted", v->pm->node.nam);
+          .           	zsfree(val);
+          .           	return;
+          .               }
+    504,642 ( 0.01%)      if ((v->pm->node.flags & PM_HASHED) &&
+          .           	(v->isarr & (SCANPM_MATCHMANY|SCANPM_ARRONLY))) {
+          .           	zerr("%s: attempt to set slice of associative array", v->pm->node.nam);
+          .           	zsfree(val);
+          .           	return;
+          .               }
+    504,642 ( 0.01%)      if (v->flags & VALFLAG_EMPTY) {
+          .           	zerr("%s: assignment to invalid subscript range", v->pm->node.nam);
+          .           	zsfree(val);
+          .           	return;
+          .               }
+    756,963 ( 0.02%)      v->pm->node.flags &= ~PM_UNSET;
+  1,513,926 ( 0.04%)      switch (PM_TYPE(v->pm->node.flags)) {
+          .               case PM_SCALAR:
+    781,015 ( 0.02%)  	if (v->start == 0 && v->end == -1) {
+    624,812 ( 0.02%)  	    v->pm->gsu.s->setfn(v->pm, val);
+  6,512,243 ( 0.16%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:strsetfn (156,200x)
+      2,254 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:colonarrsetfn (1x)
+      1,895 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:lc_allsetfn (1x)
+        572 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:langsetfn (1x)
+    624,812 ( 0.02%)  	    if ((v->pm->node.flags & (PM_LEFT | PM_RIGHT_B | PM_RIGHT_Z)) &&
+          .           		!v->pm->width)
+          .           		v->pm->width = strlen(val);
+          .           	} else {
+-- line 2729 ----------------------------------------
+-- line 2793 ----------------------------------------
+          .           	}
+          .           	break;
+          .               case PM_INTEGER:
+    192,230 ( 0.00%)  	if (val) {
+          .           	    zlong ival;
+    168,188 ( 0.00%)  	    if (flags & ASSPM_ENV_IMPORT) {
+          .           		char *ptr;
+          .           		ival = zstrtol_underscore(val, &ptr, 0, 1);
+          .           	    } else
+    252,282 ( 0.01%)  		ival = mathevali(val);
+ 34,114,820 ( 0.85%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/math.c:mathevali (84,094x)
+    252,282 ( 0.01%)  	    v->pm->gsu.i->setfn(v->pm, ival);
+    168,188 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:intsetfn (84,094x)
+    252,282 ( 0.01%)  	    if ((v->pm->node.flags & (PM_LEFT | PM_RIGHT_B | PM_RIGHT_Z)) &&
+          .           		!v->pm->width)
+          .           		v->pm->width = strlen(val);
+    168,188 ( 0.00%)  	    zsfree(val);
+  3,603,232 ( 0.09%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (84,094x)
+          .           	}
+    660,784 ( 0.02%)  	if (!v->pm->base && lastbase != -1)
+          3 ( 0.00%)  	    v->pm->base = lastbase;
+          .           	break;
+          .               case PM_EFLOAT:
+          .               case PM_FFLOAT:
+          6 ( 0.00%)  	if (val) {
+          .           	    mnumber mn;
+          6 ( 0.00%)  	    if (flags & ASSPM_ENV_IMPORT) {
+          .           		char *ptr;
+          .           		mn.type = MN_FLOAT;
+          .           		mn.u.d = strtod(val, &ptr);
+          .           	    } else
+          6 ( 0.00%)  		mn = matheval(val);
+      4,812 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/math.c:matheval (3x)
+         25 ( 0.00%)  	    v->pm->gsu.f->setfn(v->pm, (mn.type & MN_FLOAT) ? mn.u.d :
+         62 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:floatsecondssetfn (2x)
+          2 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:floatsetfn (1x)
+          .           			       (double)mn.u.l);
+          9 ( 0.00%)  	    if ((v->pm->node.flags & (PM_LEFT | PM_RIGHT_B | PM_RIGHT_Z)) &&
+          .           		!v->pm->width)
+          .           		v->pm->width = strlen(val);
+          6 ( 0.00%)  	    zsfree(val);
+        111 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (3x)
+          .           	}
+          .           	break;
+          .               case PM_ARRAY:
+-- line 2830 ----------------------------------------
+-- line 2850 ----------------------------------------
+          .                   }
+          .           	break;
+          .               }
+  1,610,053 ( 0.04%)      if ((!v->pm->env && !(v->pm->node.flags & PM_EXPORTED) &&
+          .           	 !(isset(ALLEXPORT) && !(v->pm->node.flags & PM_HASHELEM))) ||
+          .           	(v->pm->node.flags & PM_ARRAY) || v->pm->ename)
+          .           	return;
+          .               export_param(v->pm);
+  1,513,926 ( 0.04%)  }
+          .           
+          .           /**/
+          .           void
+          .           setnumvalue(Value v, mnumber val)
+     24,042 ( 0.00%)  {
+          .               char buf[BDIGBUFSIZE], *p;
+          .           
+     24,042 ( 0.00%)      if (unset(EXECOPT))
+          .           	return;
+     48,084 ( 0.00%)      if (v->pm->node.flags & PM_READONLY) {
+          .           	zerr("read-only variable: %s", v->pm->node.nam);
+          .           	return;
+          .               }
+     24,042 ( 0.00%)      if ((v->pm->node.flags & PM_RESTRICTED) && isset(RESTRICTED)) {
+          .           	zerr("%s: restricted", v->pm->node.nam);
+          .           	return;
+          .               }
+     60,105 ( 0.00%)      switch (PM_TYPE(v->pm->node.flags)) {
+          .               case PM_SCALAR:
+          .               case PM_ARRAY:
+          .           	if ((val.type & MN_INTEGER) || outputradix) {
+-- line 2879 ----------------------------------------
+-- line 2886 ----------------------------------------
+          .           	setstrvalue(v, ztrdup(p));
+          .           	break;
+          .               case PM_INTEGER:
+     84,147 ( 0.00%)  	v->pm->gsu.i->setfn(v->pm, (val.type & MN_INTEGER) ? val.u.l :
+     24,042 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:intsetfn (12,021x)
+          .           			    (zlong) val.u.d);
+          .           	setstrvalue(v, NULL);
+          .           	break;
+-- line 2892 ----------------------------------------
+-- line 2897 ----------------------------------------
+          .           	setstrvalue(v, NULL);
+          .           	break;
+          .               }
+     72,126 ( 0.00%)  }
+    577,014 ( 0.01%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assignstrvalue.part.0 (12,021x)
+          .           
+          .           /**/
+          .           mod_export void
+-- line 2903 ----------------------------------------
+-- line 2912 ----------------------------------------
+          .           
+          .           /**/
+          .           static void
+        261 ( 0.00%)  setarrvalue_len(Value v, char **val, int pre_assignment_length)
+          .           {
+        145 ( 0.00%)      if (unset(EXECOPT))
+  1,996,078 ( 0.05%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:setarrvalue_len.part.0 (29x)
+          .           	return;
+        145 ( 0.00%)      if (v->pm->node.flags & PM_READONLY) {
+          .           	zerr("read-only variable: %s", v->pm->node.nam);
+          .           	freearray(val);
+          .           	return;
+          .               }
+         58 ( 0.00%)      if ((v->pm->node.flags & PM_RESTRICTED) && isset(RESTRICTED)) {
+          .           	zerr("%s: restricted", v->pm->node.nam);
+          .           	freearray(val);
+          .           	return;
+          .               }
+         58 ( 0.00%)      if (!(PM_TYPE(v->pm->node.flags) & (PM_ARRAY|PM_HASHED))) {
+          .           	freearray(val);
+          .           	zerr("%s: attempt to assign array value to non-array",
+          .           	     v->pm->node.nam);
+          .           	return;
+          .               }
+         87 ( 0.00%)      if (v->flags & VALFLAG_EMPTY) {
+          .           	zerr("%s: assignment to invalid subscript range", v->pm->node.nam);
+          .           	freearray(val);
+          .           	return;
+          .               }
+          .           
+        145 ( 0.00%)      if (v->start == 0 && v->end == -1) {
+        116 ( 0.00%)  	if (PM_TYPE(v->pm->node.flags) == PM_HASHED)
+          .           	    arrhashsetfn(v->pm, val, 0);
+          .           	else
+        108 ( 0.00%)  	    v->pm->gsu.a->setfn(v->pm, val);
+  1,994,633 ( 0.05%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:arrsetfn (27x)
+          .               } else if (v->start == -1 && v->end == 0 &&
+          .               	    PM_TYPE(v->pm->node.flags) == PM_HASHED) {
+          4 ( 0.00%)      	arrhashsetfn(v->pm, val, ASSPM_AUGMENT);
+        260 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:arrhashsetfn (2x)
+          .               } else if ((PM_TYPE(v->pm->node.flags) == PM_HASHED)) {
+          .           	freearray(val);
+          .           	zerr("%s: attempt to set slice of associative array",
+-- line 2951 ----------------------------------------
+-- line 3090 ----------------------------------------
+          .                    * given away, can plainly free */
+          .           	free(val);
+          .               }
+        203 ( 0.00%)  }
+          .           
+          .           /* Retrieve an integer parameter */
+          .           
+-- line 3096 ----------------------------------------
+-- line 3133 ----------------------------------------
+          .               struct value vbuf;
+          .               Value v;
+          .           
+          8 ( 0.00%)      if (!(v = getvalue(&vbuf, &s, 0)))
+          .           	return NULL;
+          8 ( 0.00%)      return getstrvalue(v);
+        389 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getstrvalue (3x)
+          .           }
+          .           
+          .           /**/
+-- line 3141 ----------------------------------------
+-- line 3143 ----------------------------------------
+          .           getsparam_u(char *s)
+          .           {
+          .               /* getsparam() returns pointer into global params table, so ... */
+          2 ( 0.00%)      if ((s = getsparam(s)))
+          2 ( 0.00%)  	return unmeta(s);	/* returns static pointer to copy */
+         76 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:unmeta (1x)
+          .               return s;
+          .           }
+          .           
+-- line 3150 ----------------------------------------
+-- line 3153 ----------------------------------------
+          .           /**/
+          .           mod_export char **
+          .           getaparam(char *s)
+          2 ( 0.00%)  {
+          .               struct value vbuf;
+          .               Value v;
+          .           
+          5 ( 0.00%)      if (!idigit(*s) && (v = getvalue(&vbuf, &s, 0)) &&
+          .           	PM_TYPE(v->pm->node.flags) == PM_ARRAY) {
+          .           	v->pm->node.flags |= PM_ARRAY_EXPOSED;
+          .           	return v->pm->gsu.a->getfn(v->pm);
+          .               }
+          1 ( 0.00%)      return NULL;
+          2 ( 0.00%)  }
+          .           
+          .           /* Retrieve an assoc array parameter as an array */
+          .           
+-- line 3169 ----------------------------------------
+-- line 3217 ----------------------------------------
+          .           {
+          .               Funcstack i;
+          .           
+    468,707 ( 0.01%)      if (!may_warn_about_nested_vars && !created)
+    781,080 ( 0.02%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:check_warn_pm.part.0 (156,216x)
+          .           	return;
+          .           
+    312,592 ( 0.01%)      if (created && isset(WARNCREATEGLOBAL)) {
+          .           	if (locallevel <= forklevel || pm->level != 0)
+          .           	    return;
+    312,360 ( 0.01%)      } else if (!created && isset(WARNNESTEDVAR)) {
+          .           	if (pm->level >= locallevel)
+          .           	    return;
+          .               } else
+-- line 3229 ----------------------------------------
+-- line 3243 ----------------------------------------
+          .           	    break;
+          .           	}
+          .               }
+    156,238 ( 0.00%)  }
+          .           
+          .           /**/
+          .           mod_export Param
+          .           assignsparam(char *s, char *val, int flags)
+  2,162,700 ( 0.05%)  {
+          .               struct value vbuf;
+          .               Value v;
+    240,300 ( 0.01%)      char *t = s;
+          .               char *ss, *copy, *var;
+          .               size_t lvar;
+          .               mnumber lhs, rhs;
+          .               int sstart, created = 0;
+          .           
+    961,200 ( 0.02%)      if (!isident(s)) {
+ 32,210,022 ( 0.81%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:isident (240,300x)
+    240,300 ( 0.01%)  	zerr("not an identifier: %s", s);
+          .           	zsfree(val);
+          .           	errflag |= ERRFLAG_ERROR;
+          .           	return NULL;
+          .               }
+    720,900 ( 0.02%)      queue_signals();
+  1,441,800 ( 0.04%)      if ((ss = strchr(s, '['))) {
+  5,046,300 ( 0.13%)  => ???:__strchr_avx2 (240,300x)
+          .           	*ss = '\0';
+          .           	if (!(v = getvalue(&vbuf, &s, 1))) {
+          .           	    createparam(t, PM_ARRAY);
+-- line 3270 ----------------------------------------
+-- line 3287 ----------------------------------------
+          .           	*ss = '[';
+          .           	v = NULL;
+          .               } else {
+    480,600 ( 0.01%)  	if (!(v = getvalue(&vbuf, &s, 1))) {
+          .           	    createparam(t, PM_SCALAR);
+          .           	    created = 1;
+  1,681,687 ( 0.04%)  	} else if ((((v->pm->node.flags & PM_ARRAY) && !(flags & ASSPM_AUGMENT)) ||
+          .           	    	 (v->pm->node.flags & PM_HASHED)) &&
+          .           		 !(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) && 
+          .           		 unset(KSHARRAYS)) {
+          .           	    unsetparam(t);
+        177 ( 0.00%)  	    createparam(t, PM_SCALAR);
+     46,548 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:createparam (59x)
+          .           	    /* not regarded as a new creation */
+          .           	    v = NULL;
+          .           	}
+          .               }
+        177 ( 0.00%)      if (!v && !(v = getvalue(&vbuf, &t, 1))) {
+          .           	unqueue_signals();
+          .           	zsfree(val);
+          .           	/* errflag |= ERRFLAG_ERROR; */
+          .           	return NULL;
+          .               }
+    480,600 ( 0.01%)      if (flags & ASSPM_WARN)
+         59 ( 0.00%)  	check_warn_pm(v->pm, "scalar", created, 1);
+  1,273,632 ( 0.03%)      v->pm->node.flags &= ~PM_DEFAULTED;
+    480,600 ( 0.01%)      if (flags & ASSPM_AUGMENT) {
+          .           	if (v->start == 0 && v->end == -1) {
+          .           	    switch (PM_TYPE(v->pm->node.flags)) {
+          .           	    case PM_SCALAR:
+-- line 3315 ----------------------------------------
+-- line 3381 ----------------------------------------
+          .               }
+          .           
+          .               assignstrvalue(v, val, flags);
+    480,680 ( 0.01%)      unqueue_signals();
+    240,300 ( 0.01%)      return v->pm;
+  1,682,100 ( 0.04%)  }
+          .           
+          .           /**/
+          .           mod_export Param
+          .           setsparam(char *s, char *val)
+          .           {
+        132 ( 0.00%)      return assignsparam(s, val, ASSPM_WARN);
+     21,279 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assignsparam (12x)
+          .           }
+          .           
+          .           /**/
+          .           mod_export Param
+          .           assignaparam(char *s, char **val, int flags)
+        290 ( 0.00%)  {
+          .               struct value vbuf;
+          .               Value v;
+         29 ( 0.00%)      char *t = s;
+          .               char *ss;
+         36 ( 0.00%)      int created = 0;
+          .               int may_warn_about_nested_vars = 1;
+         29 ( 0.00%)      int pre_assignment_length = -1;
+          .           
+        116 ( 0.00%)      if (!isident(s)) {
+      5,772 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:isident (29x)
+         29 ( 0.00%)  	zerr("not an identifier: %s", s);
+          .           	freearray(val);
+          .           	errflag |= ERRFLAG_ERROR;
+          .           	return NULL;
+          .               }
+         87 ( 0.00%)      queue_signals();
+        174 ( 0.00%)      if ((ss = strchr(s, '['))) {
+        609 ( 0.00%)  => ???:__strchr_avx2 (29x)
+          .           	*ss = '\0';
+          .           	if (!(v = getvalue(&vbuf, &s, 1))) {
+          .           	    createparam(t, PM_ARRAY);
+-- line 3417 ----------------------------------------
+-- line 3430 ----------------------------------------
+          .           	}
+          .           	v = NULL;
+          .               } else {
+        261 ( 0.00%)  	if (!(v = fetchvalue(&vbuf, &s, 1, SCANPM_ASSIGNING))) {
+     12,746 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:fetchvalue (29x)
+          4 ( 0.00%)  	    createparam(t, PM_ARRAY);
+        728 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:createparam (1x)
+          .           	    created = 1;
+        140 ( 0.00%)  	} else if (!(PM_TYPE(v->pm->node.flags) & (PM_ARRAY|PM_HASHED)) &&
+          .           		 !(v->pm->node.flags & (PM_SPECIAL|PM_TIED))) {
+          .           	    int uniq = v->pm->node.flags & PM_UNIQUE;
+          .           	    if (flags & ASSPM_AUGMENT) {
+-- line 3439 ----------------------------------------
+-- line 3452 ----------------------------------------
+          .           	    v = NULL;
+          .           	}
+          .               }
+          1 ( 0.00%)      if (!v)
+          8 ( 0.00%)  	if (!(v = fetchvalue(&vbuf, &t, 1, SCANPM_ASSIGNING))) {
+        353 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:fetchvalue (1x)
+          .           	    unqueue_signals();
+          .           	    freearray(val);
+          .           	    /* errflag |= ERRFLAG_ERROR; */
+-- line 3459 ----------------------------------------
+-- line 3460 ----------------------------------------
+          .           	    return NULL;
+          .           	}
+          .           
+         58 ( 0.00%)      if (flags & ASSPM_WARN)
+          1 ( 0.00%)  	check_warn_pm(v->pm, "array", created, may_warn_about_nested_vars);
+        125 ( 0.00%)      v->pm->node.flags &= ~PM_DEFAULTED;
+          .           
+          .               /*
+          .                * At this point, we may have array entries consisting of
+-- line 3468 ----------------------------------------
+-- line 3476 ----------------------------------------
+          .                *
+          .                * For associative arrays we just junk the Marker elements.
+          .                */
+         58 ( 0.00%)      if (flags & ASSPM_KEY_VALUE) {
+          .           	char **aptr;
+          .           	if (PM_TYPE(v->pm->node.flags) & PM_ARRAY) {
+          .           	    /*
+-- line 3482 ----------------------------------------
+-- line 3599 ----------------------------------------
+          .           	}
+          .               }
+          .           
+         58 ( 0.00%)      if (flags & ASSPM_AUGMENT) {
+          .               	if (v->start == 0 && v->end == -1) {
+          .           	    if (PM_TYPE(v->pm->node.flags) & PM_ARRAY) {
+          .           		/* Decide before invoking a possibly self-modifying getter. */
+-- line 3605 ----------------------------------------
+-- line 3623 ----------------------------------------
+          .               }
+          .           
+          .               setarrvalue_len(v, val, pre_assignment_length);
+         62 ( 0.00%)      unqueue_signals();
+         29 ( 0.00%)      return v->pm;
+        232 ( 0.00%)  }
+          .           
+          .           
+          .           /**/
+-- line 3631 ----------------------------------------
+-- line 3632 ----------------------------------------
+          .           mod_export Param
+          .           setaparam(char *s, char **aval)
+          .           {
+          4 ( 0.00%)      return assignaparam(s, aval, ASSPM_WARN);
+      1,690 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assignaparam (1x)
+          .           }
+          .           
+          .           /**/
+-- line 3638 ----------------------------------------
+-- line 3696 ----------------------------------------
+          .           /**/
+          .           static Param
+          .           assignnparam(char *s, mnumber val, int flags)
+         33 ( 0.00%)  {
+          .               struct value vbuf;
+          .               Value v;
+          3 ( 0.00%)      char *t = s, *ss;
+          .               Param pm;
+          3 ( 0.00%)      int was_unset = 0;
+          .           
+          9 ( 0.00%)      if (!isident(s)) {
+        516 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:isident (3x)
+          .           	zerr("not an identifier: %s", s);
+          .           	errflag |= ERRFLAG_ERROR;
+          .           	return NULL;
+          .               }
+          9 ( 0.00%)      if (unset(EXECOPT))
+          .           	return NULL;
+          9 ( 0.00%)      queue_signals();
+         19 ( 0.00%)      ss = strchr(s, '[');
+        899 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+         63 ( 0.00%)  => ???:__strchr_avx2 (3x)
+          .               v = getvalue(&vbuf, &s, 1);
+          6 ( 0.00%)      if (v && (v->pm->node.flags & (PM_ARRAY|PM_HASHED)) &&
+          .           	!(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) &&
+          .           	/*
+          .           	 * not sure what KSHARRAYS has got to do with this...
+-- line 3719 ----------------------------------------
+-- line 3727 ----------------------------------------
+          .               }
+          .               if (!v) {
+          .           	/* s has been updated by getvalue, so check again */
+         15 ( 0.00%)  	ss = strchr(s, '[');
+         63 ( 0.00%)  => ???:__strchr_avx2 (3x)
+          6 ( 0.00%)  	if (ss)
+          .           	    *ss = '\0';
+          9 ( 0.00%)  	pm = createparam(t, ss ? PM_ARRAY :
+      2,266 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:createparam (3x)
+          6 ( 0.00%)  			 isset(POSIXIDENTIFIERS) ? PM_SCALAR :
+          6 ( 0.00%)  			 (val.type & MN_INTEGER) ? PM_INTEGER : PM_FFLOAT);
+          6 ( 0.00%)  	if (!pm)
+          .           	    pm = (Param) paramtab->getnode(paramtab, t);
+          .           	DPUTS(!pm, "BUG: parameter not created");
+          .           	if (ss) {
+          .           	    *ss = '[';
+          .           	} else if (val.type & MN_INTEGER) {
+          9 ( 0.00%)  	    pm->base = outputradix;
+          .           	}
+          6 ( 0.00%)  	if (!(v = getvalue(&vbuf, &t, 1))) {
+          .           	    DPUTS(!v, "BUG: value not found for new parameter");
+          .           	    /* errflag |= ERRFLAG_ERROR; */
+          .           	    unqueue_signals();
+          .           	    return NULL;
+          .           	}
+          6 ( 0.00%)  	if (flags & ASSPM_WARN)
+         15 ( 0.00%)  	    check_warn_pm(v->pm, "numeric", !was_unset, 1);
+         15 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:check_warn_pm.part.0 (3x)
+          .               } else {
+          .           	if (flags & ASSPM_WARN)
+          .           	    check_warn_pm(v->pm, "numeric", 0, 1);
+          .               }
+         15 ( 0.00%)      v->pm->node.flags &= ~PM_DEFAULTED;
+         12 ( 0.00%)      setnumvalue(v, val);
+        246 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:setnumvalue (3x)
+         18 ( 0.00%)      unqueue_signals();
+          3 ( 0.00%)      return v->pm;
+         24 ( 0.00%)  }
+          .           
+          .           /*
+          .            * Set a generic shell number, floating point or integer.
+-- line 3763 ----------------------------------------
+-- line 3792 ----------------------------------------
+          .               mnumber mnval;
+          .               mnval.type = MN_INTEGER;
+          .               mnval.u.l = val;
+         15 ( 0.00%)      return assignnparam(s, mnval, ASSPM_WARN);
+      6,447 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:assignnparam (3x)
+          .           }
+          .           
+          .           /*
+-- line 3798 ----------------------------------------
+-- line 3840 ----------------------------------------
+          .           /**/
+          .           mod_export int
+          .           unsetparam_pm(Param pm, int altflag, int exp)
+    540,330 ( 0.01%)  {
+          .               Param oldpm, altpm;
+          .               char *altremove;
+          .           
+    324,198 ( 0.01%)      if ((pm->node.flags & PM_READONLY) && pm->level <= locallevel) {
+          .           	zerr("read-only variable: %s", pm->node.nam);
+          .           	return 1;
+          .               }
+    216,132 ( 0.01%)      if ((pm->node.flags & PM_RESTRICTED) && isset(RESTRICTED)) {
+          .           	zerr("%s: restricted", pm->node.nam);
+          .           	return 1;
+          .               }
+          .           
+    324,198 ( 0.01%)      if (pm->ename && !altflag)
+          .           	altremove = ztrdup(pm->ename);
+          .               else
+    108,066 ( 0.00%)  	altremove = NULL;
+          .           
+    432,264 ( 0.01%)      pm->node.flags &= ~PM_DECLARED;	/* like ksh, not like bash */
+    324,198 ( 0.01%)      if (!(pm->node.flags & PM_UNSET) || (pm->node.flags & PM_REMOVABLE))
+    432,264 ( 0.01%)  	pm->gsu.s->unsetfn(pm, exp);
+  8,718,333 ( 0.22%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:stdunsetfn (108,066x)
+    216,132 ( 0.01%)      if (pm->env)
+          .           	delenv(pm);
+          .           
+          .               /* remove it under its alternate name if necessary */
+    216,132 ( 0.01%)      if (altremove) {
+          .           	altpm = (Param) paramtab->getnode(paramtab, altremove);
+          .           	/* tied parameters are at the same local level as each other */
+          .           	oldpm = NULL;
+-- line 3871 ----------------------------------------
+-- line 3911 ----------------------------------------
+          .                * Some specials, such as those used in zle, still need removing
+          .                * from the parameter table; they have the PM_REMOVABLE flag.
+          .                */
+    756,462 ( 0.02%)      if ((pm->level && locallevel >= pm->level) ||
+    216,132 ( 0.01%)  	(pm->node.flags & (PM_SPECIAL|PM_REMOVABLE)) == PM_SPECIAL)
+    108,066 ( 0.00%)  	return 0;
+          .           
+          .               /* remove parameter node from table */
+    432,264 ( 0.01%)      paramtab->removenode(paramtab, pm->node.nam);
+ 13,636,148 ( 0.34%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:removehashnode (108,066x)
+          .           
+    324,198 ( 0.01%)      if (pm->old) {
+          .           	oldpm = pm->old;
+     60,000 ( 0.00%)  	paramtab->addnode(paramtab, oldpm->node.nam, oldpm);
+  2,186,000 ( 0.05%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:addhashnode (12,000x)
+     36,000 ( 0.00%)  	if ((PM_TYPE(oldpm->node.flags) == PM_SCALAR) &&
+          .           	    !(pm->node.flags & PM_HASHELEM) &&
+          .           	    (oldpm->node.flags & PM_NAMEDDIR) &&
+          .           	    oldpm->gsu.s == &stdscalar_gsu)
+          .           	    adduserdir(oldpm->node.nam, oldpm->u.str, 0, 0);
+     24,000 ( 0.00%)  	if (oldpm->node.flags & PM_EXPORTED) {
+          .           	    /*
+          .           	     * Re-export the old value which we removed in typeset_single().
+          .           	     * I don't think we need to test for ALL_EXPORT here, since if
+-- line 3932 ----------------------------------------
+-- line 3937 ----------------------------------------
+          .           	}
+          .               }
+          .           
+    324,198 ( 0.01%)      paramtab->freenode(&pm->node); /* free parameter node */
+ 13,376,345 ( 0.33%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:freeparamnode (108,066x)
+          .           
+          .               return 0;
+    432,264 ( 0.01%)  }
+          .           
+          .           /* Standard function to unset a parameter.  This is mostly delegated to *
+          .            * the specific set function.
+-- line 3946 ----------------------------------------
+-- line 3956 ----------------------------------------
+          .           /**/
+          .           mod_export void
+          .           stdunsetfn(Param pm, UNUSED(int exp))
+    216,132 ( 0.01%)  {
+    972,594 ( 0.02%)      switch (PM_TYPE(pm->node.flags)) {
+          .           	case PM_SCALAR:
+          .           	    if (pm->gsu.s->setfn)
+          .           		pm->gsu.s->setfn(pm, NULL);
+-- line 3963 ----------------------------------------
+-- line 3969 ----------------------------------------
+          .           	    break;
+          .           
+          .           	case PM_HASHED:
+    288,192 ( 0.01%)  	    if (pm->gsu.h->setfn)
+    216,144 ( 0.01%)  		pm->gsu.h->setfn(pm, NULL);
+  5,980,641 ( 0.15%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:strsetfn (72,048x)
+          .           	    break;
+          .           
+          .           	default:
+     72,036 ( 0.00%)  	    if (!(pm->node.flags & PM_SPECIAL))
+     36,018 ( 0.00%)  	    	pm->u.str = NULL;
+          .           	    break;
+          .               }
+    504,312 ( 0.01%)      if ((pm->node.flags & (PM_SPECIAL|PM_TIED)) == PM_TIED) {
+          .           	if (pm->ename) {
+          .           	    zsfree(pm->ename);
+          .           	    pm->ename = NULL;
+-- line 3984 ----------------------------------------
+-- line 3985 ----------------------------------------
+          .           	}
+          .           	pm->node.flags &= ~PM_TIED;
+          .               }
+    216,132 ( 0.01%)      pm->node.flags |= PM_UNSET;
+    216,132 ( 0.01%)  }
+          .           
+          .           /* Function to get value of an integer parameter */
+          .           
+-- line 3992 ----------------------------------------
+-- line 3994 ----------------------------------------
+          .           mod_export zlong
+          .           intgetfn(Param pm)
+          .           {
+    192,077 ( 0.00%)      return pm->u.val;
+    192,077 ( 0.00%)  }
+          .           
+          .           /* Function to set value of an integer parameter */
+          .           
+-- line 4001 ----------------------------------------
+-- line 4003 ----------------------------------------
+          .           static void
+          .           intsetfn(Param pm, zlong x)
+          .           {
+     96,115 ( 0.00%)      pm->u.val = x;
+     96,115 ( 0.00%)  }
+          .           
+          .           /* Function to get value of a floating point parameter */
+          .           
+-- line 4010 ----------------------------------------
+-- line 4012 ----------------------------------------
+          .           static double
+          .           floatgetfn(Param pm)
+          .           {
+          1 ( 0.00%)      return pm->u.dval;
+          1 ( 0.00%)  }
+          .           
+          .           /* Function to set value of an integer parameter */
+          .           
+-- line 4019 ----------------------------------------
+-- line 4021 ----------------------------------------
+          .           static void
+          .           floatsetfn(Param pm, double x)
+          .           {
+          1 ( 0.00%)      pm->u.dval = x;
+          1 ( 0.00%)  }
+          .           
+          .           /* Function to get value of a scalar (string) parameter */
+          .           
+-- line 4028 ----------------------------------------
+-- line 4030 ----------------------------------------
+          .           mod_export char *
+          .           strgetfn(Param pm)
+          .           {
+    612,279 ( 0.02%)      return pm->u.str ? pm->u.str : (char *) hcalloc(1);
+    204,093 ( 0.01%)  }
+          .           
+          .           /* Function to set value of a scalar (string) parameter */
+          .           
+-- line 4037 ----------------------------------------
+-- line 4038 ----------------------------------------
+          .           /**/
+          .           mod_export void
+          .           strsetfn(Param pm, char *x)
+  1,141,250 ( 0.03%)  {
+    456,500 ( 0.01%)      zsfree(pm->u.str);
+  8,156,184 ( 0.20%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (228,250x)
+    228,250 ( 0.01%)      pm->u.str = x;
+  1,141,250 ( 0.03%)      if (!(pm->node.flags & PM_HASHELEM) &&
+    456,500 ( 0.01%)  	((pm->node.flags & PM_NAMEDDIR) || isset(AUTONAMEDIRS))) {
+          .           	pm->node.flags |= PM_NAMEDDIR;
+          .           	adduserdir(pm->node.nam, x, 0, 0);
+          .               }
+          .               /* If you update this function, you may need to update the
+          .                * `Implement remainder of strsetfn' block in assignstrvalue(). */
+    913,000 ( 0.02%)  }
+          .           
+          .           /* Function to get value of an array parameter */
+          .           
+-- line 4054 ----------------------------------------
+-- line 4065 ----------------------------------------
+          .           /**/
+          .           mod_export void
+          .           arrsetfn(Param pm, char **x)
+        135 ( 0.00%)  {
+          .               invalidate_array_length(pm);
+        144 ( 0.00%)      if (!x || (pm->u.arr && pm->u.arr != x))
+         18 ( 0.00%)  	pm->node.flags &= ~PM_ARRAY_EXPOSED;
+         27 ( 0.00%)      if (pm->u.arr && pm->u.arr != x)
+         18 ( 0.00%)  	freearray(pm->u.arr);
+  1,993,847 ( 0.05%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:freearray (18x)
+         54 ( 0.00%)      if (pm->node.flags & PM_UNIQUE)
+          .           	uniqarray(x);
+         27 ( 0.00%)      pm->u.arr = x;
+          .               /* Arrays tied to colon-arrays may need to fix the environment */
+         81 ( 0.00%)      if (pm->ename && x)
+          .           	arrfixenv(pm->ename, x);
+          .               /* If you extend this function, update the list of conditions in
+          .                * setarrvalue_len(). */
+        108 ( 0.00%)  }
+          .           
+          .           /* Function to get value of an association parameter */
+          .           
+-- line 4085 ----------------------------------------
+-- line 4095 ----------------------------------------
+          .           /**/
+          .           mod_export void
+          .           hashsetfn(Param pm, HashTable x)
+          2 ( 0.00%)  {
+          6 ( 0.00%)      if (pm->u.hash && pm->u.hash != x)
+          .           	deleteparamtable(pm->u.hash);
+          4 ( 0.00%)      pm->u.hash = x;
+          .           }
+          .           
+          .           /* Function to dispose of setting of an unsettable hash */
+-- line 4104 ----------------------------------------
+-- line 4115 ----------------------------------------
+          .           /**/
+          .           static void
+          .           arrhashsetfn(Param pm, char **val, int flags)
+         20 ( 0.00%)  {
+          .               /* Best not to shortcut this by using the existing hash table,   *
+          .                * since that could cause trouble for special hashes.  This way, *
+          .                * it's up to pm->gsu.h->setfn() what to do.                     */
+          .               int alen = 0;
+          6 ( 0.00%)      HashTable opmtab = paramtab, ht = 0;
+          .               char **aptr;
+          6 ( 0.00%)      Value v = (Value) hcalloc(sizeof *v);
+        102 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:hcalloc (2x)
+          2 ( 0.00%)      v->end = -1;
+          .           
+          6 ( 0.00%)      for (aptr = val; *aptr; ++aptr) {
+          .           	if (**aptr != Marker)
+          .           	    ++alen;
+          .               }
+-- line 4131 ----------------------------------------
+-- line 4135 ----------------------------------------
+          .           	zerr("bad set of key/value pairs for associative array");
+          .           	return;
+          .               }
+          4 ( 0.00%)      if (flags & ASSPM_AUGMENT) {
+          .           	ht = paramtab = pm->gsu.h->getfn(pm);
+          .               }
+          .               if (alen && (!(flags & ASSPM_AUGMENT) || !paramtab)) {
+-- line 4141 ----------------------------------------
+-- line 4168 ----------------------------------------
+          .           	/* ...but we can use the value without copying. */
+          .           	assignstrvalue(v, *aptr++, eltflags);
+          .               }
+          4 ( 0.00%)      paramtab = opmtab;
+          8 ( 0.00%)      pm->gsu.h->setfn(pm, ht);
+         12 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:hashsetfn (2x)
+          6 ( 0.00%)      free(val);		/* not freearray() */
+         70 ( 0.00%)  => ???:free (2x)
+         14 ( 0.00%)  }
+          .           
+          .           /*
+          .            * These functions are used as the set function for special parameters that
+-- line 4177 ----------------------------------------
+-- line 4282 ----------------------------------------
+          .           mod_export char **
+          .           arrvargetfn(Param pm)
+          .           {
+        168 ( 0.00%)      char **arrptr = *((char ***)pm->u.data);
+          .           
+        252 ( 0.00%)      return arrptr ? arrptr : &nullarray;
+         84 ( 0.00%)  }
+          .           
+          .           /* Function to set value of generic special array parameter.    *
+          .            * data is pointer to a variable length array of pointers which *
+-- line 4291 ----------------------------------------
+-- line 4325 ----------------------------------------
+          .           colonarrgetfn(Param pm)
+          .           {
+          .               char ***dptr = (char ***)pm->u.data;
+          7 ( 0.00%)      return *dptr ? zjoin(*dptr, ':', 1) : "";
+        245 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:zjoin (1x)
+          .           }
+          .           
+          .           /**/
+          .           void
+          .           colonarrsetfn(Param pm, char *x)
+          5 ( 0.00%)  {
+          1 ( 0.00%)      char ***dptr = (char ***)pm->u.data;
+          .               /*
+          .                * We have to make sure this is never NULL, since that
+          .                * can cause problems.
+          .                */
+          3 ( 0.00%)      if (*dptr)
+          1 ( 0.00%)  	freearray(*dptr);
+        219 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:freearray (1x)
+          2 ( 0.00%)      if (x)
+          6 ( 0.00%)  	*dptr = colonsplit(x, pm->node.flags & PM_UNIQUE);
+        488 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:colonsplit (1x)
+          .               else
+          .           	*dptr = mkarray(NULL);
+          2 ( 0.00%)      arrfixenv(pm->node.nam, *dptr);
+      1,485 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:arrfixenv (1x)
+          2 ( 0.00%)      zsfree(x);
+         37 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (1x)
+          3 ( 0.00%)  }
+          .           
+          .           /**/
+          .           char *
+-- line 4351 ----------------------------------------
+-- line 4536 ----------------------------------------
+          .           /**/
+          .           zlong
+          .           poundgetfn(UNUSED(Param pm))
+          6 ( 0.00%)  {
+         18 ( 0.00%)      return arrlen(pparams);
+         42 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:arrlen (6x)
+         12 ( 0.00%)  }
+          .           
+          .           /* Function to get value for special parameter `RANDOM' */
+          .           
+-- line 4544 ----------------------------------------
+-- line 4594 ----------------------------------------
+          .           /**/
+          .           double
+          .           floatsecondsgetfn(UNUSED(Param pm))
+          1 ( 0.00%)  {
+          .               struct timeval now;
+          .               struct timezone dummy_tz;
+          .           
+          4 ( 0.00%)      gettimeofday(&now, &dummy_tz);
+         10 ( 0.00%)  => ???:__gettimeofday_syscall (1x)
+          .           
+          5 ( 0.00%)      return (double)(now.tv_sec - shtimer.tv_sec) +
+          5 ( 0.00%)  	(double)(now.tv_usec - shtimer.tv_usec) / 1000000.0;
+          2 ( 0.00%)  }
+          .           
+          .           /**/
+          .           void
+          .           floatsecondssetfn(UNUSED(Param pm), double x)
+          4 ( 0.00%)  {
+          .               struct timeval now;
+          .               struct timezone dummy_tz;
+          .           
+          8 ( 0.00%)      gettimeofday(&now, &dummy_tz);
+         20 ( 0.00%)  => ???:__gettimeofday_syscall (2x)
+         16 ( 0.00%)      shtimer.tv_sec = now.tv_sec - (zlong)x;
+         10 ( 0.00%)      shtimer.tv_usec = now.tv_usec - (zlong)((x - (zlong)x) * 1000000.0);
+          4 ( 0.00%)  }
+          .           
+          .           /**/
+          .           double
+-- line 4620 ----------------------------------------
+-- line 4635 ----------------------------------------
+          .           int
+          .           setsecondstype(Param pm, int on, int off)
+          .           {
+          3 ( 0.00%)      int newflags = (pm->node.flags | on) & ~off;
+          2 ( 0.00%)      int tp = PM_TYPE(newflags);
+          .               /* Only one of the numeric types is allowed. */
+          3 ( 0.00%)      if (tp == PM_EFLOAT || tp == PM_FFLOAT)
+          .               {
+          1 ( 0.00%)  	pm->gsu.f = &floatseconds_gsu;
+          .               }
+          .               else if (tp == PM_INTEGER)
+          .               {
+-- line 4646 ----------------------------------------
+-- line 4648 ----------------------------------------
+          .               }
+          .               else
+          .           	return 1;
+          1 ( 0.00%)      pm->node.flags = newflags;
+          1 ( 0.00%)      return 0;
+          2 ( 0.00%)  }
+          .           
+          .           /* Function to get value for special parameter `USERNAME' */
+          .           
+-- line 4656 ----------------------------------------
+-- line 4836 ----------------------------------------
+          .           static void
+          .           clear_mbstate(void) {
+          .           #ifdef MULTIBYTE_SUPPORT
+          1 ( 0.00%)      mb_charinit();	/* utils.c */
+          2 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:mb_charinit (1x)
+          1 ( 0.00%)      clear_shiftstate();	/* pattern.c */
+          2 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/pattern.c:clear_shiftstate (1x)
+          .           #endif
+          .           }
+          .           
+-- line 4843 ----------------------------------------
+-- line 4844 ----------------------------------------
+          .           /**/
+          .           static void
+          .           setlang(char *x)
+          3 ( 0.00%)  {
+          .               struct localename *ln;
+          .               char *x2;
+          .           
+          4 ( 0.00%)      if ((x2 = getsparam_u("LC_ALL")) && *x2)
+          .           	return;
+          .           
+          .               /*
+-- line 4854 ----------------------------------------
+-- line 4870 ----------------------------------------
+          .           	    setlocale(ln->category, x);
+          .               unqueue_signals();
+          .               inittyptab();
+          3 ( 0.00%)  }
+          .           
+          .           /**/
+          .           void
+          .           lc_allsetfn(Param pm, char *x)
+          3 ( 0.00%)  {
+          1 ( 0.00%)      strsetfn(pm, x);
+         25 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:strsetfn (1x)
+          .               /*
+          .                * Treat an empty LC_ALL the same as an unset one,
+          .                * namely by using LANG as the default locale but overriding
+          .                * that with any LC_* that are set.
+          .                */
+          4 ( 0.00%)      if (!x || !*x) {
+          .           	x = getsparam_u("LANG");
+          .           	if (x && *x) {
+          .           	    queue_signals();
+-- line 4888 ----------------------------------------
+-- line 4891 ----------------------------------------
+          .           	}
+          .               }
+          .               else {
+          6 ( 0.00%)  	setlocale(LC_ALL, unmeta(x));
+        133 ( 0.00%)  => ???:setlocale (1x)
+         76 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:unmeta (1x)
+          .           	clear_mbstate();
+          1 ( 0.00%)  	inittyptab();
+      1,638 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:inittyptab (1x)
+          .               }
+          2 ( 0.00%)  }
+          .           
+          .           /**/
+          .           void
+          .           langsetfn(Param pm, char *x)
+          2 ( 0.00%)  {
+          1 ( 0.00%)      strsetfn(pm, x);
+         25 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:strsetfn (1x)
+          4 ( 0.00%)      setlang(unmeta(x));
+        463 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:setlang (1x)
+         76 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:unmeta (1x)
+          1 ( 0.00%)  }
+          .           
+          .           /**/
+          .           void
+-- line 4909 ----------------------------------------
+-- line 5289 ----------------------------------------
+          .           /**/
+          .           void
+          .           arrfixenv(char *s, char **t)
+          4 ( 0.00%)  {
+          .               Param pm;
+          .               int joinchar;
+          .           
+          2 ( 0.00%)      if (t == path)
+          6 ( 0.00%)  	cmdnamtab->emptytable(cmdnamtab);
+      1,349 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:emptycmdnamtable (1x)
+          .           
+          5 ( 0.00%)      pm = (Param) paramtab->getnode(paramtab, s);
+        105 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:getparamnode (1x)
+          .               
+          .               /*
+          .                * Only one level of a parameter can be exported.  Unless
+-- line 5302 ----------------------------------------
+-- line 5303 ----------------------------------------
+          .                * ALLEXPORT is set, this must be global.
+          .                */
+          .           
+          3 ( 0.00%)      if (pm->node.flags & PM_HASHELEM)
+          .           	return;
+          .           
+          2 ( 0.00%)      if (isset(ALLEXPORT))
+          1 ( 0.00%)  	pm->node.flags |= PM_EXPORTED;
+          2 ( 0.00%)      pm->node.flags &= ~PM_DEFAULTED;
+          .           
+          .               /*
+          .                * Do not "fix" parameters that were not exported
+          .                */
+          .           
+          3 ( 0.00%)      if (!(pm->node.flags & PM_EXPORTED))
+          .           	return;
+          .           
+          .               if (pm->node.flags & PM_SPECIAL)
+-- line 5320 ----------------------------------------
+-- line 5323 ----------------------------------------
+          .           	joinchar = (unsigned char) ((struct tieddata *)pm->u.data)->joinchar;
+          .           
+          .               addenv(pm, t ? zjoin(t, joinchar, 1) : "");
+          3 ( 0.00%)  }
+          .           
+          .           
+          .           /**/
+          .           int
+          .           zputenv(char *str)
+          5 ( 0.00%)  {
+          .               DPUTS(!str, "Attempt to put null string into environment.");
+          .           #ifdef USE_SET_UNSET_ENV
+          .               /*
+-- line 5335 ----------------------------------------
+-- line 5342 ----------------------------------------
+          .               char *ptr;
+          .               int ret;
+          .           
+        180 ( 0.00%)      for (ptr = str; *ptr && (unsigned char) *ptr < 128 && *ptr != '='; ptr++)
+          .           	;
+         10 ( 0.00%)      if ((unsigned char) *ptr >= 128) {
+          .           	/*
+          .           	 * Environment variables not in the portable character
+          .           	 * set are non-standard and we don't really know of
+-- line 5350 ----------------------------------------
+-- line 5353 ----------------------------------------
+          .           	 * We'll disable until someone complains.
+          .           	 */
+          .           	return 1;
+          5 ( 0.00%)      } else if (*ptr) {
+          5 ( 0.00%)  	*ptr = '\0';
+         29 ( 0.00%)  	ret = setenv(str, ptr+1, 1);
+      5,975 ( 0.00%)  => ???:setenv (5x)
+        897 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+         10 ( 0.00%)  	*ptr = '=';
+          .               } else {
+          .           	/* safety first */
+          .           	DPUTS(1, "bad environment string");
+-- line 5362 ----------------------------------------
+-- line 5388 ----------------------------------------
+          .               return 0;
+          .           #endif
+          .           #endif
+         10 ( 0.00%)  }
+          .           
+          .           /**/
+          .           #ifndef USE_SET_UNSET_ENV
+-- line 5394 ----------------------------------------
+-- line 5422 ----------------------------------------
+          .           zgetenv(char *name)
+          .           {
+          .           #ifdef HAVE_GETENV
+          6 ( 0.00%)      return getenv(name);
+        865 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+        112 ( 0.00%)  => ???:getenv (1x)
+          .           #else
+          .               char **ep, *s, *t;
+          .            
+-- line 5428 ----------------------------------------
+-- line 5439 ----------------------------------------
+          .           static void
+          .           copyenvstr(char *s, char *value, int flags)
+          .           {
+        424 ( 0.00%)      while (*s++) {
+        680 ( 0.00%)  	if ((*s = *value++) == Meta)
+          .           	    *s = *value++ ^ 32;
+        272 ( 0.00%)  	if (flags & PM_LOWER)
+          .           	    *s = tulower(*s);
+        272 ( 0.00%)  	else if (flags & PM_UPPER)
+          .           	    *s = tuupper(*s);
+          .               }
+          .           }
+-- line 5450 ----------------------------------------
+-- line 5452 ----------------------------------------
+          .           /**/
+          .           void
+          .           addenv(Param pm, char *value)
+         20 ( 0.00%)  {
+          .               char *newenv = 0;
+          .           #ifndef USE_SET_UNSET_ENV
+          .               char *oldenv = 0, *env = 0;
+-- line 5458 ----------------------------------------
+-- line 5466 ----------------------------------------
+          .           	oldenv = environ[pos];
+          .           #endif
+          .           
+         20 ( 0.00%)       newenv = mkenvstr(pm->node.nam, value, pm->node.flags);
+      3,238 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:mkenvstr (5x)
+         20 ( 0.00%)       if (zputenv(newenv)) {
+      7,126 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:zputenv (5x)
+          .                   zsfree(newenv);
+          .           	pm->env = NULL;
+          .           	return;
+-- line 5473 ----------------------------------------
+-- line 5483 ----------------------------------------
+          .                 * the other branch?  If so, we don't actually need to
+          .                 * store pm->env at all, just a flag that the value was set.
+          .                 */
+         15 ( 0.00%)       if (pm->env)
+          .                    zsfree(pm->env);
+          5 ( 0.00%)       pm->env = newenv;
+          5 ( 0.00%)       pm->node.flags |= PM_EXPORTED;
+          .           #else
+          .               /*
+          .                * Under Cygwin we must use putenv() to maintain consistency.
+-- line 5492 ----------------------------------------
+-- line 5508 ----------------------------------------
+          .               DPUTS(1, "addenv should never reach the end");
+          .               pm->env = NULL;
+          .           #endif
+         20 ( 0.00%)  }
+          .           
+          .           
+          .           /* Given strings *name = "foo", *value = "bar", *
+-- line 5514 ----------------------------------------
+-- line 5517 ----------------------------------------
+          .           /**/
+          .           static char *
+          .           mkenvstr(char *name, char *value, int flags)
+         64 ( 0.00%)  {
+          8 ( 0.00%)      char *str, *s = value;
+          8 ( 0.00%)      int len_name, len_value = 0;
+          .           
+         24 ( 0.00%)      len_name = strlen(name);
+        112 ( 0.00%)  => ???:__strlen_avx2 (8x)
+         16 ( 0.00%)      if (s)
+        792 ( 0.00%)  	while (*s && (*s++ != Meta || *s++ != 32))
+        128 ( 0.00%)  	    len_value++;
+         32 ( 0.00%)      s = str = (char *) zalloc(len_name + len_value + 2);
+      1,341 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zalloc (8x)
+         32 ( 0.00%)      strcpy(s, name);
+        200 ( 0.00%)  => ???:__strcpy_avx2 (8x)
+         16 ( 0.00%)      s += len_name;
+          8 ( 0.00%)      *s = '=';
+          .               if (value)
+          .           	copyenvstr(s, value, flags);
+          .               else
+          .           	*++s = '\0';
+          .               return str;
+         56 ( 0.00%)  }
+          .           
+          .           /* Given *name = "foo", *value = "bar", add the    *
+          .            * string "foo=bar" to the environment.  Return a  *
+-- line 5540 ----------------------------------------
+-- line 5590 ----------------------------------------
+          .           /**/
+          .           void
+          .           convbase_ptr(char *s, zlong v, int base, int *ndigits)
+    192,084 ( 0.00%)  {
+     96,042 ( 0.00%)      int digs = 0;
+          .               zulong x;
+          .           
+     96,042 ( 0.00%)      if (v < 0)
+          .           	*s++ = '-', v = -v;
+    192,084 ( 0.00%)      if (base >= -1 && base <= 1)
+          .           	base = -10;
+          .           
+         12 ( 0.00%)      if (base > 0) {
+         12 ( 0.00%)  	if (isset(CBASES) && base == 16)
+          .           	    sprintf(s, "0x");
+          .           	else if (isset(CBASES) && base == 8 && isset(OCTALZEROES))
+          .           	    sprintf(s, "0");
+         12 ( 0.00%)  	else if (base != 10)
+          .           	    sprintf(s, "%d#", base);
+          .           	else
+          6 ( 0.00%)  	    *s = 0;
+         54 ( 0.00%)  	s += strlen(s);
+         84 ( 0.00%)  => ???:__strlen_avx2 (6x)
+          .               } else
+          .           	base = -base;
+    776,508 ( 0.02%)      for (x = v; x; digs++)
+    438,318 ( 0.01%)  	x /= base;
+          .               if (!digs)
+          .           	digs = 1;
+     96,042 ( 0.00%)      if (ndigits)
+          .           	*ndigits = digs;
+     96,042 ( 0.00%)      s[digs--] = '\0';
+          .               x = v;
+    776,508 ( 0.02%)      while (digs >= 0) {
+    584,442 ( 0.01%)  	int dig = x % base;
+          .           
+    730,530 ( 0.02%)  	s[digs--] = (dig < 10) ? '0' + dig : dig - 10 + 'A';
+          .           	x /= base;
+          .               }
+     96,042 ( 0.00%)  }
+          .           
+          .           /*
+          .            * Basic conversion of integer to a string given a base.
+-- line 5631 ----------------------------------------
+-- line 5637 ----------------------------------------
+          .           mod_export void
+          .           convbase(char *s, zlong v, int base)
+          .           {
+    240,105 ( 0.01%)      convbase_ptr(s, v, base, NULL);
+  4,170,864 ( 0.10%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:convbase_ptr (48,021x)
+          .           }
+          .           
+          .           /*
+-- line 5643 ----------------------------------------
+-- line 5694 ----------------------------------------
+          .           /**/
+          .           char *
+          .           convfloat(double dval, int digits, int flags, FILE *fout)
+         10 ( 0.00%)  {
+          4 ( 0.00%)      char fmt[] = "%.*e";
+          .               char *prev_locale, *ret;
+          .           
+          .               /*
+-- line 5701 ----------------------------------------
+-- line 5708 ----------------------------------------
+          .                * bargain for it.  So we just allocate 512 + digits.  This
+          .                * should work until somebody decides on 128-bit doubles.
+          .                */
+          4 ( 0.00%)      if (!(flags & (PM_EFLOAT|PM_FFLOAT))) {
+          .           	/*
+          .           	 * Conversion from a floating point expression without using
+          .           	 * a variable.  The best bet in this case just seems to be
+-- line 5714 ----------------------------------------
+-- line 5719 ----------------------------------------
+          .           	if (!digits)
+          .           	    digits = 17;
+          .               } else {
+          4 ( 0.00%)  	if (flags & PM_FFLOAT)
+          1 ( 0.00%)  	    fmt[3] = 'f';
+          .           	if (digits <= 0)
+          8 ( 0.00%)  	    digits = 10;
+          2 ( 0.00%)  	if (flags & PM_EFLOAT) {
+          .           	    /*
+          .           	     * Here, we are given the number of significant figures, but
+          .           	     * %e wants the number of decimal places (unlike %g)
+          .           	     */
+          6 ( 0.00%)  	    digits--;
+          .           	}
+          .               }
+          .           #ifdef USE_LOCALE
+         16 ( 0.00%)      prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+         64 ( 0.00%)  => ???:setlocale (2x)
+        164 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstring (2x)
+          8 ( 0.00%)      setlocale(LC_NUMERIC, "POSIX");
+      4,672 ( 0.00%)  => ???:setlocale (2x)
+          .           #endif
+          6 ( 0.00%)      if (fout) {
+          .           	fprintf(fout, fmt, digits, dval);
+          .           	ret = NULL;
+          .               } else {
+         10 ( 0.00%)  	VARARR(char, buf, 512 + digits);
+         58 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zhalloc (2x)
+         10 ( 0.00%)  	if (isinf(dval))
+          .           	    ret = dupstring((dval < 0.0) ? "-Inf" : "Inf");
+          4 ( 0.00%)  	else if (isnan(dval))
+          .           	    ret = dupstring("NaN");
+          .           	else {
+         12 ( 0.00%)  	    sprintf(buf, fmt, digits, dval);
+      5,281 ( 0.00%)  => ???:sprintf (2x)
+         18 ( 0.00%)  	    if (!strchr(buf, 'e') && !strchr(buf, '.'))
+         63 ( 0.00%)  => ???:__strchr_avx2 (3x)
+          .           		strcat(buf, ".");
+          8 ( 0.00%)  	    ret = dupstring(buf);
+        160 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/string.c:dupstring (2x)
+          .           	}
+          .               }
+          .           #ifdef USE_LOCALE
+         12 ( 0.00%)      if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+      9,465 ( 0.00%)  => ???:setlocale (2x)
+          .           #endif
+          .               return ret;
+         12 ( 0.00%)  }
+          .           
+          .           /*
+          .            * convert float to string with basic options but inserting underscores
+-- line 5761 ----------------------------------------
+-- line 5840 ----------------------------------------
+          .           mod_export void
+          .           startparamscope(void)
+          .           {
+     36,045 ( 0.00%)      locallevel++;
+     36,045 ( 0.00%)  }
+          .           
+          .           #ifdef USE_LOCALE
+          .           /*
+-- line 5847 ----------------------------------------
+-- line 5856 ----------------------------------------
+          .           /**/
+          .           mod_export void
+          .           endparamscope(void)
+    108,135 ( 0.00%)  {
+    108,135 ( 0.00%)      queue_signals();
+     36,045 ( 0.00%)      locallevel--;
+          .               /* This pops anything from a higher locallevel */
+    108,135 ( 0.00%)      saveandpophiststack(0, HFILE_USE_OPTIONS);
+    792,990 ( 0.02%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hist.c:saveandpophiststack (36,045x)
+          .           #ifdef USE_LOCALE
+     36,045 ( 0.00%)      lc_update_needed = 0;
+          .           #endif
+    252,315 ( 0.01%)      scanhashtable(paramtab, 0, 0, 0, scanendscope, 0);
+223,518,618 ( 5.60%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/hashtable.c:scanhashtable (36,045x)
+          .           #ifdef USE_LOCALE
+    108,135 ( 0.00%)      if (lc_update_needed)
+          .               {
+          .           	/* Locale changed --- ensure it is restored. */
+          .           	char *val;
+-- line 5872 ----------------------------------------
+-- line 5884 ----------------------------------------
+          .           	clear_mbstate();    /* LC_CTYPE may have changed */
+          .               }
+          .           #endif /* USE_LOCALE */
+     72,090 ( 0.00%)      unqueue_signals();
+    144,180 ( 0.00%)  }
+          .           
+          .           /**/
+          .           static void
+-- line 5891 ----------------------------------------
+-- line 5892 ----------------------------------------
+          .           scanendscope(HashNode hn, UNUSED(int flags))
+          .           {
+          .               Param pm = (Param)hn;
+ 26,372,682 ( 0.66%)      if (pm->level > locallevel) {
+    540,330 ( 0.01%)  	if ((pm->node.flags & (PM_SPECIAL|PM_REMOVABLE)) == PM_SPECIAL) {
+          .           	    /*
+          .           	     * Removable specials are normal in that they can be removed
+          .           	     * to reveal an ordinary parameter beneath.  Here we handle
+-- line 5899 ----------------------------------------
+-- line 5954 ----------------------------------------
+          .           	    if (pm->node.flags & PM_EXPORTED)
+          .           		export_param(pm);
+          .           	} else
+    324,198 ( 0.01%)  	    unsetparam_pm(pm, 0, 0);
+ 43,764,324 ( 1.10%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:unsetparam_pm (108,066x)
+          .               }
+          .           }
+          .           
+-- line 5960 ----------------------------------------
+-- line 5966 ----------------------------------------
+          .           /**/
+          .           void
+          .           freeparamnode(HashNode hn)
+    216,132 ( 0.01%)  {
+          .               Param pm = (Param) hn;
+          .               invalidate_array_length(pm);
+          .            
+-- line 5972 ----------------------------------------
+-- line 5975 ----------------------------------------
+          .                * a parameter is going out of scope.  It's not clear which
+          .                * of these applies here, but passing 1 has always worked.
+          .                */
+    324,198 ( 0.01%)      if (delunset)
+          .           	pm->gsu.s->unsetfn(pm, 1);
+    216,132 ( 0.01%)      zsfree(pm->node.nam);
+  6,460,121 ( 0.16%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (108,066x)
+          .               /* If this variable was tied by the user, ename was ztrdup'd */
+    216,132 ( 0.01%)      if (!(pm->node.flags & PM_SPECIAL))
+    216,132 ( 0.01%)  	zsfree(pm->ename);
+    648,396 ( 0.02%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zsfree (108,066x)
+    324,198 ( 0.01%)      zfree(pm, sizeof(struct param));
+  3,998,442 ( 0.10%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/mem.c:zfree (108,066x)
+    108,066 ( 0.00%)  }
+          .           
+          .           /* Print a parameter */
+          .           
+-- line 5988 ----------------------------------------
+-- line 6031 ----------------------------------------
+          .           
+          .               /* How the value is displayed depends *
+          .                * on the type of the parameter       */
+         18 ( 0.00%)      switch (PM_TYPE(p->node.flags)) {
+          .               case PM_SCALAR:
+          .           	/* string: simple output */
+          8 ( 0.00%)  	if (p->gsu.s->getfn && (t = p->gsu.s->getfn(p)))
+          4 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:strgetfn (1x)
+          4 ( 0.00%)  	    quotedzputs(t, stdout);
+      1,074 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:quotedzputs (1x)
+          .           	break;
+          .               case PM_INTEGER:
+          .           	/* integer */
+-- line 6041 ----------------------------------------
+-- line 6042 ----------------------------------------
+          .           #ifdef ZSH_64_BIT_TYPE
+          .           	fputs(output64(p->gsu.i->getfn(p)), stdout);
+          .           #else
+         16 ( 0.00%)  	printf("%ld", p->gsu.i->getfn(p));
+      1,138 ( 0.00%)  => ???:printf (2x)
+          4 ( 0.00%)  => .work/package/1.0.0-rc0-ac4028c278e1/core/Src/params.c:intgetfn (2x)
+          .           #endif
+          2 ( 0.00%)  	break;
+          .               case PM_EFLOAT:
+          .               case PM_FFLOAT:
+          .           	/* float */
+-- line 6050 ----------------------------------------
+-- line 6110 ----------------------------------------
+          .           /**/
+          .           mod_export void
+          .           printparamnode(HashNode hn, int printflags)
+         27 ( 0.00%)  {
+          .               Param p = (Param) hn;
+          3 ( 0.00%)      Param peer = NULL;
+          .               int altname = 0;
+          .           
+          9 ( 0.00%)      if (p->node.flags & PM_UNSET) {
+          .           	if ((printflags & (PRINT_POSIX_READONLY|PRINT_POSIX_EXPORT) &&
+          .           	     p->node.flags & (PM_READONLY|PM_EXPORTED)) ||
+          .           	    (p->node.flags & PM_DEFAULTED) == PM_DEFAULTED) {
+-- line 6121 ----------------------------------------
+-- line 6128 ----------------------------------------
+          .           	else
+          .           	    return;
+          .               }
+          9 ( 0.00%)      if (p->node.flags & PM_AUTOLOAD)
+          .           	printflags |= PRINT_NAMEONLY;
+          .           
+          6 ( 0.00%)      if (printflags & (PRINT_TYPESET|PRINT_POSIX_READONLY|PRINT_POSIX_EXPORT)) {
+          6 ( 0.00%)  	if (p->node.flags & (PM_RO_BY_DESIGN|PM_AUTOLOAD)) {
+          .           	    /*
+          .           	     * It's not possible to restore the state of
+          .           	     * these, so don't output.
+-- line 6138 ----------------------------------------
+-- line 6144 ----------------------------------------
+          .           	 * flags to indicate other attributes or scope. The POSIX variants
+          .           	 * don't.
+          .           	 */
+          6 ( 0.00%)  	if (printflags & PRINT_POSIX_EXPORT) {
+          .           	    if (!(p->node.flags & PM_EXPORTED))
+          .           		return;
+          .           	    altname = 'x';
+          .           	    printf("export ");
+          6 ( 0.00%)  	} else if (printflags & PRINT_POSIX_READONLY) {
+          .           	    if (!(p->node.flags & PM_READONLY))
+          .           		return;
+          .           	    altname = 'r';
+          .           	    printf("readonly ");
+          6 ( 0.00%)  	} else if ((p->node.flags & PM_EXPORTED) &&
+          .           		   !(p->node.flags & (PM_ARRAY|PM_HASHED))) {
+          .           	  if (p->level && p->level >= locallevel)
+          .           		printf("local ");
+-- line 6160 ----------------------------------------
+-- line 6162 ----------------------------------------
+          .           		altname = 'x';
+          .           		printf("export ");
+          .           	    }
+          9 ( 0.00%)  	} else if (locallevel && p->level >= locallevel) {
+          .           	    if (p->node.flags & PM_EXPORTED)
+          .           		printf("local ");
+          .           	    else
+         19 ( 0.00%)  		printf("typeset ");	    /* printf("local "); */
+        819 ( 0.00%)  => ???:printf (3x)
+        859 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+          .           	} else if (locallevel) {
+          .           	    printf("typeset -g ");
+          .           	} else
+-- line 6172 ----------------------------------------
+-- line 6174 ----------------------------------------
+          .               }
+          .           
+          .               /* Print the attributes of the parameter */
+          6 ( 0.00%)      if (printflags & (PRINT_TYPE|PRINT_TYPESET)) {
+          3 ( 0.00%)  	int doneminus = 0, i;
+          .           	const struct paramtypes *pmptr;
+          .           
+        156 ( 0.00%)  	for (pmptr = pmtypes, i = 0; i < PMTYPES_SIZE; i++, pmptr++) {
+          .           	    int doprint = 0;
+          .           
+        102 ( 0.00%)  	    if (altname && altname == pmptr->typeflag)
+          .           		continue;
+          .           
+        153 ( 0.00%)  	    if (pmptr->flags & PMTF_TEST_LEVEL) {
+          9 ( 0.00%)  		if (p->level)
+          .           		    doprint = 1;
+        159 ( 0.00%)  	    } else if ((pmptr->binflag != PM_EXPORTED || p->level ||
+         45 ( 0.00%)  			(p->node.flags & (PM_LOCAL|PM_ARRAY|PM_HASHED))) &&
+         45 ( 0.00%)  		       (p->node.flags & pmptr->binflag))
+          .           		doprint = 1;
+          .           
+          .           	    if (doprint) {
+         13 ( 0.00%)  		if (printflags & PRINT_TYPESET) {
+          6 ( 0.00%)  		    if (pmptr->typeflag) {
+          4 ( 0.00%)  			if (!doneminus) {
+          .           			    putchar('-');
+          .           			    doneminus = 1;
+          .           			}
+          4 ( 0.00%)  			putchar(pmptr->typeflag);
+          .           		    }
+          .           		} else
+          .           		    printf("%s ", pmptr->string);
+         12 ( 0.00%)  		if ((pmptr->flags & PMTF_USE_BASE) && p->base) {
+          .           		    printf("%d ", p->base);
+          .           		    doneminus = 0;
+          .           		}
+          4 ( 0.00%)  		if ((pmptr->flags & PMTF_USE_WIDTH) && p->width) {
+          .           		    printf("%u ", p->width);
+          .           		    doneminus = 0;
+          .           		}
+          .           	    }
+          .           	}
+          6 ( 0.00%)  	if (doneminus)
+          .           	    putchar(' ');
+          .           
+          6 ( 0.00%)  	if (p->node.flags & PM_TIED) {
+          .           	    /*
+          .           	     * For scalars tied to arrays,s
+          .           	     *   * typeset +m outputs
+-- line 6222 ----------------------------------------
+-- line 6251 ----------------------------------------
+          .           	}
+          .               }
+          .           
+         24 ( 0.00%)      if ((printflags & PRINT_NAMEONLY) ||
+          .           	((p->node.flags & PM_HIDEVAL) && !(printflags & PRINT_INCLUDEVALUE)))
+          .           	quotedzputs(p->node.nam, stdout);
+          .               else {
+          9 ( 0.00%)  	if (printflags & PRINT_KV_PAIR) {
+          .           	    if (printflags & PRINT_LINE)
+          .           		printf("\n  ");
+          .           	    putchar('[');
+          .           	}
+          9 ( 0.00%)  	quotedzputs(p->node.nam, stdout);
+     10,216 ( 0.00%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src/utils.c:quotedzputs (3x)
+          .           	if (printflags & PRINT_KV_PAIR)
+          .           	    printf("]=");
+          .           
+          .           	printparamvalue(p, printflags);
+          .               }
+          6 ( 0.00%)      if (peer && (printflags & PRINT_TYPESET) && !(p->node.flags & PM_SPECIAL)) {
+          .           	/*
+          .           	 * append the join char for tied parameters if different from colon
+          .           	 * for typeset -p output.
+-- line 6272 ----------------------------------------
+-- line 6280 ----------------------------------------
+          .           	    quotedzputs(buf, stdout);
+          .           	}
+          .               }
+         12 ( 0.00%)      if ((printflags & (PRINT_KV_PAIR|PRINT_LINE)) == PRINT_KV_PAIR)
+          .           	putchar(' ');
+          6 ( 0.00%)      else if (!(printflags & PRINT_KV_PAIR))
+          .           	putchar('\n');
+         21 ( 0.00%)  }
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+1,246,253,759 (31.20%)  events annotated
+

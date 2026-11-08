@@ -90,6 +90,30 @@ def scalar_cases():
                    "printf '%s\\0' \"$out\"\ntypeset -p s\n", 1, False)
 
 
+def large_cases():
+    starts = "-1 0 1 63 64 65 127 128 129 1024 1025 4294967295 4294967296 9223372036854775807"
+    patterns = "'target' '*' 'missing' '(#b)(t*)'"
+    for mode, multibyte, size in itertools.product(
+        ("zsh", "ksh", "sh"), ("multibyte", "nomultibyte"), (63, 64, 65, 127, 128, 129, 1024),
+    ):
+        # Construct the same physical vector before changing indexing options.
+        code = f"emulate -R zsh\ninteger size={size}\n"
+        code += "typeset -a a=( ${(s::)${(l:$size::x:)}} )\n"
+        code += "a[2]=$'é\\0x'; a[$((size/2))]=target; a[size]=target\n"
+        code += f"emulate -R {mode}\nsetopt extendedglob {multibyte}\n"
+        code += "match=(); mbegin=(); mend=()\ninteger begin_at match_number\n"
+        code += "for iteration in 1 2 3; do\n"
+        for flag in ("i", "I", "r", "R"):
+            code += f"for needle in {patterns}; do\n  for begin_at in {starts}; do\n"
+            code += "    for match_number in -1 1 2; do\n"
+            expression = "${a[(" + flag + "b:begin_at:n:match_number:)$needle]}"
+            code += f'      out="{expression}"\n      printf \'%s\\0\' "$out"\n'
+            code += "      if [[ $needle == '(#b)(t*)' ]]; then typeset -p match mbegin mend; fi\n"
+            code += "    done\n  done\ndone\n"
+        code += "done\ntypeset -p a\nprint -r -- matrix-done\n"
+        yield (f"large/{mode}/{multibyte}/{size}", code, 3 * 4 * 4 * 14 * 3, True)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("baseline", type=Path)
@@ -97,13 +121,15 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--scalars", action="store_true",
                    help="also compare scalar pattern searches, ranges and formatting")
+    p.add_argument("--large", action="store_true",
+                   help="also compare repeated searches across cached-prefix and wide-integer start boundaries")
     args = p.parse_args()
     shells = [str(s.resolve(strict=True)) for s in (args.baseline, args.candidate)]
     failures = []
     checks = 0
     for locale in ("C", "C.UTF-8"):
         for label, code, count, matrix in itertools.chain(
-            cases(), scalar_cases() if args.scalars else (),
+            cases(), scalar_cases() if args.scalars else (), large_cases() if args.large else (),
         ):
             results = []
             for shell in shells:

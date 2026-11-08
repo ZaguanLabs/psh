@@ -801,3 +801,36 @@ The extra fixtures run only with `--operators`; the default generated corpus
 retains its existing behavior. `--syntax` remains available independently or
 in combination. Compare compiler/profile pairs and retain slower controls;
 the hint does not guarantee a speedup with every compiler or workload.
+
+## Forward search prefix reuse (round twenty-four)
+
+The [round twenty-four report](round24.md) measures repeated distant positive
+array search starts against the preceding psh. The new path reuses the existing
+confirmed-prefix metadata; it adds no native ownership rule. The matching loop,
+callbacks, captures and occurrence handling remain unchanged.
+
+```sh
+python3 Perf/search-compare.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --scalars --large --output .work/logs/large-search.json
+python3 Perf/check-array-search.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --output .work/logs/search-memcheck.json
+python3 Perf/check-array-cache.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --headers-build /path/to/previous --headers-source /path/to/previous-source \
+  --memcheck --output .work/logs/cache-lifetimes.json
+python3 Perf/check-array-cache-signals.py /path/to/candidate/Src/zsh \
+  --search --output .work/logs/search-signals.json
+```
+
+`--large` adds 169,344 comparisons across C/C.UTF-8, native/ksh/sh emulation,
+multibyte modes, prefix boundaries, cold/warm repetitions and starts up to the
+signed 64-bit maximum. Combined with `--scalars` there are 362,580 comparisons.
+The default corpus stays unchanged. `check-array-search.py` runs the additional
+boundary corpus under Memcheck on both shells (168 processes); completion
+markers, exact bytes and statuses must match, with no memory errors.
+
+The lifetime fixture now includes forward searches around native vector loans,
+shortening, setter invalidation and append reallocations. Omit `--raw-contract`
+when comparing two releases that both already implement the round-twenty-two
+ownership rule; that optional mode expects a pre-cache baseline. The GDB
+`--search` probe checks all cache entries at three unqueued calls, including
+after a queued call has warmed the cache. These debugger checks require symbols.

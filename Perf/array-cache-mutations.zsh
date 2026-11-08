@@ -5,6 +5,7 @@ _psh_cache_probe() {
   typeset n
   for n in 64 65 128 255 256 257 511 512 513 1000 1001 0 -1 -3; do
     print -r -- "$n:${+a[$n]}:${(qqqq)a[$n]}"
+    print -r -- "search=$n:${a[(ib:n:)2*]}:${(qqqq)a[(rb:n:)2*]}"
     [[ -v "a[$n]" ]]
     print -r -- "exists=$?"
   done

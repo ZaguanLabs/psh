@@ -96,7 +96,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-one accepted optimizations.
+The executable now includes twenty-two accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -126,7 +126,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-one changes; the fourth experiment compares against
+executable includes all twenty-two changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -249,3 +249,11 @@ about 4.5% in two idle runs; JSON array encoding is about 3% slower. The full
 [round-twenty-three report](Perf/round23.md) retains both controls and an earlier
 noisy run, plus operator/lvalue/callback/stack-limit comparisons and native
 floating-state checks. No new language or native-interface difference is intended.
+
+The twenty-second accepted change reuses confirmed array prefixes when seeking
+the start of a forward pattern search. Matching and captures still run normally;
+custom/special/tied arrays, mutable native loans and unqueued calls retain the
+old walk. JSON parsing improves about 8–9% and validation about 10% in the
+measured workloads. Slightly slower simulation/drawing controls are retained in
+the [round-twenty-four report](Perf/round24.md). The existing native ownership
+contract and signal boundaries remain unchanged.

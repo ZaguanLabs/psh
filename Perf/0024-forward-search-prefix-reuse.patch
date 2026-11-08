@@ -1,0 +1,295 @@
+Round twenty-four: reuse confirmed array prefixes for forward search starts
+Parent: 9d710a9d617d4458afd166577fe40d98b11140d7
+
+diff --git a/COMPATIBILITY.md b/COMPATIBILITY.md
+index e869c2f..8f73c30 100644
+--- a/COMPATIBILITY.md
++++ b/COMPATIBILITY.md
+@@ -52,6 +52,8 @@ SDKs and rebuilt modules. Round twenty-two introduces no intended shell-language
+ change; its native array-ownership rules are described below.
+ Round twenty-three adds only an arithmetic inline hint, with no new intended
+ language or native-interface difference.
++Round twenty-four extends confirmed-prefix reuse to forward array search starts,
++under the same ownership and signal guards; it adds no new intended difference.
+ 
+ ## Deliberate differences
+ 
+@@ -79,6 +81,9 @@ or whole-array `getarrvalue()` marks the allocation exposed. Such vectors retain
+ ordinary scanning, including when a module keeps the loan across interpreter
+ calls, cache eviction, a same-vector setter, or an in-place append reallocation.
+ Replacing the allocation through its setter permits caching again.
++Round twenty-four uses the same confirmed prefixes to locate forward pattern
++search starts. It preserves matching/capture behavior and the same native loan
++opt-out; a terminator still supplies the original missing index.
+ 
+ Native modules must obtain mutable vectors through those accessors and change
+ owned parameter allocations through their setters. Do not silently replace,
+@@ -110,7 +115,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
+ 
+ ## What has and has not been checked
+ 
+-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-one
++The [source-review map](Perf/audit.md) describes focused coverage. Twenty-two
+ accepted optimizations change a limited set of core paths: arrays/subscripts,
+ metafied strings, character scanning, terminal-star matching, substitution and
+ arithmetic. This is not a completed audit of the complete interpreter.
+diff --git a/Perf/array-cache-lifetimes.zsh b/Perf/array-cache-lifetimes.zsh
+index 94530a2..ea1322d 100644
+--- a/Perf/array-cache-lifetimes.zsh
++++ b/Perf/array-cache-lifetimes.zsh
+@@ -6,12 +6,14 @@ for kind in getaparam getter getarrvalue; do
+   psh-cache-fixture init || exit 1
+   repeat 4; do
+     [[ -v 'psh_cache_array[1000]' && ${psh_cache_array[1000]} == item ]] || exit 2
++    [[ ${psh_cache_array[(ib:1000:)item]} == 1000 ]] || exit 21
+   done
+   psh-cache-fixture loan $kind || exit 3
+   # Keep the native loan alive while interpreter queries populate/evict caches.
+   repeat 4; do
+     [[ -v 'psh_cache_array[1000]' ]] || exit 4
+     : "${psh_cache_array[1000]}"
++    [[ ${psh_cache_array[(ib:1000:)item]} == 1000 ]] || exit 22
+   done
+   for (( i=0; i<192; i++ )); do
+     eval "psh_cache_other$i=( {1..128} )"
+@@ -26,6 +28,8 @@ for kind in getaparam getter getarrvalue; do
+     [[ ! -v 'psh_cache_array[1000]' && ! -v 'psh_cache_array[1001]' &&
+        ${+psh_cache_array[1000]} == 0 && -z ${psh_cache_array[1000]} &&
+        -z ${psh_cache_array[1001]} ]] || exit 7
++    [[ ${psh_cache_array[(ib:1000:)item]} == 4 &&
++       ${psh_cache_array[(ib:1001:)item]} == 4 ]] || exit 23
+     (( checks++ ))
+   done
+   psh-cache-fixture restore || exit 8
+@@ -36,6 +40,7 @@ for kind in getaparam getter getarrvalue; do
+   done
+   psh-cache-fixture cut || exit 11
+   [[ ! -v 'psh_cache_array[1000]' && -z ${psh_cache_array[1000]} ]] || exit 12
++  [[ ${psh_cache_array[(ib:1000:)item]} == 4 ]] || exit 24
+   (( checks++ ))
+   psh-cache-fixture restore || exit 13
+   # The fixture overallocates initially, exercising an in-place realloc on
+@@ -49,6 +54,7 @@ for kind in getaparam getter getarrvalue; do
+   done
+   psh-cache-fixture cut || exit 17
+   [[ ! -v 'psh_cache_array[1000]' && -z ${psh_cache_array[1000]} ]] || exit 18
++  [[ ${psh_cache_array[(ib:1000:)item]} == 4 ]] || exit 25
+   (( checks++ ))
+   psh-cache-fixture restore || exit 19
+ done
+diff --git a/Perf/array-cache-mutations.zsh b/Perf/array-cache-mutations.zsh
+index 407e738..24fe764 100644
+--- a/Perf/array-cache-mutations.zsh
++++ b/Perf/array-cache-mutations.zsh
+@@ -5,6 +5,7 @@ _psh_cache_probe() {
+   typeset n
+   for n in 64 65 128 255 256 257 511 512 513 1000 1001 0 -1 -3; do
+     print -r -- "$n:${+a[$n]}:${(qqqq)a[$n]}"
++    print -r -- "search=$n:${a[(ib:n:)2*]}:${(qqqq)a[(rb:n:)2*]}"
+     [[ -v "a[$n]" ]]
+     print -r -- "exists=$?"
+   done
+diff --git a/Perf/check-array-cache-signals.py b/Perf/check-array-cache-signals.py
+index 01d20c4..a1e3dac 100644
+--- a/Perf/check-array-cache-signals.py
++++ b/Perf/check-array-cache-signals.py
+@@ -13,6 +13,8 @@ def main():
+     parser.add_argument("shell", type=Path, help="shell with debugger symbols available")
+     parser.add_argument("--expect-writes", action="store_true",
+                         help="negative control for the rejected unguarded prototype")
++    parser.add_argument("--search", action="store_true",
++                        help="also exercise forward pattern-search starts in unqueued conditions")
+     parser.add_argument("--output", type=Path, required=True)
+     args = parser.parse_args()
+     shell = args.shell.resolve(strict=True)
+@@ -23,6 +25,8 @@ def main():
+     # entry inside prefork's existing queue boundary. Neither cold nor warm
+     # unqueued probes may publish metadata or change signal queueing policy.
+     script = "a=({1..1024}); [[ -v 'a[500]' ]]; [[ -v 'a[600]' ]]; : \"${a[500]}\"; [[ -v 'a[700]' ]]"
++    if args.search:
++        script = "a=({1..1024}); [[ -v 'a[(rb:500:)500]' ]]; [[ -v 'a[(rb:600:)600]' ]]; : \"${a[(ib:500:)500]}\"; [[ -v 'a[(rb:700:)700]' ]]"
+     with tempfile.TemporaryDirectory(prefix="psh-cache-signals-") as scratch:
+         driver = Path(scratch) / "check.gdb"
+         inner = f'''import gdb, json
+diff --git a/Perf/search-compare.py b/Perf/search-compare.py
+index 5dd69cc..3b5ff18 100644
+--- a/Perf/search-compare.py
++++ b/Perf/search-compare.py
+@@ -90,6 +90,30 @@ def scalar_cases():
+                    "printf '%s\\0' \"$out\"\ntypeset -p s\n", 1, False)
+ 
+ 
++def large_cases():
++    starts = "-1 0 1 63 64 65 127 128 129 1024 1025 4294967295 4294967296 9223372036854775807"
++    patterns = "'target' '*' 'missing' '(#b)(t*)'"
++    for mode, multibyte, size in itertools.product(
++        ("zsh", "ksh", "sh"), ("multibyte", "nomultibyte"), (63, 64, 65, 127, 128, 129, 1024),
++    ):
++        # Construct the same physical vector before changing indexing options.
++        code = f"emulate -R zsh\ninteger size={size}\n"
++        code += "typeset -a a=( ${(s::)${(l:$size::x:)}} )\n"
++        code += "a[2]=$'é\\0x'; a[$((size/2))]=target; a[size]=target\n"
++        code += f"emulate -R {mode}\nsetopt extendedglob {multibyte}\n"
++        code += "match=(); mbegin=(); mend=()\ninteger begin_at match_number\n"
++        code += "for iteration in 1 2 3; do\n"
++        for flag in ("i", "I", "r", "R"):
++            code += f"for needle in {patterns}; do\n  for begin_at in {starts}; do\n"
++            code += "    for match_number in -1 1 2; do\n"
++            expression = "${a[(" + flag + "b:begin_at:n:match_number:)$needle]}"
++            code += f'      out="{expression}"\n      printf \'%s\\0\' "$out"\n'
++            code += "      if [[ $needle == '(#b)(t*)' ]]; then typeset -p match mbegin mend; fi\n"
++            code += "    done\n  done\ndone\n"
++        code += "done\ntypeset -p a\nprint -r -- matrix-done\n"
++        yield (f"large/{mode}/{multibyte}/{size}", code, 3 * 4 * 4 * 14 * 3, True)
++
++
+ def main():
+     p = argparse.ArgumentParser(description=__doc__)
+     p.add_argument("baseline", type=Path)
+@@ -97,13 +121,15 @@ def main():
+     p.add_argument("--output", type=Path, required=True)
+     p.add_argument("--scalars", action="store_true",
+                    help="also compare scalar pattern searches, ranges and formatting")
++    p.add_argument("--large", action="store_true",
++                   help="also compare repeated searches across cached-prefix and wide-integer start boundaries")
+     args = p.parse_args()
+     shells = [str(s.resolve(strict=True)) for s in (args.baseline, args.candidate)]
+     failures = []
+     checks = 0
+     for locale in ("C", "C.UTF-8"):
+         for label, code, count, matrix in itertools.chain(
+-            cases(), scalar_cases() if args.scalars else (),
++            cases(), scalar_cases() if args.scalars else (), large_cases() if args.large else (),
+         ):
+             results = []
+             for shell in shells:
+diff --git a/Src/params.c b/Src/params.c
+index f8ac1bd..a48f9e5 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -741,6 +741,29 @@ array_length_ge(Param pm, char **arr, unsigned bound)
+     return 1;
+ }
+ 
++/* Called before matching, with signals queued and arr owned by pm. Reuse
++ * only a confirmed prefix, then walk once to the start or the terminator. */
++/**/
++static zlong
++array_search_start(Param pm, char **arr, zlong begin)
++{
++    unsigned slot = ((size_t)pm >> 4) & 63;
++    int same = array_lengths[slot].pm == pm && array_lengths[slot].array == arr;
++    zlong prefix = same ? array_lengths[slot].bound : 0;
++    char **p;
++
++    if (prefix >= begin)
++	return begin;
++    for (p = arr + prefix; prefix < begin && *p; prefix++, p++);
++    if (prefix >= 64 && (zulong)prefix <= (unsigned)-1 &&
++	(!same || (zulong)prefix > array_lengths[slot].bound)) {
++	array_lengths[slot].pm = pm;
++	array_lengths[slot].array = arr;
++	array_lengths[slot].bound = (unsigned)prefix;
++    }
++    return prefix;
++}
++
+ /**/
+ int
+ arrayparaminrange(Param pm, unsigned bound)
+@@ -1351,7 +1374,7 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+        int *prevcharlen, int *nextcharlen, int flags)
+ {
+     int hasbeg = 0, word = 0, rev = 0, ind = 0, down = 0, l, i, ishash;
+-    int keymatch = 0, needtok = 0, arglen, len, inpar = 0;
++    int keymatch = 0, needtok = 0, arglen, len, inpar = 0, cache_start = 0;
+     char *s = *str, *sep = NULL, *t, sav, *d, **ta, **p, *tt, c;
+     zlong num = 1, beg = 0, r = 0, quote_arg = 0;
+     Patprog pprog = NULL;
+@@ -1735,15 +1758,25 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
+ 		    return 1;
+ 		}
+ 		scanprog = NULL;
+-	    } else
++	    } else {
++		/* Capture eligibility before any custom getter can replace or
++		 * remove the parameter. Small starts retain the original walk. */
++		cache_start = !down && beg >= 64 && queue_signal_level() &&
++		    array_length_owned(v->pm);
+ 		ta = getarrvaluereadonly(v);
++	    }
+ 	    if (!ta || !*ta)
+ 		return !down;
+ 	    if (!ishash && !down && beg >= 0) {
+ 		/* A forward search can stop at its match without first
+ 		 * counting the unused suffix.  Walk to the start safely;
+ 		 * reaching the terminator also gives the missing index. */
+-		for (r = 1, p = ta; r <= beg && *p; r++, p++);
++		if (cache_start && queue_signal_level() && ta == v->pm->u.arr) {
++		    r = array_search_start(v->pm, ta, beg);
++		    p = ta + r;
++		    r++;
++		} else
++		    for (r = 1, p = ta; r <= beg && *p; r++, p++);
+ 		for (; *p; r++, p++)
+ 		    if (pprog && pattry(pprog, *p) && !--num)
+ 			return r;
+diff --git a/Perf/check-array-search.py b/Perf/check-array-search.py
+new file mode 100644
+index 0000000..232c1d0
+--- /dev/null
++++ b/Perf/check-array-search.py
+@@ -0,0 +1,53 @@
++#!/usr/bin/env python3
++"""Memcheck the large forward-search boundary corpus on two shell builds."""
++import argparse
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import subprocess
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("baseline", type=Path)
++    parser.add_argument("candidate", type=Path)
++    parser.add_argument("--locale", action="append", dest="locales")
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    source = Path(__file__).with_name("search-compare.py")
++    spec = importlib.util.spec_from_file_location("search_compare", source)
++    corpus = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(corpus)
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    shells = [p.resolve(strict=True) for p in [args.baseline, args.candidate]]
++    fingerprints = {str(p): sha(p) for p in shells + [source]}
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.unlink(missing_ok=True)
++    rows = []
++    for locale in args.locales or ["C", "C.UTF-8"]:
++        for index, (label, script, count, _) in enumerate(corpus.large_cases()):
++            values = []
++            for host, shell in enumerate(shells):
++                log = args.output.with_name(f"{args.output.stem}-{locale}-{index}-{host}.memcheck.log")
++                command = ["valgrind", "--error-exitcode=97", "--leak-check=no",
++                           "--log-file=" + str(log.resolve()), str(shell), "-dfc", script, "comparison"]
++                result = subprocess.run(command, capture_output=True, timeout=300,
++                    env={"PATH": "/usr/bin:/bin", "LC_ALL": locale})
++                if result.returncode or result.stderr or not result.stdout.endswith(b"matrix-done\n"):
++                    raise RuntimeError((label, locale, host, result.returncode, result.stderr[-1000:], str(log)))
++                values.append(result.stdout)
++            if values[0] != values[1]:
++                raise RuntimeError((label, locale, "different output"))
++            rows.append(dict(case=label, locale=locale, checks=count, status=0,
++                script_sha256=hashlib.sha256(script.encode()).hexdigest(),
++                stdout_sha256=hashlib.sha256(values[0]).hexdigest()))
++        print(locale, "large search boundaries matched under Memcheck", flush=True)
++    if fingerprints != {str(p): sha(p) for p in shells + [source]}:
++        raise RuntimeError("test inputs changed")
++    args.output.write_text(json.dumps(dict(passed=True, fingerprints=fingerprints,
++        checks=sum(row["checks"] for row in rows), runs=rows), indent=2) + "\n")
++
++
++if __name__ == "__main__":
++    main()

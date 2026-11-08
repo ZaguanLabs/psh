@@ -6,12 +6,14 @@ for kind in getaparam getter getarrvalue; do
   psh-cache-fixture init || exit 1
   repeat 4; do
     [[ -v 'psh_cache_array[1000]' && ${psh_cache_array[1000]} == item ]] || exit 2
+    [[ ${psh_cache_array[(ib:1000:)item]} == 1000 ]] || exit 21
   done
   psh-cache-fixture loan $kind || exit 3
   # Keep the native loan alive while interpreter queries populate/evict caches.
   repeat 4; do
     [[ -v 'psh_cache_array[1000]' ]] || exit 4
     : "${psh_cache_array[1000]}"
+    [[ ${psh_cache_array[(ib:1000:)item]} == 1000 ]] || exit 22
   done
   for (( i=0; i<192; i++ )); do
     eval "psh_cache_other$i=( {1..128} )"
@@ -26,6 +28,8 @@ for kind in getaparam getter getarrvalue; do
     [[ ! -v 'psh_cache_array[1000]' && ! -v 'psh_cache_array[1001]' &&
        ${+psh_cache_array[1000]} == 0 && -z ${psh_cache_array[1000]} &&
        -z ${psh_cache_array[1001]} ]] || exit 7
+    [[ ${psh_cache_array[(ib:1000:)item]} == 4 &&
+       ${psh_cache_array[(ib:1001:)item]} == 4 ]] || exit 23
     (( checks++ ))
   done
   psh-cache-fixture restore || exit 8
@@ -36,6 +40,7 @@ for kind in getaparam getter getarrvalue; do
   done
   psh-cache-fixture cut || exit 11
   [[ ! -v 'psh_cache_array[1000]' && -z ${psh_cache_array[1000]} ]] || exit 12
+  [[ ${psh_cache_array[(ib:1000:)item]} == 4 ]] || exit 24
   (( checks++ ))
   psh-cache-fixture restore || exit 13
   # The fixture overallocates initially, exercising an in-place realloc on
@@ -49,6 +54,7 @@ for kind in getaparam getter getarrvalue; do
   done
   psh-cache-fixture cut || exit 17
   [[ ! -v 'psh_cache_array[1000]' && -z ${psh_cache_array[1000]} ]] || exit 18
+  [[ ${psh_cache_array[(ib:1000:)item]} == 4 ]] || exit 25
   (( checks++ ))
   psh-cache-fixture restore || exit 19
 done

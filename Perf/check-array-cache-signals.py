@@ -13,6 +13,8 @@ def main():
     parser.add_argument("shell", type=Path, help="shell with debugger symbols available")
     parser.add_argument("--expect-writes", action="store_true",
                         help="negative control for the rejected unguarded prototype")
+    parser.add_argument("--search", action="store_true",
+                        help="also exercise forward pattern-search starts in unqueued conditions")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     shell = args.shell.resolve(strict=True)
@@ -23,6 +25,8 @@ def main():
     # entry inside prefork's existing queue boundary. Neither cold nor warm
     # unqueued probes may publish metadata or change signal queueing policy.
     script = "a=({1..1024}); [[ -v 'a[500]' ]]; [[ -v 'a[600]' ]]; : \"${a[500]}\"; [[ -v 'a[700]' ]]"
+    if args.search:
+        script = "a=({1..1024}); [[ -v 'a[(rb:500:)500]' ]]; [[ -v 'a[(rb:600:)600]' ]]; : \"${a[(ib:500:)500]}\"; [[ -v 'a[(rb:700:)700]' ]]"
     with tempfile.TemporaryDirectory(prefix="psh-cache-signals-") as scratch:
         driver = Path(scratch) / "check.gdb"
         inner = f'''import gdb, json

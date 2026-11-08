@@ -68,6 +68,14 @@ lvalue reads, parameter replacement/retyping, recursive callbacks, short-circuit
 side effects and stack boundaries. Endgame improves; slower JSON controls and
 an initial run affected by external compilation remain in the evidence.
 
+[Round twenty-four](round24.md) follows a line-level JSON profile into repeated
+walks to forward array-search starts. It reuses already confirmed prefixes,
+then validates any remaining pointers once, stopping at the terminator. Pattern
+matching and callbacks retain their order. The existing ownership and queued
+signal requirements apply; custom snapshots and mutable native loans keep the
+original path. Large-start, mutation, native-loan and unqueued-search checks
+extend coverage; this does not make all pattern matching constant-time.
+
 Round-six Memcheck coverage also found an [existing scalar-search terminator
 read](upstream-terminator-read.md), reproduced in pristine Zsh. Mikael Magnusson’s two bounds guards have since been backported in a separate
 correctness commit; the saved Memcheck corpus now reports zero errors.

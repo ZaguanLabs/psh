@@ -52,6 +52,8 @@ SDKs and rebuilt modules. Round twenty-two introduces no intended shell-language
 change; its native array-ownership rules are described below.
 Round twenty-three adds only an arithmetic inline hint, with no new intended
 language or native-interface difference.
+Round twenty-four extends confirmed-prefix reuse to forward array search starts,
+under the same ownership and signal guards; it adds no new intended difference.
 
 ## Deliberate differences
 
@@ -79,6 +81,9 @@ or whole-array `getarrvalue()` marks the allocation exposed. Such vectors retain
 ordinary scanning, including when a module keeps the loan across interpreter
 calls, cache eviction, a same-vector setter, or an in-place append reallocation.
 Replacing the allocation through its setter permits caching again.
+Round twenty-four uses the same confirmed prefixes to locate forward pattern
+search starts. It preserves matching/capture behavior and the same native loan
+opt-out; a terminator still supplies the original missing index.
 
 Native modules must obtain mutable vectors through those accessors and change
 owned parameter allocations through their setters. Do not silently replace,
@@ -110,7 +115,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-one
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-two
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
 arithmetic. This is not a completed audit of the complete interpreter.

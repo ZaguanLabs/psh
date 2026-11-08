@@ -1,0 +1,162 @@
+[
+  {
+    "name": "previous-json-validate",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/previous-json-validate.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/previous-json-validate-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round24/previous/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "3"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "49c58a5dfe80ad41c15af88f05ed337c7ed89fbc0d51f8ab94b8e5deffc8e00c",
+    "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "source_sha256": {
+      "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+      "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+      "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+      "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+      "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+      "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+    },
+    "instructions": 3992875434,
+    "output_state_sha256": "0608e1cd18757b4c410bf56704689c7b1e647a66e44103c21e1bf18be157a0bf",
+    "status": 0,
+    "self_instructions": {
+      "getarg": 552972396,
+      "array_search_start": 0,
+      "array_length_ge": 2062104,
+      "arrlen_ge": 459282
+    },
+    "raw_profile_sha256": "93998c133aa755c3cae915164bf780f24a8a0c6d9c10bda331de998d15e8e5f5"
+  },
+  {
+    "name": "previous-json-encode",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/previous-json-encode.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/previous-json-encode-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round24/previous/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "zjson-encode-array",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "49c58a5dfe80ad41c15af88f05ed337c7ed89fbc0d51f8ab94b8e5deffc8e00c",
+    "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "source_sha256": {
+      "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+      "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+      "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+      "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+      "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+      "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+    },
+    "instructions": 2877097951,
+    "output_state_sha256": "1d1e99c34c1a3cf20ece17bc7501e899f9c0c0b87780958f202ac46beb0e7cb3",
+    "status": 0,
+    "self_instructions": {
+      "getarg": 2448000,
+      "array_search_start": 0,
+      "array_length_ge": 998850,
+      "arrlen_ge": 1426084
+    },
+    "raw_profile_sha256": "212dc49ab41a743aad69601b7cab9e5a912f784b9bb0a5d6f15f5b8c6065bc92"
+  },
+  {
+    "name": "candidate-json-validate",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/candidate-json-validate.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/candidate-json-validate-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round24/candidate/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "3"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "6940e8d31eb3c71973d41e4cfb80b1aee05dcf19b270efb0db2b6193c65e2eb3",
+    "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "source_sha256": {
+      "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+      "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+      "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+      "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+      "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+      "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+    },
+    "instructions": 3490322920,
+    "output_state_sha256": "0608e1cd18757b4c410bf56704689c7b1e647a66e44103c21e1bf18be157a0bf",
+    "status": 0,
+    "self_instructions": {
+      "getarg": 50419848,
+      "array_search_start": 0,
+      "array_length_ge": 2062104,
+      "arrlen_ge": 459282
+    },
+    "raw_profile_sha256": "bd272832f4abc7cd69919db282cd1331b28bbc5a857969cd7549562d8967c4df"
+  },
+  {
+    "name": "candidate-json-encode",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/candidate-json-encode.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round24/candidate-json-encode-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round24/candidate/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "zjson-encode-array",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "6940e8d31eb3c71973d41e4cfb80b1aee05dcf19b270efb0db2b6193c65e2eb3",
+    "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "source_sha256": {
+      "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+      "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+      "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+      "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+      "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+      "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+    },
+    "instructions": 2877017949,
+    "output_state_sha256": "1d1e99c34c1a3cf20ece17bc7501e899f9c0c0b87780958f202ac46beb0e7cb3",
+    "status": 0,
+    "self_instructions": {
+      "getarg": 2368000,
+      "array_search_start": 0,
+      "array_length_ge": 998850,
+      "arrlen_ge": 1426084
+    },
+    "raw_profile_sha256": "b86baf996b9f461484e8eb9ff1175e7e8e5a37dab36669980a4ee628c01b42c3"
+  }
+]
