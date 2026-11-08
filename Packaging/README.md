@@ -8,7 +8,9 @@ alter personal startup files, or change the account's login shell.
 The current project version is **1.0.0-rc0**. `psh --version` reports
 `psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
-[RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
+[original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
+The [release-profile iteration](../Releases/rc0-release-profile.md) records the
+current private build; the project version stays rc0 until public release.
 
 The [first installed release's validation record](validation-2026-11-07.json)
 contains executable and native-module hashes, pinned revisions, suite results,
@@ -56,8 +58,12 @@ utilities. No downloaded dependency or system package change is performed by
 these scripts. Builds target the current machine and its installed libraries.
 The split-symbol default additionally uses GNU `objcopy` and `strip` and checks
 ELF64 little-endian runtime sections and dynamic exports before/after. Use
-`--symbols embedded` to retain symbols in the executable. Core debug assertions
-remain enabled in both modes; native modules retain their exact tested bytes.
+`--symbols embedded` to retain symbols in the executable. The default
+`--profile release` disables Zsh debug assertions; `--profile debug` enables
+them for development and gives the build a distinct digest. Symbol storage is
+independent of assertions: both profiles use `-O2 -g`, with explicit `LDFLAGS=-g`
+to prevent configure from stripping symbols before the separate debugger file
+is created. Native modules retain the exact bytes exercised by their suites.
 The separate debug file is installed too, so this reduces executable size rather
 than promising an equivalent reduction in total installation space.
 
@@ -105,8 +111,9 @@ Native project builds use disposable clones of the configured psh source tree.
 The module refresh publishes the exact `.so` files exercised by those suites.
 Final verification checks native loading paths, installed libraries and entity
 data, interactive login startup in a PTY with temporary dotfiles, source hashes,
-and the unchanged stable Zsh installation. An active release's modules cannot
-be refreshed in place.
+and the unchanged stable Zsh installation. Release-profile verification also
+checks the DEBUG setting in the matching SDK and compares terminal loading against system Zsh for unset, empty, invalid and
+valid TERM values. An active release's modules cannot be refreshed in place.
 
 It also checks the installed zdraw component files and their relative library
 dependencies, then runs the upstream change-gutter rendering assertions against
@@ -223,10 +230,15 @@ clone can obtain the baseline through the upstream tag instead.
 Maintainers create the source artifact from a clean committed tree:
 
 ```sh
-python3 Packaging/source-release.py --ref v1.0.0-rc0
+python3 Packaging/source-release.py --ref HEAD --output .work/releases/rc0-release-profile
 ```
 
-The result under `.work/releases/v1.0.0-rc0/` includes a source tarball,
+An existing source archive is never overwritten with different bytes. During
+private rc0 iteration, select a fresh `--output .work/releases/<checkpoint>`
+directory and retain the earlier source artifact. `--ref` must identify the
+committed inputs being packaged. The original rc0 tag remains a checkpoint.
+
+The result under the selected directory includes a source tarball,
 `SHA256SUMS` and commit/tree/baseline metadata. It excludes local caches and
 protected-file snapshots. Tar metadata and compression are deterministic for
 the same source commit. The source archive carries the vendored sources and

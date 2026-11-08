@@ -119,6 +119,20 @@ def main():
     for file, digest in b["core_source_sha256"].items():
         assert sha(ROOT / file) == digest, f"build input changed: {file}"
     raw_shell = Path(b["core"]) / "Src/zsh"
+    if b.get("settings", {}).get("profile"):
+        assertions = b["settings"]["debug_assertions"]
+        assert assertions == (b["settings"]["profile"] == "debug")
+        for config in [Path(b["core"]) / "config.h", prefix / "include/psh/config.h"]:
+            assert ("#define DEBUG 1" in config.read_text().splitlines()) == assertions, config
+        if not assertions:
+            profile_log = work / "logs/terminal-profile.log"
+            with profile_log.open("wb") as out:
+                profile = subprocess.run(["python3", str(ROOT / "Packaging/check-profile.py"),
+                                          "--build", str(args.build.resolve()),
+                                          "--output", str(work / "terminal-profile.json")],
+                                         stdout=out, stderr=subprocess.STDOUT, timeout=90)
+            if profile.returncode:
+                raise RuntimeError(f"release-profile checks failed; see {profile_log}")
     assert sha(shell) == sha(payload / "bin/psh")
     if b.get("settings", {}).get("symbols") == "split":
         assert sha(raw_shell) == b["raw_shell_sha256"]
@@ -218,6 +232,9 @@ done < /proc/$$/maps
         receipt.update(project_version=b["project_version"], zsh_version=b["zsh_version"],
                        symbols=b["settings"]["symbols"], runtime_sections_preserved=True,
                        core_harness=harness)
+        if "profile" in b["settings"]:
+            receipt.update(profile=b["settings"]["profile"],
+                           debug_assertions=b["settings"]["debug_assertions"])
     (work / "validation.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(f"Verified {len(before)} protected entries unchanged; all seven suites passed")
     print(startup_result)

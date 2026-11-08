@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -62,13 +63,40 @@ def main():
         staged = json.loads((root / ".work/package/latest.json").read_text())
         assert staged["project_version"] == metadata["project_version"]
         assert staged["zsh_version"] == metadata["zsh_version"]
+        assert staged["settings"]["profile"] == "release"
+        assert staged["settings"]["debug_assertions"] is False
+        assert "#define DEBUG 1" not in (Path(staged["core"]) / "config.h").read_text().splitlines()
         assert subprocess.check_output([str(Path(staged["payload"]) / "bin/psh"), "--version"], env=env) == expected
+        # Exercise the opt-in debug package in this disposable tree so its
+        # native build caches cannot replace the modules used by installed tests.
+        run("debug-package-stage", ["python3", "Packaging/build.py", "--profile", "debug",
+                                    "--jobs", str(args.jobs)], build_env)
+        debug = json.loads((root / ".work/package/latest.json").read_text())
+        assert debug["settings"]["profile"] == "debug"
+        assert debug["settings"]["debug_assertions"] is True
+        assert debug["release"] != staged["release"]
+        assert "#define DEBUG 1" in (Path(debug["core"]) / "config.h").read_text().splitlines()
+        assert subprocess.check_output([str(Path(debug["payload"]) / "bin/psh"), "--version"], env=env) == expected
+        debugger_checks = {}
+        for name, package in [("release", staged), ("debug", debug)]:
+            payload = Path(package["payload"])
+            assert ("#define DEBUG 1" in (payload / "include/psh/config.h").read_text().splitlines()) == (name == "debug")
+            if shutil.which("gdb", path=env["PATH"]):
+                command = ["gdb", "--batch", "--nx", "--quiet", "-ex", "info line zsh_main",
+                           str(payload / "bin/psh")]
+                result = subprocess.run(command, env=env, capture_output=True, text=True, timeout=30)
+                assert result.returncode == 0 and "Line " in result.stdout and "init.c" in result.stdout, result
+                debugger_checks[name] = {"command": command, "status": result.returncode,
+                                         "stdout": result.stdout.strip()}
         report = {"passed": True, "archive_sha256": hashlib.sha256(args.archive.read_bytes()).hexdigest(),
                   "source_commit": metadata["source_commit"], "project_version": metadata["project_version"],
                   "zsh_version": metadata["zsh_version"], "git_history_present": False,
                   "git_disabled_during_builds": True, "test_environment": {"TERM": "xterm", "LC_ALL": "C.UTF-8"},
                   "baseline_files_verified": metadata["baseline_files_verified"],
                   "package_staged_without_installing": True, "runs": rows}
+        report.update(release_profile=staged["settings"], debug_profile=debug["settings"],
+                      distinct_profile_build_ids=True, debug_package_staged_without_installing=True,
+                      debugger_checks=debugger_checks)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
     print("Extracted source RC builds and stages without Git", flush=True)
 

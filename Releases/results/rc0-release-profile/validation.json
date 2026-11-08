@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "arrays",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/arrays.json"
+      ],
+      "status": 0,
+      "seconds": 8.794
+    },
+    {
+      "name": "search",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--scalars",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/search.json"
+      ],
+      "status": 0,
+      "seconds": 2.622
+    },
+    {
+      "name": "patterns",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--extended",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/patterns.json"
+      ],
+      "status": 0,
+      "seconds": 4.936
+    },
+    {
+      "name": "substitution",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/substitution.json"
+      ],
+      "status": 0,
+      "seconds": 5.232
+    },
+    {
+      "name": "numeric-api",
+      "command": [
+        "python3",
+        "Perf/check-math-locale-module.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--headers-build",
+        ".work/rc0-release-baseline",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "fr_BE.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/numeric-api.json"
+      ],
+      "status": 0,
+      "seconds": 10.82
+    },
+    {
+      "name": "accessors",
+      "command": [
+        "python3",
+        "Perf/check-append-module.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--search",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/accessors.json"
+      ],
+      "status": 0,
+      "seconds": 0.29
+    },
+    {
+      "name": "completion",
+      "command": [
+        "python3",
+        "Perf/check-completion-prefix.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/completion.json"
+      ],
+      "status": 0,
+      "seconds": 4.181
+    },
+    {
+      "name": "customer",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/customer-correctness.py"
+      ],
+      "status": 0,
+      "seconds": 10.181
+    },
+    {
+      "name": "math",
+      "command": [
+        "python3",
+        "Perf/math-compare.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--syntax",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/math.json"
+      ],
+      "status": 0,
+      "seconds": 61.944
+    },
+    {
+      "name": "scalars",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        ".work/rc0-release-baseline/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh",
+        "--assignments",
+        "--prefixes",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/scalars.json"
+      ],
+      "status": 0,
+      "seconds": 79.64
+    }
+  ],
+  "failures": [],
+  "binary_sha256": {
+    ".work/rc0-release-baseline/Src/zsh": "f6576b9b096a050a11e98e8bcd7cb38b1f30074f36edea1547a5498ab2a81123",
+    "/usr/local/psh/releases/1.0.0-rc0-1d099d21957d/bin/psh": "8002b6169e851cdf2a166cdac8afd9ff6cc7ed36b3f2eb09a06fd87fe5549af1"
+  }
+}

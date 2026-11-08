@@ -746,3 +746,10 @@ See [RC notes](../Releases/1.0.0-rc0.md) for the actual installed-host test harn
 additional compiler/locale coverage, binary-size measurements and source-archive
 validation. Historical round timings remain measurements of their recorded
 binaries; they are not new startup or cross-platform performance claims for rc0.
+
+The [private rc0 release-profile iteration](../Releases/rc0-release-profile.md)
+keeps the project version unchanged and makes daily-driver packaging default
+to `--profile release`, without Zsh debug assertions. The `Perf/build.py`
+development builds retain their existing assertions. Debugger symbols are
+independent of that setting. Compare matched profiles for new performance
+claims; older debug-build timings remain historical evidence.

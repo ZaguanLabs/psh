@@ -39,6 +39,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--jobs", type=int, default=8)
     parser.add_argument("--symbols", choices=["split", "embedded"], default="split")
+    parser.add_argument("--profile", choices=["release", "debug"], default="release",
+                        help="release disables Zsh debug assertions; debug enables them (symbols are independent)")
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error("--jobs must be positive")
@@ -54,7 +56,9 @@ def main():
     fingerprints["LICENSE"] = sha(ROOT / "LICENSE")
     for name in ["Src/psh_version.h", "Packaging/elf.py", "Packaging/version.py"]:
         fingerprints[name] = sha(ROOT / name)
-    settings = {"symbols": args.symbols, "cflags": "-O2 -g", "debug_assertions": True}
+    debug_assertions = args.profile == "debug"
+    settings = {"symbols": args.symbols, "cflags": "-O2 -g", "ldflags": "-g", "profile": args.profile,
+                "debug_assertions": debug_assertions}
     digest = hashlib.sha256(json.dumps({"sources": fingerprints, "settings": settings},
                                       sort_keys=True).encode()).hexdigest()[:12]
     release = f"{PROJECT_VERSION}-{digest}"
@@ -89,10 +93,13 @@ def main():
     run(["autoconf"], core, logs / "autoconf.log")
     run(["autoheader"], core, logs / "autoheader.log")
     configure = ["./configure", f"--prefix={prefix}", "--program-transform-name=s/zsh/psh/",
-                 "--enable-dynamic", "--enable-multibyte", "--enable-zsh-debug", "--enable-pcre",
+                 "--enable-dynamic", "--enable-multibyte",
+                 "--enable-zsh-debug" if debug_assertions else "--disable-zsh-debug", "--enable-pcre",
                  "--enable-etcdir=/usr/local/psh/etc", "--enable-site-fndir=no",
                  "--enable-additional-fpath=/usr/local/psh/site-functions"]
-    env = dict(os.environ, CFLAGS="-O2 -g")
+    # Otherwise release configure defaults add -s at link time, before the
+    # separate debugger file can be created. Symbols do not require DEBUG.
+    env = dict(os.environ, CFLAGS="-O2 -g", LDFLAGS="-g")
     with (logs / "configure.log").open("wb") as out:
         subprocess.run(configure, cwd=core, env=env, stdout=out,
                        stderr=subprocess.STDOUT, check=True)

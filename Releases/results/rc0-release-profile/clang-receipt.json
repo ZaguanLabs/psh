@@ -1,0 +1,173 @@
+[
+  {
+    "name": "clang-baseline-configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-baseline/runtime",
+      "--enable-multibyte",
+      "--enable-dynamic",
+      "--enable-pcre",
+      "--disable-zsh-debug",
+      "CC=clang",
+      "CFLAGS=-O2 -g",
+      "LDFLAGS=-g"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-baseline",
+    "status": 0,
+    "seconds": 15.903
+  },
+  {
+    "name": "clang-baseline-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-baseline",
+    "status": 0,
+    "seconds": 23.86
+  },
+  {
+    "name": "clang-baseline-modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-baseline/runtime/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-baseline",
+    "status": 0,
+    "seconds": 0.075
+  },
+  {
+    "name": "clang-baseline-upstream",
+    "command": [
+      "make",
+      "check"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-baseline",
+    "status": 0,
+    "seconds": 90.823
+  },
+  {
+    "name": "clang-candidate-configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-candidate/runtime",
+      "--enable-multibyte",
+      "--enable-dynamic",
+      "--enable-pcre",
+      "--disable-zsh-debug",
+      "CC=clang",
+      "CFLAGS=-O2 -g",
+      "LDFLAGS=-g"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-candidate",
+    "status": 0,
+    "seconds": 14.402
+  },
+  {
+    "name": "clang-candidate-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-candidate",
+    "status": 0,
+    "seconds": 23.801
+  },
+  {
+    "name": "clang-candidate-modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-candidate/runtime/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-candidate",
+    "status": 0,
+    "seconds": 0.075
+  },
+  {
+    "name": "clang-candidate-upstream",
+    "command": [
+      "make",
+      "check"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc-clang-release-candidate",
+    "status": 0,
+    "seconds": 90.175
+  },
+  {
+    "name": "clang-math",
+    "command": [
+      "python3",
+      "Perf/math-compare.py",
+      ".work/rc-clang-release-baseline/Src/zsh",
+      ".work/rc-clang-release-candidate/Src/zsh",
+      "--syntax",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--locale",
+      "fr_BE.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/clang-math.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 29.547
+  },
+  {
+    "name": "clang-numeric-api",
+    "command": [
+      "python3",
+      "Perf/check-math-locale-module.py",
+      ".work/rc-clang-release-baseline/Src/zsh",
+      ".work/rc-clang-release-candidate/Src/zsh",
+      "--headers-build",
+      ".work/rc-clang-release-baseline",
+      "--memcheck",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--locale",
+      "fr_BE.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/clang-numeric-api.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 10.796
+  },
+  {
+    "name": "clang-scalars",
+    "command": [
+      "python3",
+      "Perf/scalar-compare.py",
+      ".work/rc-clang-release-baseline/Src/zsh",
+      ".work/rc-clang-release-candidate/Src/zsh",
+      "--assignments",
+      "--prefixes",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/clang-scalars.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 26.813
+  },
+  {
+    "name": "clang-patterns",
+    "command": [
+      "python3",
+      "Perf/pattern-compare.py",
+      ".work/rc-clang-release-baseline/Src/zsh",
+      ".work/rc-clang-release-candidate/Src/zsh",
+      "--extended",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/rc0-release-profile/clang-patterns.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 1.841
+  }
+]

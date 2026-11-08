@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/check-release.py", line 76, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/check-release.py", line 60, in main
+    assert result.returncode == 0 and "Line " in result.stdout and "init.c" in result.stdout, result
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: CompletedProcess(args=['gdb', '--batch', '--nx', '--quiet', '-ex', 'info line zsh_main', '/usr/local/psh/releases/1.0.0-rc0-d331ef76db78/bin/psh'], returncode=0, stdout='No line number information available for address 0x44e330 <zsh_main>\n', stderr="gdb: warning: Couldn't determine a path for the index cache directory.\n")

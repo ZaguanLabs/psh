@@ -26,6 +26,8 @@ Shallow clones may need `git fetch origin tag upstream/zsh-5.9.2` first.
 
 For an installed daily-driver executable, use the separate
 [private installation and bundled-package workflow](Packaging/README.md).
+The [current rc0 iteration](Releases/rc0-release-profile.md) uses a release
+profile without debug assertions; the development build above retains them.
 It retains Zsh module names and personal startup filenames while moving all
 installed psh files and global configuration to private psh directories.
 

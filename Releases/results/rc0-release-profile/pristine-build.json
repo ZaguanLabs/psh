@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "baseline_files_verified": 1847,
+  "source": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine",
+  "build": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline",
+  "configure": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/configure",
+    "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline-runtime",
+    "--enable-dynamic",
+    "--enable-multibyte",
+    "--disable-zsh-debug",
+    "--enable-pcre",
+    "--enable-site-fndir=no"
+  ],
+  "binary_sha256": "f6576b9b096a050a11e98e8bcd7cb38b1f30074f36edea1547a5498ab2a81123",
+  "runs": [
+    {
+      "name": "configure",
+      "command": [
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/configure",
+        "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline-runtime",
+        "--enable-dynamic",
+        "--enable-multibyte",
+        "--disable-zsh-debug",
+        "--enable-pcre",
+        "--enable-site-fndir=no"
+      ],
+      "status": 0,
+      "seconds": 9.667
+    },
+    {
+      "name": "build",
+      "command": [
+        "make",
+        "-j4"
+      ],
+      "status": 0,
+      "seconds": 33.091
+    },
+    {
+      "name": "modules",
+      "command": [
+        "make",
+        "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline-runtime/lib/zsh/5.9.2",
+        "install.modules"
+      ],
+      "status": 0,
+      "seconds": 0.075
+    },
+    {
+      "name": "upstream",
+      "command": [
+        "make",
+        "check"
+      ],
+      "status": 0,
+      "seconds": 91.907
+    }
+  ]
+}

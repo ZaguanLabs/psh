@@ -16,8 +16,8 @@ outside the author's own projects.
 | Language identity | `$ZSH_VERSION` remains `5.9.2`. There is no new reserved `PSH_VERSION` shell parameter. Project versioning does not replace the upstream version used by scripts and module paths. |
 | Global startup | Global startup files live under `/usr/local/psh/etc`, separately from the system Zsh configuration. Personal `.zshenv`, `.zshrc`, `.zprofile`, `.zlogin` and `.zlogout` names retain their meaning. A setup depending on system global startup content may need equivalent psh configuration. |
 | Functions and modules | Default paths are private, versioned psh paths. Bundled stock modules keep their `zsh/*` names and base version. The six added packages provide additional autoload names. Inherited `FPATH`, and user assignments to `fpath` or `module_path`, retain their usual effects. |
-| Debug build profile | The current RC retains Zsh debug assertions. With `TERM` unset or unknown, loading `zsh/termcap` followed by `zsh/terminfo` emits an extra assertion diagnostic; this also occurs in the matching pristine debug build, whereas the installed non-debug system Zsh is silent. Exact stderr compatibility with that system build is therefore already known to differ in this case. |
-| Third-party native code | An identical `$ZSH_VERSION` alone does not certify an independently compiled binary module. Build and test it against the matching psh SDK. Existing modules are not replaced in the stable Zsh installation. |
+| Build profile | Packaging defaults to `--profile release`, with Zsh debug assertions disabled. `--profile debug` and the separate `Perf/build.py` development build retain assertions. The original rc0 debug build could print an extra diagnostic when loading terminal modules with `TERM` unset or invalid. The release-profile iteration removes this difference through configure settings; symbols remain available separately. |
+| Third-party native code | An identical `$ZSH_VERSION` alone does not certify an independently compiled binary module. Build and test it against the matching psh SDK. In particular, moving from the original debug profile to the release profile removes the debug-only `dputs` and `queue_in` exports, just as in pristine Zsh; modules using those exports must be rebuilt. Existing modules are not replaced in the stable Zsh installation. |
 | Interpreter selection | A `#!/bin/zsh` shebang, explicit `exec zsh`, or an application's private Zsh runtime continues to select that interpreter. Installing psh does not rewrite scripts, aliases or child commands. |
 | Correctness backport | The upstream-maintainer scalar-search terminator-read fix is included separately from performance changes. It corrects an existing out-of-bounds read; identical manifestations of that invalid read are not a compatibility promise. |
 
@@ -36,8 +36,10 @@ Evidence includes upstream scripts, byte-for-byte differential results, native
 fixtures built with pristine headers, allocation-boundary and floating-state
 checks, several encodings and emulations, PTY completion/startup checks, and the
 author's real project workloads. [RC results](Releases/1.0.0-rc0.md) identify the
-actual tested builds. General asynchronous trap schedules, all external modules,
-all locale implementations, other operating systems and all downstream patch
+actual tested builds; the [private release-profile iteration](Releases/rc0-release-profile.md)
+records the subsequent configuration change. General asynchronous trap
+schedules, all external modules, all locale implementations, other operating
+systems and all downstream patch
 sets remain outside that evidence. A French Belgian locale test does not
 certify every script run in Belgium.
 
@@ -64,8 +66,12 @@ that fails under psh deserves investigation even when every existing test passes
 
 ## RC and promotion policy
 
-The `v1.0.0-rc0` tag identifies one source revision. Published tags and source
-archives are immutable; subsequent fixes get a new candidate/version. Wider
+The project version remains `1.0.0-rc0` throughout private testing until public
+release. Source commit, build digest and binary hashes distinguish those
+iterations. The existing `v1.0.0-rc0` tag and its draft identify the initial
+checkpoint while work continues on `main`; earlier source artifacts and
+installed builds are retained. Public release tags and source archives are
+immutable; fixes after public release get a new candidate/version. Wider
 testing and reported regressions inform promotion to 1.0.0. The RC label is not
 a claim that compatibility review is complete. Existing private releases remain
 available for rollback without changing the account login shell or stable Zsh.

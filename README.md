@@ -44,7 +44,8 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
-- [RC notes, binary-size explanation and validation](Releases/1.0.0-rc0.md)
+- [Current private rc0 release-profile iteration](Releases/rc0-release-profile.md)
+- [Original RC notes, binary-size explanation and validation](Releases/1.0.0-rc0.md)
 - [Compatibility policy and reporting regressions](COMPATIBILITY.md)
 - [Project details and accepted optimizations](README.psh.md)
 - [Build, comparison and benchmark workflow](Perf/README.md)
