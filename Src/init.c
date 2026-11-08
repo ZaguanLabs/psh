@@ -35,6 +35,7 @@
 #include "init.pro"
 
 #include "version.h"
+#include "psh_version.h"
 
 /**/
 int noexitct = 0;
@@ -426,8 +427,7 @@ parseopts(char *nam, char ***argvp, char *new_opts, char **cmdp,
 		/* GNU-style long options */
 		++*argv;
 		if (!strcmp(*argv, "version")) {
-		    printf("zsh %s (%s-%s-%s)\n",
-			    ZSH_VERSION, MACHTYPE, VENDOR, OSTYPE);
+		    printf("psh %s (zsh %s)\n", PSH_VERSION, ZSH_VERSION);
 		    LAST_OPTION(0);
 		}
 		if (!strcmp(*argv, "help")) {
@@ -563,7 +563,7 @@ printhelp(void)
     printf("Usage: %s [<options>] [<argument> ...]\n", argzero);
     printf("\nSpecial options:\n");
     printf("  --help     show this message, then exit\n");
-    printf("  --version  show zsh version number, then exit\n");
+    printf("  --version  show psh and Zsh versions, then exit\n");
     if(unset(SHOPTIONLETTERS))
 	printf("  -b         end option processing, like --\n");
     printf("  -c         take first argument as a command to execute\n");

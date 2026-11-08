@@ -34,7 +34,8 @@ def main():
     # Let this candidate initialize fpath from its compiled private defaults.
     env.pop("FPATH", None)
     suites = {
-        "core": [(core, ["make", "check"], {})],
+        "core": [(core, ["python3", str(ROOT / "Packaging/core-test.py"),
+                         "--build", str(args.build.resolve())], {})],
         "zdraw": [(ROOT / "Vendor/zdraw", ["make", "test", f"ZSH_BIN={shell}"], {})],
         "zmdown": [(ROOT / "Vendor/zmdown", ["make", "test"], {})],
         "zcurl": [(ROOT / "Vendor/zcurl", ["make", "test", f"ZSH_SRC={core}"], {})],

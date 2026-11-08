@@ -16,6 +16,7 @@ import subprocess
 
 from audit import stable_snapshot
 from install import manifest
+from elf import allocated_sections, dynamic_exports
 
 ROOT = Path(__file__).resolve().parent.parent
 SUITES = ["core", "zdraw", "zmdown", "zcurl", "zjson", "zhtml2md", "zoup"]
@@ -117,7 +118,27 @@ def main():
             assert sha(ROOT / "Vendor" / name / file) == digest, f"vendor source changed: {name}/{file}"
     for file, digest in b["core_source_sha256"].items():
         assert sha(ROOT / file) == digest, f"build input changed: {file}"
-    assert sha(shell) == sha(Path(b["core"]) / "Src/zsh") == sha(payload / "bin/psh")
+    raw_shell = Path(b["core"]) / "Src/zsh"
+    assert sha(shell) == sha(payload / "bin/psh")
+    if b.get("settings", {}).get("symbols") == "split":
+        assert sha(raw_shell) == b["raw_shell_sha256"]
+        assert sha(shell) == b["installed_shell_sha256"]
+        assert allocated_sections(raw_shell) == allocated_sections(shell) == b["runtime_sections"]
+        assert dynamic_exports(raw_shell) == dynamic_exports(shell)
+        assert sha(prefix / b["debug_file"]) == b["debug_file_sha256"]
+    else:
+        assert sha(shell) == sha(raw_shell)
+    if b.get("project_version"):
+        harness = json.loads((work / "installed-core-harness.json").read_text())
+        assert harness["status"] == 0 and harness["launcher_resolves_to_installed_shell"]
+        assert harness["shell"] == str(shell) and harness["shell_sha256"] == sha(shell)
+        expected_version = f"psh {b['project_version']} (zsh {b['zsh_version']})\n"
+        version_env = {"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"}
+        assert subprocess.check_output([str(shell), "--version"], env=version_env, text=True) == expected_version
+        for option, expected_value in [("--version", b["project_version"]),
+                                       ("--zsh-version", b["zsh_version"])]:
+            assert subprocess.check_output([str(prefix / "bin/psh-config"), option],
+                                           env=version_env, text=True).strip() == expected_value
     for name, file in tested.items():
         assert sha(file) == sha(prefix / modules / (name + ".so")) == sha(payload / modules / (name + ".so"))
     expected = manifest(payload)
@@ -193,6 +214,10 @@ done < /proc/$$/maps
                "login_shell_unchanged": True, "mapped_modules": mapped, "startup": startup_result,
                "stock_modules_preserved": sorted(stable_modules),
                "installed_component_tests": "file hashes, relative dependencies and change-gutter PTY rendering passed"}
+    if b.get("project_version"):
+        receipt.update(project_version=b["project_version"], zsh_version=b["zsh_version"],
+                       symbols=b["settings"]["symbols"], runtime_sections_preserved=True,
+                       core_harness=harness)
     (work / "validation.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(f"Verified {len(before)} protected entries unchanged; all seven suites passed")
     print(startup_result)

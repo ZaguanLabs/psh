@@ -1,14 +1,15 @@
 # psh — Performance SHell
 
-Local performance work on the Zsh 5.9.2 release source. **Observable Zsh
-behavior is the compatibility contract.** Optimizations must preserve expansion,
+psh 1.0.0-rc0 is based on the Zsh 5.9.2 release source. Preserving observable
+Zsh language behavior is the compatibility target, not a certification of 100%
+drop-in compatibility. See [the policy and intentional differences](COMPATIBILITY.md). Optimizations must preserve expansion,
 quoting, options and emulation, dynamic scope, arithmetic effects, diagnostics,
 exit status, traps, and signal handling. Public API/ABI changes require separate
 review. Test results are evidence of compatibility, not proof of equivalence.
 
 The local executable is `./psh`. Upstream build targets, `ZSH_VERSION`, module
-names (`zsh/*`), startup filenames and version reporting retain their Zsh
-identities. The executable's invocation name naturally appears as `psh`.
+names (`zsh/*`) and personal startup filenames retain their Zsh identities.
+`--version` reports the psh project version and the underlying Zsh version. The executable's invocation name naturally appears as `psh`.
 The original upstream README and licence are retained.
 
 ```sh

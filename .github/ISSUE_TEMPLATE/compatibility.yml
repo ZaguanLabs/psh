@@ -1,0 +1,26 @@
+name: Zsh compatibility regression
+description: A script or expression behaves differently in psh and Zsh.
+title: "Compatibility: "
+body:
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Minimal reproducer
+      description: Include necessary options or setup. Avoid credentials and private startup files.
+      render: zsh
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Show stdout, stderr and exit status for Zsh and psh.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Versions and environment
+      description: Include psh --version, Zsh version, psh-config --build-id when available, OS, relevant locale/options, and required plugins.
+    validations:
+      required: true

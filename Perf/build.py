@@ -15,6 +15,10 @@ UPSTREAM_REF = "refs/tags/upstream/zsh-5.9.2"
 
 
 def verify_pristine(pristine, manifest):
+    actual = {p.relative_to(pristine).as_posix()
+              for p in pristine.rglob("*") if p.is_file() or p.is_symlink()}
+    if actual != set(manifest):
+        raise RuntimeError("baseline source file list differs from the release manifest")
     for name, digest in manifest.items():
         if hashlib.sha256((pristine / name).read_bytes()).hexdigest() != digest:
             raise RuntimeError(f"baseline source changed: {name}")
@@ -32,12 +36,17 @@ def prepare_pristine(root, work):
         with tempfile.TemporaryDirectory(prefix="pristine-", dir=work) as temporary:
             scratch = Path(temporary)
             archive = scratch / "source.tar"
-            with archive.open("wb") as output:
-                result = subprocess.run(["git", "archive", "--format=tar", UPSTREAM_REF],
-                                        cwd=root, stdout=output, stderr=subprocess.PIPE)
-            if result.returncode:
-                raise RuntimeError("missing upstream snapshot tag; run "
-                                   "git fetch origin tag upstream/zsh-5.9.2")
+            bundled = root / "Perf/upstream/zsh-5.9.2.tar.xz"
+            if bundled.is_file():
+                archive = bundled
+            else:
+                with archive.open("wb") as output:
+                    result = subprocess.run(["git", "archive", "--format=tar", UPSTREAM_REF],
+                                            cwd=root, stdout=output, stderr=subprocess.PIPE)
+                if result.returncode:
+                    raise RuntimeError("missing upstream snapshot tag or bundled release archive; use the attached "
+                                       "psh source release, or in a Git clone run "
+                                       "git fetch origin tag upstream/zsh-5.9.2")
             extracted = scratch / "source"
             with tarfile.open(archive) as source:
                 source.extractall(extracted, filter="data")
@@ -47,7 +56,8 @@ def prepare_pristine(root, work):
                 raise RuntimeError("upstream snapshot file list differs from the release manifest")
             verify_pristine(extracted, manifest)
             os.replace(extracted, pristine)
-        print(f"Restored verified release baseline from {UPSTREAM_REF}", flush=True)
+        origin = "bundled release archive" if bundled.is_file() else UPSTREAM_REF
+        print(f"Restored verified release baseline from {origin}", flush=True)
     verify_pristine(pristine, manifest)
     if not local_manifest.exists():
         shutil.copy2(manifest_file, local_manifest)

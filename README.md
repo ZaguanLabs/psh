@@ -1,9 +1,14 @@
 # psh — Performance SHell
 
-Performance work on the Zsh 5.9.2 release source, with **observable Zsh behavior
-as the compatibility contract**. Changes are measured against a pristine build
-and checked for expansion, quoting, option, emulation, capture, native API and
-signal behavior. Measurements include gains and regressions.
+**psh 1.0.0-rc0**, based on Zsh 5.9.2, is an experimental performance fork.
+The compatibility target is Zsh's language and public module interfaces;
+**100% drop-in compatibility has not been established**. Undocumented language
+or evaluation differences are treated as bugs. See the
+[compatibility policy and intentional differences](COMPATIBILITY.md).
+
+Changes are measured against a pristine build and checked for expansion,
+quoting, options, emulation, captures, native APIs and signal behavior.
+Measurements include gains and regressions.
 
 The author's Zsh projects are the primary customer workloads. Their profiles
 guide optimization priorities; project kernels and controls accompany focused
@@ -13,11 +18,16 @@ shell benchmarks.
 git clone git@github.com:ZaguanLabs/psh.git
 cd psh
 python3 Perf/build.py
+./psh --version
+# psh 1.0.0-rc0 (zsh 5.9.2)
 ./psh -dfc 'print -r -- "$ZSH_VERSION"'
+# 5.9.2
 ```
 
-The build uses Python 3.12+, Git, a C compiler and Make. It restores the original
-release sources from the `upstream/zsh-5.9.2` tag and verifies all 1,847 file
+The build uses Python 3.12+, a C compiler and Make. A clone also needs Git
+and the upstream tag. The attached source release contains a verified baseline
+archive and builds without Git history. It restores the original
+release sources from that tag or bundled archive and verifies all 1,847 file
 hashes before building the baseline. The supplied release's generated configure
 script and documentation are included. Builds and private native modules live
 under `.work/`; `./psh` is the local executable. This development build does not
@@ -34,6 +44,8 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
+- [RC notes, binary-size explanation and validation](Releases/1.0.0-rc0.md)
+- [Compatibility policy and reporting regressions](COMPATIBILITY.md)
 - [Project details and accepted optimizations](README.psh.md)
 - [Build, comparison and benchmark workflow](Perf/README.md)
 - [Customer project workloads and remaining coverage](Perf/customer-projects.md)
@@ -44,8 +56,8 @@ git fetch origin tag upstream/zsh-5.9.2
 - [Upstream bug report, backported fix and reproducer](Perf/upstream-terminator-read.md)
 
 The review is ongoing. Test results are evidence of compatibility, not proof of
-complete equivalence. Internal Zsh identities and public module interfaces are
-retained; invocation uses the requested `psh` name.
+complete equivalence. `$ZSH_VERSION` remains 5.9.2 and modules retain their Zsh names.
+Project version reporting and private integration paths are documented exceptions.
 
 The original [Zsh README](README), [Zsh licence](LICENCE), and per-file notices
 are retained. The repository's existing [ZaguanLabs license](LICENSE) is also

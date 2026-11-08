@@ -5,6 +5,11 @@ It retains `ZSH_VERSION=5.9.2`, `zsh/*` module identities, native package names,
 and the usual personal startup filenames. It does not replace the system Zsh,
 alter personal startup files, or change the account's login shell.
 
+The current project version is **1.0.0-rc0**. `psh --version` reports
+`psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
+remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
+[RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
+
 The [first installed release's validation record](validation-2026-11-07.json)
 contains executable and native-module hashes, pinned revisions, suite results,
 and the protection-check summary. Full local logs remain under `.work/package/`.
@@ -18,10 +23,11 @@ subsequent repair and its installed-package regression tests.
 | `/usr/local/bin/psh` | Public executable, through `current` |
 | `/usr/local/bin/psh-config` | Discover this release's package and SDK paths |
 | `/usr/local/psh/current` | Active release symlink |
-| `/usr/local/psh/releases/5.9.2-<digest>/bin/psh` | Versioned executable |
+| `/usr/local/psh/releases/1.0.0-rc0-<digest>/bin/psh` | Versioned executable |
 | `<release>/lib/psh/5.9.2/` | `zdraw.so`, `zcurl.so`, `zmdown.so`, and stock `zsh/*.so` |
 | `<release>/share/psh/5.9.2/functions/` | Stock functions, completions, and package autoloads |
 | `<release>/share/psh/5.9.2/scripts/` | Package libraries, data, documentation, and licences |
+| `<release>/bin/.debug/psh.debug` | Separate debugger symbols for the stripped executable |
 | `<release>/include/psh/` | Matching native module SDK (`config.h` and `Src/` headers) |
 | `<release>/share/man/` | Private manual pages, including `psh(1)` |
 | `/usr/local/psh/site-functions/` | Optional local psh functions |
@@ -48,6 +54,16 @@ ncurses and PCRE2 development files (`pcre2-config`), and libcurl development
 files >= 8.16.0 with `pkg-config`. Project tests also use Python, OpenSSL, `tic`, and standard Unix
 utilities. No downloaded dependency or system package change is performed by
 these scripts. Builds target the current machine and its installed libraries.
+The split-symbol default additionally uses GNU `objcopy` and `strip` and checks
+ELF64 little-endian runtime sections and dynamic exports before/after. Use
+`--symbols embedded` to retain symbols in the executable. Core debug assertions
+remain enabled in both modes; native modules retain their exact tested bytes.
+The separate debug file is installed too, so this reduces executable size rather
+than promising an equivalent reduction in total installation space.
+
+Use the private installer below for installation. The retained upstream
+`make install` target follows configure's Zsh defaults and can target a Zsh
+installation; it is not the psh installation workflow.
 
 Run the build and tests as your normal user. Use `sudo` only for installation:
 
@@ -76,8 +92,14 @@ local protection snapshots, test reports, and the validation receipt remain in
 `.work/package/<release>/`. Protection snapshots contain file metadata and hashes;
 keep them local.
 
-`Packaging/test.py` runs the full upstream shell suite and all six project
-suites, with a private `zsh` executable shim for tests that hardcode that name.
+`Packaging/test.py` runs the full upstream shell suite through
+`Packaging/core-test.py`, using the exact installed ELF through a private
+symlink named `zsh`. Hardcoded upstream child paths and configured module-file
+paths are routed to the installed executable/modules in a disposable harness.
+This preserves upstream diagnostic-name expectations; direct `psh` identity,
+option listings, startup and package loading are tested separately.
+All six project suites also use the installed shell, with a private `zsh`
+executable shim for tests that hardcode that name.
 The shim selects the installed candidate; it is never installed globally.
 Native project builds use disposable clones of the configured psh source tree.
 The module refresh publishes the exact `.so` files exercised by those suites.
@@ -160,7 +182,9 @@ source "$(psh-config --script-dir)/zdraw/examples/components/change-gutter.zsh"
 ```
 
 Use `psh-config --module-dir`, `--function-dir`, `--headers-root`, `--mandir`,
-`--prefix`, or `--version` for the other paths. A new native module must use this
+`--prefix`, or `--version` for the other paths and project identity.
+`psh-config --version` now returns `1.0.0-rc0`; use `--zsh-version` for `5.9.2`
+and `--build-id` for the source/settings digest. A new native module must use this
 release's SDK and be tested with this executable. Do not copy a system Zsh `.so`
 into psh just because the version string matches. Applications that hardcode
 their own module directories or an external `zsh` command still select those
@@ -187,3 +211,23 @@ still used by running shells. For complete removal, first ensure no account uses
 while preserving subsequent edits, and remove only the psh public links and
 private installation tree. The installer records release file manifests in
 `<release>/psh-install.json`; the system Zsh paths are outside that tree.
+
+
+## Source RC artifacts
+
+Use the attached `psh-1.0.0-rc0.tar.xz` release asset for an archive build. It
+includes the verified upstream baseline needed by `Perf/build.py`; GitHub's
+automatic source snapshots do not include that extra baseline archive. A Git
+clone can obtain the baseline through the upstream tag instead.
+
+Maintainers create the source artifact from a clean committed tree:
+
+```sh
+python3 Packaging/source-release.py --ref v1.0.0-rc0
+```
+
+The result under `.work/releases/v1.0.0-rc0/` includes a source tarball,
+`SHA256SUMS` and commit/tree/baseline metadata. It excludes local caches and
+protected-file snapshots. Tar metadata and compression are deterministic for
+the same source commit. The source archive carries the vendored sources and
+licences; it does not claim a prebuilt binary will run on another distribution.

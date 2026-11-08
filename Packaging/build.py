@@ -9,8 +9,11 @@ import re
 import shutil
 import subprocess
 
+from elf import split_symbols
+from version import versions
+
 ROOT = Path(__file__).resolve().parent.parent
-VERSION = "5.9.2"
+PROJECT_VERSION, VERSION = versions(ROOT)
 
 
 def sha(path):
@@ -35,7 +38,10 @@ def copy(source, target):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--jobs", type=int, default=8)
+    parser.add_argument("--symbols", choices=["split", "embedded"], default="split")
     args = parser.parse_args()
+    if args.jobs < 1:
+        parser.error("--jobs must be positive")
     sources = json.loads((ROOT / "Vendor/sources.json").read_text())
     for name, entry in sources.items():
         for path, digest in entry["files"].items():
@@ -46,8 +52,12 @@ def main():
     fingerprints["Packaging/build.py"] = sha(Path(__file__))
     fingerprints["Vendor/sources.json"] = sha(ROOT / "Vendor/sources.json")
     fingerprints["LICENSE"] = sha(ROOT / "LICENSE")
-    digest = hashlib.sha256(json.dumps(fingerprints, sort_keys=True).encode()).hexdigest()[:12]
-    release = f"{VERSION}-{digest}"
+    for name in ["Src/psh_version.h", "Packaging/elf.py", "Packaging/version.py"]:
+        fingerprints[name] = sha(ROOT / name)
+    settings = {"symbols": args.symbols, "cflags": "-O2 -g", "debug_assertions": True}
+    digest = hashlib.sha256(json.dumps({"sources": fingerprints, "settings": settings},
+                                      sort_keys=True).encode()).hexdigest()[:12]
+    release = f"{PROJECT_VERSION}-{digest}"
     prefix = Path("/usr/local/psh/releases") / release
     work = ROOT / ".work/package" / release
     core, stage, logs = work / "core", work / "stage", work / "logs"
@@ -57,6 +67,7 @@ def main():
     logs.mkdir()
     for name in names:
         copy(ROOT / name, core / name)
+    copy(ROOT / "Src/psh_version.h", core / "Src/psh_version.h")
     draw = ROOT / "Vendor/zdraw"
     for name in ("zdraw.c", "zdraw.mdd", "zdraw_keys.awk", "zdraw_grapheme.h",
                  "zdraw_grapheme_data.h", "zdraw_raster.h"):
@@ -88,6 +99,16 @@ def main():
     run(["make", f"-j{args.jobs}"], core, logs / "core-build.log")
     run(["make", "install", f"DESTDIR={stage}"], core, logs / "core-stage.log")
     payload = stage / prefix.relative_to("/")
+    raw_shell_sha256 = sha(core / "Src/zsh")
+    shell = payload / "bin/psh"
+    versioned_shell = payload / "bin" / ("psh-" + VERSION)
+    versioned_shell.unlink()
+    versioned_shell.symlink_to("psh")
+    debug_file = None
+    runtime_sections = None
+    if args.symbols == "split":
+        debug_file = Path("bin/.debug/psh.debug")
+        runtime_sections = split_symbols(shell, payload / debug_file)
     modules = payload / "lib/psh" / VERSION
     functions = payload / "share/psh" / VERSION / "functions"
     scripts = payload / "share/psh" / VERSION / "scripts"
@@ -151,16 +172,23 @@ def main():
                  *(core / "Src").glob("*.mdh"), *(core / "Src").glob("*.epro")]:
         copy(file, include / file.relative_to(core))
     config = payload / "bin/psh-config"
-    values = {"--prefix": str(prefix), "--version": VERSION,
+    values = {"--prefix": str(prefix), "--version": PROJECT_VERSION,
+              "--zsh-version": VERSION, "--build-id": digest,
               "--module-dir": str(prefix / "lib/psh" / VERSION),
               "--function-dir": str(prefix / "share/psh" / VERSION / "functions"),
               "--script-dir": str(prefix / "share/psh" / VERSION / "scripts"),
               "--headers-root": str(prefix / "include/psh"), "--mandir": str(prefix / "share/man")}
     config.write_text("#!/bin/sh\ncase \"${1:---prefix}\" in\n" + "".join(
         f"  {key}) printf '%s\\n' '{value}' ;;\n" for key, value in values.items()) +
-        "  *) echo 'Usage: psh-config [--prefix|--version|--module-dir|--function-dir|--script-dir|--headers-root|--mandir]' >&2; exit 2 ;;\nesac\n")
+        "  *) echo 'Usage: psh-config [--prefix|--version|--zsh-version|--build-id|--module-dir|--function-dir|--script-dir|--headers-root|--mandir]' >&2; exit 2 ;;\nesac\n")
     config.chmod(0o755)
     build = {"release": release, "prefix": str(prefix), "work": str(work), "core": str(core),
+             "project_version": PROJECT_VERSION, "zsh_version": VERSION,
+             "settings": settings, "raw_shell_sha256": raw_shell_sha256,
+             "installed_shell_sha256": sha(shell),
+             "debug_file": str(debug_file) if debug_file else None,
+             "debug_file_sha256": sha(payload / debug_file) if debug_file else None,
+             "runtime_sections": runtime_sections,
              "stage": str(stage), "payload": str(payload), "configure": configure,
              "cflags": "-O2 -g", "core_source_sha256": fingerprints,
              "vendor_commits": {name: row["commit"] for name, row in sources.items()},

@@ -727,3 +727,22 @@ make -C .work/no-mb-candidate \
 This is a private test runtime, separate from the daily driver. The initial
 round-twenty run caught this missing test dependency; its original failure and
 successful targeted repair are retained with the validation records.
+
+
+## Release candidates
+
+The current project identity is `psh 1.0.0-rc0 (zsh 5.9.2)`. `$ZSH_VERSION`
+and native module identities retain the upstream version. The
+[compatibility policy](../COMPATIBILITY.md) distinguishes that language target
+from intentional identity/integration changes and unverified cases.
+
+An attached source release contains `Perf/upstream/zsh-5.9.2.tar.xz`. The build
+helper uses that archive without needing Git history and verifies the complete
+pristine file set and every hash. A clone obtains the same baseline from its
+upstream tag. The default private package build splits debugger symbols while
+checking unchanged allocated ELF sections and dynamic exports.
+
+See [RC notes](../Releases/1.0.0-rc0.md) for the actual installed-host test harness,
+additional compiler/locale coverage, binary-size measurements and source-archive
+validation. Historical round timings remain measurements of their recorded
+binaries; they are not new startup or cross-platform performance claims for rc0.
