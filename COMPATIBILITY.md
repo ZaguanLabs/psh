@@ -50,6 +50,8 @@ useful for finding differences; intentional changes get explicit expectations
 instead of silently disabling checks. Native interface changes require matching
 SDKs and rebuilt modules. Round twenty-two introduces no intended shell-language
 change; its native array-ownership rules are described below.
+Round twenty-three adds only an arithmetic inline hint, with no new intended
+language or native-interface difference.
 
 ## Deliberate differences
 
@@ -108,7 +110,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-one
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
 arithmetic. This is not a completed audit of the complete interpreter.

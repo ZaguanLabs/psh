@@ -1,0 +1,81 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-ac4028c278e1/core/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-locale-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round23/math-locale-fixture-installed-numeric-api/psh_math_locale_fixture.so",
+    "-lm"
+  ],
+  "source_sha256": "285097866d3c20e1958fe3f3d8b2c8982df17d9890cd54de698ae7a12ed5a9ec",
+  "module_sha256": "d41837daff0a4ab9c00d8f2378feda5e3b845287038065c9e1236772a2c41ddb",
+  "cases": [
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-ac4028c278e1/bin/psh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "4f5adb8cfd11c89a081ab4903d45f427c8003057b03189eb2eb905e7e1badd39"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-ac4028c278e1/bin/psh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "4f5adb8cfd11c89a081ab4903d45f427c8003057b03189eb2eb905e7e1badd39"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-ac4028c278e1/bin/psh",
+      "locale": "fr_BE.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "4f5adb8cfd11c89a081ab4903d45f427c8003057b03189eb2eb905e7e1badd39"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-ea2b25dd07ef/bin/psh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "e21f6be583dab7548e2f25a9b8e4b1992613fe251e824c6bfe642bdd74d1190d"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-ea2b25dd07ef/bin/psh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "e21f6be583dab7548e2f25a9b8e4b1992613fe251e824c6bfe642bdd74d1190d"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-ea2b25dd07ef/bin/psh",
+      "locale": "fr_BE.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "e21f6be583dab7548e2f25a9b8e4b1992613fe251e824c6bfe642bdd74d1190d"
+    }
+  ]
+}

@@ -21,6 +21,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--syntax", action="store_true",
                         help="include operator/operand token pairs and diagnostic boundaries")
+    parser.add_argument("--operators", action="store_true",
+                        help="include valid operators, lazy lvalues, recursive callbacks and stack boundaries")
     args = parser.parse_args()
     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -53,6 +55,31 @@ def main():
                                 "0 && (" + whitespace + suffix + ")"]
         expressions += ["(" * n + "1+2" + ")" * n for n in (1, 2, 8, 32)]
         expressions += ["(" * n + "1 2" + ")" * n for n in (1, 2, 8, 32)]
+        expressions = list(dict.fromkeys(expressions))
+    if args.operators:
+        operators = ["+", "-", "*", "/", "%", "**", "<<", ">>", "&", "^", "|",
+                     "&&", "||", "^^", "<", "<=", ">", ">=", "==", "!="]
+        for op in operators:
+            expressions += [f"({a}) {op} ({b})" for a, b in
+                [(1, 2), (0, 3), (-7, 2), (9, -1), (1.25, 2), (3, 1.5), ("-0.0", 4)]]
+            expressions += [f"({a}) {op} ({b})" for a, b in itertools.product(
+                ["x", "i", "a[1]", "h[k]"], ["x", "i++", "++i", "a[1]", "h[k]",
+                "psh_pop_callback()", "psh_pop_recursive(7)", "psh_pop_retype()", "(x=2)"])]
+        for op in ["=", "+=", "-=", "*=", "/=", "%=", "**=", "<<=", ">>=",
+                   "&=", "^=", "|=", "&&=", "||="]:
+            expressions += [f"{a} {op} ({b})" for a, b in itertools.product(
+                ["x", "i", "a[1]", "h[k]"],
+                ["3", "1.25", "i++", "psh_pop_callback()", "psh_pop_recursive(2)"])]
+        expressions += [op + a for op, a in itertools.product(
+            ["!", "~", "+", "-", "++", "--"], ["x", "i", "a[1]", "h[k]"])]
+        expressions += ["1+(" * n + "1" + ")" * n for n in [0, 1, 8, 98, 99, 100, 101, 128]]
+        expressions += ["0 && psh_pop_callback()", "1 || psh_pop_callback()",
+            "0 ? psh_pop_callback() : 3", "1 ? 3 : psh_pop_callback()",
+            "x + (x=5)", "i + i++", "i++ + i++", "(i=3)+(i=5)",
+            "x + psh_pop_callback() + x", "x += psh_pop_callback()",
+            "x = psh_pop_retype()", "x + psh_pop_recursive(31) + x",
+            "(x=psh_pop_recursive(7)), x", "1/0 + psh_pop_callback()",
+            "psh_pop_callback() + 1/0", "(x++) + (a[1]+=h[k])"]
         expressions = list(dict.fromkeys(expressions))
     arrays = "expressions=(" + " ".join(map(quote, expressions)) + ")\n"
     script = '''emulate -R zsh
@@ -92,10 +119,35 @@ for emulation in zsh ksh sh; do
 done
 exit 0
 '''
+    if args.operators:
+        prelude = '''psh_pop_callback() {
+  psh_pop_trace+=(callback)
+  (( ++psh_pop_calls ))
+  unset x
+  typeset -gi x=17
+  (( 7 ))
+}
+psh_pop_retype() {
+  psh_pop_trace+=(retype)
+  (( ++psh_pop_calls ))
+  unset x
+  typeset -gF x=1.25
+  (( 2 ))
+}
+psh_pop_recursive() { (( $1 ? psh_pop_recursive($1-1)+1 : 3 )); }
+functions -M psh_pop_callback 0 0 psh_pop_callback
+functions -M psh_pop_retype 0 0 psh_pop_retype
+functions -M psh_pop_recursive 1 1 psh_pop_recursive
+'''
+        script = script.replace("for emulation in zsh ksh sh; do", prelude + "for emulation in zsh ksh sh; do")
+        script = script.replace("        unset answer\n", "        unset answer\n"
+            "        integer psh_pop_calls=0\n        typeset -a psh_pop_trace=()\n")
+        script = script.replace("        exit $arithmetic_status\n",
+            "        typeset -p psh_pop_calls psh_pop_trace\n        exit $arithmetic_status\n")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = {"shells": list(map(str, shells)), "binary_sha256": [sha(p) for p in shells],
               "driver_sha256": sha(Path(__file__)), "script_sha256": hashlib.sha256(script.encode()).hexdigest(),
-              "expressions": len(expressions), "syntax": args.syntax,
+              "expressions": len(expressions), "syntax": args.syntax, "operators": args.operators,
               "checks_per_locale": len(expressions) * 12, "cases": []}
     for locale in args.locales or ("C", "C.UTF-8", "fr_FR.UTF-8", "nb_NO.UTF-8", "tr_TR.UTF-8"):
         outputs = []

@@ -953,7 +953,7 @@ push(mnumber val, char *lval, int getme)
 }
 
 /**/
-static mnumber
+static inline mnumber
 pop(int noget)
 {
     struct mathvalue *mv = stack+sp;

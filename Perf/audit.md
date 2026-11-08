@@ -60,6 +60,14 @@ This adds private metadata and a parameter flag; native modules must follow
 the documented getter/setter ownership contract. It does not make append,
 negative-index reads, length expansion or general array processing constant time.
 
+[Round twenty-three](round23.md) profiles the current release again and finds
+the arithmetic operand-pop helper accounting for 4.05% of Endgame instructions.
+An inline hint preserves its full body while removing the separate call in the
+measured GCC build. Expanded differential checks cover valid operators, lazy
+lvalue reads, parameter replacement/retyping, recursive callbacks, short-circuit
+side effects and stack boundaries. Endgame improves; slower JSON controls and
+an initial run affected by external compilation remain in the evidence.
+
 Round-six Memcheck coverage also found an [existing scalar-search terminator
 read](upstream-terminator-read.md), reproduced in pristine Zsh. Mikael Magnusson’s two bounds guards have since been backported in a separate
 correctness commit; the saved Memcheck corpus now reports zero errors.

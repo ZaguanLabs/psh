@@ -1,0 +1,85 @@
+[
+  {
+    "name": "customer-confirm",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round23/previous/Src/zsh",
+      ".work/round23/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round23/customer-confirm.json"
+    ],
+    "status": 0,
+    "seconds": 22.91507989098318
+  },
+  {
+    "name": "library-confirm",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round23/previous/Src/zsh",
+      ".work/round23/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round23/library-confirm.json"
+    ],
+    "status": 0,
+    "seconds": 22.400849590077996
+  },
+  {
+    "name": "parser-confirm",
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      ".work/round23/previous/Src/zsh",
+      ".work/round23/candidate/Src/zsh",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round23/parser-confirm.json"
+    ],
+    "status": 0,
+    "seconds": 40.46317650913261
+  },
+  {
+    "name": "hardware-wide",
+    "command": [
+      "python3",
+      "Perf/hardware-benchmark.py",
+      ".work/round23/previous/Src/zsh",
+      ".work/round23/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--case",
+      "zcoder.zsh/coder-wide-layout",
+      "--case",
+      "zchat.zsh/chat-wide-layout",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round23/hardware-wide.json"
+    ],
+    "status": 0,
+    "seconds": 4.893411536933854
+  }
+]

@@ -781,3 +781,23 @@ symbols; `--expect-writes` is only for the rejected unguarded prototype. Run
 timings after builds, tests and profilers finish. The 23-case
 `array-length-benchmark.py` supplies empty, small/large, negative/out-of-range,
 slice and length controls alongside the actual project benchmarks.
+
+## Arithmetic operand stack
+
+[Round twenty-three](round23.md) adds an inline hint to the existing `pop()`
+helper and retains complete timing/control matrices, including an initial
+noisy run. New operator coverage complements the malformed-token corpus:
+
+```sh
+python3 Perf/math-compare.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --operators --locale C --locale C.UTF-8 --locale fr_BE.UTF-8 \
+  --output .work/logs/arithmetic-operators.json
+```
+
+This checks valid operators, lazy lvalues, parameter replacement/retyping,
+callback traces, recursion, short-circuit side effects and operand-stack limits.
+It includes expected errors and compares status/diagnostics as well as values.
+The extra fixtures run only with `--operators`; the default generated corpus
+retains its existing behavior. `--syntax` remains available independently or
+in combination. Compare compiler/profile pairs and retain slower controls;
+the hint does not guarantee a speedup with every compiler or workload.

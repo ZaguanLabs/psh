@@ -8,6 +8,9 @@ changes no Zsh C implementation or public structure definition.
 The subsequent [array-bound optimization](../Perf/round22.md) records the newer
 private daily-driver build and its validation, using this same release profile.
 
+The [arithmetic operand-pop iteration](../Perf/round23.md) records the next
+private build with the same profile and unchanged rc0 version.
+
 The original `v1.0.0-rc0` tag, draft and source archive remain an initial
 checkpoint. Work continues on `main`, identified by source commit and build
 digest. Previous installed releases and source artifacts are retained. This
