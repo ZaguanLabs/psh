@@ -1,0 +1,29 @@
+make: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline'
+cd Test ; make check
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Test'
+if test -n "gcc"; then \
+  cd .. && DESTDIR= \
+  make MODDIR=`pwd`/Test/Modules install.modules > /dev/null; \
+fi
+if test -z "$ZTST_handler"; then \
+  ZTST_handler=runtests.zsh; \
+fi; \
+if ZTST_testlist="`for f in /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Test/V01*.ztst; \
+           do echo $f; done`" \
+ ZTST_srcdir="/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Test" \
+ ZTST_exe=../Src/zsh \
+ ../Src/zsh +Z -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Test/$ZTST_handler; then \
+ stat=0; \
+else \
+ stat=1; \
+fi; \
+sleep 1; \
+rm -rf Modules .zcompdump; \
+exit $stat
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Test/V01zmodload.ztst: starting.
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Test/V01zmodload.ztst: all tests successful.
+**************************************
+1 successful test script, 0 failures, 0 skipped
+**************************************
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Test'
+make: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline'

@@ -1,0 +1,185 @@
+make: Entering directory '/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/.work/candidate'
+cd Test ; make check
+make[1]: Entering directory '/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/.work/candidate/Test'
+if test -n "gcc"; then \
+  cd .. && DESTDIR= \
+  make MODDIR=`pwd`/Test/Modules install.modules > /dev/null; \
+fi
+if test -z "$ZTST_handler"; then \
+  ZTST_handler=runtests.zsh; \
+fi; \
+if ZTST_testlist="`for f in /tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/*.ztst; \
+           do echo $f; done`" \
+ ZTST_srcdir="/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test" \
+ ZTST_exe=../Src/zsh \
+ ../Src/zsh +Z -f /tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/$ZTST_handler; then \
+ stat=0; \
+else \
+ stat=1; \
+fi; \
+sleep 1; \
+rm -rf Modules .zcompdump; \
+exit $stat
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A01grammar.ztst: starting.
+This test hangs the shell when it fails...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A01grammar.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A02alias.ztst: starting.
+This test hangs the shell when it fails...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A02alias.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A03quoting.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A03quoting.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A04redirect.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A04redirect.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A05execution.ztst: starting.
+Unable to change MONITOR option
+This test takes 5 seconds to fail...
+Skipping pipe leak test, requires MONITOR option
+This test takes 3 seconds and hangs the shell when it fails...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A05execution.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A06assign.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A06assign.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A07control.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A07control.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A09zwc.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/A09zwc.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B01cd.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B01cd.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B02typeset.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B02typeset.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B03print.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B03print.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B04read.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B04read.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B05eval.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B05eval.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B06fc.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B06fc.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B07emulate.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B07emulate.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B08shift.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B08shift.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B09hash.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B09hash.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B10getopts.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B10getopts.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B11kill.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B11kill.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B12limit.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B12limit.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B13whence.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/B13whence.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C01arith.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C01arith.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C02cond.ztst: starting.
+This test may take two seconds...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C02cond.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C03traps.ztst: starting.
+This test takes at least three seconds...
+This test, too, takes at least three seconds...
+Another test that takes three seconds
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C03traps.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C04funcdef.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C04funcdef.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C05debug.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/C05debug.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D01prompt.ztst: starting.
+Test case skipped: Missing terminfo module or non-colour terminal
+Test case skipped: Missing terminfo module or non-colour terminal
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D01prompt.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D02glob.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D02glob.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D03procsubst.ztst: starting.
+This test hangs the shell when it fails...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D03procsubst.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D04parameter.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D04parameter.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D05array.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D05array.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D06subscript.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D06subscript.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D07multibyte.ztst: starting.
+Testing multibyte with locale en_US.UTF-8
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D07multibyte.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D08cmdsubst.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D08cmdsubst.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D09brace.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/D09brace.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/E01options.ztst: starting.
+This test hangs the shell when it fails...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/E01options.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/E02xtrace.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/E02xtrace.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/E03posix.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/E03posix.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/P01privileged.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/P01privileged.ztst: skipped (PRIVILEGED tests require super-user privileges (or env var))
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V01zmodload.ztst: starting.
+--- /tmp/zsh.ztst.344259/ztst.err	2026-11-08 07:41:47.245270304 +0100
++++ /tmp/zsh.ztst.344259/ztst.terr	2026-11-08 07:41:47.247270319 +0100
+@@ -0,0 +1 @@
++3: /tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Src/utils.c:394: inconsistent term_count and/or cur_term
+Test /tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V01zmodload.ztst failed: error output differs from expected as shown above for:
+ for m in $mods
+ do
+   zmodload $m || return $?
+ done
+Was testing: Test loading of all compiled modules
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V01zmodload.ztst: test failed.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V02zregexparse.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V02zregexparse.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V03mathfunc.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V03mathfunc.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V04features.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V04features.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V05styles.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V05styles.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V06parameter.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V06parameter.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V07pcre.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V07pcre.ztst: skipped (the zsh/pcre module was disabled by configure (see config.modules))
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V08zpty.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V08zpty.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V09datetime.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V09datetime.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V10private.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V10private.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V11db_gdbm.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V11db_gdbm.ztst: skipped (can't load zsh/db/gdbm module for testing)
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V12zparseopts.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V12zparseopts.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V13zformat.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V13zformat.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V14system.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/V14system.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/W01history.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/W01history.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/W02jobs.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/W02jobs.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/W03jobparameters.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/W03jobparameters.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/X02zlevi.ztst: starting.
+This test may hang the shell when it fails...
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/X02zlevi.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/X03zlebindkey.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/X03zlebindkey.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/X04zlehighlight.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/X04zlehighlight.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Y01completion.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Y01completion.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Y02compmatch.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Y02compmatch.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Y03arguments.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Y03arguments.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Z01is-at-least.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Z01is-at-least.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Z02zmathfunc.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Z02zmathfunc.ztst: all tests successful.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Z03run-help.ztst: starting.
+/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/Test/Z03run-help.ztst: all tests successful.
+**************************************
+61 successful test scripts, 1 failure, 3 skipped
+**************************************
+make[1]: *** [Makefile:189: check] Error 1
+make[1]: Leaving directory '/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/.work/candidate/Test'
+make: *** [Makefile:262: check] Error 2
+make: Leaving directory '/tmp/psh-source-rc-wabv60dt/psh-1.0.0-rc0/.work/candidate'

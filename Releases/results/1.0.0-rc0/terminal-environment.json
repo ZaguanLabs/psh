@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "script": "zmodload zsh/termcap; zmodload zsh/terminfo",
+  "cases": [
+    {
+      "build": "baseline",
+      "TERM": null,
+      "status": 0,
+      "stdout": "",
+      "stderr": "1: ../../../.work/pristine/Src/utils.c:394: inconsistent term_count and/or cur_term\n",
+      "normalized_stderr": "utils.c:LINE: inconsistent term_count and/or cur_term\n"
+    },
+    {
+      "build": "candidate",
+      "TERM": null,
+      "status": 0,
+      "stdout": "",
+      "stderr": "1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c:394: inconsistent term_count and/or cur_term\n",
+      "normalized_stderr": "utils.c:LINE: inconsistent term_count and/or cur_term\n"
+    },
+    {
+      "build": "baseline",
+      "TERM": "psh-no-such-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": "1: ../../../.work/pristine/Src/utils.c:394: inconsistent term_count and/or cur_term\n",
+      "normalized_stderr": "utils.c:LINE: inconsistent term_count and/or cur_term\n"
+    },
+    {
+      "build": "candidate",
+      "TERM": "psh-no-such-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": "1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c:394: inconsistent term_count and/or cur_term\n",
+      "normalized_stderr": "utils.c:LINE: inconsistent term_count and/or cur_term\n"
+    },
+    {
+      "build": "baseline",
+      "TERM": "xterm",
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "normalized_stderr": ""
+    },
+    {
+      "build": "candidate",
+      "TERM": "xterm",
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "normalized_stderr": ""
+    }
+  ],
+  "conclusion": "Unset or unknown TERM triggers the same upstream debug assertion in pristine and candidate; xterm is clean in both.",
+  "system_zsh": [
+    {
+      "TERM": null,
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "TERM": "psh-no-such-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "TERM": "xterm",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "system_difference": "The assertion-enabled pristine and psh builds emit an extra stderr diagnostic for unset or unknown TERM; the installed non-debug system Zsh does not.",
+  "initial_archive_commit": "640a2d3f14beb77b9455bb657b2ad4d105b66279",
+  "initial_archive_sha256": "9ced8e7fafc0bcc836da5b27bc56ef5679c645fd4ff48b5a8bcc6c7e7bdf3531"
+}

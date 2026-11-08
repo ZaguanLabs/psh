@@ -32,7 +32,8 @@ def main():
         assert not (root / ".git").exists()
         metadata = json.loads((root / "SOURCE-INFO.json").read_text())
         env = {"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8", "LANG": "C.UTF-8",
-               "HOME": os.environ["HOME"], "GIT_CEILING_DIRECTORIES": str(scratch)}
+               "HOME": os.environ["HOME"], "GIT_CEILING_DIRECTORIES": str(scratch),
+               "TERM": "xterm"}
         stub = scratch / "no-git"
         stub.mkdir()
         (stub / "git").write_text("#!/bin/sh\necho 'Git is disabled during this archive build' >&2\nexit 127\n")
@@ -65,7 +66,8 @@ def main():
         report = {"passed": True, "archive_sha256": hashlib.sha256(args.archive.read_bytes()).hexdigest(),
                   "source_commit": metadata["source_commit"], "project_version": metadata["project_version"],
                   "zsh_version": metadata["zsh_version"], "git_history_present": False,
-                  "git_disabled_during_builds": True, "baseline_files_verified": metadata["baseline_files_verified"],
+                  "git_disabled_during_builds": True, "test_environment": {"TERM": "xterm", "LC_ALL": "C.UTF-8"},
+                  "baseline_files_verified": metadata["baseline_files_verified"],
                   "package_staged_without_installing": True, "runs": rows}
         args.output.write_text(json.dumps(report, indent=2) + "\n")
     print("Extracted source RC builds and stages without Git", flush=True)
