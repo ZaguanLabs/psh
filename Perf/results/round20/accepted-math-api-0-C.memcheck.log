@@ -1,0 +1,15 @@
+==1263129== Memcheck, a memory error detector
+==1263129== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==1263129== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==1263129== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_math_locale_fixture\ ||\ exit\ 1_for\ fixture_locale\ in\ global\ fr_FR.UTF-8;\ do_\ \ print\ -r\ --\ "$fixture_locale"_\ \ psh-math-locale-check\ "$fixture_locale"\ ||\ exit\ 1_done_zmodload\ -u\ psh_math_locale_fixture\ ||\ exit\ 1_if\ whence\ psh-math-locale-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round20/math-locale-fixture-accepted-math-api
+==1263129== Parent PID: 1259129
+==1263129== 
+==1263129== 
+==1263129== HEAP SUMMARY:
+==1263129==     in use at exit: 46,297 bytes in 750 blocks
+==1263129==   total heap usage: 101,275 allocs, 100,525 frees, 2,086,048 bytes allocated
+==1263129== 
+==1263129== For a detailed leak analysis, rerun with: --leak-check=full
+==1263129== 
+==1263129== For lists of detected and suppressed errors, rerun with: -s
+==1263129== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,15 @@
+==2008078== Memcheck, a memory error detector
+==2008078== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==2008078== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==2008078== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_math_locale_fixture\ ||\ exit\ 1_for\ fixture_locale\ in\ global\ fr_FR.UTF-8;\ do_\ \ print\ -r\ --\ "$fixture_locale"_\ \ psh-math-locale-check\ "$fixture_locale"\ ||\ exit\ 1_done_zmodload\ -u\ psh_math_locale_fixture\ ||\ exit\ 1_if\ whence\ psh-math-locale-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round20/math-locale-fixture-no-locale-api
+==2008078== Parent PID: 2007255
+==2008078== 
+==2008078== 
+==2008078== HEAP SUMMARY:
+==2008078==     in use at exit: 46,370 bytes in 745 blocks
+==2008078==   total heap usage: 101,268 allocs, 100,523 frees, 2,086,020 bytes allocated
+==2008078== 
+==2008078== For a detailed leak analysis, rerun with: --leak-check=full
+==2008078== 
+==2008078== For lists of detected and suppressed errors, rerun with: -s
+==2008078== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -91,7 +91,12 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes eighteen accepted optimizations.
+The executable now includes nineteen accepted optimizations.
+
+The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
+validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
+adds an inline hint to the existing checker, keeping its complete function body.
+Two extracted diagnostic-handler variants were rejected on project controls.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -110,7 +115,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all eighteen changes; the fourth experiment compares against
+executable includes all nineteen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -209,3 +214,10 @@ fallback; failed locale creation preserves errno and also falls back. Native
 checks compare value bits, rounding, floating exceptions, errno, global/thread
 locale state and input bytes. The measured Mario and shooter kernels improve;
 slower small scalar controls are retained in the full report.
+
+The nineteenth accepted change lets the compiler inline the operand/operator
+check performed after arithmetic tokens. The measured GCC build removes the
+repeated call; other compilers may choose differently. Endgame uses fewer
+instructions and CPU cycles, while project wall-time results and slower library
+controls are retained, including a noisy first editor timing run and its repeat.
+Expanded syntax comparisons check diagnostics and complete-case execution.

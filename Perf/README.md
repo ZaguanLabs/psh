@@ -694,3 +694,36 @@ and separately reports process rusage and the worker's warm-batch timer. These
 are different scopes; instruction totals are not wall times. The self-test
 checks counter inheritance and command status using a deterministic worker.
 Keep builds, tests and profilers idle during all accepted timing runs.
+
+
+## Per-token arithmetic validation
+
+[Round twenty](round20.md) adds an inline hint to the existing arithmetic
+operand/operator checker. Its body, state updates and diagnostics are unchanged.
+The measured compiler removes repeated calls without introducing a cache or
+changing the parser's evaluation and signal boundaries.
+
+```sh
+python3 Perf/math-compare.py .work/baseline/Src/zsh ./psh --syntax \
+  --output .work/logs/arithmetic-syntax.json
+```
+
+`--syntax` adds token pairs, malformed and valid operands/operators, nested
+parentheses, short-circuit contexts and diagnostic-prefix boundaries, including
+Unicode, Meta bytes and whitespace. Defaults cover five locales and three
+emulations with four option contexts. The driver checks that every expected
+subshell completion marker appears before accepting matching output/status;
+a failed setup cannot be counted as completed coverage.
+
+The corpus explicitly loads `zsh/mathfunc`. Before using alternative builds,
+install their matching stock modules into their private configured prefixes.
+For the recorded no-multibyte pair this is:
+
+```sh
+make -C .work/no-mb-candidate \
+  MODDIR="$PWD/.work/no-mb-runtime/lib/zsh/5.9.2" install.modules
+```
+
+This is a private test runtime, separate from the daily driver. The initial
+round-twenty run caught this missing test dependency; its original failure and
+successful targeted repair are retained with the validation records.

@@ -1,0 +1,78 @@
+
+.work/round19/psh:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .text:
+
+0000000000460a60 <checkunary>:
+  460a60:	41 56                	push   %r14
+  460a62:	48 63 ff             	movslq %edi,%rdi
+  460a65:	53                   	push   %rbx
+  460a66:	48 83 ec 18          	sub    $0x18,%rsp
+  460a6a:	8b 1c bd e0 20 4c 00 	mov    0x4c20e0(,%rdi,4),%ebx
+  460a71:	8b 05 9d 98 07 00    	mov    0x7989d(%rip),%eax        # 4da314 <unary>
+  460a77:	f6 c3 fc             	test   $0xfc,%bl
+  460a7a:	74 14                	je     460a90 <checkunary+0x30>
+  460a7c:	85 c0                	test   %eax,%eax
+  460a7e:	0f 84 8b 00 00 00    	je     460b0f <checkunary+0xaf>
+  460a84:	41 be 89 d3 4b 00    	mov    $0x4bd389,%r14d
+  460a8a:	eb 0e                	jmp    460a9a <checkunary+0x3a>
+  460a8c:	0f 1f 40 00          	nopl   0x0(%rax)
+  460a90:	85 c0                	test   %eax,%eax
+  460a92:	75 7b                	jne    460b0f <checkunary+0xaf>
+  460a94:	41 be 91 d3 4b 00    	mov    $0x4bd391,%r14d
+  460a9a:	0f b6 06             	movzbl (%rsi),%eax
+  460a9d:	f6 84 00 40 c3 4e 00 	testb  $0x8,0x4ec340(%rax,%rax,1)
+  460aa4:	08 
+  460aa5:	74 2b                	je     460ad2 <checkunary+0x72>
+  460aa7:	0f 1f 00             	nopl   (%rax)
+  460aaa:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  460ab1:	00 00 00 00 
+  460ab5:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  460abc:	00 00 00 00 
+  460ac0:	0f b6 46 01          	movzbl 0x1(%rsi),%eax
+  460ac4:	48 83 c6 01          	add    $0x1,%rsi
+  460ac8:	f6 84 00 40 c3 4e 00 	testb  $0x8,0x4ec340(%rax,%rax,1)
+  460acf:	08 
+  460ad0:	75 ee                	jne    460ac0 <checkunary+0x60>
+  460ad2:	48 89 f7             	mov    %rsi,%rdi
+  460ad5:	48 89 74 24 08       	mov    %rsi,0x8(%rsp)
+  460ada:	e8 31 2e 04 00       	call   4a3910 <ztrlen>
+  460adf:	48 8b 74 24 08       	mov    0x8(%rsp),%rsi
+  460ae4:	89 c1                	mov    %eax,%ecx
+  460ae6:	0f b6 06             	movzbl (%rsi),%eax
+  460ae9:	83 f9 0a             	cmp    $0xa,%ecx
+  460aec:	7e 42                	jle    460b30 <checkunary+0xd0>
+  460aee:	84 c0                	test   %al,%al
+  460af0:	74 48                	je     460b3a <checkunary+0xda>
+  460af2:	b9 0a 00 00 00       	mov    $0xa,%ecx
+  460af7:	41 b8 9a d3 4b 00    	mov    $0x4bd39a,%r8d
+  460afd:	48 89 f2             	mov    %rsi,%rdx
+  460b00:	bf f8 50 4b 00       	mov    $0x4b50f8,%edi
+  460b05:	4c 89 f6             	mov    %r14,%rsi
+  460b08:	31 c0                	xor    %eax,%eax
+  460b0a:	e8 01 4e 04 00       	call   4a5910 <zerr>
+  460b0f:	c1 eb 08             	shr    $0x8,%ebx
+  460b12:	83 e3 01             	and    $0x1,%ebx
+  460b15:	83 f3 01             	xor    $0x1,%ebx
+  460b18:	89 1d f6 97 07 00    	mov    %ebx,0x797f6(%rip)        # 4da314 <unary>
+  460b1e:	48 83 c4 18          	add    $0x18,%rsp
+  460b22:	5b                   	pop    %rbx
+  460b23:	41 5e                	pop    %r14
+  460b25:	c3                   	ret
+  460b26:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  460b2d:	00 00 00 
+  460b30:	41 b8 e1 ee 4b 00    	mov    $0x4beee1,%r8d
+  460b36:	84 c0                	test   %al,%al
+  460b38:	75 c3                	jne    460afd <checkunary+0x9d>
+  460b3a:	4c 89 f6             	mov    %r14,%rsi
+  460b3d:	bf c0 50 4b 00       	mov    $0x4b50c0,%edi
+  460b42:	31 c0                	xor    %eax,%eax
+  460b44:	e8 c7 4d 04 00       	call   4a5910 <zerr>
+  460b49:	eb c4                	jmp    460b0f <checkunary+0xaf>
+
+Disassembly of section .fini:

@@ -1,0 +1,149 @@
+diff --git a/Perf/math-compare.py b/Perf/math-compare.py
+index 9f9694b..c6c290c 100644
+--- a/Perf/math-compare.py
++++ b/Perf/math-compare.py
+@@ -4,6 +4,7 @@ import argparse
+ import hashlib
+ import itertools
+ import json
++import re
+ from pathlib import Path
+ import subprocess
+ 
+@@ -18,6 +19,8 @@ def main():
+     parser.add_argument("candidate", type=Path)
+     parser.add_argument("--locale", action="append", dest="locales")
+     parser.add_argument("--output", type=Path, required=True)
++    parser.add_argument("--syntax", action="store_true",
++                        help="include operator/operand token pairs and diagnostic boundaries")
+     args = parser.parse_args()
+     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
+     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+@@ -35,6 +38,22 @@ def main():
+                     "sqrt(2.0)", "psh_numeric_change()+1.25", "1.25+psh_numeric_change()+2.5",
+                     "psh_numeric_nested(1.25)+2.5", "(++i)+1.25", "1.25 + i++", "(i=2, i++)+1.25"]
+     expressions += ["1.25" + chr(c) for c in (1, 9, 10, 13, 32, 127, 128, 131, 160, 255)]
++    if args.syntax:
++        tokens = ["0", "1", "1.25", "x", "a[1]", "h[k]", "(", ")", "!", "~", "++", "--",
++                  "+", "-", "*", "/", "%", "<<", ">>", "&", "|", "^", "&&", "||", "^^",
++                  "?", ":", "=", "+=", "**", ","]
++        expressions += [a + " " + b for a, b in itertools.product(tokens, repeat=2)]
++        for suffix in ["", " ", "\t", "\n", *["2" * n for n in (1, 8, 9, 10, 11, 12, 32)],
++                       *["2" + char * n for char in ("é", "界", chr(0x83), chr(0x7f))
++                         for n in (1, 4, 8, 10, 11)]]:
++            for whitespace in ("", " ", "\t", "\n", " \t\n"):
++                expressions += ["1 " + whitespace + suffix,
++                                "1 + " + whitespace + "*" + suffix,
++                                "1 && (" + whitespace + suffix + ")",
++                                "0 && (" + whitespace + suffix + ")"]
++        expressions += ["(" * n + "1+2" + ")" * n for n in (1, 2, 8, 32)]
++        expressions += ["(" * n + "1 2" + ")" * n for n in (1, 2, 8, 32)]
++        expressions = list(dict.fromkeys(expressions))
+     arrays = "expressions=(" + " ".join(map(quote, expressions)) + ")\n"
+     script = '''emulate -R zsh
+ zmodload zsh/mathfunc || exit 1
+@@ -76,13 +95,18 @@ exit 0
+     args.output.parent.mkdir(parents=True, exist_ok=True)
+     report = {"shells": list(map(str, shells)), "binary_sha256": [sha(p) for p in shells],
+               "driver_sha256": sha(Path(__file__)), "script_sha256": hashlib.sha256(script.encode()).hexdigest(),
+-              "expressions": len(expressions), "checks_per_locale": len(expressions) * 12, "cases": []}
++              "expressions": len(expressions), "syntax": args.syntax,
++              "checks_per_locale": len(expressions) * 12, "cases": []}
+     for locale in args.locales or ("C", "C.UTF-8", "fr_FR.UTF-8", "nb_NO.UTF-8", "tr_TR.UTF-8"):
+         outputs = []
+         for shell in shells:
+             r = subprocess.run([str(shell), "-dfc", script, "arithmetic-comparison"],
+                 env={"PATH": "/usr/bin:/bin", "LC_ALL": locale, "LANG": locale},
+                 capture_output=True, timeout=300)
++            completed = len(re.findall(rb"(?m)^subshell=[0-9]+$", r.stdout))
++            if completed != report["checks_per_locale"]:
++                raise RuntimeError((str(shell), locale, "incomplete arithmetic corpus",
++                                    completed, report["checks_per_locale"]))
+             outputs.append((r.returncode, r.stdout, r.stderr))
+         if outputs[0] != outputs[1] or outputs[0][0]:
+             for i, result in enumerate(outputs):
+diff --git a/Src/math.c b/Src/math.c
+index 44205a8..00116d7 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -1569,6 +1569,30 @@ mathevalarg(char *s, char **ss)
+  * For this purpose, unary operators constitute part of an operand.
+  */
+ 
++/* Keep diagnostic formatting out of the per-token check. */
++#if defined(__GNUC__)
++__attribute__((__noinline__, __cold__))
++#endif
++static void
++checkunaryerror(int errmsg, char *mptr)
++{
++    int len, over = 0;
++    char *errtype = errmsg == 2 ? "operator" : "operand";
++    while (inblank(*mptr))
++	mptr++;
++    len = ztrlen(mptr);
++    if (len > 10) {
++	len = 10;
++	over = 1;
++    }
++    if (!*mptr)
++	zerr("bad math expression: %s expected at end of string",
++	    errtype);
++    else
++	zerr("bad math expression: %s expected at `%l%s'",
++	     errtype, mptr, len, over ? "..." : "");
++}
++
+ /**/
+ static void
+ checkunary(int mtokc, char *mptr)
+@@ -1582,23 +1606,8 @@ checkunary(int mtokc, char *mptr)
+ 	if (!unary)
+ 	    errmsg = 2;
+     }
+-    if (errmsg) {
+-	int len, over = 0;
+-	char *errtype = errmsg == 2 ? "operator" : "operand";
+-	while (inblank(*mptr))
+-	    mptr++;
+-	len = ztrlen(mptr);
+-	if (len > 10) {
+-	    len = 10;
+-	    over = 1;
+-	}
+-	if (!*mptr)
+-	    zerr("bad math expression: %s expected at end of string",
+-		errtype);
+-	else
+-	    zerr("bad math expression: %s expected at `%l%s'",
+-		 errtype, mptr, len, over ? "..." : "");
+-    }
++    if (errmsg)
++	checkunaryerror(errmsg, mptr);
+     unary = !(tp & OP_OPF);
+ }
+ 
+diff --git a/Test/C01arith.ztst b/Test/C01arith.ztst
+index 378e351..5818638 100644
+--- a/Test/C01arith.ztst
++++ b/Test/C01arith.ztst
+@@ -517,3 +517,19 @@
+     }
+   }
+ 0:Floating conversion preserves underscores, exponent forms, option changes and locale-changing math callbacks
++
++  print $((1 234567890))
++1:Arithmetic operator diagnostic retains a nine-byte suffix
++?(eval):1: bad math expression: operator expected at `234567890'
++
++  print $((1 2345678901))
++1:Arithmetic operator diagnostic retains exactly ten bytes without ellipsis
++?(eval):1: bad math expression: operator expected at `2345678901'
++
++  print $((1 23456789012))
++1:Arithmetic operator diagnostic truncates an eleven-byte suffix
++?(eval):1: bad math expression: operator expected at `2345678901...'
++
++  print $((1 + *23456789012))
++1:Arithmetic operand diagnostic retains its original prefix and ellipsis
++?(eval):1: bad math expression: operand expected at `*234567890...'

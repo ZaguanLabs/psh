@@ -1,0 +1,124 @@
+[
+  {
+    "name": "legacy-locale-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+    "status": 0,
+    "seconds": 8.911
+  },
+  {
+    "name": "legacy-locale-upstream",
+    "command": [
+      "make",
+      "check",
+      "TESTNUM=C01"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+    "status": 0,
+    "seconds": 2.607
+  },
+  {
+    "name": "legacy-locale-corpus",
+    "command": [
+      "python3",
+      "Perf/math-compare.py",
+      ".work/baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate/Src/zsh",
+      "--syntax",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round20/legacy-locale-corpus.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 28.443
+  },
+  {
+    "name": "legacy-locale-api",
+    "command": [
+      "python3",
+      "Perf/check-math-locale-module.py",
+      ".work/baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate/Src/zsh",
+      "--headers-build",
+      ".work/baseline",
+      "--memcheck",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round20/legacy-locale-api.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 8.622
+  },
+  {
+    "name": "no-locale-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate",
+    "status": 0,
+    "seconds": 2.424
+  },
+  {
+    "name": "no-locale-upstream",
+    "command": [
+      "make",
+      "check",
+      "TESTNUM=C01"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate",
+    "status": 0,
+    "seconds": 1.802
+  },
+  {
+    "name": "no-locale-corpus",
+    "command": [
+      "python3",
+      "Perf/math-compare.py",
+      ".work/no-locale-baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate/Src/zsh",
+      "--syntax",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round20/no-locale-corpus.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 25.949
+  },
+  {
+    "name": "no-locale-api",
+    "command": [
+      "python3",
+      "Perf/check-math-locale-module.py",
+      ".work/no-locale-baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate/Src/zsh",
+      "--headers-build",
+      ".work/no-locale-baseline",
+      "--memcheck",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round20/no-locale-api.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 3.701
+  }
+]

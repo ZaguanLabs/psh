@@ -1,0 +1,40 @@
+{
+  "release": "5.9.2-e37ef44ddb53",
+  "shell": "/usr/local/psh/releases/5.9.2-e37ef44ddb53/bin/psh",
+  "shell_sha256": "d4b70ecd3927eddc098f9737712cd029f2ef65c955be1b7503cfa3ad32c743ac",
+  "FPATH_unset": true,
+  "environment": {
+    "PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/5.9.2-e37ef44ddb53/test-bin:/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "ZSH_TEST_SHELL": "/usr/local/psh/releases/5.9.2-e37ef44ddb53/bin/psh",
+    "ZSH_BIN": "/usr/local/psh/releases/5.9.2-e37ef44ddb53/bin/psh",
+    "ZSH_BUILD_ROOT": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/5.9.2-e37ef44ddb53/core",
+    "ZHTML2MD_TEST_ZSH": "/usr/local/psh/releases/5.9.2-e37ef44ddb53/bin/psh"
+  },
+  "runs": [
+    {
+      "command": [
+        "make",
+        "clean"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw",
+      "overrides": {},
+      "status": 0,
+      "seconds": 0.665,
+      "log": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/5.9.2-e37ef44ddb53/logs/test-zdraw-0.log"
+    },
+    {
+      "command": [
+        "make",
+        "test",
+        "ZSH_BIN=/usr/local/psh/releases/5.9.2-e37ef44ddb53/bin/psh"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw",
+      "overrides": {},
+      "status": 0,
+      "seconds": 399.938,
+      "log": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/5.9.2-e37ef44ddb53/logs/test-zdraw-1.log"
+    }
+  ],
+  "passed": true
+}

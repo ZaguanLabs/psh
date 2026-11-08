@@ -1,0 +1,65 @@
+
+.work/candidate/Src/zsh:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .text:
+
+0000000000460a60 <checkunaryerror>:
+  460a60:	55                   	push   %rbp
+  460a61:	ba 91 d3 4b 00       	mov    $0x4bd391,%edx
+  460a66:	b8 89 d3 4b 00       	mov    $0x4bd389,%eax
+  460a6b:	53                   	push   %rbx
+  460a6c:	48 89 f3             	mov    %rsi,%rbx
+  460a6f:	48 83 ec 08          	sub    $0x8,%rsp
+  460a73:	83 ff 02             	cmp    $0x2,%edi
+  460a76:	48 0f 44 c2          	cmove  %rdx,%rax
+  460a7a:	48 89 c5             	mov    %rax,%rbp
+  460a7d:	0f b6 06             	movzbl (%rsi),%eax
+  460a80:	f6 84 00 40 c3 4e 00 	testb  $0x8,0x4ec340(%rax,%rax,1)
+  460a87:	08 
+  460a88:	74 28                	je     460ab2 <checkunaryerror+0x52>
+  460a8a:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  460a91:	00 00 00 00 
+  460a95:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  460a9c:	00 00 00 00 
+  460aa0:	0f b6 43 01          	movzbl 0x1(%rbx),%eax
+  460aa4:	48 83 c3 01          	add    $0x1,%rbx
+  460aa8:	f6 84 00 40 c3 4e 00 	testb  $0x8,0x4ec340(%rax,%rax,1)
+  460aaf:	08 
+  460ab0:	75 ee                	jne    460aa0 <checkunaryerror+0x40>
+  460ab2:	48 89 df             	mov    %rbx,%rdi
+  460ab5:	e8 96 2e 04 00       	call   4a3950 <ztrlen>
+  460aba:	89 c1                	mov    %eax,%ecx
+  460abc:	0f b6 03             	movzbl (%rbx),%eax
+  460abf:	83 f9 0a             	cmp    $0xa,%ecx
+  460ac2:	7f 2c                	jg     460af0 <checkunaryerror+0x90>
+  460ac4:	41 b8 e1 ee 4b 00    	mov    $0x4beee1,%r8d
+  460aca:	84 c0                	test   %al,%al
+  460acc:	74 31                	je     460aff <checkunaryerror+0x9f>
+  460ace:	48 83 c4 08          	add    $0x8,%rsp
+  460ad2:	48 89 da             	mov    %rbx,%rdx
+  460ad5:	48 89 ee             	mov    %rbp,%rsi
+  460ad8:	bf f8 50 4b 00       	mov    $0x4b50f8,%edi
+  460add:	5b                   	pop    %rbx
+  460ade:	31 c0                	xor    %eax,%eax
+  460ae0:	5d                   	pop    %rbp
+  460ae1:	e9 6a 4e 04 00       	jmp    4a5950 <zerr>
+  460ae6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  460aed:	00 00 00 
+  460af0:	b9 0a 00 00 00       	mov    $0xa,%ecx
+  460af5:	41 b8 9a d3 4b 00    	mov    $0x4bd39a,%r8d
+  460afb:	84 c0                	test   %al,%al
+  460afd:	75 cf                	jne    460ace <checkunaryerror+0x6e>
+  460aff:	48 83 c4 08          	add    $0x8,%rsp
+  460b03:	48 89 ee             	mov    %rbp,%rsi
+  460b06:	bf c0 50 4b 00       	mov    $0x4b50c0,%edi
+  460b0b:	31 c0                	xor    %eax,%eax
+  460b0d:	5b                   	pop    %rbx
+  460b0e:	5d                   	pop    %rbp
+  460b0f:	e9 3c 4e 04 00       	jmp    4a5950 <zerr>
+
+Disassembly of section .fini:

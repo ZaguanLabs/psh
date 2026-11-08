@@ -1570,7 +1570,7 @@ mathevalarg(char *s, char **ss)
  */
 
 /**/
-static void
+static inline void
 checkunary(int mtokc, char *mptr)
 {
     int errmsg = 0;

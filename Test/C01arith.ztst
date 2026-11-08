@@ -517,3 +517,19 @@
     }
   }
 0:Floating conversion preserves underscores, exponent forms, option changes and locale-changing math callbacks
+
+  print $((1 234567890))
+1:Arithmetic operator diagnostic retains a nine-byte suffix
+?(eval):1: bad math expression: operator expected at `234567890'
+
+  print $((1 2345678901))
+1:Arithmetic operator diagnostic retains exactly ten bytes without ellipsis
+?(eval):1: bad math expression: operator expected at `2345678901'
+
+  print $((1 23456789012))
+1:Arithmetic operator diagnostic truncates an eleven-byte suffix
+?(eval):1: bad math expression: operator expected at `2345678901...'
+
+  print $((1 + *23456789012))
+1:Arithmetic operand diagnostic retains its original prefix and ellipsis
+?(eval):1: bad math expression: operand expected at `*234567890...'

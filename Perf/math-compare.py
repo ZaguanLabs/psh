@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import itertools
 import json
+import re
 from pathlib import Path
 import subprocess
 
@@ -18,6 +19,8 @@ def main():
     parser.add_argument("candidate", type=Path)
     parser.add_argument("--locale", action="append", dest="locales")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--syntax", action="store_true",
+                        help="include operator/operand token pairs and diagnostic boundaries")
     args = parser.parse_args()
     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -35,6 +38,22 @@ def main():
                     "sqrt(2.0)", "psh_numeric_change()+1.25", "1.25+psh_numeric_change()+2.5",
                     "psh_numeric_nested(1.25)+2.5", "(++i)+1.25", "1.25 + i++", "(i=2, i++)+1.25"]
     expressions += ["1.25" + chr(c) for c in (1, 9, 10, 13, 32, 127, 128, 131, 160, 255)]
+    if args.syntax:
+        tokens = ["0", "1", "1.25", "x", "a[1]", "h[k]", "(", ")", "!", "~", "++", "--",
+                  "+", "-", "*", "/", "%", "<<", ">>", "&", "|", "^", "&&", "||", "^^",
+                  "?", ":", "=", "+=", "**", ","]
+        expressions += [a + " " + b for a, b in itertools.product(tokens, repeat=2)]
+        for suffix in ["", " ", "\t", "\n", *["2" * n for n in (1, 8, 9, 10, 11, 12, 32)],
+                       *["2" + char * n for char in ("é", "界", chr(0x83), chr(0x7f))
+                         for n in (1, 4, 8, 10, 11)]]:
+            for whitespace in ("", " ", "\t", "\n", " \t\n"):
+                expressions += ["1 " + whitespace + suffix,
+                                "1 + " + whitespace + "*" + suffix,
+                                "1 && (" + whitespace + suffix + ")",
+                                "0 && (" + whitespace + suffix + ")"]
+        expressions += ["(" * n + "1+2" + ")" * n for n in (1, 2, 8, 32)]
+        expressions += ["(" * n + "1 2" + ")" * n for n in (1, 2, 8, 32)]
+        expressions = list(dict.fromkeys(expressions))
     arrays = "expressions=(" + " ".join(map(quote, expressions)) + ")\n"
     script = '''emulate -R zsh
 zmodload zsh/mathfunc || exit 1
@@ -76,13 +95,18 @@ exit 0
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = {"shells": list(map(str, shells)), "binary_sha256": [sha(p) for p in shells],
               "driver_sha256": sha(Path(__file__)), "script_sha256": hashlib.sha256(script.encode()).hexdigest(),
-              "expressions": len(expressions), "checks_per_locale": len(expressions) * 12, "cases": []}
+              "expressions": len(expressions), "syntax": args.syntax,
+              "checks_per_locale": len(expressions) * 12, "cases": []}
     for locale in args.locales or ("C", "C.UTF-8", "fr_FR.UTF-8", "nb_NO.UTF-8", "tr_TR.UTF-8"):
         outputs = []
         for shell in shells:
             r = subprocess.run([str(shell), "-dfc", script, "arithmetic-comparison"],
                 env={"PATH": "/usr/bin:/bin", "LC_ALL": locale, "LANG": locale},
                 capture_output=True, timeout=300)
+            completed = len(re.findall(rb"(?m)^subshell=[0-9]+$", r.stdout))
+            if completed != report["checks_per_locale"]:
+                raise RuntimeError((str(shell), locale, "incomplete arithmetic corpus",
+                                    completed, report["checks_per_locale"]))
             outputs.append((r.returncode, r.stdout, r.stderr))
         if outputs[0] != outputs[1] or outputs[0][0]:
             for i, result in enumerate(outputs):
