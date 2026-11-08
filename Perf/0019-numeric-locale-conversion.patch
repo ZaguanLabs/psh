@@ -1,0 +1,272 @@
+diff --git a/Src/math.c b/Src/math.c
+index 3fe6e21..44205a8 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -66,6 +66,12 @@ static char *yylval;
+ 
+ static int mlevel = 0;
+ 
++/* Retain an immutable conversion locale for the life of the process. */
++#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
++#define PSH_MATH_LOCALE_OBJECT 1
++static locale_t math_c_locale;
++#endif
++
+ /* != 0 means recognize unary plus, minus, etc. */
+ 
+ static int unary = 1;
+@@ -458,12 +464,43 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     return lastmathval = ret;
+ }
+ 
+-static int
+-lexconstant(void)
++/* Keep locale setup off the integer lexer's hot path. */
++#if defined(__GNUC__)
++__attribute__((__noinline__))
++#endif
++static double
++math_strtod(char *text, char **end)
+ {
++    double value;
+ #ifdef USE_LOCALE
+     char *prev_locale;
+ #endif
++#ifdef PSH_MATH_LOCALE_OBJECT
++    {
++	int saved_errno = errno;
++	int ordinary_token = ((*text >= '0' && *text <= '9') || *text == '.') &&
++	    uselocale((locale_t)0) == LC_GLOBAL_LOCALE;
++	if (ordinary_token && !math_c_locale)
++	    math_c_locale = newlocale(LC_ALL_MASK, "C", (locale_t)0);
++	errno = saved_errno;
++	if (ordinary_token && math_c_locale)
++	    return strtod_l(text, end, math_c_locale);
++    }
++#endif
++#ifdef USE_LOCALE
++    prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
++    setlocale(LC_NUMERIC, "POSIX");
++#endif
++    value = strtod(text, end);
++#ifdef USE_LOCALE
++    if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
++#endif
++    return value;
++}
++
++static int
++lexconstant(void)
++{
+     char *nptr;
+ 
+     nptr = ptr;
+@@ -520,10 +557,6 @@ lexconstant(void)
+ 	char *ptr2;
+ 	/* it's a float */
+ 	yyval.type = MN_FLOAT;
+-#ifdef USE_LOCALE
+-	prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+-	setlocale(LC_NUMERIC, "POSIX");
+-#endif
+ 	if (*nptr == '.') {
+ 	    nptr++;
+ 	    while (idigit(*nptr) || *nptr == '_')
+@@ -549,10 +582,7 @@ lexconstant(void)
+ 		break;
+ 	    }
+ 	}
+-	yyval.u.d = strtod(ptr, &nptr);
+-#ifdef USE_LOCALE
+-	if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+-#endif
++	yyval.u.d = math_strtod(ptr, &nptr);
+ 	if (ptr == nptr || *nptr == '.') {
+ 	    zerr("bad floating point constant");
+ 	    return EOI;
+diff --git a/Src/zsh_system.h b/Src/zsh_system.h
+index 21446a9..2cc2cd6 100644
+--- a/Src/zsh_system.h
++++ b/Src/zsh_system.h
+@@ -270,6 +270,9 @@ struct timespec {
+ #ifdef HAVE_LOCALE_H
+ # include <locale.h>
+ #endif
++#ifdef HAVE_XLOCALE_H
++# include <xlocale.h>
++#endif
+ 
+ #ifdef HAVE_LIMITS_H
+ # include <limits.h>
+diff --git a/Test/C01arith.ztst b/Test/C01arith.ztst
+index d0092fe..378e351 100644
+--- a/Test/C01arith.ztst
++++ b/Test/C01arith.ztst
+@@ -493,3 +493,27 @@
+ 0:Double quotes are not treated specially in arithmetic (POSIX)
+ # and do not do grouping!  this is 6 + (2/1) + 3
+ >11
++
++  () {
++    emulate -L zsh
++    local LC_ALL=C LC_NUMERIC=C
++    local -F 12 value
++    value=$(( 1_2.3_4e+2 + .125 ))
++    (( value == 1234.125 )) || return 1
++    value=$(( -0.0 + 1.25e+2 ))
++    (( value == 125.0 )) || return 1
++    psh_numeric_locale_callback() { LC_NUMERIC=POSIX; (( 2 )); }
++    functions -M psh_numeric_locale_callback 0 0 psh_numeric_locale_callback
++    {
++      value=$(( 1.25 + psh_numeric_locale_callback() + 2.5 ))
++      (( value == 5.75 )) || return 1
++      [[ $LC_NUMERIC == POSIX && $LC_ALL == C ]] || return 1
++      setopt forcefloat octalzeroes
++      value=$(( 0001.25 + 1e-3 ))
++      (( value == 1.251 ))
++    } always {
++      functions +M psh_numeric_locale_callback
++      unfunction psh_numeric_locale_callback
++    }
++  }
++0:Floating conversion preserves underscores, exponent forms, option changes and locale-changing math callbacks
+diff --git a/config.h.in b/config.h.in
+index 9a24597..f971574 100644
+--- a/config.h.in
++++ b/config.h.in
+@@ -370,6 +370,10 @@
+ /* Define to 1 if you have the 'lstat' function. */
+ #undef HAVE_LSTAT
+ 
++/* Define if the complete locale-object API for arithmetic conversion is
++   usable. */
++#undef HAVE_MATH_STRTOD_L
++
+ /* Define to 1 if you have the 'memccpy' function. */
+ #undef HAVE_MEMCCPY
+ 
+@@ -983,6 +987,9 @@
+ /* Define to 1 if you have the 'win_wch' function. */
+ #undef HAVE_WIN_WCH
+ 
++/* Define to 1 if you have the <xlocale.h> header file. */
++#undef HAVE_XLOCALE_H
++
+ /* Define to 1 if you have the 'xw' function. */
+ #undef HAVE_XW
+ 
+diff --git a/configure b/configure
+index d4d6b06..294b33b 100755
+--- a/configure
++++ b/configure
+@@ -10546,6 +10546,68 @@ printf '%s\n' "#define HAVE_STRCOLL 1" >>confdefs.h
+ fi
+ 
+ 
++ac_fn_c_check_header_compile "$LINENO" "xlocale.h" "ac_cv_header_xlocale_h" "$ac_includes_default"
++if test "x$ac_cv_header_xlocale_h" = xyes
++then :
++  printf "%s\n" "#define HAVE_XLOCALE_H 1" >>confdefs.h
++
++fi
++
++
++{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for locale-object arithmetic conversion" >&5
++printf %s "checking for locale-object arithmetic conversion... " >&6; }
++if test ${zsh_cv_math_strtod_l+y}
++then :
++  printf %s "(cached) " >&6
++else case e in #(
++  e) cat confdefs.h - <<_ACEOF >conftest.$ac_ext
++/* end confdefs.h.  */
++
++#define _GNU_SOURCE 1
++#include <stdlib.h>
++#include <locale.h>
++#ifdef HAVE_XLOCALE_H
++#include <xlocale.h>
++#endif
++
++int
++main (void)
++{
++
++  locale_t (*make_locale)(int, const char *, locale_t) = newlocale;
++  locale_t (*thread_locale)(locale_t) = uselocale;
++  double (*convert)(const char *, char **, locale_t) = strtod_l;
++  void (*free_locale)(locale_t) = freelocale;
++  locale_t loc = make_locale(LC_ALL_MASK, "C", (locale_t)0);
++  char *end;
++  double value = 0.0;
++  if (loc && thread_locale((locale_t)0) == LC_GLOBAL_LOCALE)
++    value = convert("1.25", &end, loc);
++  if (loc) free_locale(loc);
++  return value == 1.25 ? 0 : 1;
++
++  ;
++  return 0;
++}
++_ACEOF
++if ac_fn_c_try_link "$LINENO"
++then :
++  zsh_cv_math_strtod_l=yes
++else case e in #(
++  e) zsh_cv_math_strtod_l=no ;;
++esac
++fi
++rm -f core conftest.err conftest.$ac_objext conftest.beam \
++    conftest$ac_exeext conftest.$ac_ext ;;
++esac
++fi
++{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $zsh_cv_math_strtod_l" >&5
++printf "%s\n" "$zsh_cv_math_strtod_l" >&6; }
++if test x$zsh_cv_math_strtod_l = xyes; then
++  printf "%s\n" "#define HAVE_MATH_STRTOD_L 1" >>confdefs.h
++
++fi
++
+ # fpurge exists on musl, but is undeclared in stdio.h and isn't actually required
+ ac_fn_check_decl "$LINENO" "fpurge" "ac_cv_have_decl_fpurge" "$ac_includes_default" "$ac_c_undeclared_builtin_options$ac_c_future_darwin_options" "CFLAGS"
+ if test "x$ac_cv_have_decl_fpurge" = xyes
+diff --git a/configure.ac b/configure.ac
+index 2769410..80d1e61 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1296,6 +1296,37 @@ AC_CHECK_FUNCS(strftime strptime mktime timelocal \
+ 	       setutxent getutxent endutxent getutent)
+ AC_FUNC_STRCOLL
+ 
++dnl strtod_l avoids changing the process locale for every floating constant.
++dnl Check declarations and linking together: older systems may expose only
++dnl part of the locale-object API, or require the xlocale header.
++AC_CHECK_HEADERS([xlocale.h])
++AH_TEMPLATE([HAVE_MATH_STRTOD_L],
++[Define if the complete locale-object API for arithmetic conversion is usable.])
++AC_CACHE_CHECK([for locale-object arithmetic conversion], zsh_cv_math_strtod_l,
++  [AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++#define _GNU_SOURCE 1
++#include <stdlib.h>
++#include <locale.h>
++#ifdef HAVE_XLOCALE_H
++#include <xlocale.h>
++#endif
++]], [[
++  locale_t (*make_locale)(int, const char *, locale_t) = newlocale;
++  locale_t (*thread_locale)(locale_t) = uselocale;
++  double (*convert)(const char *, char **, locale_t) = strtod_l;
++  void (*free_locale)(locale_t) = freelocale;
++  locale_t loc = make_locale(LC_ALL_MASK, "C", (locale_t)0);
++  char *end;
++  double value = 0.0;
++  if (loc && thread_locale((locale_t)0) == LC_GLOBAL_LOCALE)
++    value = convert("1.25", &end, loc);
++  if (loc) free_locale(loc);
++  return value == 1.25 ? 0 : 1;
++]])], [zsh_cv_math_strtod_l=yes], [zsh_cv_math_strtod_l=no])])
++if test x$zsh_cv_math_strtod_l = xyes; then
++  AC_DEFINE(HAVE_MATH_STRTOD_L)
++fi
++
+ # fpurge exists on musl, but is undeclared in stdio.h and isn't actually required
+ AC_CHECK_DECLS([fpurge])
+ 

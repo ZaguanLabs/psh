@@ -1,0 +1,1340 @@
+--------------------------------------------------------------------------------
+Profile data file '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round19/mario-source-view.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 163152377
+Trigger: Program termination
+Profiled target:  /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round17/psh -df /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh mario-race /home/stig/dev/challenge/z3dfx.mario 120 (PID 36154, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       0
+Include dirs:     
+User annotated:   .work/logs/round19/original-source-view/Src/math.c
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+701,490,217 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                   file:function
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- User-annotated source: .work/logs/round19/original-source-view/Src/math.c
+--------------------------------------------------------------------------------
+Ir                 
+
+-- line 330 ----------------------------------------
+        .           
+        .           
+        .           /*
+        .            * Get a number from a variable.
+        .            * Try to be clever about reusing subscripts by caching the Value structure.
+        .            */
+        .           static mnumber
+        .           getmathparam(struct mathvalue *mptr)
+  438,420 ( 0.06%)  {
+        .               mnumber result;
+  438,420 ( 0.06%)      if (!mptr->pval) {
+  292,280 ( 0.04%)  	char *s = mptr->lval;
+  438,420 ( 0.06%)  	mptr->pval = (Value)zhalloc(sizeof(struct value));
+4,617,032 ( 0.66%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/mem.c:zhalloc (120,484x)
+  876,840 ( 0.12%)  	if (!getvalue(mptr->pval, &s, 1))
+102,646,036 (14.63%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:getvalue (120,484x)
+        .           	{
+        .           	    if (unset(UNSET))
+        .           		zerr("%s: parameter not set", mptr->lval);
+        .           	    mptr->pval = NULL;
+        .           	    if (isset(FORCEFLOAT)) {
+        .           		result.type = MN_FLOAT;
+        .           		result.u.d = 0.0;
+        .           		return result;
+        .           	    }
+        .           	    return zero_mnumber;
+        .           	}
+  438,420 ( 0.06%)  	if (errflag)
+        .           	    return zero_mnumber;
+        .               }
+  730,700 ( 0.10%)      result = getnumvalue(mptr->pval);
+172,039,356 (24.52%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:getnumvalue (120,484x)
+  292,280 ( 0.04%)      if (isset(FORCEFLOAT) && result.type == MN_INTEGER) {
+        .           	result.type = MN_FLOAT;
+        .           	result.u.d = (double)result.u.l;
+        .               }
+1,022,980 ( 0.15%)      return result;
+  438,420 ( 0.06%)  }
+        .           
+        .           static mnumber
+        .           mathevall(char *s, enum prec_type prec_tp, char **ep)
+  977,408 ( 0.14%)  {
+        .               int xlastbase, xnoeval, xunary, *xprec;
+        .               char *xptr;
+        .               mnumber xyyval;
+        .               char *xyylval;
+        .               int xsp;
+   62,472 ( 0.01%)      struct mathvalue *xstack = 0, nstack[STACKSZ];
+        .               mnumber ret;
+        .           
+  366,528 ( 0.05%)      if (mlevel >= MAX_MLEVEL) {
+        .           	xyyval.type = MN_INTEGER;
+        .           	xyyval.u.l = 0;
+        .           	*ep = s;
+        .           
+        .           	zerr("math recursion limit exceeded: %s", *ep);
+        .           
+        .           	return xyyval;
+        .               }
+  488,704 ( 0.07%)      if (mlevel++) {
+   59,704 ( 0.01%)  	xlastbase = lastbase;
+  119,408 ( 0.02%)  	xnoeval = noeval;
+  119,408 ( 0.02%)  	xunary = unary;
+  119,408 ( 0.02%)  	xptr = ptr;
+  298,520 ( 0.04%)  	xyyval = yyval;
+  119,408 ( 0.02%)  	xyylval = yylval;
+        .           
+  119,408 ( 0.02%)  	xsp = sp;
+  119,408 ( 0.02%)  	xstack = stack;
+  179,112 ( 0.03%)  	xprec = prec;
+        .               } else {
+  187,416 ( 0.03%)  	xlastbase = xnoeval = xunary = xsp = 0;
+   62,472 ( 0.01%)  	xyyval.type = MN_INTEGER;
+   62,472 ( 0.01%)  	xyyval.u.l = 0;
+   62,472 ( 0.01%)  	xyylval = NULL;
+   62,472 ( 0.01%)  	xptr = NULL;
+   62,472 ( 0.01%)  	xprec = NULL;
+        .               }
+  610,880 ( 0.09%)      prec = isset(CPRECEDENCES) ? c_prec : z_prec;
+  244,352 ( 0.03%)      stack = nstack;
+  122,176 ( 0.02%)      lastbase = -1;
+  122,176 ( 0.02%)      ptr = s;
+  122,176 ( 0.02%)      sp = -1;
+  122,176 ( 0.02%)      unary = 1;
+  122,176 ( 0.02%)      stack[0].val.type = MN_INTEGER;
+  122,176 ( 0.02%)      stack[0].val.u.l = 0;
+  733,056 ( 0.10%)      mathparse(prec_tp == MPREC_TOP ? TOPPREC : ARGPREC);
+561,773,342 (80.08%)  => .work/logs/round19/original-source-view/Src/math.c:mathparse (62,472x)
+        .               /*
+        .                * Internally, we parse the contents of parentheses at top
+        .                * precedence... so we can return a parenthesis here if
+        .                * there are too many at the end.
+        .                */
+  244,352 ( 0.03%)      if (mtok == M_OUTPAR && !errflag)
+        .           	zerr("bad math expression: unexpected ')'");
+  244,352 ( 0.03%)      *ep = ptr;
+  733,056 ( 0.10%)      DPUTS(!errflag && sp > 0,
+        .           	  "BUG: math: wallabies roaming too freely in outback");
+        .           
+  366,528 ( 0.05%)      if (errflag) {
+        .           	/*
+        .           	 * This used to set the return value to errflag.
+        .           	 * I don't understand how that could be useful; the
+        .           	 * caller doesn't know that's what's happened and
+        .           	 * may not get a value at all.
+        .           	 * Worse, we reset errflag in execarith() and setting
+        .           	 * this explicitly non-zero means a (( ... )) returns
+        .           	 * status 0 if there's an error.  That surely can't
+        .           	 * be right.  execarith() now detects an error and returns
+        .           	 * status 2.
+        .           	 */
+        .           	ret.type = MN_INTEGER;
+        .           	ret.u.l = 0;
+        .               } else {
+  488,704 ( 0.07%)  	if (stack[0].val.type == MN_UNSET)
+  188,630 ( 0.03%)  	    ret = getmathparam(stack);
+20,356,017 ( 2.90%)  => .work/logs/round19/original-source-view/Src/math.c:getmathparam (6,816x)
+        .           	else
+  168,900 ( 0.02%)  	    ret = stack[0].val;
+        .               }
+        .           
+  244,352 ( 0.03%)      if (--mlevel) {
+   59,704 ( 0.01%)  	lastbase = xlastbase;
+  119,408 ( 0.02%)  	noeval = xnoeval;
+  119,408 ( 0.02%)  	unary = xunary;
+  119,408 ( 0.02%)  	ptr = xptr;
+  477,632 ( 0.07%)  	yyval = xyyval;
+  119,408 ( 0.02%)  	yylval = xyylval;
+        .           
+  119,408 ( 0.02%)  	sp = xsp;
+  119,408 ( 0.02%)  	stack = xstack;
+  119,408 ( 0.02%)  	prec = xprec;
+        .               }
+1,099,584 ( 0.16%)      return lastmathval = ret;
+  977,408 ( 0.14%)  }
+        .           
+        .           static int
+        .           lexconstant(void)
+  137,920 ( 0.02%)  {
+        .           #ifdef USE_LOCALE
+        .               char *prev_locale;
+        .           #endif
+        .               char *nptr;
+        .           
+  137,920 ( 0.02%)      nptr = ptr;
+  413,760 ( 0.06%)      if (IS_DASH(*nptr))
+        .           	nptr++;
+        .           
+  137,920 ( 0.02%)      if (*nptr == '0') {
+        .           	int lowchar;
+   28,775 ( 0.00%)  	nptr++;
+   40,289 ( 0.01%)  	lowchar = tolower(*nptr);
+   23,020 ( 0.00%)  => ???:__ctype_tolower_loc (5,755x)
+      900 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+   34,530 ( 0.00%)  	if (lowchar == 'x' || lowchar == 'b') {
+        .           	    /* Let zstrtol parse number with base */
+        .           	    yyval.u.l = zstrtol_underscore(ptr, &ptr, 0, 1);
+        .           	    /* Should we set lastbase here? */
+        .           	    lastbase = (lowchar == 'b') ? 2 : 16;
+        .           	    if (isset(FORCEFLOAT))
+        .           	    {
+        .           		yyval.type = MN_FLOAT;
+        .           		yyval.u.d = (double)yyval.u.l;
+        .           	    }
+   68,960 ( 0.01%)  	    return NUM;
+        .           	}
+   11,510 ( 0.00%)  	else if (isset(OCTALZEROES))
+        .           	{
+        .           	    char *ptr2;
+        .           
+        .           	    /*
+        .           	     * Make sure this is a real octal constant;
+        .           	     * it can't be a base indication (always decimal)
+        .           	     * or a floating point number.
+        .           	     */
+    5,755 ( 0.00%)  	    for (ptr2 = nptr; idigit(*ptr2) || *ptr2 == '_'; ptr2++)
+        .           		;
+        .           
+        .           	    if (ptr2 > nptr && *ptr2 != '.' && *ptr2 != 'e' &&
+        .           		*ptr2 != 'E' && *ptr2 != '#')
+        .           	    {
+        .           		yyval.u.l = zstrtol_underscore(ptr, &ptr, 0, 1);
+        .           		lastbase = 8;
+        .           		if (isset(FORCEFLOAT))
+-- line 506 ----------------------------------------
+-- line 508 ----------------------------------------
+        .           		    yyval.type = MN_FLOAT;
+        .           		    yyval.u.d = (double)yyval.u.l;
+        .           		}
+        .           		return NUM;
+        .           	    }
+        .           	    nptr = ptr2;
+        .           	}
+        .               }
+1,256,628 ( 0.18%)      while (idigit(*nptr) || *nptr == '_')
+   94,144 ( 0.01%)  	nptr++;
+        .           
+  388,736 ( 0.06%)      if (*nptr == '.' || *nptr == 'e' || *nptr == 'E') {
+        .           	char *ptr2;
+        .           	/* it's a float */
+   34,424 ( 0.00%)  	yyval.type = MN_FLOAT;
+        .           #ifdef USE_LOCALE
+  240,968 ( 0.03%)  	prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+1,101,568 ( 0.16%)  => ???:setlocale (34,424x)
+3,140,328 ( 0.45%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/string.c:dupstring (34,424x)
+  137,696 ( 0.02%)  	setlocale(LC_NUMERIC, "POSIX");
+71,253,030 (10.16%)  => ???:setlocale (34,424x)
+        .           #endif
+  137,696 ( 0.02%)  	if (*nptr == '.') {
+   68,848 ( 0.01%)  	    nptr++;
+2,101,086 ( 0.30%)  	    while (idigit(*nptr) || *nptr == '_')
+  511,816 ( 0.07%)  		nptr++;
+        .           	}
+  103,272 ( 0.01%)  	if (*nptr == 'e' || *nptr == 'E') {
+        .           	    nptr++;
+        .           	    if (*nptr == '+' || IS_DASH(*nptr))
+        .           		nptr++;
+        .           	    while (idigit(*nptr) || *nptr == '_')
+        .           		nptr++;
+        .           	}
+1,216,066 ( 0.17%)  	for (ptr2 = ptr; ptr2 < nptr; ptr2++) {
+  695,964 ( 0.10%)  	    if (*ptr2 == '_') {
+        .           		int len = nptr - ptr;
+        .           		ptr = dupstring(ptr);
+        .           		for (ptr2 = ptr; len; len--) {
+        .           		    if (*ptr2 == '_')
+        .           			chuck(ptr2);
+        .           		    else
+        .           			ptr2++;
+        .           		}
+        .           		break;
+        .           	    }
+        .           	}
+  137,700 ( 0.02%)  	yyval.u.d = strtod(ptr, &nptr);
+31,399,941 ( 4.48%)  => ???:strtod (34,424x)
+      784 ( 0.00%)  => ???:_dl_runtime_resolve_xsave (1x)
+        .           #ifdef USE_LOCALE
+  206,544 ( 0.03%)  	if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+165,825,796 (23.64%)  => ???:setlocale (34,424x)
+        .           #endif
+  172,120 ( 0.02%)  	if (ptr == nptr || *nptr == '.') {
+        .           	    zerr("bad floating point constant");
+        .           	    return EOI;
+        .           	}
+   34,424 ( 0.00%)  	ptr = nptr;
+        .               } else {
+        .           	/* it's an integer */
+  207,216 ( 0.03%)  	yyval.u.l = zstrtol_underscore(ptr, &ptr, 10, 1);
+2,768,597 ( 0.39%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c:zstrtol_underscore (34,536x)
+        .           
+  103,608 ( 0.01%)  	if (*ptr == '#') {
+        .           	    ptr++;
+        .           	    lastbase = yyval.u.l;
+        .           	    yyval.u.l = zstrtol_underscore(ptr, &ptr, lastbase, 1);
+        .           	}
+   69,072 ( 0.01%)  	if (isset(FORCEFLOAT))
+        .           	{
+        .           	    yyval.type = MN_FLOAT;
+        .           	    yyval.u.d = (double)yyval.u.l;
+        .           	}
+        .               }
+        .               return NUM;
+  206,880 ( 0.03%)  }
+        .           
+        .           /**/
+        .           int outputradix;
+        .           
+        .           /**/
+        .           int outputunderscore;
+        .           
+        .           #ifndef HAVE_ISINF
+-- line 585 ----------------------------------------
+-- line 610 ----------------------------------------
+        .               /* (x != x) should be sufficient, but some compilers incorrectly optimize it away */
+        .               return (store(&x) != store(&x));
+        .           }
+        .           #endif
+        .           
+        .           /**/
+        .           static int
+        .           zzlex(void)
+  571,154 ( 0.08%)  {
+        .               int cct = 0;
+        .               char *ie;
+  571,154 ( 0.08%)      yyval.type = MN_INTEGER;
+        .           
+        .               for (;; cct = 0)
+6,554,778 ( 0.93%)  	switch (*ptr++) {
+        .           	case '+':
+   70,230 ( 0.01%)  	    if (*ptr == '+') {
+   18,016 ( 0.00%)  		ptr++;
+   45,040 ( 0.01%)  		return (unary) ? PREPLUS : POSTPLUS;
+        .           	    }
+   28,804 ( 0.00%)  	    if (*ptr == '=') {
+    3,968 ( 0.00%)  		ptr++;
+    3,968 ( 0.00%)  		return PLUSEQ;
+        .           	    }
+   62,090 ( 0.01%)  	    return (unary) ? UPLUS : PLUS;
+        .           	case '-':
+        .           	case Dash:
+  109,770 ( 0.02%)  	    if (IS_DASH(*ptr)) {
+        .           		ptr++;
+        .           		return (unary) ? PREMINUS : POSTMINUS;
+        .           	    }
+   43,908 ( 0.01%)  	    if (*ptr == '=') {
+        .           		ptr++;
+        .           		return MINUSEQ;
+        .           	    }
+   65,862 ( 0.01%)  	    if (unary) {
+   34,828 ( 0.00%)  		if (idigit(*ptr) || *ptr == '.') {
+    1,436 ( 0.00%)  		    int ctype = lexconstant();
+7,612,762 ( 1.09%)  => .work/logs/round19/original-source-view/Src/math.c:lexconstant (1,436x)
+    2,872 ( 0.00%)  		    if (ctype == NUM)
+        .           		    {
+    2,872 ( 0.00%)  			if (yyval.type == MN_FLOAT)
+        .           			{
+    5,260 ( 0.00%)  			    yyval.u.d = -yyval.u.d;
+        .           			}
+        .           			else
+        .           			{
+    1,440 ( 0.00%)  			    yyval.u.l = -yyval.u.l;
+        .           			}
+        .           		    }
+        .           		    return ctype;
+        .           		} else
+    6,104 ( 0.00%)  		    return UMINUS;
+        .           	    } else
+   21,954 ( 0.00%)  		return MINUS;
+        .           	case '(':
+    4,484 ( 0.00%)  	    return M_INPAR;
+        .           	case ')':
+        .           	    return M_OUTPAR;
+        .           	case '!':
+        4 ( 0.00%)  	    if (*ptr == '=') {
+        .           		ptr++;
+        .           		return NEQ;
+        .           	    }
+        2 ( 0.00%)  	    return NOT;
+        .           	case '~':
+        .           	    return COMP;
+        .           	case '&':
+   18,720 ( 0.00%)  	    if (*ptr == '&') {
+   24,960 ( 0.00%)  		if (*++ptr == '=') {
+        .           		    ptr++;
+        .           		    return DANDEQ;
+        .           		}
+    6,240 ( 0.00%)  		return DAND;
+        .           	    } else if (*ptr == '=') {
+        .           		ptr++;
+        .           		return ANDEQ;
+        .           	    }
+        .           	    return AND;
+        .           	case '|':
+        .           	    if (*ptr == '|') {
+        .           		if (*++ptr == '=') {
+-- line 690 ----------------------------------------
+-- line 705 ----------------------------------------
+        .           		}
+        .           		return DXOR;
+        .           	    } else if (*ptr == '=') {
+        .           		ptr++;
+        .           		return XOREQ;
+        .           	    }
+        .           	    return XOR;
+        .           	case '*':
+   23,322 ( 0.00%)  	    if (*ptr == '*') {
+        .           		if (*++ptr == '=') {
+        .           		    ptr++;
+        .           		    return POWEREQ;
+        .           		}
+        .           		return POWER;
+        .           	    }
+   15,548 ( 0.00%)  	    if (*ptr == '=') {
+        .           		ptr++;
+        .           		return MULEQ;
+        .           	    }
+    7,774 ( 0.00%)  	    return MUL;
+        .           	case '/':
+   25,800 ( 0.00%)  	    if (*ptr == '=') {
+    1,416 ( 0.00%)  		ptr++;
+    1,416 ( 0.00%)  		return DIVEQ;
+        .           	    }
+   12,900 ( 0.00%)  	    return DIV;
+        .           	case '%':
+      344 ( 0.00%)  	    if (*ptr == '=') {
+        .           		ptr++;
+        .           		return MODEQ;
+        .           	    }
+      172 ( 0.00%)  	    return MOD;
+        .           	case '<':
+   91,518 ( 0.01%)  	    if (*ptr == '<') {
+        .           		if (*++ptr == '=') {
+        .           		    ptr++;
+        .           		    return SHLEFTEQ;
+        .           		}
+        .           		return SHLEFT;
+   61,012 ( 0.01%)  	    } else if (*ptr == '=') {
+   15,400 ( 0.00%)  		ptr++;
+   15,400 ( 0.00%)  		return LEQ;
+        .           	    }
+   30,506 ( 0.00%)  	    return LES;
+        .           	case '>':
+   27,366 ( 0.00%)  	    if (*ptr == '>') {
+        .           		if (*++ptr == '=') {
+        .           		    ptr++;
+        .           		    return SHRIGHTEQ;
+        .           		}
+        .           		return SHRIGHT;
+   18,244 ( 0.00%)  	    } else if (*ptr == '=') {
+    3,276 ( 0.00%)  		ptr++;
+    3,276 ( 0.00%)  		return GEQ;
+        .           	    }
+    9,122 ( 0.00%)  	    return GRE;
+        .           	case '=':
+   51,152 ( 0.01%)  	    if (*ptr == '=') {
+    1,032 ( 0.00%)  		ptr++;
+    1,032 ( 0.00%)  		return DEQ;
+        .           	    }
+   25,576 ( 0.00%)  	    return EQ;
+        .           	case '$':
+        .           	    yyval.u.l = mypid;
+        .           	    return NUM;
+        .           	case '?':
+   41,856 ( 0.01%)  	    if (unary) {
+        .           		yyval.u.l = lastval;
+        .           		return NUM;
+        .           	    }
+   13,952 ( 0.00%)  	    return QUEST;
+        .           	case ':':
+   27,904 ( 0.00%)  	    return COLON;
+        .           	case ',':
+    9,184 ( 0.00%)  	    return COMMA;
+        .           	case '\0':
+  122,176 ( 0.02%)  	    ptr--;
+  366,528 ( 0.05%)  	    return EOI;
+        .           	case '[':
+        .           	    {
+        .           		int n, checkradix = 0;
+        .           
+        .           		if (idigit(*ptr)) {
+        .           		    n = zstrtol(ptr, &ptr, 10);
+        .           		    if (*ptr != ']' || !idigit(*++ptr)) {
+        .           			zerr("bad base syntax");
+-- line 790 ----------------------------------------
+-- line 810 ----------------------------------------
+        .           			if (idigit(*ptr))
+        .           			    outputunderscore = zstrtol(ptr, &ptr, 10);
+        .           			else
+        .           			    outputunderscore = 3;
+        .           		    }
+        .           		} else {
+        .           		    bofs:
+        .           		    zerr("bad output format specification");
+   13,066 ( 0.00%)  		    return EOI;
+        .           		}
+        .           		if(*ptr != ']')
+        .           			goto bofs;
+        .           		if (checkradix) {
+        .           		    n = (outputradix < 0) ? -outputradix : outputradix;
+        .           		    if (n < 2 || n > 36) {
+        .           			zerr("invalid base (must be 2 to 36 inclusive): %d",
+        .           			     outputradix);
+-- line 826 ----------------------------------------
+-- line 832 ----------------------------------------
+        .           	    }
+        .           	case ' ': /* Fall through! */
+        .           	case '\t':
+        .           	case '\n':
+        .           	case '"': /* POSIX says ignore these */
+        .           	case Dnull:
+        .           	    break;
+        .           	default:
+1,511,004 ( 0.22%)  	    if (idigit(*--ptr) || *ptr == '.')
+   67,524 ( 0.01%)  		return lexconstant();
+277,043,449 (39.49%)  => .work/logs/round19/original-source-view/Src/math.c:lexconstant (67,524x)
+  413,636 ( 0.06%)  	    if (*ptr == '#') {
+        .           		if (*++ptr == '\\' || *ptr == '#') {
+        .           		    int v;
+        .           		    char *optr = ptr;
+        .           
+        .           		    ptr++;
+        .           		    if (!*ptr) {
+        .           			zerr("bad math expression: character missing after ##");
+        .           			return EOI;
+        .           		    }
+        .           		    if(!(ptr = getkeystring(ptr, NULL, GETKEYS_MATH, &v))) {
+        .           			zerr("bad math expression: bad character after ##");
+        .           			ptr = optr;
+        .           			return EOI;
+        .           		    }
+        .           		    yyval.u.l = v;
+    2,872 ( 0.00%)  		    return NUM;
+        .           		}
+        .           		cct = 1;
+        .           	    }
+1,240,908 ( 0.18%)  	    if ((ie = itype_end(ptr, IIDENT, 0)) != ptr) {
+22,497,980 ( 3.21%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c:itype_end (206,818x)
+        .           		int func = 0;
+        .           		char *p;
+        .           
+        .           		p = ptr;
+  206,818 ( 0.03%)  		ptr = ie;
+  863,986 ( 0.12%)  		if (ie - p == 3 && !EMULATION(EMULATE_SH)) {
+   48,952 ( 0.01%)  		    if ((p[0] == 'N' || p[0] == 'n') &&
+        .           			(p[1] == 'A' || p[1] == 'a') &&
+        .           			(p[2] == 'N' || p[2] == 'n')) {
+        .           			yyval.type = MN_FLOAT;
+        .           			yyval.u.d = 0.0;
+        .           			yyval.u.d /= yyval.u.d;
+        .           			return NUM;
+        .           		    }
+   24,476 ( 0.00%)  		    else if ((p[0] == 'I' || p[0] == 'i') &&
+        .           			     (p[1] == 'N' || p[1] == 'n') &&
+        .           			     (p[2] == 'F' || p[2] == 'f')) {
+        .           			yyval.type = MN_FLOAT;
+        .           			yyval.u.d = 0.0;
+        .           			yyval.u.d = 1.0 / yyval.u.d;
+        .           			return NUM;
+        .           		    }
+        .           		}
+1,043,944 ( 0.15%)  		if (*ptr == '[' || (!cct && *ptr == '(')) {
+   52,992 ( 0.01%)  		    char op = *ptr, cp = ((*ptr == '[') ? ']' : ')');
+        .           		    int l;
+        .           		    func = (op == '(');
+3,163,642 ( 0.45%)  		    for (ptr++, l = 1; *ptr && l; ptr++) {
+  580,532 ( 0.08%)  			if (*ptr == op)
+        .           			    l++;
+  580,532 ( 0.08%)  			if (*ptr == cp)
+   79,852 ( 0.01%)  			    l--;
+  500,680 ( 0.07%)  			if (*ptr == '\\' && ptr[1])
+        .           			    ptr++;
+        .           		    }
+        .           		}
+  533,414 ( 0.08%)  		yylval = dupstrpfx(p, ptr - p);
+14,620,284 ( 2.08%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/string.c:dupstrpfx (206,818x)
+  587,862 ( 0.08%)  		return (func ? FUNC : (cct ? CID : ID));
+        .           	    }
+        .           	    else if (cct) {
+        .           		yyval.u.l = poundgetfn(NULL);
+        .           		return NUM;
+        .           	    }
+        .           	    return EOI;
+        .           	}
+1,074,784 ( 0.15%)  }
+        .           
+        .           /**/
+        .           static void
+        .           push(mnumber val, char *lval, int getme)
+        .           {
+1,413,190 ( 0.20%)      if (sp == STACKSZ - 1)
+        .           	zerr("stack overflow");
+        .               else
+  830,856 ( 0.12%)  	sp++;
+1,814,428 ( 0.26%)      stack[sp].val = val;
+  609,352 ( 0.09%)      stack[sp].lval = lval;
+  234,570 ( 0.03%)      stack[sp].pval = NULL;
+  513,202 ( 0.07%)      if (getme)
+  171,200 ( 0.02%)  	stack[sp].val.type = MN_UNSET;
+        .           }
+        .           
+        .           /**/
+        .           static mnumber
+        .           pop(int noget)
+  293,252 ( 0.04%)  {
+1,173,008 ( 0.17%)      struct mathvalue *mv = stack+sp;
+        .           
+  802,956 ( 0.11%)      if (mv->val.type == MN_UNSET && !noget)
+  582,162 ( 0.08%)  	mv->val = getmathparam(mv);
+250,325,504 (35.68%)  => .work/logs/round19/original-source-view/Src/math.c:getmathparam (81,100x)
+  669,670 ( 0.10%)      sp--;
+1,466,260 ( 0.21%)      return errflag ? zero_mnumber : mv->val;
+  586,504 ( 0.08%)  }
+        .           
+        .           /**/
+        .           static mnumber
+        .           getcvar(char *s)
+        .           {
+        .               char *t;
+        .               mnumber mn;
+        .               mn.type = MN_INTEGER;
+-- line 943 ----------------------------------------
+-- line 961 ----------------------------------------
+        .               }
+        .               unqueue_signals();
+        .               return mn;
+        .           }
+        .           
+        .           /**/
+        .           static mnumber
+        .           setmathvar(struct mathvalue *mvp, mnumber v)
+  514,640 ( 0.07%)  {
+        .               Param pm;
+        .           
+   73,520 ( 0.01%)      if (mvp->pval) {
+        .           	/*
+        .           	 * This value may have been hanging around for a while.
+        .           	 * Be ultra-paranoid in checking the variable is still valid.
+        .           	 */
+   11,700 ( 0.00%)  	char *s = mvp->lval, *ptr;
+        .           	Param pm;
+   23,400 ( 0.00%)  	DPUTS(!mvp->lval, "no variable name but variable value in math");
+   70,200 ( 0.01%)  	if ((ptr = strchr(s, '[')))
+  245,700 ( 0.04%)  => ???:__strchr_avx2 (11,700x)
+    6,000 ( 0.00%)  	    s = dupstrpfx(s, ptr - s);
+   86,160 ( 0.01%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/string.c:dupstrpfx (1,200x)
+   46,800 ( 0.01%)  	pm = (Param) paramtab->getnode(paramtab, s);
+1,060,300 ( 0.15%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:getparamnode (11,700x)
+   35,100 ( 0.01%)  	if (pm == mvp->pval->pm) {
+   35,100 ( 0.01%)  	    if (noeval)
+        .           		return v;
+   35,100 ( 0.01%)  	    setnumvalue(mvp->pval, v);
+14,255,526 ( 2.03%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:setnumvalue (11,700x)
+   11,700 ( 0.00%)  	    return v;
+        .           	}
+        .           	/* Different parameter, start again from scratch */
+        .           	mvp->pval = NULL;
+        .               }
+   75,180 ( 0.01%)      if (!mvp->lval) {
+        .           	zerr("bad math expression: lvalue required");
+        .           	v.type = MN_INTEGER;
+        .           	v.u.l = 0;
+        .           	return v;
+        .               }
+   75,180 ( 0.01%)      if (noeval)
+        .           	return v;
+   25,060 ( 0.00%)      untokenize(mvp->lval);
+  954,962 ( 0.14%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/exec.c:untokenize (25,060x)
+  100,240 ( 0.01%)      pm = setnparam(mvp->lval, v);
+33,111,473 ( 4.72%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c:setnparam (25,060x)
+   50,120 ( 0.01%)      if (pm) {
+        .           	/*
+        .           	 * If we are performing an assignment, we return the
+        .           	 * number with the same type as the parameter we are
+        .           	 * assigning to, in the spirit of the way assignments
+        .           	 * in C work.  Note this was a change to long-standing
+        .           	 * zsh behaviour.
+        .           	 */
+  130,708 ( 0.02%)  	switch (PM_TYPE(pm->node.flags)) {
+        .           	case PM_INTEGER:
+    3,004 ( 0.00%)  	    if (v.type != MN_INTEGER) {
+        .           		v.u.l = (zlong)v.u.d;
+        .           		v.type = MN_INTEGER;
+        .           	    }
+        .           	    break;
+        .           
+        .           	case PM_EFLOAT:
+        .           	case PM_FFLOAT:
+   44,712 ( 0.01%)  	    if (v.type != MN_FLOAT) {
+      720 ( 0.00%)  		v.u.d = (double)v.u.l;
+      480 ( 0.00%)  		v.type = MN_FLOAT;
+        .           	    }
+        .           	    break;
+        .           	}
+        .               }
+  200,480 ( 0.03%)      return v;
+  367,600 ( 0.05%)  }
+        .           
+        .           
+        .           /**/
+        .           static mnumber
+        .           callmathfunc(char *o)
+        .           {
+        .               MathFunc f;
+        .               char *a, *n;
+        .               static mnumber dummy;
+        .           
+   28,744 ( 0.00%)      n = a = dupstring(o);
+  511,750 ( 0.07%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/string.c:dupstring (5,750x)
+        .           
+  110,550 ( 0.02%)      while (*a != '(')
+   44,956 ( 0.01%)  	a++;
+   21,558 ( 0.00%)      *a++ = '\0';
+   28,744 ( 0.00%)      a[strlen(a) - 1] = '\0';
+   80,500 ( 0.01%)  => ???:__strlen_avx2 (5,750x)
+        .           
+   43,116 ( 0.01%)      if ((f = getmathfunc(n, 1))) {
+8,504,250 ( 1.21%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/module.c:getmathfunc (5,750x)
+   35,930 ( 0.01%)  	if ((f->flags & (MFF_STR|MFF_USERFUNC)) == MFF_STR) {
+        .           	    return f->sfunc(n, a, f->funcid);
+        .           	} else {
+        .           	    int argc = 0;
+    7,186 ( 0.00%)  	    mnumber *argv = NULL, *q, marg;
+   14,372 ( 0.00%)  	    LinkList l = newlinklist();
+  264,500 ( 0.04%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/linklist.c:newlinklist (5,750x)
+        .           	    LinkNode node;
+        .           
+   28,744 ( 0.00%)  	    if (f->flags & MFF_USERFUNC) {
+        .           		/* first argument is function name: always use mathfunc */
+        .           		addlinknode(l, n);
+        .           	    }
+        .           
+   21,558 ( 0.00%)  	    if (f->flags & MFF_STR) {
+        .           		if (!*a) {
+        .           		    addlinknode(l, dupstring(""));
+        .           		    argc++;
+        .           		}
+        .           	    } else {
+   43,116 ( 0.01%)  		while (iblank(*a))
+        .           		    a++;
+        .           	    }
+   14,372 ( 0.00%)  	    while (*a) {
+        .           		if (*a) {
+    7,186 ( 0.00%)  		    argc++;
+   28,744 ( 0.00%)  		    if (f->flags & MFF_USERFUNC) {
+        .           			/* need to pass strings */
+        .           			char *str;
+        .           			if (f->flags & MFF_STR) {
+        .           			    str = dupstring(a);
+        .           			    a = "";
+        .           			} else {
+        .           			    marg = mathevall(a, MPREC_ARG, &a);
+        .           			    if (marg.type & MN_FLOAT) {
+-- line 1080 ----------------------------------------
+-- line 1083 ----------------------------------------
+        .           			    } else {
+        .           				char buf[BDIGBUFSIZE];
+        .           				convbase(buf, marg.u.l, 10);
+        .           				str = dupstring(buf);
+        .           			    }
+        .           			}
+        .           			addlinknode(l, str);
+        .           		    } else {
+   21,558 ( 0.00%)  			q = (mnumber *) zhalloc(sizeof(mnumber));
+  218,500 ( 0.03%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/mem.c:zhalloc (5,750x)
+   50,302 ( 0.01%)  			*q = mathevall(a, MPREC_ARG, &a);
+5,061,712 ( 0.72%)  => .work/logs/round19/original-source-view/Src/math.c:mathevall'2 (5,750x)
+   35,930 ( 0.01%)  			addlinknode(l, q);
+  356,500 ( 0.05%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/linklist.c:insertlinknode (5,750x)
+        .           		    }
+   35,930 ( 0.01%)  		    if (errflag || mtok != COMMA)
+        .           			break;
+        .           		}
+        .           	    }
+   28,744 ( 0.00%)  	    if (*a && !errflag)
+        .           		zerr("bad math expression: illegal character: %c", *a);
+   21,558 ( 0.00%)  	    if (!errflag) {
+   35,930 ( 0.01%)  		if (argc >= f->minargs && (f->maxargs < 0 ||
+        .           					   argc <= f->maxargs)) {
+   14,372 ( 0.00%)  		    if (f->flags & MFF_USERFUNC) {
+        .           			char *shfnam = f->module ? f->module : n;
+        .           			Shfunc shfunc = getshfunc(shfnam);
+        .           			if (!shfunc)
+        .           			    zerr("no such function: %s", shfnam);
+        .           			else {
+        .           			    doshfunc(shfunc, l, 1);
+        .           			    return lastmathval;
+        .           			}
+        .           		    } else {
+   14,372 ( 0.00%)  			if (argc) {
+    7,186 ( 0.00%)  			    q = argv =
+   28,744 ( 0.00%)  				(mnumber *)zhalloc(argc * sizeof(mnumber));
+  218,500 ( 0.03%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/../../../Src/mem.c:zhalloc (5,750x)
+   50,302 ( 0.01%)  			    for (node = firstnode(l); node; incnode(node))
+   28,744 ( 0.00%)  				*q++ = *(mnumber *)getdata(node);
+        .           			}
+   64,674 ( 0.01%)  			return f->nfunc(n, argc, argv, f->funcid);
+  195,500 ( 0.03%)  => /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/Modules/../../../../Src/Modules/mathfunc.c:math_func (5,750x)
+        .           		    }
+        .           		} else
+        .           		    zerr("wrong number of arguments: %s", o);
+        .           	    }
+        .           	}
+        .               } else {
+        .           	zerr("unknown function: %s", n);
+        .               }
+-- line 1128 ----------------------------------------
+-- line 1132 ----------------------------------------
+        .           
+        .               return dummy;
+        .           }
+        .           
+        .           /**/
+        .           static int
+        .           notzero(mnumber a)
+        .           {
+   26,120 ( 0.00%)      if ((a.type & MN_INTEGER) && a.u.l == 0) {
+        .                   zerr("division by zero");
+        .                   return 0;
+        .               }
+        .               return 1;
+        .           }
+        .           
+        .           /* macro to pop three values off the value stack */
+        .           
+        .           static void
+        .           op(int what)
+1,392,876 ( 0.20%)  {
+        .               mnumber a, b, c, *spval;
+  154,764 ( 0.02%)      int tp = type[what];
+        .           
+  464,292 ( 0.07%)      if (errflag)
+        .           	return;
+  464,292 ( 0.07%)      if (sp < 0) {
+        .           	zerr("bad math expression: stack empty");
+        .           	return;
+        .               }
+        .           
+  309,528 ( 0.04%)      if (tp & (OP_A2|OP_A2IR|OP_A2IO|OP_E2|OP_E2IO)) {
+        .           	/* Make sure anyone seeing this message reports it. */
+  251,396 ( 0.04%)  	DPUTS(sp < 1, "BUG: math: not enough wallabies in outback.");
+1,005,584 ( 0.14%)  	b = pop(0);
+88,611,865 (12.63%)  => .work/logs/round19/original-source-view/Src/math.c:pop (123,632x)
+  879,886 ( 0.13%)  	a = pop(what == EQ);
+166,529,673 (23.74%)  => .work/logs/round19/original-source-view/Src/math.c:pop (123,632x)
+  377,094 ( 0.05%)  	if (errflag)
+        .           	    return;
+        .           
+  754,188 ( 0.11%)  	if (tp & (OP_A2IO|OP_E2IO)) {
+        .           	    /* coerce to integers */
+   12,480 ( 0.00%)  	    if (a.type & MN_FLOAT) {
+        .           		a.type = MN_INTEGER;
+        .           		a.u.l = (zlong)a.u.d;
+        .           	    }
+   12,480 ( 0.00%)  	    if (b.type & MN_FLOAT) {
+        .           		b.type = MN_INTEGER;
+        .           		b.u.l = (zlong)b.u.d;
+        .           	    }
+  427,976 ( 0.06%)  	} else if (a.type != b.type && what != COMMA &&
+   50,120 ( 0.01%)  		   (a.type != MN_UNSET || what != EQ)) {
+        .           	    /*
+        .           	     * Different types, so coerce to float.
+        .           	     * It may happen during an assignment that the LHS
+        .           	     * variable is actually an integer, but there's still
+        .           	     * no harm in doing the arithmetic in floating point;
+        .           	     * the assignment will do the correct conversion.
+        .           	     * This way, if the parameter is actually a scalar, but
+        .           	     * used to contain an integer, we can write a float into it.
+        .           	     */
+   44,056 ( 0.01%)  	    if (a.type & MN_INTEGER) {
+    8,190 ( 0.00%)  		a.type = MN_FLOAT;
+   24,570 ( 0.00%)  		a.u.d = (double)a.u.l;
+        .           	    }
+   44,056 ( 0.01%)  	    if (b.type & MN_INTEGER) {
+   13,838 ( 0.00%)  		b.type = MN_FLOAT;
+   55,352 ( 0.01%)  		b.u.d = (double)b.u.l;
+        .           	    }
+        .           	}
+        .           
+  377,094 ( 0.05%)  	if (noeval) {
+   16,302 ( 0.00%)  	    c.type = MN_INTEGER;
+   16,302 ( 0.00%)  	    c.u.l = 0;
+        .           	} else {
+        .           	    /*
+        .           	     * type for operation: usually same as operands, but e.g.
+        .           	     * (a == b) returns int.
+        .           	     */
+  201,884 ( 0.03%)  	    c.type = (tp & OP_A2IR) ? MN_INTEGER : a.type;
+        .           
+  379,474 ( 0.05%)  	    switch(what) {
+        .           	    case AND:
+        .           	    case ANDEQ:
+        .           		c.u.l = a.u.l & b.u.l;
+        .           		break;
+        .           	    case XOR:
+        .           	    case XOREQ:
+        .           		c.u.l = a.u.l ^ b.u.l;
+        .           		break;
+        .           	    case OR:
+        .           	    case OREQ:
+        .           		c.u.l = a.u.l | b.u.l;
+        .           		break;
+        .           	    case MUL:
+        .           	    case MULEQ:
+   14,772 ( 0.00%)  		if (c.type == MN_FLOAT)
+   36,930 ( 0.01%)  		    c.u.d = a.u.d * b.u.d;
+        .           		else
+        .           		    c.u.l = a.u.l * b.u.l;
+        .           		break;
+        .           	    case DIV:
+        .           	    case DIVEQ:
+        .           		if (!notzero(b))
+        .           		    return;
+   25,800 ( 0.00%)  		if (c.type == MN_FLOAT)
+   64,500 ( 0.01%)  		    c.u.d = a.u.d / b.u.d;
+        .           		else {
+        .           		    /*
+        .           		     * Avoid exception when dividing the smallest
+        .           		     * negative integer by -1.  Always treat it the
+        .           		     * same as multiplication.  This still doesn't give
+        .           		     * numerically the right answer in two's complement,
+        .           		     * but treating both these in the same way seems
+        .           		     * reasonable.
+-- line 1244 ----------------------------------------
+-- line 1253 ----------------------------------------
+        .           	    case MODEQ:
+        .           		if (!notzero(b))
+        .           		    return;
+        .           		/*
+        .           		 * Avoid exception as above.
+        .           		 * Any integer mod -1 is the same as any integer mod 1
+        .           		 * i.e. zero.
+        .           		 */
+      320 ( 0.00%)  		if (c.type == MN_FLOAT)
+        .           		    c.u.d = fmod(a.u.d, b.u.d);
+      320 ( 0.00%)  		else if (b.u.l == -1)
+        .           		    c.u.l = 0;
+        .           		else
+      640 ( 0.00%)  		    c.u.l = a.u.l % b.u.l;
+        .           		break;
+        .           	    case PLUS:
+        .           	    case PLUSEQ:
+   16,680 ( 0.00%)  		if (c.type == MN_FLOAT)
+   29,390 ( 0.00%)  		    c.u.d = a.u.d + b.u.d;
+        .           		else
+    4,924 ( 0.00%)  		    c.u.l = a.u.l + b.u.l;
+        .           		break;
+        .           	    case MINUS:
+        .           	    case MINUSEQ:
+   21,596 ( 0.00%)  		if (c.type == MN_FLOAT)
+   52,160 ( 0.01%)  		    c.u.d = a.u.d - b.u.d;
+        .           		else
+    1,098 ( 0.00%)  		    c.u.l = a.u.l - b.u.l;
+        .           		break;
+        .           	    case SHLEFT:
+        .           	    case SHLEFTEQ:
+        .           		c.u.l = a.u.l << b.u.l;
+        .           		break;
+        .           	    case SHRIGHT:
+        .           	    case SHRIGHTEQ:
+        .           		c.u.l = a.u.l >> b.u.l;
+        .           		break;
+        .           	    case LES:
+   33,188 ( 0.00%)  		c.u.l = (zlong)
+   95,392 ( 0.01%)  		    (a.type == MN_FLOAT ? (a.u.d < b.u.d) : (a.u.l < b.u.l));
+        .           		break;
+        .           	    case LEQ:
+   15,400 ( 0.00%)  		c.u.l = (zlong)
+   30,800 ( 0.00%)  		    (a.type == MN_FLOAT ? (a.u.d <= b.u.d) : (a.u.l <= b.u.l));
+        .           		break;
+        .           	    case GRE:
+   14,968 ( 0.00%)  		c.u.l = (zlong)
+   44,904 ( 0.01%)  		    (a.type == MN_FLOAT ? (a.u.d > b.u.d) : (a.u.l > b.u.l));
+        .           		break;
+        .           	    case GEQ:
+    3,276 ( 0.00%)  		c.u.l = (zlong)
+    9,828 ( 0.00%)  		    (a.type == MN_FLOAT ? (a.u.d >= b.u.d) : (a.u.l >= b.u.l));
+        .           		break;
+        .           	    case DEQ:
+    1,008 ( 0.00%)  		c.u.l = (zlong)
+    2,016 ( 0.00%)  		    (a.type == MN_FLOAT ? (a.u.d == b.u.d) : (a.u.l == b.u.l));
+        .           		break;
+        .           	    case NEQ:
+        .           		c.u.l = (zlong)
+        .           		    (a.type == MN_FLOAT ? (a.u.d != b.u.d) : (a.u.l != b.u.l));
+        .           		break;
+        .           	    case DAND:
+        .           	    case DANDEQ:
+   37,440 ( 0.01%)  		c.u.l = (zlong)(a.u.l && b.u.l);
+    6,240 ( 0.00%)  		break;
+        .           	    case DOR:
+        .           	    case DOREQ:
+        .           		c.u.l = (zlong)(a.u.l || b.u.l);
+        .           		break;
+        .           	    case DXOR:
+        .           	    case DXOREQ:
+        .           		c.u.l = (zlong)((a.u.l && !b.u.l) || (!a.u.l && b.u.l));
+        .           		break;
+        .           	    case COMMA:
+   29,652 ( 0.00%)  		c = b;
+        .           		break;
+        .           	    case POWER:
+        .           	    case POWEREQ:
+        .           		if (c.type == MN_INTEGER && b.u.l < 0) {
+        .           		    /* produces a real result, so cast to real. */
+        .           		    a.type = b.type = c.type = MN_FLOAT;
+        .           		    a.u.d = (double) a.u.l;
+        .           		    b.u.d = (double) b.u.l;
+-- line 1335 ----------------------------------------
+-- line 1346 ----------------------------------------
+        .           			    zerr("bad math expression: imaginary power");
+        .           			    return;
+        .           			}
+        .           		    }
+        .           		    c.u.d = pow(a.u.d, b.u.d);
+        .           		}
+        .           		break;
+        .           	    case EQ:
+  177,912 ( 0.03%)  		c = b;
+   29,652 ( 0.00%)  		break;
+        .           	    }
+        .           	}
+  183,556 ( 0.03%)  	if (tp & (OP_E2|OP_E2IO)) {
+  111,008 ( 0.02%)  	    struct mathvalue *mvp = stack + sp + 1;
+  333,024 ( 0.05%)  	    c = setmathvar(mvp, c);
+49,556,666 ( 7.06%)  => .work/logs/round19/original-source-view/Src/math.c:setmathvar (27,752x)
+   27,752 ( 0.00%)  	    push(c, mvp->lval, 0);
+        .           	} else
+  587,676 ( 0.08%)  	    push(c,NULL, 0);
+        .           	return;
+        .               }
+        .           
+   87,198 ( 0.01%)      spval = &stack[sp].val;
+   58,132 ( 0.01%)      if (stack[sp].val.type == MN_UNSET) {
+  150,048 ( 0.02%)  	*spval = getmathparam(stack + sp);
+10,064,432 ( 1.43%)  => .work/logs/round19/original-source-view/Src/math.c:getmathparam (25,008x)
+   75,024 ( 0.01%)  	if (errflag)
+        .           	    return;
+        .               }
+  116,264 ( 0.02%)      switch (what) {
+        .               case NOT:
+        4 ( 0.00%)  	if (spval->type & MN_FLOAT) {
+    6,106 ( 0.00%)  	    spval->u.l = !spval->u.d;
+        .           	    spval->type = MN_INTEGER;
+        .           	} else
+       10 ( 0.00%)  	    spval->u.l = !spval->u.l;
+        .           	break;
+        .               case COMP:
+        .           	if (spval->type & MN_FLOAT) {
+        .           	    spval->u.l = ~((zlong)spval->u.d);
+        .           	    spval->type = MN_INTEGER;
+        .           	} else
+        .           	    spval->u.l = ~spval->u.l;
+        .           	break;
+        .               case POSTPLUS:
+   18,016 ( 0.00%)  	a = *spval;
+   18,016 ( 0.00%)  	if (spval->type & MN_FLOAT)
+        .           	    a.u.d++;
+        .           	else
+    9,008 ( 0.00%)  	    a.u.l++;
+        .           	(void)setmathvar(stack + sp, a);
+        .           	break;
+        .               case POSTMINUS:
+        .           	a = *spval;
+        .           	if (spval->type & MN_FLOAT)
+        .           	    a.u.d--;
+        .           	else
+        .           	    a.u.l--;
+   36,032 ( 0.01%)  	(void)setmathvar(stack + sp, a);
+2,094,199 ( 0.30%)  => .work/logs/round19/original-source-view/Src/math.c:setmathvar (9,008x)
+    9,008 ( 0.00%)  	break;
+        .               case UPLUS:
+        .           	break;
+        .               case UMINUS:
+   12,208 ( 0.00%)  	if (spval->type & MN_FLOAT)
+   24,416 ( 0.00%)  	    spval->u.d = -spval->u.d;
+        .           	else
+        .           	    spval->u.l = -spval->u.l;
+        .           	break;
+        .               case QUEST:
+   27,904 ( 0.00%)  	DPUTS(sp < 2, "BUG: math: three shall be the number of the counting.");
+   55,808 ( 0.01%)  	c = pop(0);
+  223,232 ( 0.03%)  => .work/logs/round19/original-source-view/Src/math.c:pop (13,952x)
+   83,712 ( 0.01%)  	b = pop(0);
+  224,542 ( 0.03%)  => .work/logs/round19/original-source-view/Src/math.c:pop (13,952x)
+   41,856 ( 0.01%)  	a = pop(0);
+  223,232 ( 0.03%)  => .work/logs/round19/original-source-view/Src/math.c:pop (13,952x)
+   41,856 ( 0.01%)  	if (errflag)
+        .           	    return;
+        .           	/* b and c can stay different types in this case. */
+  192,470 ( 0.03%)  	push(((a.type & MN_FLOAT) ? a.u.d : a.u.l) ? b : c, NULL, 0);
+   13,952 ( 0.00%)  	break;
+        .               case COLON:
+        .           	zerr("bad math expression: ':' without '?'");
+        .           	break;
+        .               case PREPLUS:
+        .           	if (spval->type & MN_FLOAT)
+        .           	    spval->u.d++;
+        .           	else
+        .           	    spval->u.l++;
+-- line 1429 ----------------------------------------
+-- line 1435 ----------------------------------------
+        .           	else
+        .           	    spval->u.l--;
+        .           	setmathvar(stack + sp, *spval);
+        .           	break;
+        .               default:
+        .           	zerr("bad math expression: out of integers");
+        .           	return;
+        .               }
+  103,474 ( 0.01%)      stack[sp].lval = NULL;
+        .               stack[sp].pval = NULL;
+1,238,112 ( 0.18%)  }
+        .           
+        .           
+        .           /**/
+        .           static void
+        .           bop(int tk)
+        .           {
+   18,720 ( 0.00%)      mnumber *spval = &stack[sp].val;
+        .               int tst;
+        .           
+   18,720 ( 0.00%)      if (stack[sp].val.type == MN_UNSET)
+    2,160 ( 0.00%)  	*spval = getmathparam(stack + sp);
+  133,680 ( 0.02%)  => .work/logs/round19/original-source-view/Src/math.c:getmathparam (240x)
+   18,960 ( 0.00%)      tst = (spval->type & MN_FLOAT) ? (zlong)spval->u.d : spval->u.l; 
+        .           
+   31,200 ( 0.00%)      switch (tk) {
+        .               case DAND:
+        .               case DANDEQ:
+   18,692 ( 0.00%)  	if (!tst)
+   12,424 ( 0.00%)  	    noeval++;
+        .           	break;
+        .               case DOR:
+        .               case DOREQ:
+        .           	if (tst)
+        .           	    noeval++;
+        .           	break;
+        .               };
+        .           }
+        .           
+        .           
+        .           /**/
+        .           mod_export mnumber
+        .           matheval(char *s)
+   77,695 ( 0.01%)  {
+        .               char *junk;
+        .               mnumber x;
+   88,034 ( 0.01%)      int xmtok = mtok;
+        .               /* maintain outputradix and outputunderscore across levels of evaluation */
+  264,102 ( 0.04%)      if (!mlevel)
+  124,752 ( 0.02%)  	outputradix = outputunderscore = 0;
+        .           
+  264,102 ( 0.04%)      if (*s == Nularg)
+        .           	s++;
+  176,068 ( 0.03%)      if (!*s) {
+        .           	x.type = MN_INTEGER;
+        .           	x.u.l = 0;
+        .           	return x;
+        .               }
+  538,543 ( 0.08%)      x = mathevall(s, MPREC_TOP, &junk);
+13,436,875 ( 1.92%)  => .work/logs/round19/original-source-view/Src/math.c:mathevall (10,339x)
+  176,068 ( 0.03%)      mtok = xmtok;
+  352,136 ( 0.05%)      if (*junk)
+        .           	zerr("bad math expression: illegal character: %c", *junk);
+        .               return x;
+  310,780 ( 0.04%)  }
+        .           
+        .           /**/
+        .           mod_export zlong
+        .           mathevali(char *s)
+   20,678 ( 0.00%)  {
+        .               mnumber x = matheval(s);
+   31,017 ( 0.00%)      return (x.type & MN_FLOAT) ? (zlong)x.u.d : x.u.l;
+   41,356 ( 0.01%)  }
+        .           
+        .           
+        .           /**/
+        .           zlong
+        .           mathevalarg(char *s, char **ss)
+  107,824 ( 0.02%)  {
+        .               mnumber x;
+   26,956 ( 0.00%)      int xmtok = mtok;
+        .           
+        .               /*
+        .                * At this entry point we don't allow an empty expression,
+        .                * whereas we do with matheval().  I'm not sure if this
+        .                * difference is deliberate, but it does mean that e.g.
+        .                * $array[$ind] where ind hasn't been set produces an error,
+        .                * which is probably safe.
+        .                *
+        .                * To avoid a more opaque error further in, bail out here.
+        .                */
+   80,868 ( 0.01%)      if (*s == Nularg)
+        .           	s++;
+   53,912 ( 0.01%)      if (!*s) {
+        .           	zerr("bad math expression: empty string");
+        .           	return (zlong)0;
+        .               }
+  107,824 ( 0.02%)      x = mathevall(s, MPREC_ARG, ss);
+20,778,414 ( 2.96%)  => .work/logs/round19/original-source-view/Src/math.c:mathevall'2 (26,860x)
+   66,660 ( 0.01%)  => .work/logs/round19/original-source-view/Src/math.c:mathevall (96x)
+   53,912 ( 0.01%)      if (mtok == COMMA)
+        .           	(*ss)--;
+   26,956 ( 0.00%)      mtok = xmtok;
+   53,912 ( 0.01%)      return (x.type & MN_FLOAT) ? (zlong)x.u.d : x.u.l;
+  107,824 ( 0.02%)  }
+        .           
+        .           /*
+        .            * Make sure we have an operator or an operand, whatever is expected.
+        .            * For this purpose, unary operators constitute part of an operand.
+        .            */
+        .           
+        .           /**/
+        .           static void
+        .           checkunary(int mtokc, char *mptr)
+1,713,462 ( 0.24%)  {
+        .               int errmsg = 0;
+1,142,308 ( 0.16%)      int tp = type[mtokc];
+1,142,308 ( 0.16%)      if (tp & (OP_A2|OP_A2IR|OP_A2IO|OP_E2|OP_E2IO|OP_OP)) {
+1,145,210 ( 0.16%)  	if (unary)
+        .           	    errmsg = 1;
+        .               } else {
+  568,252 ( 0.08%)  	if (!unary)
+        .           	    errmsg = 2;
+        .               }
+        .               if (errmsg) {
+        .           	int len, over = 0;
+        .           	char *errtype = errmsg == 2 ? "operator" : "operand";
+        .           	while (inblank(*mptr))
+        .           	    mptr++;
+        .           	len = ztrlen(mptr);
+-- line 1560 ----------------------------------------
+-- line 1564 ----------------------------------------
+        .           	}
+        .           	if (!*mptr)
+        .           	    zerr("bad math expression: %s expected at end of string",
+        .           		errtype);
+        .           	else
+        .           	    zerr("bad math expression: %s expected at `%l%s'",
+        .           		 errtype, mptr, len, over ? "..." : "");
+        .               }
+2,284,616 ( 0.33%)      unary = !(tp & OP_OPF);
+2,284,616 ( 0.33%)  }
+        .           
+        .           /* operator-precedence parse the string and execute */
+        .           
+        .           /**/
+        .           static void
+        .           mathparse(int pc)
+2,345,072 ( 0.33%)  {
+        .               zlong q;
+        .               int otok, onoeval;
+  293,134 ( 0.04%)      char *optr = ptr;
+        .           
+  879,402 ( 0.13%)      if (errflag)
+        .           	return;
+1,758,804 ( 0.25%)      queue_signals();
+  879,402 ( 0.13%)      mtok = zzlex();
+33,599,439 ( 4.79%)  => .work/logs/round19/original-source-view/Src/math.c:zzlex (73,992x)
+        .               /* Handle empty input */
+1,646,222 ( 0.23%)      if (pc == TOPPREC && mtok == EOI) {
+      480 ( 0.00%)  	unqueue_signals();
+        .           	return;
+        .               }
+  586,268 ( 0.08%)      checkunary(mtok, optr);
+1,331,856 ( 0.19%)  => .work/logs/round19/original-source-view/Src/math.c:checkunary (73,992x)
+4,639,634 ( 0.66%)      while (prec[mtok] <= pc) {
+1,298,352 ( 0.19%)  	if (errflag) {
+        .           	    unqueue_signals();
+        .           	    return;
+        .           	}
+2,479,268 ( 0.35%)  	switch (mtok) {
+        .           	case NUM:
+        .           	    push(yyval, NULL, 0);
+   68,960 ( 0.01%)  	    break;
+        .           	case ID:
+  581,256 ( 0.08%)  	    push(zero_mnumber, yylval, !noeval);
+  171,200 ( 0.02%)  	    break;
+        .           	case CID:
+        .           	    push((noeval ? zero_mnumber : getcvar(yylval)), yylval, 0);
+        .           	    break;
+        .           	case FUNC:
+   91,462 ( 0.01%)  	    push((noeval ? zero_mnumber : callmathfunc(yylval)), yylval, 0);
+        .           	    break;
+        .           	case M_INPAR:
+    6,726 ( 0.00%)  	    mathparse(TOPPREC);
+42,791,563 ( 6.10%)  => .work/logs/round19/original-source-view/Src/math.c:mathparse'2 (2,242x)
+    4,484 ( 0.00%)  	    if (mtok != M_OUTPAR) {
+        .           		if (!errflag)
+        .           		    zerr("bad math expression: ')' expected");
+        .           		unqueue_signals();
+        .           		return;
+        .           	    }
+        .           	    break;
+        .           	case QUEST:
+   83,712 ( 0.01%)  	    if (stack[sp].val.type == MN_UNSET)
+        .           		stack[sp].val = getmathparam(stack + sp);
+        .           	    q = (stack[sp].val.type == MN_FLOAT) ?
+   41,856 ( 0.01%)  		(stack[sp].val.u.d == 0 ? 0 : 1) :
+        .           		stack[sp].val.u.l;
+        .           
+   27,904 ( 0.00%)  	    if (!q)
+   11,094 ( 0.00%)  		noeval++;
+   41,856 ( 0.01%)  	    mathparse(prec[COLON] - 1);
+  446,492 ( 0.06%)  => .work/logs/round19/original-source-view/Src/math.c:mathparse'2 (58x)
+        .           	    if (!q)
+   11,094 ( 0.00%)  		noeval--;
+   27,904 ( 0.00%)  	    if (mtok != COLON) {
+        .           		if (!errflag)
+        .           		    zerr("bad math expression: ':' expected");
+        .           		unqueue_signals();
+        .           		return;
+        .           	    }
+        .           	    if (q)
+    2,858 ( 0.00%)  		noeval++;
+   41,856 ( 0.01%)  	    mathparse(prec[QUEST]);
+  883,749 ( 0.13%)  => .work/logs/round19/original-source-view/Src/math.c:mathparse'2 (58x)
+        .           	    if (q)
+    5,716 ( 0.00%)  		noeval--;
+   27,904 ( 0.00%)  	    op(QUEST);
+    7,522 ( 0.00%)  => .work/logs/round19/original-source-view/Src/math.c:op (58x)
+   13,952 ( 0.00%)  	    continue;
+        .           	default:
+        .           	    otok = mtok;
+  140,812 ( 0.02%)  	    onoeval = noeval;
+  563,248 ( 0.08%)  	    if (MTYPE(type[otok]) == BOOL)
+        .           		bop(otok);
+  844,872 ( 0.12%)  	    mathparse(prec[otok] - (MTYPE(type[otok]) != RL));
+394,015,248 (56.17%)  => .work/logs/round19/original-source-view/Src/math.c:mathparse'2 (61,998x)
+  140,812 ( 0.02%)  	    noeval = onoeval;
+  281,624 ( 0.04%)  	    op(otok);
+106,697,664 (15.21%)  => .work/logs/round19/original-source-view/Src/math.c:op (61,998x)
+  140,812 ( 0.02%)  	    continue;
+        .           	}
+  278,020 ( 0.04%)  	optr = ptr;
+  556,040 ( 0.08%)  	mtok = zzlex();
+1,516,970 ( 0.22%)  => .work/logs/round19/original-source-view/Src/math.c:zzlex (73,928x)
+1,112,080 ( 0.16%)  	checkunary(mtok, optr);
+1,330,704 ( 0.19%)  => .work/logs/round19/original-source-view/Src/math.c:checkunary (73,928x)
+        .               }
+2,628,696 ( 0.37%)      unqueue_signals();
+2,345,072 ( 0.33%)  }
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+115,372,212 (16.45%)  events annotated
+

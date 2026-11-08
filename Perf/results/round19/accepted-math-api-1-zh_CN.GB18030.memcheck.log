@@ -1,0 +1,15 @@
+==301296== Memcheck, a memory error detector
+==301296== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==301296== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==301296== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_math_locale_fixture\ ||\ exit\ 1_for\ fixture_locale\ in\ global\ fr_FR.UTF-8;\ do_\ \ print\ -r\ --\ "$fixture_locale"_\ \ psh-math-locale-check\ "$fixture_locale"\ ||\ exit\ 1_done_zmodload\ -u\ psh_math_locale_fixture\ ||\ exit\ 1_if\ whence\ psh-math-locale-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round19/math-locale-fixture-accepted-math-api
+==301296== Parent PID: 121185
+==301296== 
+==301296== 
+==301296== HEAP SUMMARY:
+==301296==     in use at exit: 46,321 bytes in 750 blocks
+==301296==   total heap usage: 252,036 allocs, 251,286 frees, 18,222,092 bytes allocated
+==301296== 
+==301296== For a detailed leak analysis, rerun with: --leak-check=full
+==301296== 
+==301296== For lists of detected and suppressed errors, rerun with: -s
+==301296== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

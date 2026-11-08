@@ -1,0 +1,214 @@
+[
+  {
+    "name": "legacy-locale-candidate-configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate/runtime",
+      "--enable-multibyte",
+      "--enable-zsh-debug",
+      "CFLAGS=-O2 -g",
+      "zsh_cv_math_strtod_l=no"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+    "status": 0,
+    "seconds": 10.323
+  },
+  {
+    "name": "legacy-locale-candidate-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+    "status": 0,
+    "seconds": 34.669
+  },
+  {
+    "name": "legacy-locale-candidate-modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate/runtime/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+    "status": 0,
+    "seconds": 0.072
+  },
+  {
+    "name": "legacy-locale-upstream",
+    "command": [
+      "make",
+      "check",
+      "TESTNUM=C01"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+    "status": 0,
+    "seconds": 1.303
+  },
+  {
+    "name": "legacy-locale-api",
+    "command": [
+      "python3",
+      "Perf/check-math-locale-module.py",
+      ".work/baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate/Src/zsh",
+      "--headers-build",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate",
+      "--memcheck",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--locale",
+      "fr_FR.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round19/legacy-locale-api.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 11.62
+  },
+  {
+    "name": "legacy-locale-corpus",
+    "command": [
+      "python3",
+      "Perf/math-compare.py",
+      ".work/baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/legacy-locale-candidate/Src/zsh",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round19/legacy-locale-corpus.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 8.493
+  },
+  {
+    "name": "no-locale-baseline-configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline/runtime",
+      "--enable-multibyte",
+      "--enable-zsh-debug",
+      "CFLAGS=-O2 -g",
+      "ac_cv_func_setlocale=no"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline",
+    "status": 0,
+    "seconds": 10.069
+  },
+  {
+    "name": "no-locale-baseline-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline",
+    "status": 0,
+    "seconds": 33.62
+  },
+  {
+    "name": "no-locale-baseline-modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline/runtime/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline",
+    "status": 0,
+    "seconds": 0.073
+  },
+  {
+    "name": "no-locale-candidate-configure",
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate/runtime",
+      "--enable-multibyte",
+      "--enable-zsh-debug",
+      "CFLAGS=-O2 -g",
+      "ac_cv_func_setlocale=no"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate",
+    "status": 0,
+    "seconds": 9.907
+  },
+  {
+    "name": "no-locale-candidate-build",
+    "command": [
+      "make",
+      "-j4"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate",
+    "status": 0,
+    "seconds": 33.3
+  },
+  {
+    "name": "no-locale-candidate-modules",
+    "command": [
+      "make",
+      "MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate/runtime/lib/zsh/5.9.2",
+      "install.modules"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate",
+    "status": 0,
+    "seconds": 0.078
+  },
+  {
+    "name": "no-locale-baseline-upstream",
+    "command": [
+      "make",
+      "check",
+      "TESTNUM=C01"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline",
+    "status": 0,
+    "seconds": 1.293
+  },
+  {
+    "name": "no-locale-candidate-upstream",
+    "command": [
+      "make",
+      "check",
+      "TESTNUM=C01"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate",
+    "status": 0,
+    "seconds": 1.304
+  },
+  {
+    "name": "no-locale-api",
+    "command": [
+      "python3",
+      "Perf/check-math-locale-module.py",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate/Src/zsh",
+      "--headers-build",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline",
+      "--memcheck",
+      "--locale",
+      "C",
+      "--locale",
+      "C.UTF-8",
+      "--locale",
+      "fr_FR.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round19/no-locale-api.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 5.267
+  },
+  {
+    "name": "no-locale-corpus",
+    "command": [
+      "python3",
+      "Perf/math-compare.py",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-baseline/Src/zsh",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/no-locale-candidate/Src/zsh",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round19/no-locale-corpus.json"
+    ],
+    "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2",
+    "status": 0,
+    "seconds": 6.733
+  }
+]

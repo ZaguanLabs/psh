@@ -1,0 +1,54 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round17/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh"
+  ],
+  "cpu_affinity": [
+    2
+  ],
+  "binary_sha256": [
+    "4b4ed9e3baca23c896bb76ad6f28b6c997fdf8625794a86ea75809b9e4a1bc98",
+    "f7e6d87f5c5ceaad3460862dc39dc3009826ec7b258e8e8173552bb5e1b4b7ff"
+  ],
+  "locale": "C.UTF-8",
+  "samples": 5,
+  "cases": [
+    {
+      "case": "json-repair-100k",
+      "input_bytes": 100000,
+      "input_sha256": "21c9bab2c87b88bfbc9046f7efdbc018d3ea4c370e145f3fe73b451816aadcb4",
+      "output_bytes": 100004,
+      "output_sha256": "d82af65911e20a24e189396c3a9f56a4c82b977f139b8344aea59de00a692766",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "samples_ms_per_call": [
+        [
+          19.582,
+          19.523999999999997,
+          19.766333333333332,
+          19.514666666666667,
+          19.683666666666667
+        ],
+        [
+          20.231333333333332,
+          19.585666666666665,
+          19.449,
+          19.541333333333334,
+          19.458000000000002
+        ]
+      ],
+      "iterations": 3,
+      "median_ms": [
+        19.582,
+        19.541333333333334
+      ],
+      "speedup": 1.002081058951965
+    }
+  ]
+}

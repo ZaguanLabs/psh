@@ -1,0 +1,144 @@
+{
+  "passed": true,
+  "cpu": 2,
+  "launcher_source_sha256": "c9f6f881a19afac667557aca6ab5ebede10f21ca3c806906d0a982e91407c19c",
+  "worker_source_sha256": "854b0dee22b55a741c1fcce4a3971d432873ad11bbb5a0e8c315c907bc259aeb",
+  "cases": {
+    "own": {
+      "exit_status": 0,
+      "elapsed_ns": 956678,
+      "scope": "user space, exec through exit, inherited tasks",
+      "user_seconds": 0.000943,
+      "system_seconds": 0.0,
+      "max_rss_kib": 1380,
+      "events": [
+        {
+          "name": "cycles",
+          "value": 2222558,
+          "enabled_ns": 773760,
+          "running_ns": 773760
+        },
+        {
+          "name": "instructions",
+          "value": 12128166,
+          "enabled_ns": 773760,
+          "running_ns": 773760
+        },
+        {
+          "name": "branches",
+          "value": 2027390,
+          "enabled_ns": 773760,
+          "running_ns": 773760
+        },
+        {
+          "name": "branch_misses",
+          "value": 2474,
+          "enabled_ns": 773760,
+          "running_ns": 773760
+        }
+      ]
+    },
+    "child": {
+      "exit_status": 0,
+      "elapsed_ns": 832176,
+      "scope": "user space, exec through exit, inherited tasks",
+      "user_seconds": 0.000808,
+      "system_seconds": 0.0,
+      "max_rss_kib": 1384,
+      "events": [
+        {
+          "name": "cycles",
+          "value": 2190379,
+          "enabled_ns": 683100,
+          "running_ns": 683100
+        },
+        {
+          "name": "instructions",
+          "value": 12130434,
+          "enabled_ns": 683100,
+          "running_ns": 683100
+        },
+        {
+          "name": "branches",
+          "value": 2027773,
+          "enabled_ns": 683100,
+          "running_ns": 683100
+        },
+        {
+          "name": "branch_misses",
+          "value": 2540,
+          "enabled_ns": 683100,
+          "running_ns": 683100
+        }
+      ]
+    },
+    "twice": {
+      "exit_status": 0,
+      "elapsed_ns": 1293020,
+      "scope": "user space, exec through exit, inherited tasks",
+      "user_seconds": 0.00127,
+      "system_seconds": 0.0,
+      "max_rss_kib": 1384,
+      "events": [
+        {
+          "name": "cycles",
+          "value": 4188535,
+          "enabled_ns": 1145621,
+          "running_ns": 1145621
+        },
+        {
+          "name": "instructions",
+          "value": 24130437,
+          "enabled_ns": 1145621,
+          "running_ns": 1145621
+        },
+        {
+          "name": "branches",
+          "value": 4027773,
+          "enabled_ns": 1145621,
+          "running_ns": 1145621
+        },
+        {
+          "name": "branch_misses",
+          "value": 2565,
+          "enabled_ns": 1145621,
+          "running_ns": 1145621
+        }
+      ]
+    },
+    "failure": {
+      "exit_status": 7,
+      "elapsed_ns": 276842,
+      "scope": "user space, exec through exit, inherited tasks",
+      "user_seconds": 0.000267,
+      "system_seconds": 0.0,
+      "max_rss_kib": 1372,
+      "events": [
+        {
+          "name": "cycles",
+          "value": 172408,
+          "enabled_ns": 157460,
+          "running_ns": 157460
+        },
+        {
+          "name": "instructions",
+          "value": 126522,
+          "enabled_ns": 157460,
+          "running_ns": 157460
+        },
+        {
+          "name": "branches",
+          "value": 27065,
+          "enabled_ns": 157460,
+          "running_ns": 157460
+        },
+        {
+          "name": "branch_misses",
+          "value": 2364,
+          "enabled_ns": 157460,
+          "running_ns": 157460
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round17/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src/zsh"
+  ],
+  "binary_sha256": [
+    "4b4ed9e3baca23c896bb76ad6f28b6c997fdf8625794a86ea75809b9e4a1bc98",
+    "f7e6d87f5c5ceaad3460862dc39dc3009826ec7b258e8e8173552bb5e1b4b7ff"
+  ],
+  "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+  "samples": 5,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "cpu_affinity": [
+    2
+  ],
+  "cases": [
+    {
+      "case": "z3dfx.mario/mario-race",
+      "project_root": "/home/stig/dev/challenge/z3dfx.mario",
+      "source_sha256": {
+        "lib/display.zsh": "e927ba1322070f9c6b0d8cd2ca77b05c3a37fd29c5330a06f5259447bcba33b4",
+        "lib/engine.zsh": "1eb639ea4d62ba846c78c54d0128e9e7aa53842a7eeececc5834f4afc466910e",
+        "lib/input.zsh": "304fcc6dd1552e0d445899b35b699543662a44a7ce5e3f682ea60f1cfbef5528",
+        "lib/render.zsh": "8db01f3d3e23122667f9435c4480e6b8e7e07f8d232d63c71849af06f2e5042a",
+        "lib/timing.zsh": "a4741544731e10636aeafbd0833c4e37917add88c3f2711e3d2fe7861b3353ef",
+        "lib/track.zsh": "ab6612898cf3a00f03f392a57bdfd102fcd9a32bac506a73c0e9bece86acd51b"
+      },
+      "iterations": 120,
+      "samples_ms_per_batch": [
+        [
+          29.628999999999998,
+          29.203,
+          29.721999999999998,
+          29.072,
+          29.966
+        ],
+        [
+          20.279,
+          20.435,
+          20.311,
+          21.098,
+          20.177
+        ]
+      ],
+      "median_ms": [
+        29.628999999999998,
+        20.311
+      ],
+      "speedup": 1.4587661858106444,
+      "state_sha256": "07ac3a55aba8ffa02f364b643943700996ee235e789fe35d6cb8f967a4155b2e"
+    },
+    {
+      "case": "zfetch/fetch-encode",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zfetch",
+      "source_sha256": {
+        "lib/config.zsh": "2d6c2d1f3bf97b0a25c225d13578d2d49fd495f01f0755907ca9b235bc2b6962",
+        "lib/http.zsh": "a732a68d4e89a812fdbf6e523c7b15b7172b81a50e71270cdf4a4a3d57b16e8a",
+        "lib/server.zsh": "ac8c8b9c489d19199899962857b0bc42a697e82f38dd43badf900220e4700670",
+        "lib/tools.zsh": "7bf0ad238ebc34dade85a70e3753686ead12887cbce8b7449e70daff98a32224"
+      },
+      "iterations": 3,
+      "samples_ms_per_batch": [
+        [
+          13.377,
+          13.231,
+          13.349,
+          13.269,
+          13.291
+        ],
+        [
+          13.235999999999999,
+          13.218,
+          13.176,
+          13.287,
+          13.200999999999999
+        ]
+      ],
+      "median_ms": [
+        13.291,
+        13.218
+      ],
+      "speedup": 1.0055227719776063,
+      "state_sha256": "eba833dbb04b17d6d495177d868ab4a2bcb341c657e7f10df8effb6b34cd152d"
+    }
+  ]
+}

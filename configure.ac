@@ -1296,6 +1296,37 @@ AC_CHECK_FUNCS(strftime strptime mktime timelocal \
 	       setutxent getutxent endutxent getutent)
 AC_FUNC_STRCOLL
 
+dnl strtod_l avoids changing the process locale for every floating constant.
+dnl Check declarations and linking together: older systems may expose only
+dnl part of the locale-object API, or require the xlocale header.
+AC_CHECK_HEADERS([xlocale.h])
+AH_TEMPLATE([HAVE_MATH_STRTOD_L],
+[Define if the complete locale-object API for arithmetic conversion is usable.])
+AC_CACHE_CHECK([for locale-object arithmetic conversion], zsh_cv_math_strtod_l,
+  [AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#define _GNU_SOURCE 1
+#include <stdlib.h>
+#include <locale.h>
+#ifdef HAVE_XLOCALE_H
+#include <xlocale.h>
+#endif
+]], [[
+  locale_t (*make_locale)(int, const char *, locale_t) = newlocale;
+  locale_t (*thread_locale)(locale_t) = uselocale;
+  double (*convert)(const char *, char **, locale_t) = strtod_l;
+  void (*free_locale)(locale_t) = freelocale;
+  locale_t loc = make_locale(LC_ALL_MASK, "C", (locale_t)0);
+  char *end;
+  double value = 0.0;
+  if (loc && thread_locale((locale_t)0) == LC_GLOBAL_LOCALE)
+    value = convert("1.25", &end, loc);
+  if (loc) free_locale(loc);
+  return value == 1.25 ? 0 : 1;
+]])], [zsh_cv_math_strtod_l=yes], [zsh_cv_math_strtod_l=no])])
+if test x$zsh_cv_math_strtod_l = xyes; then
+  AC_DEFINE(HAVE_MATH_STRTOD_L)
+fi
+
 # fpurge exists on musl, but is undeclared in stdio.h and isn't actually required
 AC_CHECK_DECLS([fpurge])
 

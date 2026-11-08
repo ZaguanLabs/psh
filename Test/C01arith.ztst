@@ -493,3 +493,27 @@
 0:Double quotes are not treated specially in arithmetic (POSIX)
 # and do not do grouping!  this is 6 + (2/1) + 3
 >11
+
+  () {
+    emulate -L zsh
+    local LC_ALL=C LC_NUMERIC=C
+    local -F 12 value
+    value=$(( 1_2.3_4e+2 + .125 ))
+    (( value == 1234.125 )) || return 1
+    value=$(( -0.0 + 1.25e+2 ))
+    (( value == 125.0 )) || return 1
+    psh_numeric_locale_callback() { LC_NUMERIC=POSIX; (( 2 )); }
+    functions -M psh_numeric_locale_callback 0 0 psh_numeric_locale_callback
+    {
+      value=$(( 1.25 + psh_numeric_locale_callback() + 2.5 ))
+      (( value == 5.75 )) || return 1
+      [[ $LC_NUMERIC == POSIX && $LC_ALL == C ]] || return 1
+      setopt forcefloat octalzeroes
+      value=$(( 0001.25 + 1e-3 ))
+      (( value == 1.251 ))
+    } always {
+      functions +M psh_numeric_locale_callback
+      unfunction psh_numeric_locale_callback
+    }
+  }
+0:Floating conversion preserves underscores, exponent forms, option changes and locale-changing math callbacks

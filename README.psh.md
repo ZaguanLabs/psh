@@ -84,9 +84,14 @@ runs in the multibyte length/width helper. Its
 Unicode conversion and Meta handling retain their original loops.
 
 The [eighteenth investigation](Perf/round18.md) tests two unfiltered hash-scan
-specializations. Both were rejected after mixed customer timings. The core
-implementation and installed daily driver retain the seventeen accepted changes;
+specializations. Both were rejected after mixed customer timings;
 new native callback tests and a scope-restoration regression are retained.
+
+The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
+locale conversion, array walks, allocation and scope scanning. Its accepted
+[patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
+for ordinary floating literals when the complete locale-object API is available.
+The executable now includes eighteen accepted optimizations.
 
 The first change accelerates size-preserving replacements within the first
 32 elements of ordinary indexed arrays. It introduces no array-length cache or
@@ -105,7 +110,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all seventeen changes; the fourth experiment compares against
+executable includes all eighteen changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -196,3 +201,11 @@ resuming after completed multibyte handling. Long ASCII counts improve while
 Unicode, Meta/NUL, explicit endpoints and conversion-state behavior are checked
 against the original release implementation. Customer paste gains are smaller;
 slower synthetic and application controls remain in the report.
+
+The eighteenth accepted change uses an immutable private C locale for eligible
+floating conversions, with the released conversion sequence as fallback.
+Private thread locales and unusual character classifications retain that
+fallback; failed locale creation preserves errno and also falls back. Native
+checks compare value bits, rounding, floating exceptions, errno, global/thread
+locale state and input bytes. The measured Mario and shooter kernels improve;
+slower small scalar controls are retained in the full report.

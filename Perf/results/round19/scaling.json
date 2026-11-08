@@ -1,0 +1,144 @@
+{
+  "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round17/psh",
+  "binary_sha256": "4b4ed9e3baca23c896bb76ad6f28b6c997fdf8625794a86ea75809b9e4a1bc98",
+  "worker_sha256": "f5b50d97a397f0965b179e5d35f3a019430bbeee0783df2a35840d293c627907",
+  "source_sha256": {
+    "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2",
+    "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+    "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+    "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+    "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+    "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383"
+  },
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "samples": 5,
+  "cpu_affinity": [
+    2
+  ],
+  "cases": [
+    {
+      "operation": "validate",
+      "items": 250,
+      "samples_ms": [
+        11.215,
+        11.270999999999999,
+        11.374,
+        11.4,
+        11.533
+      ],
+      "median_ms": 11.374
+    },
+    {
+      "operation": "validate",
+      "items": 500,
+      "samples_ms": [
+        22.831,
+        23.043,
+        23.208,
+        23.644,
+        23.2
+      ],
+      "median_ms": 23.2
+    },
+    {
+      "operation": "validate",
+      "items": 1000,
+      "samples_ms": [
+        46.524,
+        46.323,
+        45.808,
+        45.964999999999996,
+        45.756
+      ],
+      "median_ms": 45.964999999999996
+    },
+    {
+      "operation": "validate",
+      "items": 2000,
+      "samples_ms": [
+        97.625,
+        101.42,
+        99.211,
+        96.94999999999999,
+        96.67699999999999
+      ],
+      "median_ms": 97.625
+    },
+    {
+      "operation": "validate",
+      "items": 4000,
+      "samples_ms": [
+        203.649,
+        208.32600000000002,
+        204.482,
+        206.927,
+        205.64
+      ],
+      "median_ms": 205.64
+    },
+    {
+      "operation": "encode",
+      "items": 250,
+      "samples_ms": [
+        12.648,
+        12.973,
+        12.939,
+        12.654,
+        12.848
+      ],
+      "median_ms": 12.848
+    },
+    {
+      "operation": "encode",
+      "items": 500,
+      "samples_ms": [
+        25.052999999999997,
+        25.081,
+        25.354000000000003,
+        25.823999999999998,
+        25.017999999999997
+      ],
+      "median_ms": 25.081
+    },
+    {
+      "operation": "encode",
+      "items": 1000,
+      "samples_ms": [
+        50.558,
+        50.418,
+        50.499,
+        50.702999999999996,
+        50.324
+      ],
+      "median_ms": 50.499
+    },
+    {
+      "operation": "encode",
+      "items": 2000,
+      "samples_ms": [
+        103.552,
+        102.846,
+        103.55399999999999,
+        103.071,
+        102.697
+      ],
+      "median_ms": 103.071
+    },
+    {
+      "operation": "encode",
+      "items": 4000,
+      "samples_ms": [
+        215.18599999999998,
+        217.31300000000002,
+        218.836,
+        216.811,
+        214.782
+      ],
+      "median_ms": 216.811
+    }
+  ]
+}

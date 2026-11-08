@@ -10546,6 +10546,68 @@ printf '%s\n' "#define HAVE_STRCOLL 1" >>confdefs.h
 fi
 
 
+ac_fn_c_check_header_compile "$LINENO" "xlocale.h" "ac_cv_header_xlocale_h" "$ac_includes_default"
+if test "x$ac_cv_header_xlocale_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_XLOCALE_H 1" >>confdefs.h
+
+fi
+
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for locale-object arithmetic conversion" >&5
+printf %s "checking for locale-object arithmetic conversion... " >&6; }
+if test ${zsh_cv_math_strtod_l+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#define _GNU_SOURCE 1
+#include <stdlib.h>
+#include <locale.h>
+#ifdef HAVE_XLOCALE_H
+#include <xlocale.h>
+#endif
+
+int
+main (void)
+{
+
+  locale_t (*make_locale)(int, const char *, locale_t) = newlocale;
+  locale_t (*thread_locale)(locale_t) = uselocale;
+  double (*convert)(const char *, char **, locale_t) = strtod_l;
+  void (*free_locale)(locale_t) = freelocale;
+  locale_t loc = make_locale(LC_ALL_MASK, "C", (locale_t)0);
+  char *end;
+  double value = 0.0;
+  if (loc && thread_locale((locale_t)0) == LC_GLOBAL_LOCALE)
+    value = convert("1.25", &end, loc);
+  if (loc) free_locale(loc);
+  return value == 1.25 ? 0 : 1;
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  zsh_cv_math_strtod_l=yes
+else case e in #(
+  e) zsh_cv_math_strtod_l=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $zsh_cv_math_strtod_l" >&5
+printf "%s\n" "$zsh_cv_math_strtod_l" >&6; }
+if test x$zsh_cv_math_strtod_l = xyes; then
+  printf "%s\n" "#define HAVE_MATH_STRTOD_L 1" >>confdefs.h
+
+fi
+
 # fpurge exists on musl, but is undeclared in stdio.h and isn't actually required
 ac_fn_check_decl "$LINENO" "fpurge" "ac_cv_have_decl_fpurge" "$ac_includes_default" "$ac_c_undeclared_builtin_options$ac_c_future_darwin_options" "CFLAGS"
 if test "x$ac_cv_have_decl_fpurge" = xyes

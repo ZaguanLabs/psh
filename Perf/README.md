@@ -652,3 +652,45 @@ The parser timing driver accepts repeated `--case` selections, such as
 timings now retain binary/worker hashes and check that sources and binaries
 stay unchanged. See [round16.md](round16.md) for all results, including slower
 controls and the separately validated installed package.
+
+
+## Deeper arithmetic and locale review
+
+[Round nineteen](round19.md) follows arithmetic execution, locale conversion,
+array-bound walks, allocation and scope scanning using real project kernels.
+Its accepted change replaces eligible global-locale switching with an immutable
+C conversion locale. Feature detection requires declarations and linking for
+the entire API; unavailable APIs retain the released conversion sequence.
+
+```sh
+python3 Perf/math-compare.py .work/baseline/Src/zsh ./psh \
+  --output .work/logs/math-comparison.json
+python3 Perf/check-math-locale-module.py .work/baseline/Src/zsh ./psh \
+  --memcheck --output .work/logs/math-native.json
+python3 Perf/test-count-command.py --cpu 2 \
+  --output .work/logs/counter-validation.json
+python3 Perf/hardware-benchmark.py /path/to/previous/psh ./psh --cpu 2 \
+  --labs /path/to/labs --challenge /path/to/challenge \
+  --output .work/logs/hardware-benchmarks.json
+python3 Perf/scaling-benchmark.py /path/to/previous/psh --cpu 2 \
+  --zjson /path/to/zjson --output .work/logs/json-scaling.json
+```
+
+The native fixture requires the POSIX locale-object API and four standard
+rounding modes on its test host, even when testing a deliberately disabled
+core fast path. Its default eight installed locales include French, Norwegian,
+Turkish, EUC-JP, GB18030 and EUC-TW. Each process also tests a private French
+thread locale, retaining the original evaluation errors where applicable.
+Select locales with repeated `--locale`; select matching alternative-build
+headers with `--headers-build`. The small failure interposer can be compiled
+with `cc -shared -fPIC Perf/math-locale-failure.c -ldl -o /tmp/fail-locale.so`
+and selected using `--preload /tmp/fail-locale.so`. It fails only creation of
+the C locale; other private locale requests continue to libc.
+
+Hardware measurements require Linux perf_event_open permission for user-space
+events, without root or system-setting changes. The launcher measures from
+exec through exit and inherits child tasks. It records enabled/running times
+and separately reports process rusage and the worker's warm-batch timer. These
+are different scopes; instruction totals are not wall times. The self-test
+checks counter inheritance and command status using a deterministic worker.
+Keep builds, tests and profilers idle during all accepted timing runs.

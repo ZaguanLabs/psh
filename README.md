@@ -38,8 +38,8 @@ git fetch origin tag upstream/zsh-5.9.2
 - [Build, comparison and benchmark workflow](Perf/README.md)
 - [Customer project workloads and remaining coverage](Perf/customer-projects.md)
 - [Source-review coverage](Perf/audit.md)
-- [Latest accepted measurements and compatibility evidence](Perf/round17.md)
-- [Latest investigation: hash-scan variants rejected after app measurements](Perf/round18.md)
+- [Latest accepted measurements and compatibility evidence](Perf/round19.md)
+- [Deeper review: arithmetic, locale costs, arrays and allocation](Perf/round19.md)
 - [Daily installation and bundled packages](Packaging/README.md)
 - [Upstream bug report, backported fix and reproducer](Perf/upstream-terminator-read.md)
 

@@ -1,0 +1,28 @@
+{
+  "accepted_production_optimization": 18,
+  "investigation_round": 19,
+  "previous_production_round": 17,
+  "previous_source_commit": "104846b",
+  "accepted_binary_sha256": "f7e6d87f5c5ceaad3460862dc39dc3009826ec7b258e8e8173552bb5e1b4b7ff",
+  "final_timing_files": [
+    "customer-benchmarks.json",
+    "hardware-benchmarks.json",
+    "slice-benchmarks.json",
+    "application-benchmarks.json",
+    "parser-benchmarks.json"
+  ],
+  "rejected_trial": "inline locale setup in lexconstant; exact incremental source in inline-source.patch",
+  "pilot_files": [
+    "locale-pilot.json",
+    "helper-pilot.json",
+    "helper-parser-pilot.json",
+    "helper-pilot-api.json",
+    "helper-failure-api.json"
+  ],
+  "notes": [
+    "Pilot files are exploratory stages, not the final timing matrix.",
+    "Scaling is baseline-only and has a separate workload definition.",
+    "Counters and profiles include startup/warm-up; warm timers do not.",
+    "Protected stable/startup snapshots are local-only."
+  ]
+}

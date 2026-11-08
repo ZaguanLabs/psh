@@ -66,6 +66,12 @@ static char *yylval;
 
 static int mlevel = 0;
 
+/* Retain an immutable conversion locale for the life of the process. */
+#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
+#define PSH_MATH_LOCALE_OBJECT 1
+static locale_t math_c_locale;
+#endif
+
 /* != 0 means recognize unary plus, minus, etc. */
 
 static int unary = 1;
@@ -458,12 +464,43 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
     return lastmathval = ret;
 }
 
-static int
-lexconstant(void)
+/* Keep locale setup off the integer lexer's hot path. */
+#if defined(__GNUC__)
+__attribute__((__noinline__))
+#endif
+static double
+math_strtod(char *text, char **end)
 {
+    double value;
 #ifdef USE_LOCALE
     char *prev_locale;
 #endif
+#ifdef PSH_MATH_LOCALE_OBJECT
+    {
+	int saved_errno = errno;
+	int ordinary_token = ((*text >= '0' && *text <= '9') || *text == '.') &&
+	    uselocale((locale_t)0) == LC_GLOBAL_LOCALE;
+	if (ordinary_token && !math_c_locale)
+	    math_c_locale = newlocale(LC_ALL_MASK, "C", (locale_t)0);
+	errno = saved_errno;
+	if (ordinary_token && math_c_locale)
+	    return strtod_l(text, end, math_c_locale);
+    }
+#endif
+#ifdef USE_LOCALE
+    prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+    setlocale(LC_NUMERIC, "POSIX");
+#endif
+    value = strtod(text, end);
+#ifdef USE_LOCALE
+    if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+#endif
+    return value;
+}
+
+static int
+lexconstant(void)
+{
     char *nptr;
 
     nptr = ptr;
@@ -520,10 +557,6 @@ lexconstant(void)
 	char *ptr2;
 	/* it's a float */
 	yyval.type = MN_FLOAT;
-#ifdef USE_LOCALE
-	prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
-	setlocale(LC_NUMERIC, "POSIX");
-#endif
 	if (*nptr == '.') {
 	    nptr++;
 	    while (idigit(*nptr) || *nptr == '_')
@@ -549,10 +582,7 @@ lexconstant(void)
 		break;
 	    }
 	}
-	yyval.u.d = strtod(ptr, &nptr);
-#ifdef USE_LOCALE
-	if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
-#endif
+	yyval.u.d = math_strtod(ptr, &nptr);
 	if (ptr == nptr || *nptr == '.') {
 	    zerr("bad floating point constant");
 	    return EOI;
