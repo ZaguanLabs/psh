@@ -1,0 +1,40 @@
+[
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/scope-customer-scaling.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "--module-dir",
+      ".work/logs/round32/observer-active",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round32/customer-repeat.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "power-scaling",
+    "command": [
+      "python3",
+      "Perf/power-scaling.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round32/power-scaling.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "pristine-scaling",
+    "command": [
+      "python3",
+      ".work/logs/round32/pristine-scaling.py"
+    ],
+    "status": 0
+  }
+]

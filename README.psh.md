@@ -309,3 +309,11 @@ allocation and compiler inlining. The descriptor buffer has mixed customer
 results, the parser hint produces identical object code, and the accessor hint
 increases Endgame instructions. These private trials are not adopted. Expanded
 recursive lookup and lvalue tests remain available for future work.
+
+The [thirty-second investigation](Perf/round32.md) measures structural costs:
+function-return cleanup walks all parameter-table entries and buckets, while
+integer powers multiply once per exponent step. Adding 512 unrelated globals
+slows existing editor paste kernels substantially in controlled child processes.
+The report prioritizes scope bookkeeping, arithmetic execution plans, option
+defaults and container growth. These are research findings; the installed
+executable still contains twenty-six accepted optimizations.

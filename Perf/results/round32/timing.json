@@ -1,0 +1,36 @@
+[
+  {
+    "name": "scope-scaling",
+    "command": [
+      "python3",
+      "Perf/scope-scaling.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "--module-dir",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round32/observer-active",
+      "--cpu",
+      "13",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round32/scope-scaling.json"
+    ],
+    "status": 0,
+    "seconds": 28.691831399919465
+  },
+  {
+    "name": "customer-scaling",
+    "command": [
+      "python3",
+      "Perf/scope-customer-scaling.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "--module-dir",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round32/observer-active",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--cpu",
+      "13",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round32/customer-scaling.json"
+    ],
+    "status": 0,
+    "seconds": 13.410716918995604
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "samples": 9,
+  "cpu_affinity": [
+    13
+  ],
+  "DEBUG": true,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8"
+  },
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round32/observer-pristine/psh_scope_observer.so": "72e080d809f9add39e4561181d9513f943fb33650ff2e35d75a1d4b51a3d623c",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-workload.zsh": "1b4ddff41d7d07ab639c4d4d256d93ddc43f44e2e226be2db13db21eb1fd2d88"
+  },
+  "cases": [
+    {
+      "padding": 0,
+      "samples_ms": [
+        16.122,
+        15.309,
+        15.24,
+        15.356,
+        15.018,
+        15.583,
+        15.270999999999999,
+        15.248,
+        15.283
+      ],
+      "median_ms": 15.283,
+      "median_us_per_call": 3.82075,
+      "table": {
+        "count": 158,
+        "buckets": 151,
+        "visible": 158,
+        "local": 0,
+        "shadowed": 0,
+        "level": 0
+      }
+    },
+    {
+      "padding": 4096,
+      "samples_ms": [
+        66.82100000000001,
+        68.26,
+        58.876,
+        68.11699999999999,
+        68.517,
+        57.588,
+        57.588,
+        67.83200000000001,
+        59.131
+      ],
+      "median_ms": 66.82100000000001,
+      "median_us_per_call": 16.705250000000003,
+      "table": {
+        "count": 4254,
+        "buckets": 2416,
+        "visible": 4254,
+        "local": 0,
+        "shadowed": 0,
+        "level": 0
+      }
+    }
+  ],
+  "scope": "baseline-only inherited scaling; absolute times are not an active/pristine speed comparison"
+}

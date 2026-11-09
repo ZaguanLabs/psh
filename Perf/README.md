@@ -1016,3 +1016,41 @@ completed state comparisons are required too. `--timeout` bounds each host and
 locale, defaulting to 300 seconds. Instrumented forks can make the broad corpus
 exceed that limit. An incomplete timeout is not a passing memory receipt; retain
 it separately when using the focused extension or a longer explicit allowance.
+
+## Structural scope and power scaling
+
+[Round thirty-two](round32.md) measures existing algorithms without changing the
+production shell. `scope-observer-module.c` reads the visible parameter table
+under queued signals without invoking parameter getters. Compile it against the
+measured host's matching SDK before timing:
+
+```sh
+mkdir -p .work/scope-observer
+cc -O2 -g -shared -fPIC -DMODULE -DHAVE_CONFIG_H \
+  -I/path/to/matching/core/Src Perf/scope-observer-module.c \
+  -o .work/scope-observer/psh_scope_observer.so
+python3 Perf/scope-scaling.py /path/to/psh \
+  --module-dir .work/scope-observer --cpu 2 --output .work/logs/scope-scaling.json
+python3 Perf/scope-customer-scaling.py /path/to/psh \
+  --module-dir .work/scope-observer --labs /path/to/labs --cpu 2 \
+  --output .work/logs/scope-customer.json
+python3 Perf/power-scaling.py /path/to/psh \
+  --cpu 2 --output .work/logs/power-scaling.json
+```
+
+For a separate build/source layout, also add the matching source `Src` include
+directory. DEBUG and release SDKs can differ in signal-queue references. The
+observer reports all visible table nodes, including unset placeholders, excludes
+hidden shadow-chain nodes and is used only in isolated test processes.
+
+The scope driver runs nine rotated/reversed samples for dense and emptied
+namespaces, loop-only/empty/local/emulation/nested cases, and checks table and
+binding restoration outside its timers. The project wrapper adds either zero or
+512 globals before unchanged coder/chat paste kernels, with identical result
+states. This measures namespace sensitivity, not an achieved speedup or a full
+application session. Setup and final observations are outside warm timers.
+
+The power driver uses bases 0/1/-1 and nonnegative exponents to avoid overflow.
+Expected results and state hashes are checked. All raw samples and input hashes
+remain in JSON. Keep timing separate from builds, checks and profilers; the
+reported costs do not measure an optimized replacement.
