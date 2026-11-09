@@ -1,0 +1,45 @@
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 75b06c4..a89f08a 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -85,12 +85,34 @@ static HashTableImpl firstht, lastht;
+ mod_export unsigned
+ hasher(const char *str)
+ {
+-    unsigned hashval = 0, c;
+-
+-    while ((c = *((unsigned char *) str++)))
+-	hashval += (hashval << 5) + c;
+-
+-    return hashval;
++    const unsigned char *p = (const unsigned char *)str;
++    unsigned hashval = 0, a, b, c, d;
++
++    /* Peel the first block so short names do not multiply a zero hash. */
++    if (!(a = p[0]))
++	return 0;
++    if (!(b = p[1]))
++	return a;
++    if (!(c = p[2]))
++	return a * 33U + b;
++    if (!(d = p[3]))
++	return (a * 33U + b) * 33U + c;
++    hashval = a * 35937U + b * 1089U + c * 33U + d;
++    p += 4;
++
++    for (;;) {
++	if (!(a = p[0]))
++	    return hashval;
++	if (!(b = p[1]))
++	    return hashval * 33U + a;
++	if (!(c = p[2]))
++	    return (hashval * 33U + a) * 33U + b;
++	if (!(d = p[3]))
++	    return ((hashval * 33U + a) * 33U + b) * 33U + c;
++	/* Four original unsigned recurrence steps, with the same wraparound. */
++	hashval = hashval * 1185921U + a * 35937U + b * 1089U + c * 33U + d;
++	p += 4;
++    }
+ }
+ 
+ /* Get a new hash table */

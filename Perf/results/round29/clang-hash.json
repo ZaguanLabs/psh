@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/clang-previous/Src/zsh": "9c80d02a33b584889362bfe947f8e51c11d0b10cb073e1fc82560657aee6996c",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/clang-candidate/Src/zsh": "eec351ea7b44b677c7c0bc801609dc7f785899d72b6999740a71f14a3b7b0004",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-module.c": "3d39c408f33629d0bbe7e1db47164694ae9c0bc588131c6d2fd3080faeb2ab39",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round29/clang-hash/psh_hash_fixture.so": "cbd09383b1dfb55cd95096c0f52f24173ab24ec02622e72893a26eb0f744ff7f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-hash-module.py": "8f90b377209d3a1bf1d810b6b24c48fb76f810dd26a6d3bb802ccffd82356131"
+  },
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/clang-previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/previous-source/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round29/clang-hash/psh_hash_fixture.so"
+  ],
+  "checks": 1076856,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/clang-previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 538428,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=538428 digest=1706867410 exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/clang-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 538428,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=538428 digest=1706867410 exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n"
+    }
+  ]
+}

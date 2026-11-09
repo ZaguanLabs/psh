@@ -934,3 +934,27 @@ that truncate a previously cached vector before further append. Its fixture
 uses public APIs and is compiled against the selected matching SDK. Continue
 running `check-array-cache.py --memcheck` for the existing ordinary-malloc and
 Memcheck lifetime/realloc cases, plus upstream and required OMZ checks.
+
+## Native string hashing investigation
+
+[Round twenty-nine](round29.md) rejects two grouped-hashing prototypes after
+actual installed-build customer measurements. The original hash function and
+current twenty-six accepted optimizations remain in use.
+
+```sh
+python3 Perf/check-hash-module.py .work/baseline/Src/zsh ./psh \
+  --memcheck --output .work/logs/hash-values.json
+python3 Perf/hash-benchmark.py /path/to/reference/psh /path/to/trial/psh \
+  --cpu 2 --output .work/logs/hash-timing.json
+```
+
+The native fixture compares 538,428 inputs per host/locale against the original
+release recurrence, including all nonzero one/two-byte strings at eight offsets,
+selected triples, exact allocations, protected/read-only mappings, long keys and
+embedded NULs. It checks unchanged errno. Default headers come from the pristine
+build; use `--headers-build` and `--headers-source` for another matching SDK.
+The performance driver prepares its fixture before sampling, checks unsigned
+checksums, and uses nine alternating fresh processes per key length. Its timers
+cover repeated hot native calls; they exclude allocation, module loading and
+interpreter dispatch. Measure the actual installed builds and customer kernels
+before adopting a faster microbenchmark.

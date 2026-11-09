@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/candidate/Src/zsh": "7ab5d124f33d04249714fb9a2d84ea3ef9240a1d2218787303cb1a49b5e3626b",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-module.c": "3d39c408f33629d0bbe7e1db47164694ae9c0bc588131c6d2fd3080faeb2ab39",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round29/hash-native/psh_hash_fixture.so": "ffe84c146b814fab405053cc28854a1275543a017fe604c4b662c3cd57384f8e",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-hash-module.py": "8f90b377209d3a1bf1d810b6b24c48fb76f810dd26a6d3bb802ccffd82356131"
+  },
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round29/hash-native/psh_hash_fixture.so"
+  ],
+  "checks": 2153712,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "checks": 538428,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=538428 digest=1706867410 exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/candidate/Src/zsh",
+      "locale": "C",
+      "checks": 538428,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=538428 digest=1706867410 exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 538428,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=538428 digest=1706867410 exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round29/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 538428,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=538428 digest=1706867410 exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n"
+    }
+  ]
+}

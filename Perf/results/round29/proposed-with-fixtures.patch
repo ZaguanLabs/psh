@@ -1,0 +1,387 @@
+Round twenty-nine: group unsigned string-hash arithmetic
+Parent: 605e124852ff4a8ed61a01ab0b7bba7b77440176
+
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 75b06c4..a89f08a 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -85,12 +85,34 @@ static HashTableImpl firstht, lastht;
+ mod_export unsigned
+ hasher(const char *str)
+ {
+-    unsigned hashval = 0, c;
+-
+-    while ((c = *((unsigned char *) str++)))
+-	hashval += (hashval << 5) + c;
+-
+-    return hashval;
++    const unsigned char *p = (const unsigned char *)str;
++    unsigned hashval = 0, a, b, c, d;
++
++    /* Peel the first block so short names do not multiply a zero hash. */
++    if (!(a = p[0]))
++	return 0;
++    if (!(b = p[1]))
++	return a;
++    if (!(c = p[2]))
++	return a * 33U + b;
++    if (!(d = p[3]))
++	return (a * 33U + b) * 33U + c;
++    hashval = a * 35937U + b * 1089U + c * 33U + d;
++    p += 4;
++
++    for (;;) {
++	if (!(a = p[0]))
++	    return hashval;
++	if (!(b = p[1]))
++	    return hashval * 33U + a;
++	if (!(c = p[2]))
++	    return (hashval * 33U + a) * 33U + b;
++	if (!(d = p[3]))
++	    return ((hashval * 33U + a) * 33U + b) * 33U + c;
++	/* Four original unsigned recurrence steps, with the same wraparound. */
++	hashval = hashval * 1185921U + a * 35937U + b * 1089U + c * 33U + d;
++	p += 4;
++    }
+ }
+ 
+ /* Get a new hash table */
+diff --git a/Perf/hash-module.c b/Perf/hash-module.c
+new file mode 100644
+index 0000000..2678734
+--- /dev/null
++++ b/Perf/hash-module.c
+@@ -0,0 +1,195 @@
++/*
++ * hashtable.c - hash tables
++ *
++ * This file is part of zsh, the Z shell.
++ *
++ * Copyright (c) 1992-1997 Paul Falstad
++ * All rights reserved.
++ *
++ * Permission is hereby granted, without written agreement and without
++ * license or royalty fees, to use, copy, modify, and distribute this
++ * software and to distribute modified versions of this software for any
++ * purpose, provided that the above copyright notice and the following
++ * two paragraphs appear in all copies of this software.
++ *
++ * In no event shall Paul Falstad or the Zsh Development Group be liable
++ * to any party for direct, indirect, special, incidental, or consequential
++ * damages arising out of the use of this software and its documentation,
++ * even if Paul Falstad and the Zsh Development Group have been advised of
++ * the possibility of such damage.
++ *
++ * Paul Falstad and the Zsh Development Group specifically disclaim any
++ * warranties, including, but not limited to, the implied warranties of
++ * merchantability and fitness for a particular purpose.  The software
++ * provided hereunder is on an "as is" basis, and Paul Falstad and the
++ * Zsh Development Group have no obligation to provide maintenance,
++ * support, updates, enhancements, or modifications.
++ *
++ */
++
++/* Test-only hash-value oracle and byte-boundary fixture. */
++#include "zsh.mdh"
++#include <errno.h>
++#include <sys/mman.h>
++#include <unistd.h>
++#include <time.h>
++#include <limits.h>
++
++static unsigned checks, digest;
++static int bad;
++
++/* Original release recurrence, kept independent of grouped arithmetic. */
++static unsigned
++reference_hasher(const char *str)
++{
++    unsigned hashval = 0, c;
++
++    while ((c = *((unsigned char *) str++)))
++	hashval += (hashval << 5) + c;
++
++    return hashval;
++}
++
++static void
++one(const unsigned char *p)
++{
++    unsigned expected, actual;
++    int saved = errno, requested = checks & 31;
++    errno = requested;
++    expected = reference_hasher((const char *)p);
++    actual = hasher((const char *)p);
++    if (expected != actual || errno != requested) {
++        fprintf(stderr, "hash mismatch: case=%u expected=%u actual=%u errno=%d/%d\n",
++                checks, expected, actual, errno, requested);
++        bad = 1;
++    }
++    errno = saved;
++    digest = digest * 33U + actual;
++    checks++;
++}
++
++static unsigned random_state;
++static unsigned
++next_random(void)
++{
++    random_state = random_state * 1664525U + 1013904223U;
++    return random_state;
++}
++
++static int
++bin_hash_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(int func))
++{
++    static const unsigned alphabet[] = {1,32,65,97,127,131,255};
++    static const unsigned long_lengths[] = {511,512,513,1023,1024,1025,
++        4095,4096,4097,16383,16384,16385,65535};
++    unsigned char scratch[512], *p;
++    unsigned offset, a, b, c, i, len, pattern, exhaustive, triples, heap, guards, randoms;
++    long page = sysconf(_SC_PAGESIZE);
++    size_t usable, mapped;
++    unsigned char *mapping, *data;
++    checks = digest = bad = 0;
++    memset(scratch, 0xa5, sizeof(scratch));
++    for (offset = 0; offset < 8 && !bad; offset++) {
++        p = scratch + offset;
++        p[0] = 0; one(p);
++        for (a = 1; a <= 255 && !bad; a++) {
++            p[0] = a; p[1] = 0; one(p);
++            for (b = 1; b <= 255 && !bad; b++) {
++                p[1] = b; p[2] = 0; one(p);
++            }
++        }
++    }
++    exhaustive = checks;
++    for (offset = 0; offset < 8 && !bad; offset++)
++    for (a = 0; a < 7 && !bad; a++)
++    for (b = 0; b < 7 && !bad; b++)
++    for (c = 0; c < 7 && !bad; c++) {
++        p = scratch + offset;
++        p[0] = alphabet[a]; p[1] = alphabet[b]; p[2] = alphabet[c]; p[3] = 0;
++        one(p);
++    }
++    triples = checks - exhaustive;
++    for (len = 0; len <= 257 && !bad; len++)
++    for (offset = 0; offset < 8 && !bad; offset++)
++    for (pattern = 0; pattern < 4 && !bad; pattern++) {
++        unsigned char *block = zalloc(offset + len + 1);
++        memset(block, 0xa5, offset + len + 1);
++        p = block + offset;
++        for (i = 0; i < len; i++) p[i] = (i * 37 + pattern * 19) % 255 + 1;
++        p[len] = 0; one(p);
++        zfree(block, offset + len + 1);
++    }
++    heap = checks - exhaustive - triples;
++    if (page <= 0 || page > 1048576) return 2;
++    usable = ((65536 + page - 1) / page) * page;
++    mapped = usable + 2 * page;
++    mapping = mmap(NULL, mapped, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++    if (mapping == MAP_FAILED) return 2;
++    data = mapping + page;
++    if (mprotect(data, usable, PROT_READ | PROT_WRITE)) { munmap(mapping, mapped); return 2; }
++    for (a = 0; a < 258 + sizeof(long_lengths)/sizeof(long_lengths[0]) && !bad; a++) {
++        len = a < 258 ? a : long_lengths[a - 258];
++        p = data + usable - len - 1;
++        for (pattern = 0; pattern < 4 && !bad; pattern++) {
++            for (i = 0; i < len; i++)
++                p[i] = pattern == 0 ? 'a' : pattern == 1 ? 255 :
++                    pattern == 2 ? (i & 1 ? 131 : 1) : (i * 37 + 17) % 255 + 1;
++            p[len] = 0;
++            if (mprotect(data, usable, PROT_READ)) { bad = 1; break; }
++            one(p);
++            if (mprotect(data, usable, PROT_READ | PROT_WRITE)) { bad = 1; break; }
++        }
++    }
++    munmap(mapping, mapped);
++    guards = checks - exhaustive - triples - heap;
++    random_state = 12345U;
++    for (a = 0; a < 4096 && !bad; a++) {
++        offset = next_random() & 7;
++        len = next_random() % 258;
++        memset(scratch, 0xa5, sizeof(scratch));
++        p = scratch + offset;
++        for (i = 0; i < len; i++) p[i] = next_random() >> 16;
++        p[len] = 0; one(p);
++    }
++    randoms = checks - exhaustive - triples - heap - guards;
++    if (bad || exhaustive != 522248 || triples != 2744 || heap != 8256 ||
++        guards != 1084 || randoms != 4096) return 1;
++    printf("checks=%u digest=%u exhaustive=%u triples=%u heap=%u guards=%u random=%u\nhash-done\n",
++           checks,digest,exhaustive,triples,heap,guards,randoms);
++    fflush(stdout);
++    return 0;
++}
++/* Hot, repeated native calls isolate hashing from interpreter dispatch. */
++static int
++bin_hash_bench(UNUSED(char *name), char **args, UNUSED(Options ops), UNUSED(int func))
++{
++    int len = atoi(args[0]), n = atoi(args[1]), i;
++    unsigned char *p;
++    unsigned sum = 0;
++    struct timespec start, end;
++    double elapsed;
++    if (len < 0 || len > 1048576 || n < 1 || n > 10000000) return 2;
++    p = zalloc(len + 1);
++    for (i = 0; i < len; i++) p[i] = (i * 37 + 17) % 255 + 1;
++    p[len] = 0;
++    (void)hasher((const char *)p);
++    if (clock_gettime(CLOCK_MONOTONIC, &start)) { zfree(p, len + 1); return 2; }
++    for (i = 0; i < n; i++) sum += hasher((const char *)p);
++    if (clock_gettime(CLOCK_MONOTONIC, &end)) { zfree(p, len + 1); return 2; }
++    elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
++    zfree(p, len + 1);
++    printf("%.9f %u %u\n", elapsed, sum, (unsigned)(sizeof(unsigned) * CHAR_BIT));
++    fflush(stdout);
++    return 0;
++}
++static struct builtin bintab[] = {
++    BUILTIN("psh-hash-check", 0, bin_hash_check, 0, 0, 0, NULL, NULL),
++    BUILTIN("psh-hash-bench", 0, bin_hash_bench, 2, 2, 0, NULL, NULL)
++};
++static struct features module_features = {bintab,2,NULL,0,NULL,0,NULL,0,0};
++int setup_(UNUSED(Module m)) { return 0; }
++int features_(Module m, char ***features) { *features = featuresarray(m, &module_features); return 0; }
++int enables_(Module m, int **enables) { return handlefeatures(m, &module_features, enables); }
++int boot_(UNUSED(Module m)) { return 0; }
++int cleanup_(Module m) { return setfeatureenables(m, &module_features, NULL); }
++int finish_(UNUSED(Module m)) { return 0; }
+diff --git a/Perf/check-hash-module.py b/Perf/check-hash-module.py
+new file mode 100644
+index 0000000..4b4ebdc
+--- /dev/null
++++ b/Perf/check-hash-module.py
+@@ -0,0 +1,61 @@
++#!/usr/bin/env python3
++"""Compare raw-byte hash values, unsigned overflow and protected boundaries."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import re
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--headers-build', type=Path, default=Path('.work/baseline'))
++    p.add_argument('--headers-source', type=Path, default=Path('.work/pristine'))
++    p.add_argument('--memcheck', action='store_true')
++    p.add_argument('--locale', action='append', dest='locales')
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    a.output.unlink(missing_ok=True)
++    root = Path(__file__).resolve().parent
++    folder = a.output.resolve().with_suffix('')
++    folder.mkdir(exist_ok=True)
++    source, module = root / 'hash-module.c', folder / 'psh_hash_fixture.so'
++    command = ['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H',
++               '-I' + str(a.headers_build.resolve(strict=True) / 'Src'),
++               '-I' + str(a.headers_source.resolve(strict=True) / 'Src'), str(source), '-o', str(module)]
++    subprocess.run(command, check=True)
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    inputs = [*shells, source, module, Path(__file__).resolve()]
++    fingerprints = {str(p): sha(p) for p in inputs}
++    script = 'module_path=("$1"); zmodload psh_hash_fixture || exit 1; psh-hash-check || exit 2; zmodload -u psh_hash_fixture || exit 3'
++    rows = []
++    for locale in a.locales or ['C', 'C.UTF-8']:
++        expected = None
++        for index, shell in enumerate(shells):
++            prefix = []
++            if a.memcheck:
++                prefix = ['valgrind', '--error-exitcode=97', '--leak-check=no',
++                          '--log-file=' + str(folder / f'{index}-{locale}.memcheck.log')]
++            r = subprocess.run(prefix + [str(shell), '-dfc', script, 'comparison', str(folder)],
++                env={'PATH': '/usr/bin:/bin', 'LC_ALL': locale}, capture_output=True, timeout=300)
++            count = re.fullmatch(rb'checks=(\d+) digest=\d+ exhaustive=522248 triples=2744 heap=8256 guards=1084 random=4096\nhash-done\n', r.stdout)
++            if r.returncode or r.stderr or not count or int(count[1]) != 538428:
++                raise RuntimeError((index, locale, r.returncode, r.stdout[-1000:], r.stderr[-1000:]))
++            if expected is not None and r.stdout != expected:
++                raise RuntimeError((locale, 'different hash values'))
++            expected = r.stdout
++            rows.append(dict(shell=str(shell), locale=locale, checks=int(count[1]),
++                             status=0, memcheck=a.memcheck, stdout=r.stdout.decode()))
++            print(index, locale, int(count[1]), 'hash checks matched', flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    a.output.write_text(json.dumps(dict(passed=True, fingerprints=fingerprints,
++        compile_command=command, checks=sum(r['checks'] for r in rows), runs=rows), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Perf/hash-benchmark.py b/Perf/hash-benchmark.py
+new file mode 100644
+index 0000000..b7bce34
+--- /dev/null
++++ b/Perf/hash-benchmark.py
+@@ -0,0 +1,65 @@
++#!/usr/bin/env python3
++"""Time native hashing by raw byte length with identical digests."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import statistics
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--headers-build', type=Path, default=Path('.work/baseline'))
++    p.add_argument('--headers-source', type=Path, default=Path('.work/pristine'))
++    p.add_argument('--cpu', type=int, required=True)
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    os.sched_setaffinity(0, {a.cpu})
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    folder = a.output.resolve().with_suffix('')
++    folder.mkdir(exist_ok=True)
++    source = Path(__file__).resolve().with_name('hash-module.c')
++    module = folder / 'psh_hash_fixture.so'
++    command = ['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H',
++        '-I' + str(a.headers_build.resolve(strict=True) / 'Src'),
++        '-I' + str(a.headers_source.resolve(strict=True) / 'Src'), str(source), '-o', str(module)]
++    # Prepare the fixture before the first timed call; no build runs in parallel.
++    subprocess.run(command, check=True)
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    inputs = [*shells, source, module, Path(__file__).resolve()]
++    fingerprints = {str(p): sha(p) for p in inputs}
++    env = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8'}
++    script = 'module_path=("$1"); zmodload psh_hash_fixture || exit 1; psh-hash-bench "$2" "$3" || exit 2'
++    rows = []
++    for length in [0,1,2,3,4,7,8,15,16,31,32,63,64,257,4096]:
++        n = max(10000, min(3000000, 24000000 // max(1, length)))
++        times = [[], []]
++        for sample in range(9):
++            for host in ([0,1] if sample % 2 == 0 else [1,0]):
++                r = subprocess.run([str(shells[host]), '-dfc', script, 'comparison', str(folder), str(length), str(n)],
++                    env=env, capture_output=True, timeout=30)
++                if r.returncode or r.stderr:
++                    raise RuntimeError((length, host, r.returncode, r.stderr))
++                elapsed, value, bits = r.stdout.split()
++                mask = (1 << int(bits)) - 1
++                expected = 0
++                for i in range(length):
++                    expected = (expected * 33 + (i * 37 + 17) % 255 + 1) & mask
++                assert int(value) == expected * n & mask
++                times[host].append(float(elapsed) * 1000)
++        medians = [statistics.median(x) for x in times]
++        rows.append(dict(length=length, iterations=n, samples_ms=times, median_ms=medians))
++        print(length, medians, flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    a.output.write_text(json.dumps(dict(fingerprints=fingerprints, compile_command=command,
++        environment=env, cpu_affinity=sorted(os.sched_getaffinity(0)), samples=9,
++        scope='hot repeated native calls; allocation and module load excluded', cases=rows), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()

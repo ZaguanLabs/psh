@@ -290,3 +290,10 @@ invalidation/ownership rules. JSON array encoding takes about 2.7–3.7% less ti
 in paired runs. The [round-twenty-eight report](Perf/round28.md) includes all
 controls, native loan/mutation checks and the rejected scanner revisit.
 There is no new intended language or native-interface difference.
+
+The [twenty-ninth investigation](Perf/round29.md) tests grouped unsigned string
+hashing. It preserves hash values and reduces native hashing costs, but actual
+installed-release customer timings are mixed. Both prototypes remain unadopted;
+the executable retains twenty-six optimizations and its original hash function.
+The investigation adds a pristine-source oracle, exact-size allocation and
+protected-boundary checks, plus native key-length controls.

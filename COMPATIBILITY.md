@@ -72,6 +72,10 @@ the existing queued-signal and mutable native getter-loan contract, cache layout
 and invalidation. No new intended language or native-interface difference is
 introduced; raw field mutation remains subject to the existing migration below.
 
+Round twenty-nine's grouped string-hash prototypes were not adopted. The
+original `hasher()` remains unchanged; the added native oracle and performance
+controls introduce no installed language, module or ownership difference.
+
 ## Deliberate differences
 
 | Surface | Difference and practical consequence |

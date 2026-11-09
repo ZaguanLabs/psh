@@ -121,3 +121,12 @@ No exact-length flag or additional cache storage is introduced. Native loans,
 setter/destructor invalidation and signal boundaries retain their existing
 contract. The scanner specialization revisit remains rejected on mixed customer
 timings, consistent with round eighteen's earlier result.
+
+[Round twenty-nine](round29.md) follows generic string hashing into four-byte
+unsigned polynomial grouping, then peels the first block to reduce short-key
+costs. Hash values, terminator boundaries and errno match the original release
+oracle; GCC/Clang, native memory and OMZ checks pass. The installed-release
+customer comparison is mixed, so both prototypes remain unadopted and the
+accepted source/developer executable are restored. Initial private-build gains
+and a noisy timing pass remain distinct from the final installed comparison.
+Arithmetic parsing and evaluation remain substantial Endgame costs.

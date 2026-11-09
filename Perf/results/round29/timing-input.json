@@ -1,0 +1,147 @@
+[
+  {
+    "name": "customer-benchmarks",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/customer-benchmarks.json"
+    ]
+  },
+  {
+    "name": "library-benchmarks",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/library-benchmarks.json"
+    ]
+  },
+  {
+    "name": "parser-benchmarks",
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/parser-benchmarks.json"
+    ]
+  },
+  {
+    "name": "search-benchmarks",
+    "command": [
+      "python3",
+      "Perf/search-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/search-benchmarks.json"
+    ]
+  },
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/customer-repeat.json"
+    ]
+  },
+  {
+    "name": "library-repeat",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/library-repeat.json"
+    ]
+  },
+  {
+    "name": "hardware",
+    "command": [
+      "python3",
+      "Perf/hardware-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/hardware.json"
+    ]
+  },
+  {
+    "name": "array-benchmarks",
+    "command": [
+      "python3",
+      "Perf/benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/array-benchmarks.json"
+    ]
+  },
+  {
+    "name": "hash-benchmarks",
+    "command": [
+      "python3",
+      "Perf/hash-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-e1f66a23cf65/bin/psh",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round29/hash-benchmarks.json"
+    ]
+  }
+]

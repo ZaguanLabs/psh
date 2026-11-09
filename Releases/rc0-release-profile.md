@@ -159,3 +159,7 @@ install those disposable rebuilds. Its report belongs beside the exact archive.
 
 The [round-twenty-eight iteration](../Perf/round28.md) retains rc0 and the
 release profile while reusing confirmed prefixes before ordinary array append.
+
+The [round-twenty-nine hashing investigation](../Perf/round29.md) does not change
+the active release: both prototypes are rejected after installed-binary timing.
+Its inactive candidate and validation evidence are retained separately.
