@@ -40,8 +40,9 @@ For each future candidate: reproduce the cost, inspect ownership and semantics,
 make a bounded change, compare against pristine behavior, classify any deliberate
 divergence under the current compatibility policy, run relevant upstream and
 application checks and the required unchanged-OMZ gate, then measure gains and
-control cases on idle builds. Full Zsh equivalence is no longer mandatory;
-known Oh My Zsh regressions still block adoption.
+control cases on idle builds. Preserve existing behavior by default; limited
+deliberate differences require substantial benefit and an explicit compatibility
+record. Known Oh My Zsh regressions block adoption.
 
 [Round twenty-one](round21.md) establishes the required interactive Oh My Zsh
 gate and refreshes five customer/library instruction profiles on the actual

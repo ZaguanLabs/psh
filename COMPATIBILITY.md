@@ -1,10 +1,13 @@
 # Compatibility policy for psh 1.0.0-rc0
 
-psh is a performance-first fork based on **Zsh 5.9.2**. Broad compatibility is
-valuable, but deliberate breaking changes are allowed when they deliver a
-measured benefit and their behavior and migration are documented. The user's
-“90% compatibility” direction is not an established percentage or a quota of
-tests that may fail. **100% drop-in compatibility with arbitrary Zsh scripts,
+psh aims for meaningful performance gains on **Zsh 5.9.2** while preserving
+existing behavior by default. Existing scripts working unchanged is the normal
+target. Limited, deliberate differences remain possible when their benefit is
+substantial, their affected behavior is understood and documented, and a migration
+or fallback exists. Commonly used semantics should not be sacrificed for marginal
+speedups. The user's “90% compatibility” direction expresses tolerance for limited
+differences; it is not an established percentage or a quota of tests that may fail.
+**100% drop-in compatibility with arbitrary Zsh scripts,
 native modules, configurations or platforms is not promised.**
 
 **Oh My Zsh working unchanged is a hard requirement.** A known framework,
@@ -42,6 +45,13 @@ framework code runs as root. An existing release or rollback candidate can be
 rechecked with `Packaging/verify.py ohmyzsh --build PATH`.
 
 ## Accepting a deliberate Zsh difference
+
+Try behavior-preserving approaches first. Architectural changes start by
+characterizing the existing behavior and proceed one change at a time, compared
+with pristine Zsh and the preceding accepted build. Evaluation order, side
+effects, options, diagnostics, scope restoration and supported native interfaces
+remain part of that behavior. Uncertain fast-path eligibility or ownership uses
+the legacy path. A faster benchmark alone does not justify a semantic regression.
 
 Record its trigger and standard-Zsh versus psh output/status, the performance
 evidence and slower controls, affected scripts or native interfaces, migration

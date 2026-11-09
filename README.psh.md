@@ -1,8 +1,9 @@
 # psh — Performance SHell
 
-psh 1.0.0-rc0 is a performance-first fork based on Zsh 5.9.2. Deliberate breaking
-changes are allowed when their measured benefit and migration are documented;
-broad compatibility remains useful. **Oh My Zsh must work unchanged**, including
+psh 1.0.0-rc0 pursues meaningful performance gains on Zsh 5.9.2 while preserving
+existing behavior by default. Limited, deliberate differences need substantial
+measured benefit, understood consequences and a documented migration or fallback.
+**Oh My Zsh must work unchanged**, including
 the user's theme, plugins and interactive behavior. See [the compatibility
 policy](COMPATIBILITY.md) and [the mandatory terminal gate](Perf/round21.md).
 Unexpected differences, memory corruption and unsafe ownership remain bugs.

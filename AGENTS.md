@@ -1,9 +1,11 @@
 # psh development contract
 
-The user prioritizes performance and permits deliberate, documented departures
-from standard Zsh. Broad compatibility remains valuable, but full Zsh semantic
-equivalence is no longer the acceptance criterion. “90% compatibility” describes
-direction; it is not a test-pass quota or an established measurement.
+The user wants meaningful performance gains while preserving existing Zsh
+behavior by default. Existing scripts working unchanged is the normal target.
+Limited, deliberate, documented departures remain permitted when their benefit
+is substantial and the affected behavior is understood. Do not sacrifice commonly
+used semantics for marginal speedups. “90% compatibility” expresses tolerance for
+limited differences; it is not a test-pass quota or an established measurement.
 
 ## Hard requirements
 
@@ -32,8 +34,15 @@ Profile the actual release build and the user's projects. Keep timing separate
 from builds, tests and profilers, alternate samples, compare resulting states,
 and retain slower controls and unsuccessful experiments.
 
-A deliberate incompatibility needs a measured benefit, an exact before/after
-reproducer, a documented migration or fallback, and passing OMZ evidence.
+Try behavior-preserving approaches first. For architectural changes, characterize
+the existing behavior before replacing it, make one change at a time, and compare
+against both pristine Zsh and the preceding accepted build. Preserve evaluation
+order, side effects, option handling, diagnostics, scope restoration and supported
+native interfaces unless a specific departure satisfies the policy below. Use
+the legacy path where fast-path eligibility or ownership cannot be established.
+
+A deliberate incompatibility needs a substantial measured benefit, an exact
+before/after reproducer, a documented migration or fallback, and passing OMZ evidence.
 Native ABI changes also require rebuilding affected modules against the
 matching SDK. The existing differences are listed in `COMPATIBILITY.md`;
 permission to introduce differences does not mean unspecified differences are
