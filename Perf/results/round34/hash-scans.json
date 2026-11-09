@@ -1,0 +1,60 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-scan-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/hash-scan-fixture-hash-scans/psh_hash_scan_fixture.so"
+  ],
+  "source_sha256": "d39b76d03c2111a3e98a53e9208d45220723e008b9271c14fdf1afd05bfe2aae",
+  "module_sha256": "73bf5bad98b5bbbe487191ab7c9c7e96e71f1b54bd07c035b12fcec14e5225e0",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "checks": 120312,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/queued\nchecks=30078 digest=1618710260\nmultibyte/unqueued\nchecks=30078 digest=1618710260\nnomultibyte/queued\nchecks=30078 digest=1618710260\nnomultibyte/unqueued\nchecks=30078 digest=1618710260\n",
+      "binary_sha256": "d03de49272e6f563bc2c7387f97b4a1a870d90e6bd1573df60b8d11eb33f2e39"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 120312,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/queued\nchecks=30078 digest=1618710260\nmultibyte/unqueued\nchecks=30078 digest=1618710260\nnomultibyte/queued\nchecks=30078 digest=1618710260\nnomultibyte/unqueued\nchecks=30078 digest=1618710260\n",
+      "binary_sha256": "d03de49272e6f563bc2c7387f97b4a1a870d90e6bd1573df60b8d11eb33f2e39"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/candidate/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "checks": 120312,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/queued\nchecks=30078 digest=1618710260\nmultibyte/unqueued\nchecks=30078 digest=1618710260\nnomultibyte/queued\nchecks=30078 digest=1618710260\nnomultibyte/unqueued\nchecks=30078 digest=1618710260\n",
+      "binary_sha256": "64fbdad834044dc0bf0ebc2ffc5618ca49513bc307ce115855bbbd0f75fb8370"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 120312,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "multibyte/queued\nchecks=30078 digest=1618710260\nmultibyte/unqueued\nchecks=30078 digest=1618710260\nnomultibyte/queued\nchecks=30078 digest=1618710260\nnomultibyte/unqueued\nchecks=30078 digest=1618710260\n",
+      "binary_sha256": "64fbdad834044dc0bf0ebc2ffc5618ca49513bc307ce115855bbbd0f75fb8370"
+    }
+  ]
+}

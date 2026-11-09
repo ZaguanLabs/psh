@@ -1,0 +1,21 @@
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-cleanup-module.c:8:12: error: ‘trace’ redeclared as different kind of symbol
+    8 | static int trace[256], ntrace, generated_calls;
+      |            ^~~~~
+In file included from /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zshcurses.h:1,
+                 from /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous-source/Src/zsh_system.h:916,
+                 from /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zsh.mdh:17,
+                 from /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-cleanup-module.c:2:
+/usr/include/curses.h:2148:29: note: previous declaration of ‘trace’ with type ‘void(const unsigned int)’
+ 2148 | extern NCURSES_EXPORT(void) trace (const unsigned) GCC_DEPRECATED("use curses_trace");
+      |                             ^~~~~
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-scope-cleanup-module.py", line 78, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-scope-cleanup-module.py", line 38, in main
+    subprocess.run(command, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H', '-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src', '-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous-source/Src', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-cleanup-module.c', '-o', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/scope-native/0/psh_scope_cleanup_fixture.so']' returned non-zero exit status 1.

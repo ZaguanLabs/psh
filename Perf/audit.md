@@ -168,3 +168,11 @@ is not adopted despite large-exponent improvements. A private parser-alignment
 trial gives mixed results and does not establish a fix or a cause. Both source
 proposals and slower controls remain; accepted source/binaries are restored.
 Scope teardown and guarded arithmetic execution plans remain research targets.
+
+[Round thirty-four](round34.md) tests a live-level filter in a dedicated scope
+scanner, preserving generic walks, successor tracking, generated-table delegation
+and the complete restoration body. Native callbacks and GCC/Clang/DEBUG/OMZ
+checks pass. Private coder/chat gains disappear in installed timing and JSON
+kernels regress. Dense global tables improve while retained sparse capacity
+can slow further. The trial is rejected. Ordered candidate-bucket tracking with
+conservative native fallback remains a design direction, not an implementation.

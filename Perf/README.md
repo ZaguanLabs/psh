@@ -1086,3 +1086,28 @@ states for bounded small powers, large integer powers and unchanged floating
 controls. Its warm batches include parsing/dispatch; the very short optimized
 large-exponent batches are not general shell speedups. Run native compilation,
 tests and profiling before timing, never alongside it.
+
+[Round thirty-four](round34.md) tests and shelves a live-level scope scanner.
+The native fixture exercises actual `endparamscope()` calls with independent
+callback-sequence expectations, including promotion/demotion, successor mutation,
+generated providers, special restoration, queue nesting and growth suppression:
+
+```sh
+python3 Perf/check-scope-cleanup-module.py /path/to/reference/psh /path/to/trial/psh \
+  --headers-build /path/to/reference/build --headers-source /path/to/reference/source \
+  --candidate-headers-build /path/to/trial/build --candidate-headers-source /path/to/trial/source \
+  --memcheck --output .work/logs/scope-check.json
+python3 Perf/scope-pair-benchmark.py /path/to/reference/psh /path/to/trial/psh \
+  --baseline-module-dir /path/to/reference/observer \
+  --candidate-module-dir /path/to/trial/observer \
+  --cpu 2 --output .work/logs/scope-pair.json
+```
+
+The callback matrix has 1,008 scenarios per host/locale and runs only in fresh
+child shells. Compile each observer separately against its matching SDK using
+the round-32 command before timing. The paired timer reuses `scope-workload.zsh`,
+alternates hosts, rotates/reverses all 42 cases over nine samples and verifies
+table/binding restoration. Warm timing includes dispatch/body work; setup,
+warmup and native observations are excluded. All dense/sparse/loop controls
+remain. No localization journal, new scope scanner or native ABI change is
+adopted; the unapplied proposal is retained under `results/round34/`.

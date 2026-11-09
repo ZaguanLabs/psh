@@ -1,0 +1,72 @@
+[
+  {
+    "name": "clang-build",
+    "command": [
+      "python3",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/clang-build.py"
+    ],
+    "status": 0
+  },
+  {
+    "name": "development-build",
+    "command": [
+      "python3",
+      "Perf/build.py",
+      "--which",
+      "candidate",
+      "--jobs",
+      "4"
+    ],
+    "status": 0
+  },
+  {
+    "name": "additional-upstream",
+    "command": [
+      "python3",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/additional-upstream.py"
+    ],
+    "status": 0
+  },
+  {
+    "name": "clang-scope",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      ".work/round34/clang-previous/Src/zsh",
+      ".work/round34/clang-candidate/Src/zsh",
+      "--headers-build",
+      ".work/round34/clang-previous",
+      "--headers-source",
+      ".work/round34/previous-source",
+      "--candidate-headers-build",
+      ".work/round34/clang-candidate",
+      "--candidate-headers-source",
+      ".",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/clang-scope.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "development-scope",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      ".work/baseline/Src/zsh",
+      "./psh",
+      "--candidate-headers-build",
+      ".work/candidate",
+      "--candidate-headers-source",
+      ".",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/development-scope.json"
+    ],
+    "status": 0
+  }
+]

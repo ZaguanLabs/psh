@@ -1,0 +1,58 @@
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 75b06c4..259819d 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -450,6 +450,40 @@ scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
+ 			  scanfunc, scanflags);
+ }
+ 
++/* Scope cleanup needs only parameters above the current live locallevel.
++ * Keep the ordinary unsorted scan's successor tracking: setters and unsetters
++ * may add, remove or replace parameters while restoring the scope. */
++
++/**/
++void
++scanlocalparams(HashTable ht, ScanFunc scanfunc)
++{
++    struct scanstatus st;
++    int i, hsize;
++    HashNode *nodes;
++
++    if (ht->scantab) {
++	/* Generated tables retain their original callback and flags. */
++	ht->scantab(ht, scanfunc, 0);
++	return;
++    }
++
++    hsize = ht->hsize;
++    nodes = ht->nodes;
++    st.sorted = 0;
++    impl(ht)->scan = &st;
++
++    for (i = 0; i < hsize; i++)
++	for (st.u.u = nodes[i]; st.u.u; ) {
++	    HashNode hn = st.u.u;
++	    st.u.u = st.u.u->next;
++	    if (((Param)hn)->level > locallevel)
++		scanfunc(hn, 0);
++	}
++
++    impl(ht)->scan = NULL;
++}
++
+ /* Expand hash tables when they get too many entries. *
+  * The new size is 4 times the previous size.         */
+ 
+diff --git a/Src/params.c b/Src/params.c
+index a33b9ad..92d4873 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -5927,7 +5927,7 @@ endparamscope(void)
+ #ifdef USE_LOCALE
+     lc_update_needed = 0;
+ #endif
+-    scanhashtable(paramtab, 0, 0, 0, scanendscope, 0);
++    scanlocalparams(paramtab, scanendscope);
+ #ifdef USE_LOCALE
+     if (lc_update_needed)
+     {

@@ -325,3 +325,10 @@ Large powers improve dramatically, but repeated installed comparisons show
 slower coder/chat paste and JSON kernels. The candidate and an exploratory
 alignment variant are shelved. The active release and developer executable are
 restored unchanged; new native power checks and the full evidence remain.
+
+The [thirty-fourth investigation](Perf/round34.md) filters scope cleanup by each
+parameter's live level before calling the original restoration callback. Private
+profiles and dense-namespace controls improve, but installed paste gains do not
+persist and JSON kernels slow down. The candidate is shelved; callback mutation
+tests, paired scope benchmarks and all results remain. The active release still
+contains twenty-six accepted optimizations.

@@ -1,0 +1,31 @@
+[
+  {
+    "name": "stage-modules",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "stage-modules"
+    ],
+    "status": 0
+  },
+  {
+    "name": "refresh-modules",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "refresh-modules"
+    ],
+    "status": 0
+  },
+  {
+    "name": "package-verification",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "verify"
+    ],
+    "status": 0
+  }
+]

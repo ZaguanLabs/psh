@@ -1,0 +1,81 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-locale-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/math-locale-fixture-numeric-api/psh_math_locale_fixture.so",
+    "-lm"
+  ],
+  "source_sha256": "285097866d3c20e1958fe3f3d8b2c8982df17d9890cd54de698ae7a12ed5a9ec",
+  "module_sha256": "933de754127f53eac324823e906f50e65d0851fab11f082d551470c7d8080af0",
+  "cases": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "d03de49272e6f563bc2c7387f97b4a1a870d90e6bd1573df60b8d11eb33f2e39"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "d03de49272e6f563bc2c7387f97b4a1a870d90e6bd1573df60b8d11eb33f2e39"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/previous/Src/zsh",
+      "locale": "fr_BE.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "d03de49272e6f563bc2c7387f97b4a1a870d90e6bd1573df60b8d11eb33f2e39"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/candidate/Src/zsh",
+      "locale": "C",
+      "charmap": "ANSI_X3.4-1968",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "64fbdad834044dc0bf0ebc2ffc5618ca49513bc307ce115855bbbd0f75fb8370"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "64fbdad834044dc0bf0ebc2ffc5618ca49513bc307ce115855bbbd0f75fb8370"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/candidate/Src/zsh",
+      "locale": "fr_BE.UTF-8",
+      "charmap": "UTF-8",
+      "checks": 33472,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "global\nchecks=16736 digest=4225833218116005800\nfr_FR.UTF-8\nchecks=16736 digest=13529149241290131352\n",
+      "binary_sha256": "64fbdad834044dc0bf0ebc2ffc5618ca49513bc307ce115855bbbd0f75fb8370"
+    }
+  ]
+}

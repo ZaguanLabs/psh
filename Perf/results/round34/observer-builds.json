@@ -1,0 +1,36 @@
+[
+  {
+    "host": "previous",
+    "command": [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-56f97a85e8cb/core/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-observer-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/observer/previous/psh_scope_observer.so"
+    ],
+    "module_sha256": "ee24b46637f0f7c429d414ad880d39e15e4ae29f9cfe42b7106dee0535134aa2"
+  },
+  {
+    "host": "candidate",
+    "command": [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-9e2e75ec24d7/core/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-observer-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/observer/candidate/psh_scope_observer.so"
+    ],
+    "module_sha256": "557321cb2eceefdc5197cf2200ebc4227de8e148ff3454fb3bca375ba88ce055"
+  }
+]

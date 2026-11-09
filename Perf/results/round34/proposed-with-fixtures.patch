@@ -1,0 +1,389 @@
+Round 34: live-level parameter-scope scan
+Parent: 8432071d9d6bc633ad19a2f695b4df6917085416
+
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 75b06c4..259819d 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -450,6 +450,40 @@ scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
+ 			  scanfunc, scanflags);
+ }
+ 
++/* Scope cleanup needs only parameters above the current live locallevel.
++ * Keep the ordinary unsorted scan's successor tracking: setters and unsetters
++ * may add, remove or replace parameters while restoring the scope. */
++
++/**/
++void
++scanlocalparams(HashTable ht, ScanFunc scanfunc)
++{
++    struct scanstatus st;
++    int i, hsize;
++    HashNode *nodes;
++
++    if (ht->scantab) {
++	/* Generated tables retain their original callback and flags. */
++	ht->scantab(ht, scanfunc, 0);
++	return;
++    }
++
++    hsize = ht->hsize;
++    nodes = ht->nodes;
++    st.sorted = 0;
++    impl(ht)->scan = &st;
++
++    for (i = 0; i < hsize; i++)
++	for (st.u.u = nodes[i]; st.u.u; ) {
++	    HashNode hn = st.u.u;
++	    st.u.u = st.u.u->next;
++	    if (((Param)hn)->level > locallevel)
++		scanfunc(hn, 0);
++	}
++
++    impl(ht)->scan = NULL;
++}
++
+ /* Expand hash tables when they get too many entries. *
+  * The new size is 4 times the previous size.         */
+ 
+diff --git a/Src/params.c b/Src/params.c
+index a33b9ad..92d4873 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -5927,7 +5927,7 @@ endparamscope(void)
+ #ifdef USE_LOCALE
+     lc_update_needed = 0;
+ #endif
+-    scanhashtable(paramtab, 0, 0, 0, scanendscope, 0);
++    scanlocalparams(paramtab, scanendscope);
+ #ifdef USE_LOCALE
+     if (lc_update_needed)
+     {
+diff --git a/Perf/scope-cleanup-module.c b/Perf/scope-cleanup-module.c
+new file mode 100644
+index 0000000..0bfc91d
+--- /dev/null
++++ b/Perf/scope-cleanup-module.c
+@@ -0,0 +1,153 @@
++/* Test-only live parameter levels, restoration callbacks and scan mutations. */
++#include "zsh.mdh"
++#include <stdint.h>
++#include <inttypes.h>
++
++static HashTable table;
++static int mode, baselevel, recording, triggered, bad, expected_queue;
++static int scope_trace[256], ntrace, generated_calls;
++static uint64_t digest;
++static void mix(uint64_t x) { digest = digest * UINT64_C(1099511628211) + x; }
++static void token(int value) {
++    if (ntrace >= 256) bad = 1;
++    else scope_trace[ntrace++] = value;
++}
++static unsigned hash(const char *name) {
++    int id = atoi(name + 1);
++    return id >= 4 && (mode == 8 || mode == 9) ? 1 : 0;
++}
++static void name(int id, char *s) { sprintf(s, "p%03d", id); }
++static Param lookup(int id) {
++    char s[32]; name(id, s); return (Param)gethashnode2(table, s);
++}
++static void fixture_unset(Param, int);
++static void fixture_set(Param pm, char *value) {
++    if (recording) {
++        token(20000 + atoi(pm->node.nam + 1) * 10);
++        if (pm->level != baselevel || queueing_enabled != expected_queue) bad = 1;
++    }
++    strsetfn(pm, value);
++}
++static const struct gsu_scalar ordinary = {strgetfn, strsetfn, fixture_unset};
++static const struct gsu_scalar special = {strgetfn, fixture_set, fixture_unset};
++static Param insert(int id, int generation, int level) {
++    char s[32]; Param pm = (Param)zshcalloc(sizeof(*pm));
++    name(id, s); pm->level = level; pm->base = generation;
++    pm->node.flags = PM_SCALAR; pm->gsu.s = &ordinary;
++    pm->u.str = ztrdup("local");
++    addhashnode(table, ztrdup(s), pm);
++    return pm;
++}
++static int observed;
++static void observe(UNUSED(HashNode hn), UNUSED(int flags)) { observed++; }
++static void fixture_unset(Param pm, int explicit) {
++    if (recording) {
++        int i, size = table->hsize;
++        token(atoi(pm->node.nam + 1) * 10 + pm->base + (explicit ? 10000 : 0));
++        if (queueing_enabled != expected_queue) bad = 1;
++        if (!triggered++) {
++            switch (mode) {
++            case 3: lookup(0)->level = baselevel + 1; break;
++            case 4: lookup(2)->level = baselevel; break;
++            case 5: unsetparam_pm(lookup(2), 0, 1); break;
++            case 6: {
++                Param old = lookup(2);
++                stdunsetfn(old, 1);
++                insert(2, 1, baselevel + 1); break;
++            }
++            case 7: case 8: insert(4, 0, baselevel + 1); break;
++            case 9:
++                for (i = 4; i < 96; i++) insert(i, 0, baselevel + 1);
++                if (table->hsize != size) bad = 1;
++                break;
++            case 11:
++                observed = 0;
++                if (scanhashtable(table, 0, 0, 0, observe, 0) != 4 || observed != 4)
++                    bad = 1;
++                break;
++            }
++        }
++    }
++    stdunsetfn(pm, explicit);
++}
++static void generated(HashTable ht, ScanFunc fn, int flags) {
++    generated_calls++;
++    if (flags != 0) bad = 1;
++    ht->scantab = NULL;
++    scanhashtable(ht, 0, 0, 0, fn, flags);
++    ht->scantab = generated;
++}
++static int scenario(int size, int generated_table, int queued) {
++    HashTable saved = paramtab;
++    int saved_level = locallevel, start_queue = queueing_enabled;
++    int expected[256], count = 0, i, j, remaining;
++    table = newparamtable(size, "scope-cleanup-fixture"); table->hash = hash;
++    paramtab = table; locallevel = baselevel; startparamscope();
++    recording = triggered = ntrace = generated_calls = 0;
++    if (mode) for (i = 0; i < 4; i++) {
++        Param pm = insert(i, 0, mode == 1 || i == 0 ? baselevel : locallevel + (i == 1 ? 2 : 0));
++        if (mode == 10 && i == 2) {
++            Param old = (Param)zshcalloc(sizeof(*old));
++            old->node.flags = PM_SPECIAL; old->level = baselevel;
++            old->u.str = ztrdup("outer");
++            pm->node.flags |= PM_SPECIAL; pm->old = old; pm->gsu.s = &special;
++        }
++    }
++    if (generated_table) table->scantab = generated;
++    if (queued) queue_signals();
++    expected_queue = queueing_enabled + 1; recording = 1;
++    endparamscope(); recording = 0;
++    if (queued) unqueue_signals();
++    if (mode >= 2) {
++        expected[count++] = 30;
++        if (mode != 4) expected[count++] = mode == 5 ? 10020 : mode == 6 ? 21 : mode == 10 ? 20020 : 20;
++        expected[count++] = 10;
++        if (mode == 3) expected[count++] = 0;
++        if (mode == 8) expected[count++] = 40;
++        if (mode == 9) for (i = 95; i >= 4; i--) expected[count++] = i * 10;
++    }
++    remaining = mode == 0 || mode == 3 ? 0 : mode == 1 ? 4 : mode == 4 || mode == 7 || mode == 10 ? 2 : 1;
++    if (ntrace != count || table->ct != remaining || locallevel != baselevel ||
++        queueing_enabled != start_queue || generated_calls != generated_table) bad = 1;
++    for (i = 0; i < count; i++) if (scope_trace[i] != expected[i]) bad = 1;
++    if (mode == 10) {
++        Param pm = lookup(2);
++        if (!pm || pm->level != baselevel || pm->old || strcmp(pm->u.str, "outer")) bad = 1;
++    }
++    mix(count); for (i = 0; i < ntrace; i++) mix(scope_trace[i]); mix(table->ct);
++    for (i = 0; i < table->hsize; i++) for (j = 0; j < 4; j++) {
++        Param pm = lookup(j);
++        if (pm && hash(pm->node.nam) % table->hsize == (unsigned)i) {
++            mix(j); mix(pm->level); mix(pm->node.flags); mix(pm->base);
++        }
++    }
++    table->scantab = NULL;
++    deleteparamtable(table); paramtab = saved; locallevel = saved_level;
++    if (bad) fprintf(stderr, "scope fixture: size=%d generated=%d queued=%d base=%d mode=%d scope_trace=%d expected=%d\n",
++                     size, generated_table, queued, baselevel, mode, ntrace, count);
++    return bad;
++}
++static int run(UNUSED(char *n), UNUSED(char **a), UNUSED(Options o), UNUSED(int f)) {
++    static const int sizes[] = {4,5,7,17,31,151,257};
++    static const int levels[] = {0,2,9};
++    unsigned s, l, checks = 0; int g, q;
++    bad = 0; digest = 0;
++    for (s = 0; s < sizeof(sizes)/sizeof(sizes[0]); s++)
++    for (l = 0; l < sizeof(levels)/sizeof(levels[0]); l++)
++    for (g = 0; g < 2; g++) for (q = 0; q < 2; q++)
++    for (mode = 0; mode < 12; mode++) {
++        baselevel = levels[l];
++        if (scenario(sizes[s], g, q)) return 1;
++        checks++;
++    }
++    printf("checks=%u digest=%" PRIu64 "\nscope-done\n", checks, digest); fflush(stdout);
++    return 0;
++}
++static struct builtin bintab[] = {BUILTIN("psh-scope-cleanup-check",0,run,0,0,0,NULL,NULL)};
++static struct features features = {bintab,1,NULL,0,NULL,0,NULL,0,0};
++int setup_(UNUSED(Module m)) { return 0; }
++int features_(Module m,char ***out) { *out=featuresarray(m,&features); return 0; }
++int enables_(Module m,int **out) { return handlefeatures(m,&features,out); }
++int boot_(UNUSED(Module m)) { return 0; }
++int cleanup_(Module m) { return setfeatureenables(m,&features,NULL); }
++int finish_(UNUSED(Module m)) { return 0; }
+diff --git a/Perf/check-scope-cleanup-module.py b/Perf/check-scope-cleanup-module.py
+new file mode 100644
+index 0000000..4098457
+--- /dev/null
++++ b/Perf/check-scope-cleanup-module.py
+@@ -0,0 +1,78 @@
++#!/usr/bin/env python3
++"""Compare actual endparamscope callbacks using each host's matching SDK."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import re
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--headers-build', type=Path, default=Path('.work/baseline'))
++    p.add_argument('--headers-source', type=Path, default=Path('.work/pristine'))
++    p.add_argument('--candidate-headers-build', type=Path)
++    p.add_argument('--candidate-headers-source', type=Path)
++    p.add_argument('--memcheck', action='store_true')
++    p.add_argument('--locale', action='append', dest='locales')
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    a.output.unlink(missing_ok=True)
++    source = Path(__file__).resolve().with_name('scope-cleanup-module.c')
++    folder = a.output.resolve().with_suffix('')
++    folder.mkdir(exist_ok=True)
++    modules, commands = [], []
++    for host in range(2):
++        destination = folder / str(host)
++        destination.mkdir(exist_ok=True)
++        module = destination / 'psh_scope_cleanup_fixture.so'
++        headers = (a.candidate_headers_build or a.headers_build) if host else a.headers_build
++        sources = (a.candidate_headers_source or a.headers_source) if host else a.headers_source
++        command = ['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H',
++                   '-I' + str(headers.resolve(strict=True) / 'Src'),
++                   '-I' + str(sources.resolve(strict=True) / 'Src'), str(source), '-o', str(module)]
++        subprocess.run(command, check=True)
++        modules.append(module)
++        commands.append(command)
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    inputs = [*shells, source, *modules, Path(__file__).resolve()]
++    fingerprints = {str(p): sha(p) for p in inputs}
++    runs = []
++    script = ('module_path=("$1"); zmodload psh_scope_cleanup_fixture || exit 1; '
++              'psh-scope-cleanup-check || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3')
++    for locale in a.locales or ['C', 'C.UTF-8']:
++        expected = None
++        for host in range(2):
++            label = f'{host}-{locale}'
++            prefix = []
++            memory_log = folder / (label + '.memcheck.log')
++            if a.memcheck:
++                prefix = ['valgrind', '--error-exitcode=97', '--leak-check=no',
++                          '--log-file=' + str(memory_log)]
++            command = prefix + [str(shells[host]), '-dfc', script, 'scope-comparison',
++                                str(modules[host].parent)]
++            result = subprocess.run(command, env={'PATH': '/usr/bin:/bin', 'LC_ALL': locale},
++                                    capture_output=True, timeout=120)
++            count = re.fullmatch(rb'checks=(\d+) digest=\d+\nscope-done\n', result.stdout)
++            if result.returncode or result.stderr or not count or int(count[1]) != 1008:
++                raise RuntimeError((label, result.returncode, result.stdout[-1000:], result.stderr[-2000:]))
++            if a.memcheck:
++                assert 'ERROR SUMMARY: 0 errors' in memory_log.read_text()
++            if expected is not None and expected != result.stdout:
++                raise RuntimeError((locale, 'scope state mismatch', expected, result.stdout))
++            expected = result.stdout
++            runs.append(dict(shell=str(shells[host]), locale=locale, memcheck=a.memcheck,
++                             checks=int(count[1]), stdout=result.stdout.decode(), command=command, status=0))
++            print(label, int(count[1]), 'passed', flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    a.output.write_text(json.dumps(dict(passed=True, fingerprints=fingerprints,
++        compile_commands=commands, checks=sum(r['checks'] for r in runs), runs=runs), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Perf/scope-pair-benchmark.py b/Perf/scope-pair-benchmark.py
+new file mode 100644
+index 0000000..3cc3780
+--- /dev/null
++++ b/Perf/scope-pair-benchmark.py
+@@ -0,0 +1,79 @@
++#!/usr/bin/env python3
++"""Compare scope cleanup with paired samples and matching prebuilt observers."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import statistics
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--baseline-module-dir', type=Path, required=True)
++    p.add_argument('--candidate-module-dir', type=Path, required=True)
++    p.add_argument('--cpu', type=int, required=True)
++    p.add_argument('--iterations', type=int, default=4000)
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    if a.iterations < 1:
++        p.error('--iterations must be positive')
++    os.sched_setaffinity(0, {a.cpu})
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    modules = [(d.resolve(strict=True) / 'psh_scope_observer.so') for d in
++               [a.baseline_module_dir, a.candidate_module_dir]]
++    root = Path(__file__).resolve().parent
++    worker = root / 'scope-workload.zsh'
++    inputs = [*shells, *modules, worker, root / 'scope-observer-module.c', Path(__file__).resolve()]
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    fingerprints = {str(p): sha(p) for p in inputs}
++    cases = [(size, occupancy, mode)
++             for size in [0, 512, 4096, 16384]
++             for occupancy in ['dense', 'sparse'] if size or occupancy == 'dense'
++             for mode in ['loop', 'empty', 'local1', 'local8', 'emulate', 'nested']]
++    samples = {case: [[], []] for case in cases}
++    states = {case: set() for case in cases}
++    env = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8', 'LANG': 'C.UTF-8'}
++    order = []
++    for sample in range(9):
++        rotated = cases[sample:] + cases[:sample]
++        if sample % 2:
++            rotated.reverse()
++        order.append(rotated)
++        for case in rotated:
++            size, occupancy, mode = case
++            for host in ([0, 1] if sample % 2 == 0 else [1, 0]):
++                command = [str(shells[host]), '-df', str(worker), str(size), str(a.iterations),
++                           mode, occupancy, str(modules[host].parent)]
++                result = subprocess.run(command, env=env, capture_output=True, timeout=120)
++                if result.returncode or result.stderr:
++                    raise RuntimeError((case, host, result.returncode, result.stdout, result.stderr))
++                elapsed, before, after = result.stdout.splitlines()
++                state = json.loads(before)
++                assert before == after and state['visible'] == state['count']
++                assert state['level'] == 0 and state['local'] == 0
++                samples[case][host].append(float(elapsed) * 1000)
++                states[case].add(before)
++        print('Completed paired sample', sample + 1, 'of 9', flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    rows = []
++    for case in cases:
++        assert len(states[case]) == 1
++        medians = [statistics.median(s) for s in samples[case]]
++        size, occupancy, mode = case
++        rows.append(dict(padding=size, occupancy=occupancy, mode=mode,
++                         iterations=a.iterations, samples_ms=samples[case], median_ms=medians,
++                         median_us_per_iteration=[m * 1000 / a.iterations for m in medians],
++                         table=json.loads(states[case].pop())))
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    a.output.write_text(json.dumps(dict(fingerprints=fingerprints, environment=env,
++        cpu_affinity=sorted(os.sched_getaffinity(0)), samples=9, sample_order=order,
++        scope='paired warm batches; setup, warmup, table observation and validation excluded',
++        cases=rows), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()

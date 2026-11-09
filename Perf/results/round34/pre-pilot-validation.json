@@ -1,0 +1,39 @@
+[
+  {
+    "name": "previous-upstream",
+    "command": [
+      "make",
+      "-C",
+      ".work/round34/previous",
+      "check"
+    ],
+    "status": 0
+  },
+  {
+    "name": "candidate-upstream",
+    "command": [
+      "make",
+      "-C",
+      ".work/round34/candidate",
+      "check"
+    ],
+    "status": 0
+  },
+  {
+    "name": "pristine-scope",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      ".work/baseline/Src/zsh",
+      ".work/round34/candidate/Src/zsh",
+      "--candidate-headers-build",
+      ".work/round34/candidate",
+      "--candidate-headers-source",
+      ".",
+      "--memcheck",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/pristine-scope.json"
+    ],
+    "status": 0
+  }
+]

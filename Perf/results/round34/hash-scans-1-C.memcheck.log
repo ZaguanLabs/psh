@@ -1,0 +1,15 @@
+==1199224== Memcheck, a memory error detector
+==1199224== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==1199224== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==1199224== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round34/candidate/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_hash_scan_fixture\ ||\ exit\ 1_for\ mb\ in\ multibyte\ nomultibyte;\ do_\ \ setopt\ $mb_\ \ for\ fixture_queue_mode\ in\ queued\ unqueued;\ do_\ \ \ \ print\ -r\ --\ "$mb/$fixture_queue_mode"_\ \ \ \ psh-hash-scan-check\ "$fixture_queue_mode"\ ||\ exit\ 1_\ \ done_done_zmodload\ -u\ psh_hash_scan_fixture\ ||\ exit\ 1_if\ whence\ psh-hash-scan-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/hash-scan-fixture-hash-scans
+==1199224== Parent PID: 772014
+==1199224== 
+==1199224== 
+==1199224== HEAP SUMMARY:
+==1199224==     in use at exit: 46,872 bytes in 757 blocks
+==1199224==   total heap usage: 8,349,123 allocs, 8,348,366 frees, 240,372,065 bytes allocated
+==1199224== 
+==1199224== For a detailed leak analysis, rerun with: --leak-check=full
+==1199224== 
+==1199224== For lists of detected and suppressed errors, rerun with: -s
+==1199224== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,203 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "emulation-front",
+      "command": [
+        "python3",
+        "Perf/emulation-compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/emulation-front.json"
+      ],
+      "status": 0,
+      "seconds": 1.14
+    },
+    {
+      "name": "scalars",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--assignments",
+        "--prefixes",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/scalars.json"
+      ],
+      "status": 0,
+      "seconds": 87.335
+    },
+    {
+      "name": "arrays",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/arrays.json"
+      ],
+      "status": 0,
+      "seconds": 8.805
+    },
+    {
+      "name": "search",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--scalars",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/search.json"
+      ],
+      "status": 0,
+      "seconds": 2.576
+    },
+    {
+      "name": "patterns",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--extended",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/patterns.json"
+      ],
+      "status": 0,
+      "seconds": 4.889
+    },
+    {
+      "name": "hash-scans",
+      "command": [
+        "python3",
+        "Perf/check-hash-scan-module.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--headers-build",
+        ".work/round34/previous",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/hash-scans.json"
+      ],
+      "status": 0,
+      "seconds": 108.513
+    },
+    {
+      "name": "substitution",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/substitution.json"
+      ],
+      "status": 0,
+      "seconds": 5.139
+    },
+    {
+      "name": "accessors",
+      "command": [
+        "python3",
+        "Perf/check-append-module.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--search",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/accessors.json"
+      ],
+      "status": 0,
+      "seconds": 0.144
+    },
+    {
+      "name": "completion",
+      "command": [
+        "python3",
+        "Perf/check-completion-prefix.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/completion.json"
+      ],
+      "status": 0,
+      "seconds": 4.24
+    },
+    {
+      "name": "numeric-api",
+      "command": [
+        "python3",
+        "Perf/check-math-locale-module.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--headers-build",
+        ".work/round34/previous",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "fr_BE.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/numeric-api.json"
+      ],
+      "status": 0,
+      "seconds": 10.423
+    },
+    {
+      "name": "math",
+      "command": [
+        "python3",
+        "Perf/math-compare.py",
+        ".work/round34/previous/Src/zsh",
+        ".work/round34/candidate/Src/zsh",
+        "--syntax",
+        "--operators",
+        "--descriptors",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/math.json"
+      ],
+      "status": 0,
+      "seconds": 122.129
+    },
+    {
+      "name": "customer",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round34/customer-correctness.py"
+      ],
+      "status": 0,
+      "seconds": 8.908
+    }
+  ],
+  "failures": [],
+  "binary_sha256": {
+    ".work/round34/previous/Src/zsh": "d03de49272e6f563bc2c7387f97b4a1a870d90e6bd1573df60b8d11eb33f2e39",
+    ".work/round34/candidate/Src/zsh": "64fbdad834044dc0bf0ebc2ffc5618ca49513bc307ce115855bbbd0f75fb8370"
+  }
+}
