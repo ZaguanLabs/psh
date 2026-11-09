@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-emulation-module.py", line 57, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-emulation-module.py", line 44, in main
+    raise RuntimeError((host, locale, r.returncode, r.stdout[-1000:], r.stderr[-1000:]))
+RuntimeError: (0, 'C.UTF-8', 0, b'checks=56722 digest=1103835184 queued=28361 unqueued=28361\nmatrix-done\n', b'h-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n1: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c:166: BUG: q = 0 != queue_in = 1\n')

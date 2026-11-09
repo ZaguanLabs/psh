@@ -62,6 +62,10 @@ Round twenty-six accelerates bounded decimal prefixes, then resumes the original
 conversion loop for continuations. It adds no intended language or native-interface
 difference; original truncation and diagnostic behavior remain in place.
 
+Round twenty-seven prefilters option-emulation scans using the existing scanner
+masks. The original setter checks remain for generated tables; no new intended
+language, native-interface or ownership difference is introduced.
+
 ## Deliberate differences
 
 | Surface | Difference and practical consequence |
@@ -122,10 +126,10 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-four
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-five
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
-arithmetic. This is not a completed audit of the complete interpreter.
+arithmetic and option emulation. This is not a completed audit of the complete interpreter.
 
 Evidence includes upstream scripts, byte-for-byte differential results, native
 fixtures built with pristine headers, allocation-boundary and floating-state

@@ -24,6 +24,9 @@ and preserves the original tag, draft and assets.
 The [decimal-conversion iteration](../Perf/round26.md) preserves this release
 profile and the original tag, draft and assets.
 
+The [option-emulation iteration](../Perf/round27.md) keeps this release profile
+and the original tag, draft and assets.
+
 ## Configuration and debugger symbols
 
 Daily-driver packaging now defaults to `--profile release`, using upstream's

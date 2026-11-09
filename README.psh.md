@@ -96,7 +96,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-four accepted optimizations.
+The executable now includes twenty-five accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -126,7 +126,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-four changes; the fourth experiment compares against
+executable includes all twenty-five changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -273,3 +273,12 @@ less time, chat paste about 1.7–2.6%, in the paired runs. The
 [round-twenty-six report](Perf/round26.md) retains all controls and two rejected
 restart variants, including a severe long-number slowdown caught by the API
 benchmark. No new language or native-interface difference is intended.
+
+The twenty-fifth accepted change prefilters option-default scans during
+emulation, avoiding private setter calls for entries that cannot change.
+The original setter still checks generated entries; all scanner bookkeeping
+and signal boundaries remain. Chat paste takes about 4.6–4.9% less time and
+JSON array parsing about 3–4.6% less in paired runs. The
+[round-twenty-seven report](Perf/round27.md) retains slower controls, including
+wide coder layout, and generated/native table and frontend coverage.
+No new language or native-interface difference is intended.

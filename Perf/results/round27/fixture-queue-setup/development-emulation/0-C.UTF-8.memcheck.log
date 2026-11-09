@@ -1,0 +1,15 @@
+==2825836== Memcheck, a memory error detector
+==2825836== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==2825836== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==2825836== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh -dfc module_path=("$1");\ zmodload\ psh_emulation_fixture\ ||\ exit\ 1;\ psh-emulation-check\ ||\ exit\ 2;\ zmodload\ -u\ psh_emulation_fixture\ ||\ exit\ 3 comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round27/development-emulation
+==2825836== Parent PID: 2823441
+==2825836== 
+==2825836== 
+==2825836== HEAP SUMMARY:
+==2825836==     in use at exit: 45,673 bytes in 740 blocks
+==2825836==   total heap usage: 124,974 allocs, 124,234 frees, 21,812,747 bytes allocated
+==2825836== 
+==2825836== For a detailed leak analysis, rerun with: --leak-check=full
+==2825836== 
+==2825836== For lists of detected and suppressed errors, rerun with: -s
+==2825836== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

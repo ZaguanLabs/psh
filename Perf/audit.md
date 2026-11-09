@@ -103,3 +103,13 @@ truncation checks and diagnostics. A direct public-API oracle covers values,
 consumed bytes, errno, error flags, exact diagnostic bytes and input integrity,
 including changed leading-blank classification. Two restarting prototypes and
 their long/underscore costs remain in the evidence.
+
+[Round twenty-seven](round27.md) moves necessary option-selection conditions
+into the existing hash scanner at the `installemulation()` call site. Option-name
+aliases never need the setter; partial emulation additionally requires
+`OPT_EMULATE`. The original callback still handles all selection rules because
+generated scanners ignore masks. Scanner code, live bucket order, callback
+mutation bookkeeping and signal boundaries remain unchanged. A queued-only
+unchecked-setter trial did not enter its fast path in customer profiles and is
+retained. Native output-alias/live-flag tests and frontend scope/trace/sticky
+autoload comparisons extend the focused coverage.

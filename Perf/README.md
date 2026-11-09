@@ -884,3 +884,32 @@ required. It includes 19-digit and underscore continuation controls; an early
 restart implementation regressed these despite improving short conversions.
 Run timing after builds, tests and profilers finish. These native loop ratios
 are separate from the actual project-kernel measurements.
+
+## Option emulation scans (round twenty-seven)
+
+The [round twenty-seven report](round27.md) measures using existing scanner
+selection masks to skip private option setters that would do nothing. Generated
+scanners ignore masks, so the original setter predicate remains intact.
+
+```sh
+python3 Perf/emulation-compare.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --output .work/logs/emulation-front.json
+python3 Perf/check-emulation-module.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --headers-build /path/to/previous --headers-source /path/to/previous-source \
+  --memcheck --output .work/logs/emulation-native.json
+```
+
+The frontend driver compares 512 complete scenarios across C/C.UTF-8: initial
+and target emulations, altered options, full/partial/local defaults, function
+restoration, traces, sticky functions and autoloads. Each scenario compares
+complete option listings and trace bytes with completion markers.
+
+The native fixture uses the existing exported internal installation entry point
+and the public option table. This does not add a supported module interface.
+It compares the original release predicate with actual byte arrays, in queued
+and unqueued contexts, on the canonical table and synthetic ordinary/generated
+tables. Its 56,722 scenarios per host/locale include all current flag-bit
+combinations, negative option-name aliases, duplicate destinations, special
+options, generated callback flags/order and output aliases that change later
+node flags. Configured headers must match the host profile; the defaults refer
+to the pristine debug baseline.

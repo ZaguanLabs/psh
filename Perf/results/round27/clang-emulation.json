@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/clang-previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/previous-source/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round27/clang-emulation/psh_emulation_fixture.so"
+  ],
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/clang-previous/Src/zsh": "706bc0033c65269091c3d0f9db28d130c822f5ca5aba2047087fd6ce1c18bab9",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/clang-candidate/Src/zsh": "09a34f010ab5577f1331606e3ec2cfd88b35aa5f8c1acb995ebb3a0c9e15be60",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c": "77af3e65f479bcaf7fd11c5a30e813b6ed131bb444a2d5bcf0f1298675f83b55",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round27/clang-emulation/psh_emulation_fixture.so": "e4a9adba42c389cb222c17abfe1c6de2830978176866b2a6a5a61bcca76eb924"
+  },
+  "checks": 113444,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/clang-previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 56722,
+      "queued": 28361,
+      "unqueued": 28361,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=56722 digest=1103835184 queued=28361 unqueued=28361\nmatrix-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/clang-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 56722,
+      "queued": 28361,
+      "unqueued": 28361,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=56722 digest=1103835184 queued=28361 unqueued=28361\nmatrix-done\n"
+    }
+  ]
+}

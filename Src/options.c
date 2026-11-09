@@ -523,10 +523,14 @@ setemulate(HashNode hn, int fully)
 void
 installemulation(int new_emulation, char *new_opts)
 {
+    int fully = !!(new_emulation & EMULATE_FULLY);
+
     setemulate_emulation = new_emulation;
     setemulate_opts = new_opts;
-    scanhashtable(optiontab, 0, 0, 0, setemulate,
-		  !!(new_emulation & EMULATE_FULLY));
+    /* Prefilter ordinary tables.  Keep the original callback's checks:
+     * generated scanners ignore these masks and still visit every entry. */
+    scanhashtable(optiontab, 0, fully ? 0 : OPT_EMULATE, OPT_ALIAS,
+		  setemulate, fully);
 }
 
 /**/

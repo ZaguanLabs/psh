@@ -1,0 +1,53 @@
+make: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate'
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/options.c Src > options.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < options.syms) \
+	> options.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < options.syms) \
+	> `echo options.epro | sed 's/\.epro$/.pro/'`
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Modules'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+rm -f stamp-modobjs.tmp
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o options.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/options.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o params.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Modules'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+Updated `stamp-modobjs'.
+rm -f zsh
+gcc -g  -rdynamic -o zsh main.o  `cat stamp-modobjs`   -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc
+/usr/bin/ld: utils.o: in function `gettempname':
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c:2205:(.text+0x3b64): warning: the use of `mktemp' is dangerous, better use `mkstemp' or `mkdtemp'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Modules'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[4]: 'complete.export' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Src'
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Doc'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate/Doc'
+make: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round27/candidate'
