@@ -318,3 +318,10 @@ slows existing editor paste kernels substantially in controlled child processes.
 The report prioritizes scope bookkeeping, arithmetic execution plans, option
 defaults and container growth. These are research findings; the installed
 executable still contains twenty-six accepted optimizations.
+
+The [thirty-third investigation](Perf/round33.md) implements logarithmic integer
+powers and checks arithmetic results, native state and unchanged Oh My Zsh.
+Large powers improve dramatically, but repeated installed comparisons show
+slower coder/chat paste and JSON kernels. The candidate and an exploratory
+alignment variant are shelved. The active release and developer executable are
+restored unchanged; new native power checks and the full evidence remain.

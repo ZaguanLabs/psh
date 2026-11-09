@@ -1,0 +1,377 @@
+Round 33: logarithmic integer powers
+Parent: 98a0bf506c05a333f07eea92791926f9f35fba6d
+
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..ac129d2 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -1365,7 +1365,14 @@ op(int what)
+ 		    b.u.d = (double) b.u.l;
+ 		}
+ 		if (c.type == MN_INTEGER) {
+-		    for (c.u.l = 1; b.u.l--; c.u.l *= a.u.l);
++		    /* Consume exponent bits; do not square after the last bit.
++		     * An unused square could overflow even when the result fits. */
++		    c.u.l = (b.u.l & 1) ? a.u.l : 1;
++		    while ((b.u.l >>= 1)) {
++			a.u.l *= a.u.l;
++			if (b.u.l & 1)
++			    c.u.l *= a.u.l;
++		    }
+ 		} else {
+ 		    if (b.u.d <= 0 && !notzero(a))
+ 			return;
+diff --git a/Test/C01arith.ztst b/Test/C01arith.ztst
+index 5818638..c38329c 100644
+--- a/Test/C01arith.ztst
++++ b/Test/C01arith.ztst
+@@ -533,3 +533,39 @@
+   print $((1 + *23456789012))
+ 1:Arithmetic operand diagnostic retains its original prefix and ellipsis
+ ?(eval):1: bad math expression: operand expected at `*234567890...'
++
++  print -l -- $((0**0)) $((0**7)) $((2**0)) $((2**1)) $((2**2)) \
++    $(((-2)**3)) $((2**3**2)) $(((2**3)**2)) \
++    $(((-2)**31)) $((2**30))
++0:Integer powers retain identity, sign, associativity and fitting boundary results
++>1
++>0
++>1
++>2
++>4
++>-8
++>512
++>64
++>-2147483648
++>1073741824
++
++  () {
++    local -i base=2 i=0
++    local -a values=(2 3)
++    print $((0 && (base **= ++i)))
++    print -r -- "$base/$i"
++    print $((1 || (base **= ++i)))
++    print -r -- "$base/$i"
++    print $((1 ? (base **= 3) : (base **= 5)))
++    i=1
++    print $((values[i++] **= 3))
++    print -r -- "$base/$i/${(j:,:)values}"
++  }
++0:Power assignments retain short-circuit behavior and single evaluation of lvalue subscripts
++>0
++>2/0
++>1
++>2/0
++>8
++>8
++>8/2/8,3
+diff --git a/Perf/power-module.c b/Perf/power-module.c
+new file mode 100644
+index 0000000..8009dbe
+--- /dev/null
++++ b/Perf/power-module.c
+@@ -0,0 +1,152 @@
++/* Test-only integer-power oracle and arithmetic state comparisons. */
++#include "zsh.mdh"
++#include <fenv.h>
++#include <inttypes.h>
++#include <stdint.h>
++#include <math.h>
++
++extern int lastbase, outputradix, outputunderscore;
++extern mnumber lastmathval;
++static unsigned checks;
++static uint64_t digest;
++static int bad;
++static void mix(uint64_t x) { digest = digest * UINT64_C(1099511628211) + x; }
++static void number(mnumber x) {
++    uint64_t bits = 0;
++    mix(x.type);
++    if (x.type == MN_FLOAT) memcpy(&bits, &x.u.d, sizeof(bits));
++    else if (x.type == MN_INTEGER) bits = (uint64_t)x.u.l;
++    mix(bits);
++}
++static mnumber readparam(Param p) {
++    mnumber n;
++    if (PM_TYPE(p->node.flags) == PM_INTEGER) {
++        n.type = MN_INTEGER; n.u.l = p->gsu.i->getfn(p);
++    } else {
++        n.type = MN_FLOAT; n.u.d = p->gsu.f->getfn(p);
++    }
++    return n;
++}
++static void writeparam(Param p, zlong integer, double real) {
++    if (PM_TYPE(p->node.flags) == PM_INTEGER) p->gsu.i->setfn(p, integer);
++    else p->gsu.f->setfn(p, real);
++}
++static void one(Param base, Param exponent, zlong a, zlong e,
++                double fa, double fe, int assign, int oracle, zulong expected) {
++    char text[128], before[128];
++    mnumber value;
++    int got_errno, exceptions;
++    writeparam(base, a, fa); writeparam(exponent, e, fe);
++    snprintf(text, sizeof(text), "psh_native_power_base %s psh_native_power_exp",
++             assign ? "**=" : "**");
++    strcpy(before, text);
++    pushheap();
++    errflag = 0; lastbase = 17; outputradix = 8; outputunderscore = 4;
++    lastmathval.type = MN_FLOAT; lastmathval.u.d = 2.5;
++    feclearexcept(FE_ALL_EXCEPT); feraiseexcept(FE_INEXACT); errno = E2BIG;
++    value = matheval(text);
++    got_errno = errno; exceptions = fetestexcept(FE_ALL_EXCEPT);
++    if (strcmp(text, before)) bad = 1;
++    if (oracle && (errflag || value.type != MN_INTEGER || (zulong)value.u.l != expected))
++        bad = 1;
++    number(value); mix(errflag); mix(got_errno); mix(exceptions);
++    number(readparam(base)); number(readparam(exponent));
++    mix(lastbase); mix(outputradix); mix(outputunderscore); number(lastmathval);
++    checks++; errflag = 0; popheap();
++}
++static int run(int huge) {
++    static const zlong bases[] = {0,1,-1,2,-2,3,-3,7,-7,16,-16,46340,-46340,
++        ZLONG_MAX,-ZLONG_MAX,(-ZLONG_MAX-1),(-ZLONG_MAX-1)+1};
++    static const zlong exponents[] = {-2,-1,0,1,2,3,4,7,8,15,16,31,32,63,64,65,127,128,255,256,1024};
++    static const int rounds[] = {FE_TONEAREST,FE_DOWNWARD,FE_UPWARD,FE_TOWARDZERO};
++    static const double reals[] = {0.0,-0.0,0.5,-0.5,1.0,-1.0,1.25,-1.25};
++    static const double nonfinite[] = {0.0,-0.0,INFINITY,-INFINITY,NAN};
++    char saved_opts[OPT_SIZE];
++    int saved_err = errflag, saved_noerrs = noerrs, saved_errno = errno;
++    int saved_base = lastbase, saved_radix = outputradix, saved_under = outputunderscore;
++    mnumber saved_last = lastmathval; fenv_t env;
++    unsigned r, option, types, i, j, op;
++    Param base = NULL, exponent = NULL;
++    uint64_t random = UINT64_C(0x129ab78901);
++    if (sizeof(double) != 8 || sizeof(zlong) != sizeof(zulong)) return 2;
++    memcpy(saved_opts, opts, sizeof(saved_opts)); fegetenv(&env);
++    queue_signals(); noerrs = 1; checks = 0; digest = 0; bad = 0;
++    for (r = 0; r < 4 && !bad; r++) {
++        if (fesetround(rounds[r])) { bad = 1; break; }
++        for (option = 0; option < (huge ? 1U : 4U) && !bad; option++) {
++            opts[FORCEFLOAT] = !!(option & 1); opts[CPRECEDENCES] = !!(option & 2);
++            for (types = 0; types < (huge ? 1U : 4U) && !bad; types++) {
++                base = createparam("psh_native_power_base", (types & 1) ? PM_FFLOAT : PM_INTEGER);
++                exponent = createparam("psh_native_power_exp", (types & 2) ? PM_FFLOAT : PM_INTEGER);
++                if (!base || !exponent) { bad = 1; break; }
++                if (huge) {
++                    zlong large[] = {ZLONG_MAX,ZLONG_MAX-1,ZLONG_MAX/2,
++                        ((zlong)1 << (sizeof(zlong)*8-2))};
++                    for (i = 0; i < 5; i++) for (j = 0; j < 4; j++)
++                    for (op = 0; op < 2; op++) {
++                        zlong a = bases[i], e = large[j];
++                        zulong expected = a == 1 ? 1 : (a == -1 ?
++                            ((e & 1) ? (zulong)-1 : 1) : 0);
++                        one(base,exponent,a,e,0,0,op,1,expected);
++                    }
++                } else {
++                    for (i = 0; i < sizeof(bases)/sizeof(bases[0]) && !bad; i++)
++                    for (j = 0; j < sizeof(exponents)/sizeof(exponents[0]) && !bad; j++) {
++                        zlong a = bases[i], e = exponents[j];
++                        zulong expected = 1; zlong k;
++                        if (!types && !(option & 1) && e >= 0)
++                            for (k = 0; k < e; k++) expected *= (zulong)a;
++                        for (op = 0; op < 2; op++)
++                            one(base,exponent,a,e,(double)a,(double)e,op,
++                                !types && !(option & 1) && e >= 0,expected);
++                    }
++                    if (types) {
++                        for (i = 0; i < sizeof(reals)/sizeof(reals[0]); i++)
++                        for (j = 0; j < sizeof(reals)/sizeof(reals[0]); j++)
++                        for (op = 0; op < 2; op++)
++                            one(base,exponent,(zlong)reals[i],(zlong)reals[j],
++                                reals[i],reals[j],op,0,0);
++                        if (types == 3)
++                            for (i = 0; i < sizeof(nonfinite)/sizeof(nonfinite[0]); i++)
++                            for (j = 0; j < sizeof(nonfinite)/sizeof(nonfinite[0]); j++)
++                            for (op = 0; op < 2; op++)
++                                one(base,exponent,0,0,nonfinite[i],nonfinite[j],op,0,0);
++                    } else if (!(option & 1)) {
++                        for (i = 0; i < 512 && !bad; i++) {
++                            zulong bits, expected = 1; zlong a, e, k;
++                            random = random * UINT64_C(6364136223846793005) + 1;
++                            bits = (zulong)random; memcpy(&a,&bits,sizeof(a));
++                            e = (random >> 32) & 127;
++                            for (k = 0; k < e; k++) expected *= bits;
++                            for (op = 0; op < 2; op++) one(base,exponent,a,e,0,0,op,1,expected);
++                        }
++                    }
++                }
++                unsetparam("psh_native_power_base"); unsetparam("psh_native_power_exp");
++                base = exponent = NULL;
++            }
++        }
++    }
++    if (base) unsetparam("psh_native_power_base");
++    if (exponent) unsetparam("psh_native_power_exp");
++    memcpy(opts,saved_opts,sizeof(saved_opts)); lastbase=saved_base;
++    outputradix=saved_radix; outputunderscore=saved_under; lastmathval=saved_last;
++    errflag=saved_err; noerrs=saved_noerrs; fesetenv(&env); errno=saved_errno;
++    unqueue_signals();
++    if (bad) { fprintf(stderr,"power fixture failed after %u observations\n",checks); return 1; }
++    printf("checks=%u digest=%" PRIu64 "\npower-done\n",checks,digest); fflush(stdout);
++    return 0;
++}
++static int bin_common(UNUSED(char *n), UNUSED(char **a), UNUSED(Options o), UNUSED(int f)) { return run(0); }
++static int bin_huge(UNUSED(char *n), UNUSED(char **a), UNUSED(Options o), UNUSED(int f)) { return run(1); }
++static struct builtin bintab[] = {
++    BUILTIN("psh-power-check",0,bin_common,0,0,0,NULL,NULL),
++    BUILTIN("psh-power-huge-check",0,bin_huge,0,0,0,NULL,NULL)
++};
++static struct features features = {bintab,2,NULL,0,NULL,0,NULL,0,0};
++int setup_(UNUSED(Module m)) { return 0; }
++int features_(Module m,char ***out) { *out=featuresarray(m,&features); return 0; }
++int enables_(Module m,int **out) { return handlefeatures(m,&features,out); }
++int boot_(UNUSED(Module m)) { return 0; }
++int cleanup_(Module m) { return setfeatureenables(m,&features,NULL); }
++int finish_(UNUSED(Module m)) { return 0; }
+diff --git a/Perf/check-power-module.py b/Perf/check-power-module.py
+new file mode 100644
+index 0000000..607713d
+--- /dev/null
++++ b/Perf/check-power-module.py
+@@ -0,0 +1,81 @@
++#!/usr/bin/env python3
++"""Compare power values, assignments, state and floating environment per host SDK."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import re
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--headers-build', type=Path, default=Path('.work/baseline'))
++    p.add_argument('--headers-source', type=Path, default=Path('.work/pristine'))
++    p.add_argument('--candidate-headers-build', type=Path)
++    p.add_argument('--candidate-headers-source', type=Path)
++    p.add_argument('--memcheck', action='store_true')
++    p.add_argument('--huge', action='store_true', help='also check huge exponents on candidate only')
++    p.add_argument('--locale', action='append', dest='locales')
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    a.output.unlink(missing_ok=True)
++    root = Path(__file__).resolve().parent
++    source = root / 'power-module.c'
++    folder = a.output.resolve().with_suffix('')
++    folder.mkdir(exist_ok=True)
++    modules, commands = [], []
++    for host in range(2):
++        destination = folder / str(host)
++        destination.mkdir(exist_ok=True)
++        module = destination / 'psh_power_fixture.so'
++        headers = (a.candidate_headers_build or a.headers_build) if host else a.headers_build
++        sources = (a.candidate_headers_source or a.headers_source) if host else a.headers_source
++        command = ['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H',
++                   '-I' + str(headers.resolve(strict=True) / 'Src'),
++                   '-I' + str(sources.resolve(strict=True) / 'Src'), str(source), '-o', str(module), '-lm']
++        subprocess.run(command, check=True)
++        modules.append(module); commands.append(command)
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    inputs = [*shells, source, *modules, Path(__file__).resolve()]
++    fingerprints = {str(p): sha(p) for p in inputs}
++    runs = []
++    script = 'module_path=("$1"); zmodload psh_power_fixture || exit 1; "$2" || exit 2; zmodload -u psh_power_fixture || exit 3'
++    for locale in a.locales or ['C', 'C.UTF-8']:
++        expected = None
++        jobs = [(0, False), (1, False)] + ([(1, True)] if a.huge else [])
++        for host, huge in jobs:
++            label = f'{host}-{locale}-' + ('huge' if huge else 'common')
++            prefix = []
++            memory_log = folder / (label + '.memcheck.log')
++            if a.memcheck:
++                prefix = ['valgrind', '--error-exitcode=97', '--leak-check=no',
++                          '--log-file=' + str(memory_log)]
++            command = prefix + [str(shells[host]), '-dfc', script, 'power-comparison',
++                str(modules[host].parent), 'psh-power-huge-check' if huge else 'psh-power-check']
++            result = subprocess.run(command, env={'PATH': '/usr/bin:/bin', 'LC_ALL': locale},
++                                    capture_output=True, timeout=30 if huge else 300)
++            count = re.fullmatch(rb'checks=(\d+) digest=\d+\npower-done\n', result.stdout)
++            if result.returncode or result.stderr or not count or int(count[1]) != (160 if huge else 60832):
++                raise RuntimeError((label, result.returncode, result.stdout[-1000:], result.stderr[-1000:]))
++            if a.memcheck:
++                assert 'ERROR SUMMARY: 0 errors' in memory_log.read_text()
++            if not huge:
++                if expected is not None and expected != result.stdout:
++                    raise RuntimeError((locale, 'power state mismatch', expected, result.stdout))
++                expected = result.stdout
++            runs.append(dict(shell=str(shells[host]), locale=locale, huge=huge,
++                memcheck=a.memcheck, checks=int(count[1]), stdout=result.stdout.decode(),
++                command=command, status=0))
++            print(label, int(count[1]), 'passed', flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    a.output.write_text(json.dumps(dict(passed=True, fingerprints=fingerprints,
++        compile_commands=commands, checks=sum(r['checks'] for r in runs), runs=runs), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Perf/power-benchmark.py b/Perf/power-benchmark.py
+new file mode 100644
+index 0000000..c7cc116
+--- /dev/null
++++ b/Perf/power-benchmark.py
+@@ -0,0 +1,59 @@
++#!/usr/bin/env python3
++"""Compare integer powers and unchanged floating controls in warm shell batches."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import statistics
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--cpu', type=int, required=True)
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    os.sched_setaffinity(0, {a.cpu})
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    worker = Path(__file__).resolve().with_name('math-token-workload.zsh')
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    inputs = [*shells, worker, Path(__file__).resolve()]
++    fingerprints = {str(p): sha(p) for p in inputs}
++    cases = [(text, 30000, 'normal') for text in
++             ['0**0','2**0','2**1','2**2','2**3','2**8','(-2)**31','2**60',
++              '1.25**2','0.0**2','2**-2','(-2)**3.0','2.0**0.5']]
++    cases += [(text, 50, 'normal') for text in
++              ['1**65536','1**1048576','0**1048576','(-1)**65537']]
++    cases += [(text, 30000, 'float') for text in ['2**2','1**65536']]
++    rows = []
++    env = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8'}
++    for expression, iterations, mode in cases:
++        samples, states = [[], []], set()
++        for sample in range(9):
++            for host in ([0,1] if sample % 2 == 0 else [1,0]):
++                command = [str(shells[host]), '-df', str(worker), expression, str(iterations), mode]
++                result = subprocess.run(command, env=env, capture_output=True, timeout=120)
++                if result.returncode or result.stderr:
++                    raise RuntimeError((expression, host, result.returncode, result.stderr))
++                elapsed, state = result.stdout.split(b'\n', 1)
++                assert state
++                samples[host].append(float(elapsed) * 1000)
++                states.add(hashlib.sha256(state).hexdigest())
++        assert len(states) == 1
++        medians = [statistics.median(x) for x in samples]
++        rows.append(dict(expression=expression, iterations=iterations, mode=mode,
++                         samples_ms=samples, median_ms=medians, state_sha256=states.pop()))
++        print(expression, mode, medians, flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    a.output.write_text(json.dumps(dict(fingerprints=fingerprints, environment=env,
++        cpu_affinity=sorted(os.sched_getaffinity(0)), samples=9,
++        scope='warm repeat batches including parser/dispatch; definition and warmup excluded',
++        cases=rows), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()

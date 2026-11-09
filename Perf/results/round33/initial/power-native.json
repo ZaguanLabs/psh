@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous/Src/zsh": "794351c806898dc41feb7e57e029596843bbd3f87d072dd3522773de16231c7f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh": "f06b352bd2d440d708a107aa737dce07815734c78bc1413863e18a0161af5c13",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/power-module.c": "638786afb8e528545dcd0c6a6dc8e638dade3bb04f002cbcf7c7de052680284f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/0/psh_power_fixture.so": "113c74408977c6c710c6aa028f3a23076cef3012647948a2fd5a9d99852b5f7f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1/psh_power_fixture.so": "3122be4313bd110e8d6f9c8db1179182c33f764d655abd4d6bf9c6e692f4085a",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-power-module.py": "5ef1c69ba4fc5081b6522f00a3e30bcacad22d877ba56429a2fd6ff15370f599"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous-source/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/power-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/0/psh_power_fixture.so",
+      "-lm"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/power-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1/psh_power_fixture.so",
+      "-lm"
+    ]
+  ],
+  "checks": 243648,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous/Src/zsh",
+      "locale": "C",
+      "huge": false,
+      "memcheck": true,
+      "checks": 60832,
+      "stdout": "checks=60832 digest=14391546181781887424\npower-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/0-C-common.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_power_fixture || exit 1; \"$2\" || exit 2; zmodload -u psh_power_fixture || exit 3",
+        "power-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/0",
+        "psh-power-check"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+      "locale": "C",
+      "huge": false,
+      "memcheck": true,
+      "checks": 60832,
+      "stdout": "checks=60832 digest=14391546181781887424\npower-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1-C-common.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_power_fixture || exit 1; \"$2\" || exit 2; zmodload -u psh_power_fixture || exit 3",
+        "power-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1",
+        "psh-power-check"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+      "locale": "C",
+      "huge": true,
+      "memcheck": true,
+      "checks": 160,
+      "stdout": "checks=160 digest=2132200168073108304\npower-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1-C-huge.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_power_fixture || exit 1; \"$2\" || exit 2; zmodload -u psh_power_fixture || exit 3",
+        "power-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1",
+        "psh-power-huge-check"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "huge": false,
+      "memcheck": true,
+      "checks": 60832,
+      "stdout": "checks=60832 digest=14391546181781887424\npower-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/0-C.UTF-8-common.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_power_fixture || exit 1; \"$2\" || exit 2; zmodload -u psh_power_fixture || exit 3",
+        "power-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/0",
+        "psh-power-check"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "huge": false,
+      "memcheck": true,
+      "checks": 60832,
+      "stdout": "checks=60832 digest=14391546181781887424\npower-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1-C.UTF-8-common.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_power_fixture || exit 1; \"$2\" || exit 2; zmodload -u psh_power_fixture || exit 3",
+        "power-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1",
+        "psh-power-check"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "huge": true,
+      "memcheck": true,
+      "checks": 160,
+      "stdout": "checks=160 digest=2132200168073108304\npower-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1-C.UTF-8-huge.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round33/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_power_fixture || exit 1; \"$2\" || exit 2; zmodload -u psh_power_fixture || exit 3",
+        "power-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native/1",
+        "psh-power-huge-check"
+      ],
+      "status": 0
+    }
+  ]
+}

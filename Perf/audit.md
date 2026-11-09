@@ -158,3 +158,13 @@ ordered localization journal, logarithmic power evaluation, guarded arithmetic
 plans, masked option defaults, geometric array capacity and one-pass ordinary
 hash materialization to their compatibility constraints. These remain research
 directions; no production algorithm changes in this round.
+
+[Round thirty-three](round33.md) implements logarithmic integer powers in the
+existing `op()` branch, preserving the floating path and avoiding an unused
+final square. Native integer oracles, arithmetic state/FP environment checks,
+GCC/Clang upstream tests, bundled modules and 24 unchanged OMZ sessions pass.
+The installed candidate slows coder/chat paste and several JSON kernels, so it
+is not adopted despite large-exponent improvements. A private parser-alignment
+trial gives mixed results and does not establish a fix or a cause. Both source
+proposals and slower controls remain; accepted source/binaries are restored.
+Scope teardown and guarded arithmetic execution plans remain research targets.

@@ -1,0 +1,231 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "emulation-front",
+      "command": [
+        "python3",
+        "Perf/emulation-compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/emulation-front.json"
+      ],
+      "status": 0,
+      "seconds": 1.038
+    },
+    {
+      "name": "pristine-power",
+      "command": [
+        "python3",
+        "Perf/check-power-module.py",
+        ".work/baseline/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--candidate-headers-build",
+        ".work/round33/candidate",
+        "--candidate-headers-source",
+        ".",
+        "--memcheck",
+        "--huge",
+        "--locale",
+        "C.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/pristine-power.json"
+      ],
+      "status": 0,
+      "seconds": 3.372
+    },
+    {
+      "name": "power-native",
+      "command": [
+        "python3",
+        "Perf/check-power-module.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--headers-build",
+        ".work/round33/previous",
+        "--headers-source",
+        ".work/round33/previous-source",
+        "--candidate-headers-build",
+        ".work/round33/candidate",
+        "--candidate-headers-source",
+        ".",
+        "--memcheck",
+        "--huge",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/power-native.json"
+      ],
+      "status": 0,
+      "seconds": 5.9
+    },
+    {
+      "name": "arrays",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/arrays.json"
+      ],
+      "status": 0,
+      "seconds": 9.441
+    },
+    {
+      "name": "search",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--scalars",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/search.json"
+      ],
+      "status": 0,
+      "seconds": 2.678
+    },
+    {
+      "name": "patterns",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--extended",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/patterns.json"
+      ],
+      "status": 0,
+      "seconds": 5.335
+    },
+    {
+      "name": "substitution",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/substitution.json"
+      ],
+      "status": 0,
+      "seconds": 5.934
+    },
+    {
+      "name": "numeric-api",
+      "command": [
+        "python3",
+        "Perf/check-math-locale-module.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--headers-build",
+        ".work/round33/previous",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "fr_BE.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/numeric-api.json"
+      ],
+      "status": 0,
+      "seconds": 10.341
+    },
+    {
+      "name": "accessors",
+      "command": [
+        "python3",
+        "Perf/check-append-module.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--search",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/accessors.json"
+      ],
+      "status": 0,
+      "seconds": 0.178
+    },
+    {
+      "name": "completion",
+      "command": [
+        "python3",
+        "Perf/check-completion-prefix.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/completion.json"
+      ],
+      "status": 0,
+      "seconds": 4.206
+    },
+    {
+      "name": "customer",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/customer-correctness.py"
+      ],
+      "status": 0,
+      "seconds": 9.054
+    },
+    {
+      "name": "scalars",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--assignments",
+        "--prefixes",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--locale",
+        "ja_JP.eucjp",
+        "--locale",
+        "zh_CN.GB18030",
+        "--locale",
+        "zh_TW.EUC-TW",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/scalars.json"
+      ],
+      "status": 0,
+      "seconds": 91.45
+    },
+    {
+      "name": "math",
+      "command": [
+        "python3",
+        "Perf/math-compare.py",
+        ".work/round33/previous/Src/zsh",
+        ".work/round33/candidate/Src/zsh",
+        "--syntax",
+        "--operators",
+        "--descriptors",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/math.json"
+      ],
+      "status": 0,
+      "seconds": 131.243
+    }
+  ],
+  "failures": [],
+  "binary_sha256": {
+    ".work/round33/previous/Src/zsh": "794351c806898dc41feb7e57e029596843bbd3f87d072dd3522773de16231c7f",
+    ".work/round33/candidate/Src/zsh": "f06b352bd2d440d708a107aa737dce07815734c78bc1413863e18a0161af5c13"
+  }
+}

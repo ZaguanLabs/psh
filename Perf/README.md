@@ -1054,3 +1054,35 @@ The power driver uses bases 0/1/-1 and nonnegative exponents to avoid overflow.
 Expected results and state hashes are checked. All raw samples and input hashes
 remain in JSON. Keep timing separate from builds, checks and profilers; the
 reported costs do not measure an optimized replacement.
+
+[Round thirty-three](round33.md) implements and shelves logarithmic integer
+powers after repeated installed customer regressions. The unapplied source and
+upstream test blocks live under `results/round33/initial/`; the installed shell
+retains its preceding implementation. Two new drivers remain useful:
+
+```sh
+python3 Perf/check-power-module.py /path/to/reference/psh /path/to/trial/psh \
+  --headers-build /path/to/reference/build \
+  --headers-source /path/to/reference/source \
+  --candidate-headers-build /path/to/trial/build \
+  --candidate-headers-source /path/to/trial/source \
+  --memcheck --output .work/logs/power-check.json
+python3 Perf/power-benchmark.py /path/to/reference/psh /path/to/trial/psh \
+  --cpu 2 --output .work/logs/power-timing.json
+```
+
+The native fixture compiles separately against each host SDK and runs only in
+fresh child shells. It checks values/types, compound assignments, arithmetic
+globals, errno and FP exceptions under four rounding modes. Its independent
+integer oracle uses unsigned repeated multiplication; wrapping observations on
+the tested builds do not define portable signed C overflow. `--huge` adds
+candidate-only closed-form checks and should be used only with a trial known to
+handle very large exponents efficiently. Leave it off for the current linear
+implementation. The common matrix has 60,832 observations per host/locale;
+the huge matrix adds 160 per candidate/locale. Memcheck disables leak checks.
+
+The timer retains nine alternating samples, worker/binary hashes and result
+states for bounded small powers, large integer powers and unchanged floating
+controls. Its warm batches include parsing/dispatch; the very short optimized
+large-exponent batches are not general shell speedups. Run native compilation,
+tests and profiling before timing, never alongside it.

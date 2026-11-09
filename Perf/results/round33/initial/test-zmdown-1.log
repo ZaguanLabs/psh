@@ -1,0 +1,153 @@
+zsh -df scripts/build.zsh
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+cd ../.. && /bin/sh $top_srcdir/Src/mkmakemod.sh -i Src/Modules Makefile
+creating Src/Modules/Makefile.in
+cd ../.. && /bin/sh $top_srcdir/Src/mkmakemod.sh -m Src/Modules Makefile
+config.status: creating Src/Modules/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+`zmdown.mdh' is up to date.
+echo 'timestamp for zmdown.mdh against zmdown.mdd' > zmdown.mdhs
+gawk -f ../../Src/makepro.awk zmdown.c Src/Modules > zmdown.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmdown.syms) \
+	> zmdown.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmdown.syms) \
+	> `echo zmdown.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_render.c Src/Modules > zmd_render.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_render.syms) \
+	> zmd_render.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_render.syms) \
+	> `echo zmd_render.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_grapheme.c Src/Modules > zmd_grapheme.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_grapheme.syms) \
+	> zmd_grapheme.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_grapheme.syms) \
+	> `echo zmd_grapheme.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_md4c.c Src/Modules > zmd_md4c.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_md4c.syms) \
+	> zmd_md4c.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_md4c.syms) \
+	> `echo zmd_md4c.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_entity.c Src/Modules > zmd_entity.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_entity.syms) \
+	> zmd_entity.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_entity.syms) \
+	> `echo zmd_entity.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make -f Makefile prefix='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05' exec_prefix='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05' bindir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/bin' libdir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/lib' MODDIR='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/lib/psh/5.9.2' infodir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/share/info' mandir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/share/man' datadir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/share' fndir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/share/psh/5.9.2/functions' htmldir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/share/psh/htmldoc' runhelpdir='/usr/local/psh/releases/1.0.0-rc0-52a0aa60cf05/share/psh/5.9.2/help' CC='gcc' CPPFLAGS='' DEFS='-DHAVE_CONFIG_H' CFLAGS='-O2 -g' LDFLAGS='-g' EXTRA_LDFLAGS='-rdynamic' DLCFLAGS='-fPIC' DLLDFLAGS='-shared' LIBLDFLAGS='' EXELDFLAGS='' LIBS='-lpcre2-8 -ldl -lncursesw -lrt -lm  -lc' DL_EXT='so' DLLD='gcc' AWK='gawk' YODL='yodl -k -L' YODL2TXT='yodl2txt' YODL2HTML='yodl2html' FUNCTIONS_INSTALL='' tzsh='psh' prep
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+echo 'timestamp for *.mdd files' > ../../Src/modules.stamp
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+rm -f stamp-modobjs.tmp
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+srcdir='.' CFMOD='../config.modules' \
+  /bin/sh ./mkbltnmlst.sh bltinmods.list
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g  -o init.o init.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g  -o params.o params.c
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+Updated `stamp-modobjs'.
+rm -f zsh
+gcc -g  -rdynamic -o zsh main.o  `cat stamp-modobjs`   -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc
+/usr/bin/ld: utils.o: in function `gettempname':
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-52a0aa60cf05/core/Src/utils.c:2205:(.text+0x3b64): warning: the use of `mktemp' is dangerous, better use `mkstemp' or `mkdtemp'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zmdown..o zmdown.c
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zmd_render..o zmd_render.c
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zmd_grapheme..o zmd_grapheme.c
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zmd_md4c..o zmd_md4c.c
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zmd_entity..o zmd_entity.c
+rm -f zmdown.so
+gcc -g  -shared -o zmdown.so   zmdown..o zmd_render..o zmd_grapheme..o zmd_md4c..o zmd_entity..o    -lc 
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[4]: 'complete.export' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zmdown/.build/zsh/Src'
+zmdown 0.1.0-dev (MD4C 0.5.3+00788b1)
+python3 tests/test_module.py
+test_breaks (__main__.ModuleTests.test_breaks) ... ok
+test_code_block_layout_and_roles (__main__.ModuleTests.test_code_block_layout_and_roles) ... ok
+test_code_preserves_whitespace (__main__.ModuleTests.test_code_preserves_whitespace) ... ok
+test_code_wrapping_and_narrow_widths (__main__.ModuleTests.test_code_wrapping_and_narrow_widths) ... ok
+test_color_policy (__main__.ModuleTests.test_color_policy) ... ok
+test_dialect_switch (__main__.ModuleTests.test_dialect_switch) ... ok
+test_empty_incomplete_and_literal_shell_syntax (__main__.ModuleTests.test_empty_incomplete_and_literal_shell_syntax) ... ok
+test_entities_and_escapes (__main__.ModuleTests.test_entities_and_escapes) ... ok
+test_extended_grapheme_wrapping (__main__.ModuleTests.test_extended_grapheme_wrapping) ... ok
+test_files_and_stdin (__main__.ModuleTests.test_files_and_stdin) ... ok
+test_first_base_styles (__main__.ModuleTests.test_first_base_styles) ... ok
+test_headings_paragraphs_and_inline (__main__.ModuleTests.test_headings_paragraphs_and_inline) ... ok
+test_invalid_options (__main__.ModuleTests.test_invalid_options) ... ok
+test_invalid_targets_and_failure_preserve_variable (__main__.ModuleTests.test_invalid_targets_and_failure_preserve_variable) ... ok
+test_links_images_and_forward_references (__main__.ModuleTests.test_links_images_and_forward_references) ... ok
+test_list_continuation (__main__.ModuleTests.test_list_continuation) ... ok
+test_lists_nested_ordered_and_tasks (__main__.ModuleTests.test_lists_nested_ordered_and_tasks) ... ok
+test_load_unload_and_features (__main__.ModuleTests.test_load_unload_and_features) ... ok
+test_policy_failures_are_atomic (__main__.ModuleTests.test_policy_failures_are_atomic) ... ok
+test_preserve_soft_breaks (__main__.ModuleTests.test_preserve_soft_breaks) ... ok
+test_pty_color_detection_width_and_no_color (__main__.ModuleTests.test_pty_color_detection_width_and_no_color) ... ok
+test_quotes_and_rules (__main__.ModuleTests.test_quotes_and_rules) ... ok
+test_raw_html_is_literal (__main__.ModuleTests.test_raw_html_is_literal) ... ok
+test_resource_limits (__main__.ModuleTests.test_resource_limits) ... ok
+test_scalar_assignment_binary_shell_encoding (__main__.ModuleTests.test_scalar_assignment_binary_shell_encoding) ... ok
+test_scalar_assignment_preserves_newline_and_local_scope (__main__.ModuleTests.test_scalar_assignment_preserves_newline_and_local_scope) ... ok
+test_shell_options_are_unchanged (__main__.ModuleTests.test_shell_options_are_unchanged) ... ok
+test_structured_atomic_destinations (__main__.ModuleTests.test_structured_atomic_destinations) ... ok
+test_structured_code_metadata (__main__.ModuleTests.test_structured_code_metadata) ... ok
+test_structured_hostile_data_and_feature_query (__main__.ModuleTests.test_structured_hostile_data_and_feature_query) ... ok
+test_structured_limits_preserve_destination (__main__.ModuleTests.test_structured_limits_preserve_destination) ... ok
+test_structured_semantics_and_reconstruction (__main__.ModuleTests.test_structured_semantics_and_reconstruction) ... ok
+test_table_layout_alignment_and_styles (__main__.ModuleTests.test_table_layout_alignment_and_styles) ... ok
+test_table_wrap_and_narrow_fallback (__main__.ModuleTests.test_table_wrap_and_narrow_fallback) ... ok
+test_terminal_controls_and_invalid_utf8 (__main__.ModuleTests.test_terminal_controls_and_invalid_utf8) ... ok
+test_unicode_width_and_combining_marks (__main__.ModuleTests.test_unicode_width_and_combining_marks) ... ok
+test_wcwidth_sum_graphemes (__main__.ModuleTests.test_wcwidth_sum_graphemes) ... ok
+test_width_policy_layout_consistency (__main__.ModuleTests.test_width_policy_layout_consistency) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.621s
+
+OK
+python3 tests/test_build.py
+test_disabled_dynamic_module (__main__.BuildDiagnostics.test_disabled_dynamic_module) ... ok
+test_missing_shared_object (__main__.BuildDiagnostics.test_missing_shared_object) ... ok
+test_nonrelocatable_configuration (__main__.BuildDiagnostics.test_nonrelocatable_configuration) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.032s
+
+OK
+cc -std=c11 -Wall -Wextra -Wpedantic -Werror -fPIC -shared -Isrc -Ivendor/md4c src/render.c src/grapheme.c vendor/md4c/md4c.c vendor/md4c/entity.c vendor/md4c/md4c-html.c -o .build/conformance.so
+LC_ALL=C.UTF-8 python3 tests/conformance.py
+CommonMark 0.31.2: 652/652 parser examples match; 5216 terminal renders checked
+python3 scripts/unicode-tables.py --check
+LC_ALL=C.UTF-8 python3 tests/graphemes.py
+Unicode 17.0.0: 766 extended grapheme boundary cases passed
+Unicode properties: all 1,114,112 code points match base and both emoji properties
+LC_ALL=C.UTF-8 python3 tests/structured_core.py
+CommonMark structured output: 20864 layouts reconstruct plain output across all width, style and soft break modes

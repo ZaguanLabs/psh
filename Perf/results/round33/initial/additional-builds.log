@@ -1,0 +1,14 @@
+clang-build 0
+development-build 0
+additional-upstream 0
+clang-power 0
+development-power 0
+pristine-updated-C01 1
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/additional-builds.py", line 11, in <module>
+    run('pristine-updated-C01',[str(r/'.work/baseline/Src/zsh'),'+Z','-f',str(r/'Test/ztst.zsh'),str(r/'Test/C01arith.ztst')],cwd=tmp,env={'PATH':'/usr/bin:/bin','LANG':'C','ZTST_srcdir':str(r/'Test')})
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/additional-builds.py", line 6, in run
+    rows.append(dict(name=name,command=cmd,status=process.returncode));(l/'additional-builds.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,process.returncode,flush=True);assert process.returncode==0,name
+                                                                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^
+AssertionError: pristine-updated-C01

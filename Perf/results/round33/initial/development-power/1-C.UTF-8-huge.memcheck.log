@@ -1,0 +1,15 @@
+==591781== Memcheck, a memory error detector
+==591781== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==591781== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==591781== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh -dfc module_path=("$1");\ zmodload\ psh_power_fixture\ ||\ exit\ 1;\ "$2"\ ||\ exit\ 2;\ zmodload\ -u\ psh_power_fixture\ ||\ exit\ 3 power-comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round33/development-power/1 psh-power-huge-check
+==591781== Parent PID: 591713
+==591781== 
+==591781== 
+==591781== HEAP SUMMARY:
+==591781==     in use at exit: 45,693 bytes in 741 blocks
+==591781==   total heap usage: 1,206 allocs, 465 frees, 114,039 bytes allocated
+==591781== 
+==591781== For a detailed leak analysis, rerun with: --leak-check=full
+==591781== 
+==591781== For lists of detected and suppressed errors, rerun with: -s
+==591781== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

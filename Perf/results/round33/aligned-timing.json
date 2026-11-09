@@ -1,0 +1,41 @@
+[
+  {
+    "name": "aligned-customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round33/previous/Src/zsh",
+      ".work/round33/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round33/aligned-customer.json"
+    ],
+    "status": 0,
+    "seconds": 23.82928202790208
+  },
+  {
+    "name": "aligned-library",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round33/previous/Src/zsh",
+      ".work/round33/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round33/aligned-library.json"
+    ],
+    "status": 0,
+    "seconds": 22.684880045009777
+  }
+]

@@ -1,0 +1,20 @@
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..ac129d2 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -1365,7 +1365,14 @@ op(int what)
+ 		    b.u.d = (double) b.u.l;
+ 		}
+ 		if (c.type == MN_INTEGER) {
+-		    for (c.u.l = 1; b.u.l--; c.u.l *= a.u.l);
++		    /* Consume exponent bits; do not square after the last bit.
++		     * An unused square could overflow even when the result fits. */
++		    c.u.l = (b.u.l & 1) ? a.u.l : 1;
++		    while ((b.u.l >>= 1)) {
++			a.u.l *= a.u.l;
++			if (b.u.l & 1)
++			    c.u.l *= a.u.l;
++		    }
+ 		} else {
+ 		    if (b.u.d <= 0 && !notzero(a))
+ 			return;
