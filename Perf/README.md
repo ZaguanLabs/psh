@@ -958,3 +958,31 @@ checksums, and uses nine alternating fresh processes per key length. Its timers
 cover repeated hot native calls; they exclude allocation, module loading and
 interpreter dispatch. Measure the actual installed builds and customer kernels
 before adopting a faster microbenchmark.
+
+## Decimal lexer investigation
+
+[Round thirty](round30.md) rejects decimal classification/conversion fusion after
+mixed installed-build customer results. Production arithmetic is unchanged.
+
+```sh
+python3 Perf/check-math-small-module.py .work/baseline/Src/zsh ./psh \
+  --candidate-headers-build .work/candidate --candidate-headers-source . \
+  --memcheck --output .work/logs/math-tokens.json
+python3 Perf/math-token-benchmark.py /path/to/reference/psh /path/to/trial/psh \
+  --cpu 2 --output .work/logs/math-token-timing.json
+```
+
+The native fixture makes 1,677,760 counted API observations per host/locale.
+It compares numeric bits, argument endpoints, arithmetic globals, errno and
+floating-point exceptions under four rounding modes, option combinations and
+live character-table mutations. It checks exact allocations and terminators
+beside inaccessible pages. Each host's fixture must use its matching SDK;
+DEBUG and release headers can produce different signal-queue references.
+`--headers-build`/`--headers-source` select the reference SDK and the candidate
+defaults to that SDK unless explicitly overridden. These are test-only internal
+API calls, not a new supported module interface.
+
+The timing driver uses nine alternating fresh processes for thirteen literal
+forms in normal and FORCEFLOAT modes. Timers cover warm shell repeat batches,
+excluding definition and warmup; they include interpreter dispatch. Result
+fingerprints must match. These controls do not replace customer measurements.

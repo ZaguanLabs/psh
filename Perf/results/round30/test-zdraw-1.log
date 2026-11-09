@@ -1,0 +1,366 @@
+ZDRAW_MAKE="make" "/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -df scripts/build.zsh
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+cd ../.. && /bin/sh $top_srcdir/Src/mkmakemod.sh -i Src/Modules Makefile
+creating Src/Modules/Makefile.in
+cd ../.. && /bin/sh $top_srcdir/Src/mkmakemod.sh -m Src/Modules Makefile
+config.status: creating Src/Modules/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+`zdraw.mdh' is up to date.
+echo 'timestamp for zdraw.mdh against zdraw.mdd' > zdraw.mdhs
+gawk -f ../../Src/makepro.awk zdraw.c Src/Modules > zdraw.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zdraw.syms) \
+	> zdraw.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zdraw.syms) \
+	> `echo zdraw.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make -f Makefile prefix='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0' exec_prefix='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0' bindir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin' libdir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/lib' MODDIR='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/lib/psh/5.9.2' infodir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/share/info' mandir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/share/man' datadir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/share' fndir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/share/psh/5.9.2/functions' htmldir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/share/psh/htmldoc' runhelpdir='/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/share/psh/5.9.2/help' CC='gcc' CPPFLAGS='' DEFS='-DHAVE_CONFIG_H' CFLAGS='-O2 -g' LDFLAGS='-g' EXTRA_LDFLAGS='-rdynamic' DLCFLAGS='-fPIC' DLLDFLAGS='-shared' LIBLDFLAGS='' EXELDFLAGS='' LIBS='-lpcre2-8 -ldl -lncursesw -lrt -lm  -lc' DL_EXT='so' DLLD='gcc' AWK='gawk' YODL='yodl -k -L' YODL2TXT='yodl2txt' YODL2HTML='yodl2html' FUNCTIONS_INSTALL='' tzsh='psh' prep
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+echo 'timestamp for *.mdd files' > ../../Src/modules.stamp
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+rm -f stamp-modobjs.tmp
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+srcdir='.' CFMOD='../config.modules' \
+  /bin/sh ./mkbltnmlst.sh bltinmods.list
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g  -o init.o init.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g  -o params.o params.c
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+Updated `stamp-modobjs'.
+rm -f zsh
+gcc -g  -rdynamic -o zsh main.o  `cat stamp-modobjs`   -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc
+/usr/bin/ld: utils.o: in function `gettempname':
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-363dc2fc22b0/core/Src/utils.c:2205:(.text+0x3b64): warning: the use of `mktemp' is dangerous, better use `mkstemp' or `mkdtemp'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+gawk -f ./zdraw_keys.awk /usr/include/curses.h /dev/null >zdraw_keys.h
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zdraw..o zdraw.c
+rm -f zdraw.so
+gcc -g  -shared -o zdraw.so   zdraw..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[4]: 'complete.export' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/zsh/Src'
+Built /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw/.build/modules/zdraw.so
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-text-selection.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/text-selection.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/text-selection.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/text-selection-draw.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/text-selection-example.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/text-selection.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/held-keys.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/held-keys.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/raster.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/raster-rgb.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/raster-rgb.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/alpine-view-reference.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/raster.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/raster-rectangles.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/raster-reference.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/review-composition.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/review-composition.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/components/status-strip.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/status-strip.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/status-strip.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/components/change-gutter.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/change-gutter.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/change-gutter.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/components/linked-detail.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/linked-detail.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/linked-detail.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/design-study.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/design-study.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn scripts/design-study-frame.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn scripts/build.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn scripts/inline-shell.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/inline-picker.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/inline.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/geometry.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/drawing.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/colorinfo.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/colorplan.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/cellinfo.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/snapshot.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/screen.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-screen.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-motion.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/motion-monitor.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn scripts/replay-recipe.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/fill.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/copy.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/restyle.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/pads.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/resizepad.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/windows.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/window-presentation.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/pad-presentation.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/spans.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/truecolor.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/text-policy.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/textinfo.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/textpos.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/textwrap.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/events.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/session.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/session-errors.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/sgr.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-sgr.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-run.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-fixture.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/visual.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/presentation.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/sync.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/trees.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/overlay.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/stacking.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/overlays.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn scripts/portability/frame-source.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/unicode-edit.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/unicode-draw.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn scripts/portability/unicode-source.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/resources.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/components.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/prepared.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/clipping.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/spans.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/fill.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn benchmarks/native.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/performance.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/events.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/streams.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/hit-test.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/wrapping.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/borders.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/colors.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn lib/zdraw-color.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn tests/color-helpers.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/color-studio.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/cell-inspection.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/snapshot-diff.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/regions.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/copy.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/restyle.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/viewports.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/windows.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/truecolor.zsh
+"/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh" -dfn examples/clipping.zsh
+ZDRAW_MAKE="make" "python3" -m unittest discover -s tests -v
+test_ascii_only_build (test_canvas.CanvasTests.test_ascii_only_build) ... ok
+test_canvas_rendering (test_canvas.CanvasTests.test_canvas_rendering) ... ok
+test_headless_canvas (test_canvas.CanvasTests.test_headless_canvas) ... ok
+test_partial_registration_failure (test_capabilities.CapabilityTests.test_partial_registration_failure) ... ok
+test_passive_records (test_capabilities.CapabilityTests.test_passive_records) ... ok
+test_queries_without_optional_support (test_capabilities.CapabilityTests.test_queries_without_optional_support) ... ok
+test_query_lifecycle_and_delayed_transport (test_capabilities.CapabilityTests.test_query_lifecycle_and_delayed_transport) ... ok
+test_report_values_and_incomplete_sequences (test_capabilities.CapabilityTests.test_report_values_and_incomplete_sequences) ... ok
+test_complete_cell_readback (test_cellinfo.CellInfoTests.test_complete_cell_readback) ... ok
+test_monochrome_readback (test_cellinfo.CellInfoTests.test_monochrome_readback) ... ok
+test_optional_readers_and_failures (test_cellinfo.CellInfoTests.test_optional_readers_and_failures) ... ok
+test_component_contract (test_change_gutter.ChangeGutterTests.test_component_contract) ... ok
+test_fallbacks (test_change_gutter.ChangeGutterTests.test_fallbacks) ... ok
+test_navigation_and_resize (test_change_gutter.ChangeGutterTests.test_navigation_and_resize) ... ok
+test_ascii_only_build (test_chart.ChartTests.test_ascii_only_build) ... ok
+test_chart_rendering (test_chart.ChartTests.test_chart_rendering) ... ok
+test_headless_series (test_chart.ChartTests.test_headless_series) ... ok
+test_clipped_styled_rows (test_clipping.ClippingTests.test_clipped_styled_rows) ... ok
+test_headless_measurement_and_clipping (test_clipping.ClippingTests.test_headless_measurement_and_clipping) ... ok
+test_optional_implementations (test_clipping.ClippingTests.test_optional_implementations) ... ok
+test_text_positions (test_clipping.ClippingTests.test_text_positions) ... ok
+test_headless_resolution (test_color_helpers.ColorHelperTests.test_headless_resolution) ... ok
+test_runtime_profiles (test_color_helpers.ColorHelperTests.test_runtime_profiles) ... ok
+test_headless_and_assignment (test_colorinfo.ColorInfoTests.test_headless_and_assignment) ... ok
+test_initialization_failure_and_optional_support (test_colorinfo.ColorInfoTests.test_initialization_failure_and_optional_support) ... ok
+test_monochrome_terminal (test_colorinfo.ColorInfoTests.test_monochrome_terminal) ... ok
+test_runtime_lifecycle_and_pair_counts (test_colorinfo.ColorInfoTests.test_runtime_lifecycle_and_pair_counts) ... ok
+test_headless_rejection (test_colorplan.ColorPlanTests.test_headless_rejection) ... ok
+test_limits_and_optional_paths (test_colorplan.ColorPlanTests.test_limits_and_optional_paths) ... ok
+test_monochrome (test_colorplan.ColorPlanTests.test_monochrome) ... ok
+test_no_terminal_output (test_colorplan.ColorPlanTests.test_no_terminal_output) ... ok
+test_prediction_assignment_and_lifecycle (test_colorplan.ColorPlanTests.test_prediction_assignment_and_lifecycle) ... ok
+test_rgb (test_colorplan.ColorPlanTests.test_rgb) ... ok
+test_canvas_recipe (test_compositions.CompositionTests.test_canvas_recipe) ... ok
+test_capability_inspector (test_compositions.CompositionTests.test_capability_inspector) ... ok
+test_document_recipe (test_compositions.CompositionTests.test_document_recipe) ... ok
+test_enhanced_event_inspector (test_compositions.CompositionTests.test_enhanced_event_inspector) ... ok
+test_enhanced_form_recipe (test_compositions.CompositionTests.test_enhanced_form_recipe) ... ok
+test_form_recipe (test_compositions.CompositionTests.test_form_recipe) ... ok
+test_overlapping_surfaces_recipe (test_compositions.CompositionTests.test_overlapping_surfaces_recipe) ... ok
+test_stacked_windows_recipe (test_compositions.CompositionTests.test_stacked_windows_recipe) ... ok
+test_optional_copy_and_failures (test_copy.CopyTests.test_optional_copy_and_failures) ... ok
+test_region_copy (test_copy.CopyTests.test_region_copy) ... ok
+test_designs_states_navigation_and_resize (test_design_study.DesignStudyTests.test_designs_states_navigation_and_resize) ... ok
+test_low_color_and_ascii (test_design_study.DesignStudyTests.test_low_color_and_ascii) ... ok
+test_document_rendering (test_document.DocumentTests.test_document_rendering) ... ok
+test_headless_document (test_document.DocumentTests.test_headless_document) ... ok
+test_color_pair_exhaustion (test_drawing.DrawingTests.test_color_pair_exhaustion) ... ok
+test_narrow_curses_paths (test_drawing.DrawingTests.test_narrow_curses_paths) ... ok
+test_wide_characters_borders_and_colors (test_drawing.DrawingTests.test_wide_characters_borders_and_colors) ... ok
+test_enhanced_lifecycle (test_enhanced.EnhancedTests.test_enhanced_lifecycle) ... ok
+test_optional_enhanced_builds (test_enhanced.EnhancedTests.test_optional_enhanced_builds) ... ok
+test_norefresh_events (test_events.EventTests.test_norefresh_events) ... ok
+test_optional_input_paths (test_events.EventTests.test_optional_input_paths) ... ok
+test_structured_events (test_events.EventTests.test_structured_events) ... ok
+test_build_without_optional_features (test_features.FeatureTests.test_build_without_optional_features) ... ok
+test_headless_discovery (test_features.FeatureTests.test_headless_discovery) ... ok
+test_independent_module_namespace (test_features.FeatureTests.test_independent_module_namespace) ... ok
+test_read_is_silent_and_does_not_consume_input (test_features.FeatureTests.test_read_is_silent_and_does_not_consume_input) ... ok
+test_readonly_and_feature_lifecycle (test_features.FeatureTests.test_readonly_and_feature_lifecycle) ... ok
+test_stock_module_discovery_fallback (test_features.FeatureTests.test_stock_module_discovery_fallback) ... ok
+test_optional_writers_and_failures (test_fill.FillTests.test_optional_writers_and_failures) ... ok
+test_region_fill (test_fill.FillTests.test_region_fill) ... ok
+test_geometry_and_legacy_operations (test_geometry.GeometryTests.test_geometry_and_legacy_operations) ... ok
+test_no_controlling_terminal (test_geometry.GeometryTests.test_no_controlling_terminal) ... ok
+test_child_exit_deadline (test_held_keys.HeldKeyTests.test_child_exit_deadline) ... ok
+test_failed_negotiation_and_late_replies (test_held_keys.HeldKeyTests.test_failed_negotiation_and_late_replies) ... ok
+test_inspector_quit_signal_and_job_control (test_held_keys.HeldKeyTests.test_inspector_quit_signal_and_job_control) ... ok
+test_multiple_keys_focus_resize_suspend_and_cleanup (test_held_keys.HeldKeyTests.test_multiple_keys_focus_resize_suspend_and_cleanup) ... ok
+test_passive_policy_and_bounds (test_held_keys.HeldKeyTests.test_passive_policy_and_bounds) ... ok
+test_cancel_before_job_control (test_inline.InlineTests.test_cancel_before_job_control) ... ok
+test_disposable_launcher (test_inline.InlineTests.test_disposable_launcher) ... ok
+test_existing_display_vi_mode_and_paste (test_inline.InlineTests.test_existing_display_vi_mode_and_paste) ... ok
+test_fragmented_async_input_and_descriptor_cleanup (test_inline.InlineTests.test_fragmented_async_input_and_descriptor_cleanup) ... ok
+test_resize_and_invalid_source (test_inline.InlineTests.test_resize_and_invalid_source) ... ok
+test_selection_and_cancel_restore_editor (test_inline.InlineTests.test_selection_and_cancel_restore_editor) ... ok
+test_stream_limits_and_eof (test_inline.InlineTests.test_stream_limits_and_eof) ... ok
+test_field_and_form_rendering (test_input.InputTests.test_field_and_form_rendering) ... ok
+test_headless_editing_and_forms (test_input.InputTests.test_headless_editing_and_forms) ... ok
+test_explicit_handoff_across_bg_and_fg (test_job_control.JobControlTests.test_explicit_handoff_across_bg_and_fg) ... ok
+test_color_fallbacks (test_linked_detail.LinkedDetailTests.test_color_fallbacks) ... ok
+test_component_contract (test_linked_detail.LinkedDetailTests.test_component_contract) ... ok
+test_navigation_resize_reuse_and_empty (test_linked_detail.LinkedDetailTests.test_navigation_resize_reuse_and_empty) ... ok
+test_animated_resize_focus_and_idle (test_motion.MotionMonitorTests.test_animated_resize_focus_and_idle) ... ok
+test_signal_during_presentation (test_motion.MotionMonitorTests.test_signal_during_presentation) ... ok
+test_static_and_signal_cleanup (test_motion.MotionMonitorTests.test_static_and_signal_cleanup) ... ok
+test_headless_state (test_motion.MotionTests.test_headless_state) ... ok
+test_retained_frames_and_resources (test_motion.MotionTests.test_retained_frames_and_resources) ... ok
+test_optional_overlay_and_failures (test_overlay.OverlayTests.test_optional_overlay_and_failures) ... ok
+test_transparent_copy (test_overlay.OverlayTests.test_transparent_copy) ... ok
+test_pad_staging_and_input_ownership (test_pad_presentation.PadPresentationTests.test_pad_staging_and_input_ownership) ... ok
+test_optional_pads_and_failures (test_pads.PadTests.test_optional_pads_and_failures) ... ok
+test_retained_pad (test_pads.PadTests.test_retained_pad) ... ok
+test_cells_and_lookup_lifetimes (test_performance.PerformanceContracts.test_cells_and_lookup_lifetimes) ... ok
+test_alternative_builds (test_prepared.PreparedTests.test_alternative_builds) ... ok
+test_prepared_rows (test_prepared.PreparedTests.test_prepared_rows) ... ok
+test_input_does_not_present_dirty_windows (test_presentation.PresentationTests.test_input_does_not_present_dirty_windows) ... ok
+test_upstream_manifest (test_provenance.ProvenanceTests.test_upstream_manifest) ... ok
+test_atomic_validation_lifecycle_and_bounds (test_raster.RasterTests.test_atomic_validation_lifecycle_and_bounds) ... ok
+test_captured_camera_sweep (test_raster.RasterTests.test_captured_camera_sweep) ... ok
+test_crossing_clipping_winding_and_shared_edges (test_raster.RasterTests.test_crossing_clipping_winding_and_shared_edges) ... ok
+test_optional_builds (test_raster.RasterTests.test_optional_builds) ... ok
+test_randomized_reference (test_raster.RasterTests.test_randomized_reference) ... ok
+test_terminal_packing (test_raster.RasterTests.test_terminal_packing) ... ok
+test_atomic_bounds_mixed_primitives_and_lifecycle (test_raster_rectangles.RasterRectangleTests.test_atomic_bounds_mixed_primitives_and_lifecycle) ... ok
+test_cinder_relay_captured_frames (test_raster_rectangles.RasterRectangleTests.test_cinder_relay_captured_frames) ... ok
+test_coverage_and_vertical_depth (test_raster_rectangles.RasterRectangleTests.test_coverage_and_vertical_depth) ... ok
+test_exact_expansion_edges_ties_and_randomized_batches (test_raster_rectangles.RasterRectangleTests.test_exact_expansion_edges_ties_and_randomized_batches) ... ok
+test_budget_preflight_and_narrow_writer (test_raster_rgb.RasterRGBTests.test_budget_preflight_and_narrow_writer) ... ok
+test_captured_geometry_keeps_depth_independent (test_raster_rgb.RasterRGBTests.test_captured_geometry_keeps_depth_independent) ... ok
+test_exact_rounding_and_owned_budget (test_raster_rgb.RasterRGBTests.test_exact_rounding_and_owned_budget) ... ok
+test_interpolation_depth_and_box_reference (test_raster_rgb.RasterRGBTests.test_interpolation_depth_and_box_reference) ... ok
+test_terminal_contract_and_fallbacks (test_raster_rgb.RasterRGBTests.test_terminal_contract_and_fallbacks) ... ok
+test_validation_palette_lifecycle_and_atomicity (test_raster_rgb.RasterRGBTests.test_validation_palette_lifecycle_and_atomicity) ... ok
+test_form_paste_resize_and_saved_failure (test_replay.ReplayTests.test_form_paste_resize_and_saved_failure) ... ok
+test_other_recipes (test_replay.ReplayTests.test_other_recipes) ... ok
+test_recording_validation (test_replay.ReplayTests.test_recording_validation) ... ok
+test_saturated_input_queue_has_deadline_and_cleanup (test_replay.ReplayTests.test_saturated_input_queue_has_deadline_and_cleanup) ... ok
+test_optional_resize_and_failures (test_resizepad.ResizePadTests.test_optional_resize_and_failures) ... ok
+test_resize_pad (test_resizepad.ResizePadTests.test_resize_pad) ... ok
+test_headless_and_destinations (test_resources.ResourceTests.test_headless_and_destinations) ... ok
+test_lifecycle (test_resources.ResourceTests.test_lifecycle) ... ok
+test_optional_restyle_and_failures (test_restyle.RestyleTests.test_optional_restyle_and_failures) ... ok
+test_region_restyle (test_restyle.RestyleTests.test_region_restyle) ... ok
+test_density_recovers_rows_and_preserves_position (test_review_composition.ReviewCompositionTests.test_density_recovers_rows_and_preserves_position) ... ok
+test_fallbacks (test_review_composition.ReviewCompositionTests.test_fallbacks) ... ok
+test_key_reference_preserves_review_and_reaches_every_key (test_review_composition.ReviewCompositionTests.test_key_reference_preserves_review_and_reaches_every_key) ... ok
+test_quit_from_initial_key_reference (test_review_composition.ReviewCompositionTests.test_quit_from_initial_key_reference) ... ok
+test_selection_layout_and_state (test_review_composition.ReviewCompositionTests.test_selection_layout_and_state) ... ok
+test_failed_screen_initialization (test_screen.ScreenTests.test_failed_screen_initialization) ... ok
+test_native_failures_release_prepared_rows (test_screen.ScreenTests.test_native_failures_release_prepared_rows) ... ok
+test_preserves_inactive_stock_screen (test_screen.ScreenTests.test_preserves_inactive_stock_screen) ... ok
+test_preserves_shell_terminfo (test_screen.ScreenTests.test_preserves_shell_terminfo) ... ok
+test_roundtrip_and_invalid_data (test_screen.ScreenTests.test_roundtrip_and_invalid_data) ... ok
+test_optional_session_features (test_session.SessionTests.test_optional_session_features) ... ok
+test_session_failures (test_session.SessionTests.test_session_failures) ... ok
+test_streaming_and_session_handoff (test_session.SessionTests.test_streaming_and_session_handoff) ... ok
+test_streaming_sgr_decoder (test_session.SessionTests.test_streaming_sgr_decoder) ... ok
+test_optional_readers_and_failures (test_snapshot.SnapshotTests.test_optional_readers_and_failures) ... ok
+test_window_snapshot (test_snapshot.SnapshotTests.test_window_snapshot) ... ok
+test_alternative_builds (test_spans.SpanTests.test_alternative_builds) ... ok
+test_monochrome_spans (test_spans.SpanTests.test_monochrome_spans) ... ok
+test_wide_spans (test_spans.SpanTests.test_wide_spans) ... ok
+test_component_contract (test_status_strip.StatusStripTests.test_component_contract) ... ok
+test_fallbacks (test_status_strip.StatusStripTests.test_fallbacks) ... ok
+test_states_progress_and_resize (test_status_strip.StatusStripTests.test_states_progress_and_resize) ... ok
+test_frame_lifecycle_and_evidence (test_sync.SyncTests.test_frame_lifecycle_and_evidence) ... ok
+test_optional_and_interrupted_updates (test_sync.SyncTests.test_optional_and_interrupted_updates) ... ok
+test_backend_rejection (test_text_policy.TextPolicyTests.test_backend_rejection) ... ok
+test_locale_rejection (test_text_policy.TextPolicyTests.test_locale_rejection) ... ok
+test_native_drawing (test_text_policy.TextPolicyTests.test_native_drawing) ... ok
+test_queries (test_text_policy.TextPolicyTests.test_queries) ... ok
+test_rejection_and_limits (test_text_policy.TextPolicyTests.test_rejection_and_limits) ... ok
+test_example_disabled_mouse (test_text_selection.TextSelectionTests.test_example_disabled_mouse) ... ok
+test_example_monochrome (test_text_selection.TextSelectionTests.test_example_monochrome) ... ok
+test_example_real_mouse_routing_resize_and_cleanup (test_text_selection.TextSelectionTests.test_example_real_mouse_routing_resize_and_cleanup) ... ok
+test_ranges_and_events (test_text_selection.TextSelectionTests.test_ranges_and_events) ... ok
+test_styles_and_mouse_configuration (test_text_selection.TextSelectionTests.test_styles_and_mouse_configuration) ... ok
+test_optional_wrapping_and_limits (test_textwrap.TextWrapTests.test_optional_wrapping_and_limits) ... ok
+test_wrapped_source_ranges (test_textwrap.TextWrapTests.test_wrapped_source_ranges) ... ok
+test_optional_tree_and_failures (test_trees.TreeTests.test_optional_tree_and_failures) ... ok
+test_shared_tree_geometry (test_trees.TreeTests.test_shared_tree_geometry) ... ok
+test_encoding_and_unsupported_terminals (test_truecolor.TrueColorTests.test_encoding_and_unsupported_terminals) ... ok
+test_exact_low_rgb_values (test_truecolor.TrueColorTests.test_exact_low_rgb_values) ... ok
+test_opt_in_preserves_input_modes_and_deferred_refresh (test_truecolor.TrueColorTests.test_opt_in_preserves_input_modes_and_deferred_refresh) ... ok
+test_optional_library_paths_and_allocation_failure (test_truecolor.TrueColorTests.test_optional_library_paths_and_allocation_failure) ... ok
+test_rgb_output_and_pair_readback (test_truecolor.TrueColorTests.test_rgb_output_and_pair_readback) ... ok
+test_color_studio_interaction_and_resize (test_ui.UITests.test_color_studio_interaction_and_resize) ... ok
+test_component_diagnostics (test_ui.UITests.test_component_diagnostics) ... ok
+test_components (test_ui.UITests.test_components) ... ok
+test_gallery_interaction_and_resize (test_ui.UITests.test_gallery_interaction_and_resize) ... ok
+test_headless_diagnostics (test_ui.UITests.test_headless_diagnostics) ... ok
+test_headless_layout (test_ui.UITests.test_headless_layout) ... ok
+test_headless_styles_and_state (test_ui.UITests.test_headless_styles_and_state) ... ok
+test_list_detail_recipe (test_ui.UITests.test_list_detail_recipe) ... ok
+test_presentation_components (test_ui.UITests.test_presentation_components) ... ok
+test_synchronized_task_monitor_recipe (test_ui.UITests.test_synchronized_task_monitor_recipe) ... ok
+test_table (test_ui.UITests.test_table) ... ok
+test_table_inspector_recipe (test_ui.UITests.test_table_inspector_recipe) ... ok
+test_task_monitor_recipe (test_ui.UITests.test_task_monitor_recipe) ... ok
+test_corpus_queries (test_unicode.UnicodeTests.test_corpus_queries) ... ok
+test_editing_and_reflow (test_unicode.UnicodeTests.test_editing_and_reflow) ... ok
+test_field_rendering (test_unicode.UnicodeTests.test_field_rendering) ... ok
+test_optional_builds (test_unicode.UnicodeTests.test_optional_builds) ... ok
+test_unicode_17_conformance (test_unicode.UnicodeTests.test_unicode_17_conformance) ... ok
+test_diff_and_html_escaping (test_visual.VisualTests.test_diff_and_html_escaping) ... ok
+test_portable_snapshots_and_baselines (test_visual.VisualTests.test_portable_snapshots_and_baselines) ... ok
+test_geometry_changes_require_presentation (test_window_presentation.WindowPresentationTests.test_geometry_changes_require_presentation) ... ok
+test_optional_geometry_and_failures (test_windows.WindowTests.test_optional_geometry_and_failures) ... ok
+test_window_geometry (test_windows.WindowTests.test_window_geometry) ... ok
+
+----------------------------------------------------------------------
+Ran 190 tests in 392.595s
+
+OK

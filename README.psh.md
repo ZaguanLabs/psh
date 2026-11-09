@@ -297,3 +297,9 @@ installed-release customer timings are mixed. Both prototypes remain unadopted;
 the executable retains twenty-six optimizations and its original hash function.
 The investigation adds a pristine-source oracle, exact-size allocation and
 protected-boundary checks, plus native key-length controls.
+
+The [thirtieth investigation](Perf/round30.md) tests fused decimal token parsing.
+Endgame improves, but repeated installed-build measurements show slower coder
+paste, chat paste and JSON encoding. The prototype is not adopted; the active
+release retains twenty-six optimizations. New native arithmetic boundary and
+state checks remain available for future work.

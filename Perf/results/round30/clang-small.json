@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/clang-previous/Src/zsh": "7709bc66fc9fafd88456ec34d57a1766775bfde8f7ce72fbf48c8effdf54f9fe",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/clang-candidate/Src/zsh": "9dd7ad1b19236157ee794996425e6f008522053f741a6f1917f0dcd68b1fc9bb",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c": "03263b335c04b1f8d7d09843e8b8735caebd26beffd9abf8cdd87685bee7b6f9",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/clang-small/0/psh_small_math_fixture.so": "ab1687f83db537e0452d9e21917ffe000734c33b3d359f4c9a63cb3148db5457",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/clang-small/1/psh_small_math_fixture.so": "ab1687f83db537e0452d9e21917ffe000734c33b3d359f4c9a63cb3148db5457",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-math-small-module.py": "b3eade161c4f5dadc6d48be2ed0d6c1e556430bc7c4ba72b93183adca1d741e7"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/clang-previous/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/previous-source/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/clang-small/0/psh_small_math_fixture.so",
+      "-lm"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/clang-previous/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/previous-source/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/clang-small/1/psh_small_math_fixture.so",
+      "-lm"
+    ]
+  ],
+  "checks": 3355520,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/clang-previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 1677760,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=1677760 digest=10702521374325591192\nsmall-math-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/clang-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 1677760,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=1677760 digest=10702521374325591192\nsmall-math-done\n"
+    }
+  ]
+}

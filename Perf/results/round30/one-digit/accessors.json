@@ -1,0 +1,139 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/previous/Src/zsh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round30/candidate/Src/zsh"
+  ],
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/append-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/append-module/psh_append_fixture.so"
+  ],
+  "source_sha256": "a4d5d01590ddbdc45268c89aa1cd01fc0c275e48e57a96dfa33c2de7c5b572d5",
+  "module_sha256": "4367342d60f4fc2123d8385ce086d978f2047ed8d025189af7a5e976280aaabd",
+  "cases": [
+    {
+      "mode": "stable",
+      "status": 0,
+      "stdout": "gets=2 sets=1 values=[a][b][c][tail]\n"
+    },
+    {
+      "mode": "changing",
+      "status": 0,
+      "stdout": "gets=2 sets=1 values=[a][tail][c]\n"
+    },
+    {
+      "mode": "self-replacing",
+      "status": 0,
+      "stdout": "gets=1 sets=0 values=[a][tail][c]\n"
+    },
+    {
+      "mode": "custom-setter",
+      "status": 0,
+      "stdout": "gets=0 sets=1 values=[a][b][c][tail]\n"
+    },
+    {
+      "mode": "public-api",
+      "status": 0,
+      "stdout": "gets=1 sets=1 values=[a][api][c]\n"
+    },
+    {
+      "mode": "stable",
+      "operation": "index",
+      "status": 0,
+      "stdout": "3\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "stable",
+      "operation": "value",
+      "status": 0,
+      "stdout": "<>\ngets=2 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "stable",
+      "operation": "beyond",
+      "status": 0,
+      "stdout": "4\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "changing",
+      "operation": "index",
+      "status": 0,
+      "stdout": "2\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "changing",
+      "operation": "value",
+      "status": 0,
+      "stdout": "<first>\ngets=2 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "changing",
+      "operation": "beyond",
+      "status": 0,
+      "stdout": "2\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "self-replacing",
+      "operation": "index",
+      "status": 0,
+      "stdout": "2\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "self-replacing",
+      "operation": "value",
+      "status": 0,
+      "stdout": "<first>\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "self-replacing",
+      "operation": "beyond",
+      "status": 0,
+      "stdout": "2\ngets=1 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "custom-setter",
+      "operation": "index",
+      "status": 0,
+      "stdout": "3\ngets=0 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "custom-setter",
+      "operation": "value",
+      "status": 0,
+      "stdout": "<>\ngets=0 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "custom-setter",
+      "operation": "beyond",
+      "status": 0,
+      "stdout": "4\ngets=0 sets=0 values=[a][b][c]\n"
+    },
+    {
+      "mode": "public-api",
+      "operation": "index",
+      "status": 0,
+      "stdout": "3\ngets=2 sets=1 values=[a][api][c]\n"
+    },
+    {
+      "mode": "public-api",
+      "operation": "value",
+      "status": 0,
+      "stdout": "<>\ngets=3 sets=1 values=[a][api][c]\n"
+    },
+    {
+      "mode": "public-api",
+      "operation": "beyond",
+      "status": 0,
+      "stdout": "4\ngets=2 sets=1 values=[a][api][c]\n"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+==2682154== Memcheck, a memory error detector
+==2682154== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==2682154== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==2682154== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh -dfc module_path=("$1");\ zmodload\ psh_small_math_fixture\ ||\ exit\ 1;\ psh-small-math-check\ ||\ exit\ 2;\ zmodload\ -u\ psh_small_math_fixture\ ||\ exit\ 3 comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/small-native/0
+==2682154== Parent PID: 2681568
+==2682154== 
+==2682154== 
+==2682154== HEAP SUMMARY:
+==2682154==     in use at exit: 45,732 bytes in 742 blocks
+==2682154==   total heap usage: 4,188,925 allocs, 4,188,183 frees, 37,139,260 bytes allocated
+==2682154== 
+==2682154== For a detailed leak analysis, rerun with: --leak-check=full
+==2682154== 
+==2682154== For lists of detected and suppressed errors, rerun with: -s
+==2682154== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,8 @@
+0 C.UTF-8 1672960 small-token states matched
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-math-small-module.py", line 61, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-math-small-module.py", line 48, in main
+    raise RuntimeError((index, locale, r.returncode, r.stdout[-1000:], r.stderr[-1000:]))
+RuntimeError: (1, 'C.UTF-8', 1, b'', b"zsh:1: failed to load module `psh_small_math_fixture': /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/small-pilot/psh_small_math_fixture.so: undefined symbol: queue_in\n")

@@ -130,3 +130,11 @@ customer comparison is mixed, so both prototypes remain unadopted and the
 accepted source/developer executable are restored. Initial private-build gains
 and a noisy timing pass remain distinct from the final installed comparison.
 Arithmetic parsing and evaluation remain substantial Endgame costs.
+
+[Round thirty](round30.md) follows arithmetic decimal tokens through
+`lexconstant()` and integer conversion. Fusing those walks reduces Endgame
+instructions by 3.09%, but installed customer timing exposes coder/chat paste
+and JSON encoding regressions. The selected and one-digit prototypes remain
+unadopted. New native tests compare endpoints, arithmetic globals, floating-point
+environment and boundary allocations against pristine and accepted hosts.
+Long integers, floats and exponent fallbacks remain important cost controls.

@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh": "9410df410e50ca0ac99e2ac0aac7492fc4d30c72eb43329184c81b7714b292e0",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c": "03263b335c04b1f8d7d09843e8b8735caebd26beffd9abf8cdd87685bee7b6f9",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/development-small/0/psh_small_math_fixture.so": "a85683b7ae56b67f1d97537d58cc43ff3e0a6d0470b15b6d40f11f75b96e09df",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/development-small/1/psh_small_math_fixture.so": "a85683b7ae56b67f1d97537d58cc43ff3e0a6d0470b15b6d40f11f75b96e09df",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-math-small-module.py": "b3eade161c4f5dadc6d48be2ed0d6c1e556430bc7c4ba72b93183adca1d741e7"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/development-small/0/psh_small_math_fixture.so",
+      "-lm"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/development-small/1/psh_small_math_fixture.so",
+      "-lm"
+    ]
+  ],
+  "checks": 3355520,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 1677760,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=1677760 digest=10702521374325591192\nsmall-math-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh",
+      "locale": "C.UTF-8",
+      "checks": 1677760,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=1677760 digest=10702521374325591192\nsmall-math-done\n"
+    }
+  ]
+}

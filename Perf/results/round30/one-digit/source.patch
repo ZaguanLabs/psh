@@ -1,0 +1,27 @@
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..55a7281 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -503,6 +503,22 @@ lexconstant(void)
+ {
+     char *nptr;
+ 
++    /* A complete one-digit decimal needs neither classification nor a
++     * second conversion scan. Keep live character-table exceptions on
++     * the original path, along with every possible numeric continuation. */
++    if ((unsigned)(*ptr - '1') < 9 &&
++	(unsigned)(ptr[1] - '0') >= 10 &&
++	ptr[1] != '_' && ptr[1] != '.' &&
++	ptr[1] != 'e' && ptr[1] != 'E' && ptr[1] != '#' &&
++	!idigit(ptr[1]) && !inblank(*ptr)) {
++	yyval.u.l = *ptr++ - '0';
++	if (isset(FORCEFLOAT)) {
++	    yyval.type = MN_FLOAT;
++	    yyval.u.d = (double)yyval.u.l;
++	}
++	return NUM;
++    }
++
+     nptr = ptr;
+     if (IS_DASH(*nptr))
+ 	nptr++;

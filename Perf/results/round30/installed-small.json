@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh": "9981ba37c0d6b467e11cb7ce8aacd10a89f95133b7958c7e3aad654cb47e0b72",
+    "/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh": "33cd257f6a495bf5da91bea4c7d2dbf1a0c1ae262b286cff61028328c4926165",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c": "03263b335c04b1f8d7d09843e8b8735caebd26beffd9abf8cdd87685bee7b6f9",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/installed-small/0/psh_small_math_fixture.so": "92bea38182f75c95cdec79925712246243dfd0ae89746f20304b71c272bb55ec",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/installed-small/1/psh_small_math_fixture.so": "92bea38182f75c95cdec79925712246243dfd0ae89746f20304b71c272bb55ec",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-math-small-module.py": "b3eade161c4f5dadc6d48be2ed0d6c1e556430bc7c4ba72b93183adca1d741e7"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-363dc2fc22b0/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-363dc2fc22b0/core/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/installed-small/0/psh_small_math_fixture.so",
+      "-lm"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-363dc2fc22b0/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-363dc2fc22b0/core/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-small-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/installed-small/1/psh_small_math_fixture.so",
+      "-lm"
+    ]
+  ],
+  "checks": 3355520,
+  "runs": [
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "locale": "C.UTF-8",
+      "checks": 1677760,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=1677760 digest=10702521374325591192\nsmall-math-done\n"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh",
+      "locale": "C.UTF-8",
+      "checks": 1677760,
+      "status": 0,
+      "memcheck": true,
+      "stdout": "checks=1677760 digest=10702521374325591192\nsmall-math-done\n"
+    }
+  ]
+}

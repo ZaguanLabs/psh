@@ -1,0 +1,1699 @@
+{
+  "passed": true,
+  "omz": {
+    "commit": "b509b1c6ed0c1ba37de12cbd37f30b2b2f61193a",
+    "files": 1198,
+    "source_sha256": "b2ddfb1f220e1116fe83f60e1040529a647dac479f5dd0bb2c1adc1dd7b94d71"
+  },
+  "omz_root": "/home/stig/.oh-my-zsh",
+  "syntax_highlighting": {
+    "commit": "e0165eaa730dd0fa321a6a6de74f092fe87630b0",
+    "files": 349,
+    "source_sha256": "1e192c3932e147390c258dacb948af9aef6bca5478345519ef8766d8a9d24801"
+  },
+  "theme": "re5et",
+  "configured_plugins": [
+    "git"
+  ],
+  "history_limits": {
+    "HISTSIZE": 100000,
+    "SAVEHIST": 100000
+  },
+  "shells": {
+    "reference": "/usr/bin/zsh",
+    "candidate": "/usr/local/psh/releases/1.0.0-rc0-363dc2fc22b0/bin/psh"
+  },
+  "binary_sha256": {
+    "reference": "9407c2fcae8dd1f769c546723d9232c68697aeda7f617728d12cab72df870026",
+    "candidate": "33cd257f6a495bf5da91bea4c7d2dbf1a0c1ae262b286cff61028328c4926165"
+  },
+  "driver_sha256": "10183307b2d853b40c66fd899b8b3c375010722fdd85270f06bc03fe5a7d8d0d",
+  "session_sha256": "d6902364198f41a08a8edf0293da3c85394122c799d48890b634da86d81ac3d8",
+  "personal_startup_sourced": false,
+  "updates_disabled_in_test": true,
+  "sources_unchanged": true,
+  "runs": [
+    {
+      "profile": "configured",
+      "host": "reference",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured",
+      "host": "reference",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured",
+      "host": "candidate",
+      "phase": "handoff",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured",
+      "host": "candidate",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured",
+      "host": "candidate",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured",
+      "host": "reference",
+      "phase": "handback",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-login",
+      "host": "reference",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 on\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-login",
+      "host": "reference",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 on\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-login",
+      "host": "candidate",
+      "phase": "handoff",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 on\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-login",
+      "host": "candidate",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 on\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-login",
+      "host": "candidate",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 on\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-login",
+      "host": "reference",
+      "phase": "handback",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 on\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "extended",
+      "host": "reference",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git,gitfast,z,extract,sudo,history-substring-search\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout ",
+            "cursor": 13,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting",
+              "12 13 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "extended",
+      "host": "reference",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git,gitfast,z,extract,sudo,history-substring-search\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout ",
+            "cursor": 13,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting",
+              "12 13 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "extended",
+      "host": "candidate",
+      "phase": "handoff",
+      "result": {
+        "state": "theme=re5et\nplugins=git,gitfast,z,extract,sudo,history-substring-search\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout ",
+            "cursor": 13,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting",
+              "12 13 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "extended",
+      "host": "candidate",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git,gitfast,z,extract,sudo,history-substring-search\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout ",
+            "cursor": 13,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting",
+              "12 13 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "extended",
+      "host": "candidate",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git,gitfast,z,extract,sudo,history-substring-search\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout ",
+            "cursor": 13,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting",
+              "12 13 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "extended",
+      "host": "reference",
+      "phase": "handback",
+      "result": {
+        "state": "theme=re5et\nplugins=git,gitfast,z,extract,sudo,history-substring-search\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout ",
+            "cursor": 13,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting",
+              "12 13 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-inherited-fpath",
+      "host": "reference",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-inherited-fpath",
+      "host": "reference",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-inherited-fpath",
+      "host": "candidate",
+      "phase": "handoff",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-inherited-fpath",
+      "host": "candidate",
+      "phase": "warm",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-inherited-fpath",
+      "host": "candidate",
+      "phase": "cold",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    },
+    {
+      "profile": "configured-inherited-fpath",
+      "host": "reference",
+      "phase": "handback",
+      "result": {
+        "state": "theme=re5et\nplugins=git\nhistory-size=100000\nhistory-save=100000\ngit-alias=git checkout\ngit-completion=_git\nbranch=psh-omz-main\ngit-prompt=%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}\ntheme-uses-git-prompt=1\nprompt=\"\n%{\\$fg_bold[cyan]%}%n%{\\$reset_color%}%{\\$fg[yellow]%}@%{\\$reset_color%}%{\\$fg_bold[blue]%}%m%{\\$reset_color%}:%{\\${fg_bold[green]}%}%~%{\\$reset_color%}\\$(git_prompt_info)\n%{\\${fg[\\$CARETCOLOR]}%}%# %{\\${reset_color}%}\"\nrprompt=\"\"\nrps1=\"\\${return_code} %D - %*\"\nprompt-expansion=\u001b[32mstig@spurven /tmp/psh-omz-km_3hlnq/repository\u001b[39m >\nomz-version=master (b509b1c6)\n\"^R\" history-incremental-search-backward\n\"^[[A\" up-line-or-beginning-search\nnoaliases             off\naliasfuncdef          off\nallexport             off\nnoalwayslastprompt    off\nalwaystoend           on\nappendcreate          off\nnoappendhistory       off\nautocd                on\nautocontinue          off\nnoautolist            off\nnoautomenu            off\nautonamedirs          off\nnoautoparamkeys       off\nnoautoparamslash      off\nautopushd             on\nnoautoremoveslash     off\nautoresume            off\nnobadpattern          off\nnobanghist            off\nnobareglobqual        off\nbashautolist          off\nbashrematch           off\nnobeep                off\nnobgnice              off\nbraceccl              off\nbsdecho               off\nnocaseglob            off\nnocasematch           off\ncasepaths             off\ncbases                off\ncdablevars            off\ncdsilent              off\nchasedots             off\nchaselinks            off\nnocheckjobs           off\nnocheckrunningjobs    off\nnoclobber             off\nclobberempty          off\ncombiningchars        off\ncompletealiases       off\ncompleteinword        on\ncontinueonerror       off\ncorrect               off\ncorrectall            off\ncprecedences          off\ncshjunkiehistory      off\ncshjunkieloops        off\ncshjunkiequotes       off\ncshnullcmd            off\ncshnullglob           off\nnodebugbeforecmd      off\ndvorak                off\nemacs                 off\nnoequals              off\nerrexit               off\nerrreturn             off\nnoevallineno          off\nnoexec                off\nextendedglob          off\nextendedhistory       on\nnoflowcontrol         on\nforcefloat            off\nnofunctionargzero     off\nnoglob                off\nnoglobalexport        off\nnoglobalrcs           on\nglobassign            off\nglobcomplete          off\nglobdots              off\nglobstarshort         off\nglobsubst             off\nnohashcmds            off\nnohashdirs            off\nhashexecutablesonly   off\nnohashlistall         off\nhistallowclobber      off\nnohistbeep            off\nhistexpiredupsfirst   on\nhistfcntllock         off\nhistfindnodups        off\nhistignorealldups     off\nhistignoredups        on\nhistignorespace       on\nhistlexwords          off\nhistnofunctions       off\nhistnostore           off\nhistreduceblanks      off\nnohistsavebycopy      off\nhistsavenodups        off\nhistsubstpattern      off\nhistverify            on\nnohup                 off\nignorebraces          off\nignoreclosebraces     off\nignoreeof             off\nincappendhistory      off\nincappendhistorytime  off\ninteractive           on\ninteractivecomments   on\nksharrays             off\nkshautoload           off\nkshglob               off\nkshoptionprint        off\nkshtypeset            off\nkshzerosubscript      off\nnolistambiguous       off\nnolistbeep            off\nlistpacked            off\nlistrowsfirst         off\nnolisttypes           off\nlocalloops            off\nlocaloptions          off\nlocalpatterns         off\nlocaltraps            off\nlogin                 off\nlonglistjobs          on\nmagicequalsubst       off\nmailwarning           off\nmarkdirs              off\nmenucomplete          off\nmonitor               on\nnomultibyte           off\nnomultifuncdef        off\nnomultios             off\nnonomatch             off\nnonotify              off\nnullglob              off\nnumericglobsort       off\noctalzeroes           off\noverstrike            off\npathdirs              off\npathscript            off\npipefail              off\nposixaliases          off\nposixargzero          off\nposixbuiltins         off\nposixcd               off\nposixidentifiers      off\nposixjobs             off\nposixstrings          off\nposixtraps            off\nprinteightbit         off\nprintexitvalue        off\nprivileged            off\npromptbang            off\nnopromptcr            off\nnopromptpercent       off\nnopromptsp            off\npromptsubst           on\npushdignoredups       on\npushdminus            on\npushdsilent           off\npushdtohome           off\nrcexpandparam         off\nrcquotes              off\nnorcs                 off\nrecexact              off\nrematchpcre           off\nrestricted            off\nrmstarsilent          off\nrmstarwait            off\nsharehistory          on\nshfileexpansion       off\nshglob                off\nshinstdin             off\nshnullcmd             off\nshoptionletters       off\nnoshortloops          off\nshortrepeat           off\nshwordsplit           off\nsinglecommand         off\nsinglelinezle         off\nsourcetrace           off\nsunkeyboardhack       off\ntransientrprompt      off\ntrapsasync            off\ntypesetsilent         off\ntypesettounset        off\nnounset               off\nverbose               off\nvi                    off\nwarncreateglobal      off\nwarnnestedvar         off\nxtrace                off\nzle                   on\n",
+        "buffers": [
+          {
+            "buffer": "git checkout",
+            "cursor": 12,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 12 none memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat alpha\\ beta.txt ",
+            "cursor": 20,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 19 underline memo=zsh-syntax-highlighting",
+              "19 20 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat \"alpha beta.txt\" ",
+            "cursor": 21,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 20 underline memo=zsh-syntax-highlighting",
+              "4 20 fg=yellow memo=zsh-syntax-highlighting",
+              "20 21 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "cat weird-\u00e9\u754c.txt ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 underline memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "gco psh-omz-side ",
+            "cursor": 17,
+            "highlights": [
+              "0 3 fg=green memo=zsh-syntax-highlighting",
+              "4 16 none memo=zsh-syntax-highlighting",
+              "16 17 bold memo=zsh-syntax-highlighting"
+            ]
+          },
+          {
+            "buffer": "echo psh-omz-history",
+            "cursor": 20,
+            "highlights": [
+              "0 4 fg=green memo=zsh-syntax-highlighting",
+              "5 20 none memo=zsh-syntax-highlighting"
+            ]
+          }
+        ],
+        "async_input_and_callback": true,
+        "git_prompt_after_async": "%{\u001b[01;35m%}^%{\u001b[00m%}%{\u001b[01;33m%}psh-omz-main%{\u001b[01;31m%} \u00b1%{\u001b[00m%}",
+        "interrupt_recovery": true,
+        "completion_dump": true,
+        "compiled_dump": true,
+        "status": 0
+      }
+    }
+  ]
+}

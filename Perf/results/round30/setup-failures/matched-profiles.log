@@ -1,0 +1,24 @@
+previous-endgame 1144450049
+candidate-endgame 1136852206
+previous-json-encode 2653577700
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/matched-profiles.py", line 23, in <module>
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:rows=list(pool.map(run,cases))
+                                                                           ~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.13/concurrent/futures/_base.py", line 625, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib64/python3.13/concurrent/futures/_base.py", line 318, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib64/python3.13/concurrent/futures/_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib64/python3.13/concurrent/futures/_base.py", line 402, in __get_result
+    raise self._exception
+  File "/usr/lib64/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round30/matched-profiles.py", line 14, in run
+    r=subprocess.run(cmd,env=env,capture_output=True,timeout=900);assert r.returncode==0 and not r.stderr,(name,r.returncode,r.stderr)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('previous-mario', 1, b'')

@@ -163,3 +163,7 @@ release profile while reusing confirmed prefixes before ordinary array append.
 The [round-twenty-nine hashing investigation](../Perf/round29.md) does not change
 the active release: both prototypes are rejected after installed-binary timing.
 Its inactive candidate and validation evidence are retained separately.
+
+The [round-thirty decimal lexer investigation](../Perf/round30.md) also leaves
+the active release unchanged. Its Endgame gains do not outweigh repeated
+coder/chat paste and JSON encoding regressions in installed-build measurements.
