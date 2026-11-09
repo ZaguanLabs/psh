@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/usr/local/psh/releases/1.0.0-rc0-e84bb6129d9e/bin/psh": "e9bad634912ddc66e8625ecad40c9c7cb706654e31a3c06bc456489c4c51e84c",
+    "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh": "9981ba37c0d6b467e11cb7ce8aacd10a89f95133b7958c7e3aad654cb47e0b72",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-module.c": "519bd4a81ab5321dc70e7737cc60e0f94c44bc72b44d9f420ae237e21761cbb5",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/append-prefix.zsh": "4405eaa90fb1b77f6b97e6d36229dd1f62e502338bc140155a1d14201efa1897",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/installed-prefix/psh_array_cache_fixture.so": "dd880add0343e4ae93ece66cc75dabc0243f4d4e9a95caebb6a7772223c87d4d",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-append-prefix.py": "c353cce3a3329c7844f7186011e3fca4cc0051dc15c69d1100cab83ecceb45ae"
+  },
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-56f97a85e8cb/core/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-56f97a85e8cb/core/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/installed-prefix/psh_array_cache_fixture.so"
+  ],
+  "checks": 4386,
+  "runs": [
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-e84bb6129d9e/bin/psh",
+      "locale": "C.UTF-8",
+      "mode": "zsh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "e5cc55a7fa39db89200dcecee894a87a3aa7ef3586cea843de3f48d531d54692"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "locale": "C.UTF-8",
+      "mode": "zsh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "e5cc55a7fa39db89200dcecee894a87a3aa7ef3586cea843de3f48d531d54692"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-e84bb6129d9e/bin/psh",
+      "locale": "C.UTF-8",
+      "mode": "ksh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "locale": "C.UTF-8",
+      "mode": "ksh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-e84bb6129d9e/bin/psh",
+      "locale": "C.UTF-8",
+      "mode": "sh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "locale": "C.UTF-8",
+      "mode": "sh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    }
+  ]
+}

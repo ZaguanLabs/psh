@@ -1,0 +1,269 @@
+Round twenty-eight: reuse confirmed array prefixes before append
+Parent: b9ab35d3627c00568b893498e5a540cac4201175
+
+diff --git a/COMPATIBILITY.md b/COMPATIBILITY.md
+index 6decc8b..7bcab62 100644
+--- a/COMPATIBILITY.md
++++ b/COMPATIBILITY.md
+@@ -66,6 +66,12 @@ Round twenty-seven prefilters option-emulation scans using the existing scanner
+ masks. The original setter checks remain for generated tables; no new intended
+ language, native-interface or ownership difference is introduced.
+ 
++Round twenty-eight reuses confirmed prefixes when counting an owned array before
++append, and records constructed prefixes after eligible assignments. It retains
++the existing queued-signal and mutable native getter-loan contract, cache layout
++and invalidation. No new intended language or native-interface difference is
++introduced; raw field mutation remains subject to the existing migration below.
++
+ ## Deliberate differences
+ 
+ | Surface | Difference and practical consequence |
+@@ -126,7 +132,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
+ 
+ ## What has and has not been checked
+ 
+-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-five
++The [source-review map](Perf/audit.md) describes focused coverage. Twenty-six
+ accepted optimizations change a limited set of core paths: arrays/subscripts,
+ metafied strings, character scanning, terminal-star matching, substitution and
+ arithmetic and option emulation. This is not a completed audit of the complete interpreter.
+diff --git a/Perf/array-cache-module.c b/Perf/array-cache-module.c
+index faa0ee0..c648421 100644
+--- a/Perf/array-cache-module.c
++++ b/Perf/array-cache-module.c
+@@ -45,6 +45,14 @@ bin_cache_fixture(UNUSED(char *name), char **args, UNUSED(Options ops), UNUSED(i
+         } else return 2;
+         return loan ? 0 : 1;
+     }
++    if (!strcmp(args[0], "trim")) {
++        char **p;
++        if (!loan || loan != pm->u.arr || saved_tail) return 2;
++        for (p = loan + 3; *p; p++) zsfree(*p);
++        loan[3] = NULL;
++        loan = NULL;
++        return 0;
++    }
+     if (!strcmp(args[0], "same")) {
+         int same = loan == pm->u.arr;
+         printf("same_pointer=%d\n", same);
+diff --git a/Src/params.c b/Src/params.c
+index a48f9e5..a33b9ad 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -741,6 +741,22 @@ array_length_ge(Param pm, char **arr, unsigned bound)
+     return 1;
+ }
+ 
++/* Complete a length walk from an already confirmed prefix. The caller has
++ * established ownership before the read; retain the original scan otherwise. */
++/**/
++static int
++array_length_full(Param pm, char **arr)
++{
++    unsigned slot = ((size_t)pm >> 4) & 63;
++    unsigned prefix = 0;
++
++    if (queue_signal_level() && arr == pm->u.arr &&
++	array_lengths[slot].pm == pm && array_lengths[slot].array == arr &&
++	array_lengths[slot].bound <= INT_MAX)
++	prefix = array_lengths[slot].bound;
++    return prefix + arrlen(arr + prefix);
++}
++
+ /* Called before matching, with signals queued and arr owned by pm. Reuse
+  * only a confirmed prefix, then walk once to the start or the terminator. */
+ /**/
+@@ -2985,6 +3001,8 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
+ 	     v->pm->node.nam);
+ 	return;
+     } else {
++	int cache_length = queue_signal_level() && array_length_owned(v->pm) &&
++	    !(v->pm->node.flags & PM_UNIQUE);
+ 	char **const old = getarrayreadonly(v->pm);
+ 	char **new;
+ 	char **p, **q, **r; /* index variables */
+@@ -3119,6 +3137,16 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
+ 		   post_assignment_length, (unsigned long)(p - new));
+ 	}
+ 
++        /* The ordinary setter has no callbacks or length-changing effects
++         * under these ownership/uniqueness restrictions. Its invalidation is
++         * complete, so publish only the prefix constructed by this write. */
++	if (cache_length && post_assignment_length >= 64) {
++	    unsigned slot = ((size_t)v->pm >> 4) & 63;
++	    array_lengths[slot].pm = v->pm;
++	    array_lengths[slot].array = v->pm->u.arr;
++	    array_lengths[slot].bound = post_assignment_length;
++	}
++
+         /* Ownership of all strings has been
+          * given away, can plainly free */
+ 	free(val);
+@@ -3639,7 +3667,9 @@ assignaparam(char *s, char **val, int flags)
+ 		int reuse_length = v->pm->gsu.a == &stdarray_gsu &&
+ 		    !(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) &&
+ 		    !v->pm->ename;
+-		v->start = arrlen(getarrayreadonly(v->pm));
++		int cache_length = array_length_owned(v->pm);
++		char **arr = getarrayreadonly(v->pm);
++		v->start = cache_length ? array_length_full(v->pm, arr) : arrlen(arr);
+ 	    	v->end = v->start + 1;
+ 		if (reuse_length)
+ 		    pre_assignment_length = v->start;
+diff --git a/Perf/append-prefix.zsh b/Perf/append-prefix.zsh
+new file mode 100644
+index 0000000..f4d6fc8
+--- /dev/null
++++ b/Perf/append-prefix.zsh
+@@ -0,0 +1,81 @@
++emulate -R "$2"
++setopt braceexpand
++module_path=("$1" $module_path)
++zmodload psh_array_cache_fixture || exit 1
++integer checks=0 size i j
++_psh_append_state() {
++  print -r -- "size=${#a[@]} values=${(qqqq)a[@]}"
++  for j in 1 3 63 64 65 128 257 513 -1; do
++    print -r -- "index=$j exists=${+a[$j]} value=${(qqqq)a[$j]}"
++  done
++  (( checks++ ))
++}
++_psh_append_shadow() {
++  typeset -a a=( {1..128} )
++  a+=(inner); a[1,64]=(); a+=(inner-tail)
++  _psh_append_state
++}
++for size in 0 1 31 32 33 63 64 65 127 128 129 255 256 257 511 512 513; do
++  for action in append empty grow sparse prefix middle tail replace keyvalue shift unique attrs shadow recreate; do
++    unset a
++    typeset -a a=()
++    for (( i=0; i<size; i++ )); do a+=("value-$i"); done
++    # Publish a length through append, then mix mutations and cache collisions.
++    a+=(seed)
++    print -r -- "case=$size/$action"
++    _psh_append_state
++    case $action in
++      append) repeat 8; do a+=(tail '' $'\0\377é'); done ;;
++      empty) repeat 8; do a+=(); done ;;
++      grow) a+=( {1..257} ) ;;
++      sparse) a[600]=sparse ;;
++      prefix) a[1,64]=() ;;
++      middle) a[63,255]=() ;;
++      tail) a[64,-1]=() ;;
++      replace) a=(one two three) ;;
++      keyvalue) a+=([3]=replacement [65]+=suffix) ;;
++      shift) shift 3 a 2>/dev/null ;;
++      unique) a+=(seed seed); typeset -U a; a+=(seed tail) ;;
++      attrs) typeset -L 4 a; a+=(padding); typeset +L a ;;
++      shadow) _psh_append_shadow ;;
++      recreate) unset a; typeset -a a=(new array) ;;
++    esac
++    # Repeated append and subsequent reads must observe the mutated length.
++    repeat 4; do a+=(after); done
++    _psh_append_state
++    for (( i=0; i<96; i++ )); do
++      eval "psh_prefix_other$i=( {1..128} )"
++      eval "psh_prefix_other$i+=(other)"
++    done
++    a+=(after-eviction)
++    _psh_append_state
++  done
++done
++# Readonly writes in nested scopes, and tied/special/unique fallbacks.
++_psh_append_fallbacks() {
++  typeset -a locked=( {1..128} )
++  locked+=(seed)
++  typeset -r locked
++  (locked+=(tail)) 2>/dev/null
++  print -r -- "readonly=${#locked[@]}:${locked[-1]}"
++  typeset -T joined tied
++  tied=( {1..128} ); tied+=(tail); tied[1,64]=(); tied+=(after)
++  print -r -- "tied=$joined"
++  typeset -aU uniq=(seed)
++  repeat 80; do uniq+=(seed other); done
++  print -r -- "unique=${(qqqq)uniq[@]}"
++  argv=( {1..128} ); argv+=(tail); shift 64; argv+=(after)
++  print -r -- "argv=${(qqqq)argv[@]}"
++}
++_psh_append_fallbacks
++for kind in getaparam getter getarrvalue; do
++  psh-cache-fixture init || exit 11
++  psh_cache_array+=(warm)
++  psh-cache-fixture loan "$kind" || exit 12
++  psh-cache-fixture trim || exit 13
++  repeat 4; do psh_cache_array+=(tail); done
++  [[ ${#psh_cache_array[@]} == 7 ]] || exit 14
++  print -r -- "loan=$kind:${(qqqq)psh_cache_array[@]}"
++done
++zmodload -u psh_array_cache_fixture || exit 15
++print -r -- "checks=$checks append-prefix-complete"
+diff --git a/Perf/check-append-prefix.py b/Perf/check-append-prefix.py
+new file mode 100644
+index 0000000..2161e3e
+--- /dev/null
++++ b/Perf/check-append-prefix.py
+@@ -0,0 +1,64 @@
++#!/usr/bin/env python3
++"""Compare append prefix reuse, mutation and supported mutable native loans."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import re
++import subprocess
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('baseline', type=Path)
++    p.add_argument('candidate', type=Path)
++    p.add_argument('--headers-build', type=Path, required=True)
++    p.add_argument('--headers-source', type=Path, required=True)
++    p.add_argument('--memcheck', action='store_true')
++    p.add_argument('--locale', action='append', dest='locales')
++    p.add_argument('--output', type=Path, required=True)
++    a = p.parse_args()
++    a.output.parent.mkdir(parents=True, exist_ok=True)
++    a.output.unlink(missing_ok=True)
++    root = Path(__file__).resolve().parent
++    folder = a.output.resolve().with_suffix('')
++    folder.mkdir(exist_ok=True)
++    source, script = root / 'array-cache-module.c', root / 'append-prefix.zsh'
++    module = folder / 'psh_array_cache_fixture.so'
++    command = ['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H',
++               '-I' + str(a.headers_build.resolve(strict=True) / 'Src'),
++               '-I' + str(a.headers_source.resolve(strict=True) / 'Src'), str(source), '-o', str(module)]
++    subprocess.run(command, check=True)
++    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
++    shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
++    inputs = [*shells, source, script, module, Path(__file__).resolve()]
++    fingerprints = {str(p): sha(p) for p in inputs}
++    rows = []
++    for locale in a.locales or ['C', 'C.UTF-8']:
++        for mode in ['zsh', 'ksh', 'sh']:
++            expected = None
++            for index, shell in enumerate(shells):
++                prefix = []
++                if a.memcheck:
++                    prefix = ['valgrind', '--error-exitcode=97', '--leak-check=no',
++                              '--log-file=' + str(folder / f'{index}-{mode}-{locale}.memcheck.log')]
++                r = subprocess.run(prefix + [str(shell), '-df', str(script), str(folder), mode],
++                    env={'PATH': '/usr/bin:/bin', 'LC_ALL': locale}, capture_output=True, timeout=300)
++                count = re.search(rb'checks=(\d+) append-prefix-complete\n$', r.stdout)
++                if r.returncode or r.stderr or not count or int(count[1]) < 700:
++                    raise RuntimeError((index, locale, mode, r.returncode, r.stdout[-1000:], r.stderr[-1000:]))
++                value = (r.stdout, r.stderr)
++                if expected is not None and value != expected:
++                    raise RuntimeError((locale, mode, 'different append state'))
++                expected = value
++                rows.append(dict(shell=str(shell), locale=locale, mode=mode, checks=int(count[1]),
++                                 status=0, memcheck=a.memcheck,
++                                 stdout_sha256=hashlib.sha256(r.stdout).hexdigest()))
++                print(index, locale, mode, int(count[1]), 'states matched', flush=True)
++    assert fingerprints == {str(p): sha(p) for p in inputs}
++    a.output.write_text(json.dumps(dict(passed=True, fingerprints=fingerprints,
++        compile_command=command, checks=sum(r['checks'] for r in rows), runs=rows), indent=2) + '\n')
++
++
++if __name__ == '__main__':
++    main()

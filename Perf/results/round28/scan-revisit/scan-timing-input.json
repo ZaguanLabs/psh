@@ -1,0 +1,37 @@
+[
+  [
+    "scan-customer",
+    [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round28/previous/Src/zsh",
+      ".work/round28/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round28/scan-customer.json"
+    ]
+  ],
+  [
+    "scan-library",
+    [
+      "python3",
+      "Perf/applications.py",
+      ".work/round28/previous/Src/zsh",
+      ".work/round28/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round28/scan-library.json"
+    ]
+  ]
+]

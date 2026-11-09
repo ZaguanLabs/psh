@@ -96,7 +96,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-five accepted optimizations.
+The executable now includes twenty-six accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -126,7 +126,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-five changes; the fourth experiment compares against
+executable includes all twenty-six changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -282,3 +282,11 @@ JSON array parsing about 3–4.6% less in paired runs. The
 [round-twenty-seven report](Perf/round27.md) retains slower controls, including
 wide coder layout, and generated/native table and frontend coverage.
 No new language or native-interface difference is intended.
+
+The twenty-sixth accepted change reuses confirmed array prefixes before ordinary
+whole-array append. Eligible assignments publish the prefix they constructed;
+setters, destruction and mutable native getter loans retain their existing
+invalidation/ownership rules. JSON array encoding takes about 2.7–3.7% less time
+in paired runs. The [round-twenty-eight report](Perf/round28.md) includes all
+controls, native loan/mutation checks and the rejected scanner revisit.
+There is no new intended language or native-interface difference.

@@ -741,6 +741,22 @@ array_length_ge(Param pm, char **arr, unsigned bound)
     return 1;
 }
 
+/* Complete a length walk from an already confirmed prefix. The caller has
+ * established ownership before the read; retain the original scan otherwise. */
+/**/
+static int
+array_length_full(Param pm, char **arr)
+{
+    unsigned slot = ((size_t)pm >> 4) & 63;
+    unsigned prefix = 0;
+
+    if (queue_signal_level() && arr == pm->u.arr &&
+	array_lengths[slot].pm == pm && array_lengths[slot].array == arr &&
+	array_lengths[slot].bound <= INT_MAX)
+	prefix = array_lengths[slot].bound;
+    return prefix + arrlen(arr + prefix);
+}
+
 /* Called before matching, with signals queued and arr owned by pm. Reuse
  * only a confirmed prefix, then walk once to the start or the terminator. */
 /**/
@@ -2985,6 +3001,8 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
 	     v->pm->node.nam);
 	return;
     } else {
+	int cache_length = queue_signal_level() && array_length_owned(v->pm) &&
+	    !(v->pm->node.flags & PM_UNIQUE);
 	char **const old = getarrayreadonly(v->pm);
 	char **new;
 	char **p, **q, **r; /* index variables */
@@ -3117,6 +3135,16 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
 
 	    DPUTS2(p - new != post_assignment_length, "setarrvalue: wrong allocation: %d 1= %lu",
 		   post_assignment_length, (unsigned long)(p - new));
+	}
+
+        /* The ordinary setter has no callbacks or length-changing effects
+         * under these ownership/uniqueness restrictions. Its invalidation is
+         * complete, so publish only the prefix constructed by this write. */
+	if (cache_length && post_assignment_length >= 64) {
+	    unsigned slot = ((size_t)v->pm >> 4) & 63;
+	    array_lengths[slot].pm = v->pm;
+	    array_lengths[slot].array = v->pm->u.arr;
+	    array_lengths[slot].bound = post_assignment_length;
 	}
 
         /* Ownership of all strings has been
@@ -3639,7 +3667,9 @@ assignaparam(char *s, char **val, int flags)
 		int reuse_length = v->pm->gsu.a == &stdarray_gsu &&
 		    !(v->pm->node.flags & (PM_SPECIAL|PM_TIED)) &&
 		    !v->pm->ename;
-		v->start = arrlen(getarrayreadonly(v->pm));
+		int cache_length = array_length_owned(v->pm);
+		char **arr = getarrayreadonly(v->pm);
+		v->start = cache_length ? array_length_full(v->pm, arr) : arrlen(arr);
 	    	v->end = v->start + 1;
 		if (reuse_length)
 		    pre_assignment_length = v->start;

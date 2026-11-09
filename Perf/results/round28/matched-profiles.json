@@ -1,0 +1,160 @@
+[
+  {
+    "name": "previous-json-encode",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/previous-json-encode.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/previous-json-encode-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/previous/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "zjson-encode-array",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "cde43e4309e285e31f7b024e80bfe5047328babef88b56d843ee2c3d90e6c016",
+    "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "source_sha256": {
+      "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+      "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+      "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+      "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+      "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+      "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+    },
+    "instructions": 2812486410,
+    "output_state_sha256": "1d1e99c34c1a3cf20ece17bc7501e899f9c0c0b87780958f202ac46beb0e7cb3",
+    "status": 0
+  },
+  {
+    "name": "previous-chat-paste",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/previous-chat-paste.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/previous-chat-paste-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/previous/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "chat-paste",
+      "/home/stig/dev/ai/zaguan/labs/zchat.zsh",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "cde43e4309e285e31f7b024e80bfe5047328babef88b56d843ee2c3d90e6c016",
+    "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+    "source_sha256": {
+      "lib/api.zsh": "7adadf9a42e00ec3a48328f678bda75221e7b4452f68c2a31bfe98555967f052",
+      "lib/commands.zsh": "a2b4d75359697976715ff2e41d21313af48f4b0a640e1ebaf4666c1a7ad36e76",
+      "lib/compact.zsh": "ef7ec5b61cd7e3fb9a68f516afa7654a45bb4c5fc14db4e71d3d61c0f9d59bf8",
+      "lib/draw.zsh": "9e3a821269c6447862723803652f19ea9d6ea010245526e29bc9064df32ad573",
+      "lib/drawing.zsh": "d81c1bf723cb1a18205491313eb0c55f6df740bce7f61424c3924b212dc5dab5",
+      "lib/http.zsh": "f2712b6032eade822d16a299bbb441d5a452abfcc5614f2b03a36c3934bbfa33",
+      "lib/input.zsh": "c078ccf122b1cdc48c4a23821e7f23286e53503e7d1a1935d8e4fc650f3fad8a",
+      "lib/json.zsh": "6cddd3526da8bc78e19b26fdfb0acbe2f8f6f34295d67bf82f7800eb27dafe9f",
+      "lib/modal.zsh": "8bb91ad99a9d1c0cdff0f7ade8c0896890812833d6790064cb081ee3f28c304c",
+      "lib/remote.zsh": "e826ba9bbf2de7295632500b9eddab261ac75781c4a3a170a4382832ed7d6b24",
+      "lib/remote_json.zsh": "f22b1f3d198f7864ea395fc97b395b81a2b0e8330887d7c00e0c85bdcc46ee3e",
+      "lib/remote_stream.zsh": "8c586213ef1a651e9adc3647ca4881f367d1ae149b9bb4fbd1e70aaefbd05608",
+      "lib/remote_worker.zsh": "4ac27f743a4696211e0916f0ce778877a8b977903522e493c42839c66f7b43fb",
+      "lib/render.zsh": "0ca3613446517db9108c9fd7774146650d40d873cb4ca3947d93b3a263f25a08",
+      "lib/state.zsh": "b00ae7f98989a4dd01c35124fdb3809a30665ada41f32c94a18ce100900b5f49",
+      "lib/terminal.zsh": "70fef855bd731fac67b93fcb6afa5296bfc50ffcfd01006a9338ae56076b50b2",
+      "lib/ui.zsh": "aa992af9707432963558ecb74fca33cf32267067debbab987860b037a619f11b",
+      "lib/ui_preferences.zsh": "9c9a6e7fbeb7813b8a5cb9319c1110145f05bcc2594658c6945244356c53167b",
+      "lib/util.zsh": "dacbc695363bed0b07c9c40027f51c957e324ab6726ee0c22315b41b409f306d"
+    },
+    "instructions": 2363618238,
+    "output_state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf",
+    "status": 0
+  },
+  {
+    "name": "candidate-json-encode",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/candidate-json-encode.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/candidate-json-encode-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/candidate/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "zjson-encode-array",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "8385f20bfc92d2de00459b568f27303ec28ae6b2d22292eb0235ce0ee3e3dc6d",
+    "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "source_sha256": {
+      "lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+      "lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+      "lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+      "lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+      "lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+      "zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+    },
+    "instructions": 2653577696,
+    "output_state_sha256": "1d1e99c34c1a3cf20ece17bc7501e899f9c0c0b87780958f202ac46beb0e7cb3",
+    "status": 0
+  },
+  {
+    "name": "candidate-chat-paste",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/candidate-chat-paste.callgrind",
+      "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/candidate-chat-paste-callgrind.log",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/candidate/Src/zsh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "chat-paste",
+      "/home/stig/dev/ai/zaguan/labs/zchat.zsh",
+      "1"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "binary_sha256": "8385f20bfc92d2de00459b568f27303ec28ae6b2d22292eb0235ce0ee3e3dc6d",
+    "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+    "source_sha256": {
+      "lib/api.zsh": "7adadf9a42e00ec3a48328f678bda75221e7b4452f68c2a31bfe98555967f052",
+      "lib/commands.zsh": "a2b4d75359697976715ff2e41d21313af48f4b0a640e1ebaf4666c1a7ad36e76",
+      "lib/compact.zsh": "ef7ec5b61cd7e3fb9a68f516afa7654a45bb4c5fc14db4e71d3d61c0f9d59bf8",
+      "lib/draw.zsh": "9e3a821269c6447862723803652f19ea9d6ea010245526e29bc9064df32ad573",
+      "lib/drawing.zsh": "d81c1bf723cb1a18205491313eb0c55f6df740bce7f61424c3924b212dc5dab5",
+      "lib/http.zsh": "f2712b6032eade822d16a299bbb441d5a452abfcc5614f2b03a36c3934bbfa33",
+      "lib/input.zsh": "c078ccf122b1cdc48c4a23821e7f23286e53503e7d1a1935d8e4fc650f3fad8a",
+      "lib/json.zsh": "6cddd3526da8bc78e19b26fdfb0acbe2f8f6f34295d67bf82f7800eb27dafe9f",
+      "lib/modal.zsh": "8bb91ad99a9d1c0cdff0f7ade8c0896890812833d6790064cb081ee3f28c304c",
+      "lib/remote.zsh": "e826ba9bbf2de7295632500b9eddab261ac75781c4a3a170a4382832ed7d6b24",
+      "lib/remote_json.zsh": "f22b1f3d198f7864ea395fc97b395b81a2b0e8330887d7c00e0c85bdcc46ee3e",
+      "lib/remote_stream.zsh": "8c586213ef1a651e9adc3647ca4881f367d1ae149b9bb4fbd1e70aaefbd05608",
+      "lib/remote_worker.zsh": "4ac27f743a4696211e0916f0ce778877a8b977903522e493c42839c66f7b43fb",
+      "lib/render.zsh": "0ca3613446517db9108c9fd7774146650d40d873cb4ca3947d93b3a263f25a08",
+      "lib/state.zsh": "b00ae7f98989a4dd01c35124fdb3809a30665ada41f32c94a18ce100900b5f49",
+      "lib/terminal.zsh": "70fef855bd731fac67b93fcb6afa5296bfc50ffcfd01006a9338ae56076b50b2",
+      "lib/ui.zsh": "aa992af9707432963558ecb74fca33cf32267067debbab987860b037a619f11b",
+      "lib/ui_preferences.zsh": "9c9a6e7fbeb7813b8a5cb9319c1110145f05bcc2594658c6945244356c53167b",
+      "lib/util.zsh": "dacbc695363bed0b07c9c40027f51c957e324ab6726ee0c22315b41b409f306d"
+    },
+    "instructions": 2363622274,
+    "output_state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf",
+    "status": 0
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "append-prefix-native",
+      "command": [
+        "python3",
+        "Perf/check-append-prefix.py",
+        ".work/baseline/Src/zsh",
+        ".work/round28/candidate/Src/zsh",
+        "--headers-build",
+        ".work/baseline",
+        "--headers-source",
+        ".work/pristine",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/append-prefix-native.json"
+      ],
+      "status": 0,
+      "seconds": 227.40398055291735
+    },
+    {
+      "name": "cache-native",
+      "command": [
+        "python3",
+        "Perf/check-array-cache.py",
+        ".work/round28/previous/Src/zsh",
+        ".work/round28/candidate/Src/zsh",
+        "--headers-build",
+        ".work/round28/previous",
+        "--headers-source",
+        ".work/round28/previous-source",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/cache-native.json"
+      ],
+      "status": 0,
+      "seconds": 37.43348635500297
+    },
+    {
+      "name": "cache-signals",
+      "command": [
+        "python3",
+        "Perf/check-array-cache-signals.py",
+        ".work/round28/candidate/Src/zsh",
+        "--search",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/cache-signals.json"
+      ],
+      "status": 0,
+      "seconds": 0.22601330908946693
+    },
+    {
+      "name": "length-native",
+      "command": [
+        "python3",
+        "Perf/check-array-length-module.py",
+        ".work/round28/previous/Src/zsh",
+        ".work/round28/candidate/Src/zsh",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/length-native.json"
+      ],
+      "status": 0,
+      "seconds": 2.1430182550102472
+    }
+  ]
+}

@@ -66,6 +66,12 @@ Round twenty-seven prefilters option-emulation scans using the existing scanner
 masks. The original setter checks remain for generated tables; no new intended
 language, native-interface or ownership difference is introduced.
 
+Round twenty-eight reuses confirmed prefixes when counting an owned array before
+append, and records constructed prefixes after eligible assignments. It retains
+the existing queued-signal and mutable native getter-loan contract, cache layout
+and invalidation. No new intended language or native-interface difference is
+introduced; raw field mutation remains subject to the existing migration below.
+
 ## Deliberate differences
 
 | Surface | Difference and practical consequence |
@@ -126,7 +132,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-five
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-six
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
 arithmetic and option emulation. This is not a completed audit of the complete interpreter.

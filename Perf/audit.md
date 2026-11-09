@@ -113,3 +113,11 @@ mutation bookkeeping and signal boundaries remain unchanged. A queued-only
 unchecked-setter trial did not enter its fast path in customer profiles and is
 retained. Native output-alias/live-flag tests and frontend scope/trace/sticky
 autoload comparisons extend the focused coverage.
+
+[Round twenty-eight](round28.md) traces nearly all JSON encoding array-length
+instructions to whole-array append. It resumes the count after an owned,
+confirmed prefix and records a constructed prefix after eligible assignments.
+No exact-length flag or additional cache storage is introduced. Native loans,
+setter/destructor invalidation and signal boundaries retain their existing
+contract. The scanner specialization revisit remains rejected on mixed customer
+timings, consistent with round eighteen's earlier result.

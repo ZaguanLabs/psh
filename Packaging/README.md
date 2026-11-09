@@ -9,7 +9,7 @@ The current project version is **1.0.0-rc0**. `psh --version` reports
 `psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
-The [option-emulation iteration](../Perf/round27.md) records the current private
+The [append-prefix iteration](../Perf/round28.md) records the current private
 build; [release-profile notes](../Releases/rc0-release-profile.md) describe its
 configuration and debugger symbols. The project version stays rc0 until public release.
 

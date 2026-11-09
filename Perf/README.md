@@ -913,3 +913,24 @@ combinations, negative option-name aliases, duplicate destinations, special
 options, generated callback flags/order and output aliases that change later
 node flags. Configured headers must match the host profile; the defaults refer
 to the pristine debug baseline.
+
+## Confirmed prefixes before append
+
+[Round twenty-eight](round28.md) resumes the pre-append length count after an
+already confirmed owned prefix. Eligible ordinary assignments record the prefix
+they constructed; no additional cache field or native-module interface is added.
+The existing mutable-getter loan contract applies.
+
+```sh
+python3 Perf/check-append-prefix.py .work/baseline/Src/zsh ./psh \
+  --headers-build .work/baseline --headers-source .work/pristine \
+  --memcheck --output .work/logs/append-prefix.json
+```
+
+This compares complete states in native/ksh/sh emulation, including 17 initial
+lengths, repeated append, deletion, sparse/key-value writes, scope restoration,
+uniqueness, readonly/tied/special fallbacks, cache churn and native getter loans
+that truncate a previously cached vector before further append. Its fixture
+uses public APIs and is compiled against the selected matching SDK. Continue
+running `check-array-cache.py --memcheck` for the existing ordinary-malloc and
+Memcheck lifetime/realloc cases, plus upstream and required OMZ checks.

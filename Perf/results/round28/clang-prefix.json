@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-previous/Src/zsh": "5c66b0d228ff79bdd9b2f475edfe76a6a2370dd43b1d57d45d5c81dd15fc6a2f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-candidate/Src/zsh": "516d0c18ed31c4a1144eac48b1613ae9925239bd0630eae475dfa10e6f67ae40",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-module.c": "519bd4a81ab5321dc70e7737cc60e0f94c44bc72b44d9f420ae237e21761cbb5",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/append-prefix.zsh": "4405eaa90fb1b77f6b97e6d36229dd1f62e502338bc140155a1d14201efa1897",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/clang-prefix/psh_array_cache_fixture.so": "39c87583ea69923e943e84cc1d921fea17dfcb775d3b4542f65cf8a9963bcb06",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-append-prefix.py": "c353cce3a3329c7844f7186011e3fca4cc0051dc15c69d1100cab83ecceb45ae"
+  },
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/previous-source/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round28/clang-prefix/psh_array_cache_fixture.so"
+  ],
+  "checks": 4386,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "mode": "zsh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "e5cc55a7fa39db89200dcecee894a87a3aa7ef3586cea843de3f48d531d54692"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "mode": "zsh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "e5cc55a7fa39db89200dcecee894a87a3aa7ef3586cea843de3f48d531d54692"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "mode": "ksh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "mode": "ksh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "mode": "sh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/clang-candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "mode": "sh",
+      "checks": 731,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "f1e924a1f6c2f3df2882bfe8e3b14170342b8ea9f59e6509ed4f1e9f75e8e803"
+    }
+  ]
+}

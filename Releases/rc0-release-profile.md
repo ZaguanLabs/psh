@@ -156,3 +156,6 @@ the earlier archive. The source checker builds outside Git, tests the
 assertion-enabled development core, and independently stages both release and
 debug packages with distinct IDs and verified DEBUG settings. It does not
 install those disposable rebuilds. Its report belongs beside the exact archive.
+
+The [round-twenty-eight iteration](../Perf/round28.md) retains rc0 and the
+release profile while reusing confirmed prefixes before ordinary array append.

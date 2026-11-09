@@ -1,0 +1,40 @@
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 75b06c4..4fc89b6 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -423,16 +423,28 @@ scanmatchtable(HashTable ht, Patprog pprog, int sorted,
+ 	st.sorted = 0;
+ 	impl(ht)->scan = &st;
+ 
+-	for (i = 0; i < hsize; i++)
+-	    for (st.u.u = nodes[i]; st.u.u; ) {
+-		HashNode hn = st.u.u;
+-		st.u.u = st.u.u->next;
+-		if ((!flags1 || (hn->flags & flags1)) && !(hn->flags & flags2)
+-		    && (!pprog || pattry(pprog, hn->nam))) {
++	/* Most scope scans have no selection criteria.  Decide this once,
++	 * retaining the same live next-node cursor for callback mutations. */
++	if (!pprog && !flags1 && !flags2) {
++	    for (i = 0; i < hsize; i++)
++		for (st.u.u = nodes[i]; st.u.u; ) {
++		    HashNode hn = st.u.u;
++		    st.u.u = st.u.u->next;
+ 		    match++;
+ 		    scanfunc(hn, scanflags);
+ 		}
+-	    }
++	} else {
++		for (i = 0; i < hsize; i++)
++		    for (st.u.u = nodes[i]; st.u.u; ) {
++			HashNode hn = st.u.u;
++			st.u.u = st.u.u->next;
++			if ((!flags1 || (hn->flags & flags1)) && !(hn->flags & flags2)
++			    && (!pprog || pattry(pprog, hn->nam))) {
++			    match++;
++			    scanfunc(hn, scanflags);
++			}
++		    }
++	}
+ 
+ 	impl(ht)->scan = NULL;
+     }

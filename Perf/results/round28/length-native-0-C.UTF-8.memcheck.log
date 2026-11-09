@@ -1,0 +1,15 @@
+==3721766== Memcheck, a memory error detector
+==3721766== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3721766== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3721766== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round28/previous/Src/zsh -dfc emulate\ -R\ zsh_module_path=("$1"\ $module_path)_zmodload\ psh_array_length_fixture\ ||\ exit\ 1_psh-array-length-check\ ||\ exit\ 1_zmodload\ -u\ psh_array_length_fixture\ ||\ exit\ 1_if\ whence\ psh-array-length-check\ \>/dev/null;\ then\ exit\ 1;\ fi_exit\ 0_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/array-length-module
+==3721766== Parent PID: 3721404
+==3721766== 
+==3721766== 
+==3721766== HEAP SUMMARY:
+==3721766==     in use at exit: 46,093 bytes in 747 blocks
+==3721766==   total heap usage: 3,259 allocs, 2,512 frees, 3,328,816 bytes allocated
+==3721766== 
+==3721766== For a detailed leak analysis, rerun with: --leak-check=full
+==3721766== 
+==3721766== For lists of detected and suppressed errors, rerun with: -s
+==3721766== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

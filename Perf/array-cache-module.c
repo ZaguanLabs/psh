@@ -45,6 +45,14 @@ bin_cache_fixture(UNUSED(char *name), char **args, UNUSED(Options ops), UNUSED(i
         } else return 2;
         return loan ? 0 : 1;
     }
+    if (!strcmp(args[0], "trim")) {
+        char **p;
+        if (!loan || loan != pm->u.arr || saved_tail) return 2;
+        for (p = loan + 3; *p; p++) zsfree(*p);
+        loan[3] = NULL;
+        loan = NULL;
+        return 0;
+    }
     if (!strcmp(args[0], "same")) {
         int same = loan == pm->u.arr;
         printf("same_pointer=%d\n", same);
