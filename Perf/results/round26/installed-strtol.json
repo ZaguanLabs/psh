@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-1ca5fc1448c0/core/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-1ca5fc1448c0/core/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/strtol-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/installed-strtol/psh_strtol_fixture.so"
+  ],
+  "fingerprints": {
+    "/usr/local/psh/releases/1.0.0-rc0-d9a609a3adc3/bin/psh": "c23354279fbccaf9dd3f230b8fdf25b0ef92e2bd5cab26a6610bd242622f7cb3",
+    "/usr/local/psh/releases/1.0.0-rc0-1ca5fc1448c0/bin/psh": "971e8604a129205959c52fa22cc2bad1477e739157b9c516570424ed5f2df96a",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/strtol-module.c": "71be3de93449856d82875a13845f829db75f0c0451726d519bbca49dbedd405e",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/strtol-reference.c": "d9e194549a38fd305394de805fa3d525fd60b35412eec6dcc3730f1a2d9e562b",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/installed-strtol/psh_strtol_fixture.so": "85954ab1458bc2616b44b11a1ebf540063831c89437d6aafc76f302a1a24d400"
+  },
+  "checks": 6654912,
+  "runs": [
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-d9a609a3adc3/bin/psh",
+      "mode": "reference",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-d9a609a3adc3/bin/psh",
+      "mode": "actual",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-1ca5fc1448c0/bin/psh",
+      "mode": "reference",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-1ca5fc1448c0/bin/psh",
+      "mode": "actual",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    }
+  ]
+}

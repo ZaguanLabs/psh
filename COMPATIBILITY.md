@@ -58,6 +58,10 @@ under the same ownership and signal guards; it adds no new intended difference.
 Round twenty-five merges identical ASCII/token classification branches. It adds
 no intended language or native-interface difference.
 
+Round twenty-six accelerates bounded decimal prefixes, then resumes the original
+conversion loop for continuations. It adds no intended language or native-interface
+difference; original truncation and diagnostic behavior remain in place.
+
 ## Deliberate differences
 
 | Surface | Difference and practical consequence |
@@ -118,7 +122,7 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-three
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-four
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
 arithmetic. This is not a completed audit of the complete interpreter.

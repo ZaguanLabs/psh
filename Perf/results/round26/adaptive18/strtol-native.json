@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous-source/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/strtol-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/strtol-native/psh_strtol_fixture.so"
+  ],
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh": "188686d3bd1eb518ee48748df98b253c2565b22f848a7cb012a0ce1c6bcf653e",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh": "4f1a5b1a707624256974b5a2d97d9c62dd7fd35b048dfe287b141a841cb8fbe7",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/strtol-module.c": "71be3de93449856d82875a13845f829db75f0c0451726d519bbca49dbedd405e",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/strtol-reference.c": "d9e194549a38fd305394de805fa3d525fd60b35412eec6dcc3730f1a2d9e562b",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/strtol-native/psh_strtol_fixture.so": "f29eef8077fee93a990d5354b4f7e541bd2423cac066956ba5b8351ca7b7b86c"
+  },
+  "checks": 13309824,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+      "mode": "reference",
+      "locale": "C",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+      "mode": "actual",
+      "locale": "C",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+      "mode": "reference",
+      "locale": "C",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+      "mode": "actual",
+      "locale": "C",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+      "mode": "reference",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+      "mode": "actual",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+      "mode": "reference",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+      "mode": "actual",
+      "locale": "C.UTF-8",
+      "checks": 1663728,
+      "status": 0,
+      "memcheck": true,
+      "stdout_sha256": "c19e716199a6dc4d5152a36063cf40f83e230806b5f96efc9d3c5bdd625afb58",
+      "stderr_sha256": "1c23cdd37a829767ed2b52510dccae43cdb41db84506e93fbedc309218d7d31f",
+      "stderr_bytes": 47768968
+    }
+  ]
+}

@@ -96,7 +96,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-three accepted optimizations.
+The executable now includes twenty-four accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -126,7 +126,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-three changes; the fourth experiment compares against
+executable includes all twenty-four changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -264,3 +264,12 @@ without first testing its token flag; conversion state and non-ASCII handling
 remain unchanged. Endgame takes about 2% less time and Mario about 1–2% less in
 two runs. Library controls are mixed; the [round-twenty-five report](Perf/round25.md)
 retains all samples and the expanded native classification checks.
+
+The twenty-fourth accepted change accelerates ordinary short decimal conversion
+and hands longer/underscore continuations to the existing parser without
+rescanning their validated prefix. Values, end pointers, errno and diagnostics
+are compared with the original implementation. Coder paste takes about 1.3–1.4%
+less time, chat paste about 1.7–2.6%, in the paired runs. The
+[round-twenty-six report](Perf/round26.md) retains all controls and two rejected
+restart variants, including a severe long-number slowdown caught by the API
+benchmark. No new language or native-interface difference is intended.

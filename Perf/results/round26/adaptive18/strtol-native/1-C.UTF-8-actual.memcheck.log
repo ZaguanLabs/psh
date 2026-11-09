@@ -1,0 +1,15 @@
+==429585== Memcheck, a memory error detector
+==429585== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==429585== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==429585== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh -dfc module_path=("$1")_zmodload\ psh_strtol_fixture\ ||\ exit\ 1_psh-strtol-check\ "$2"\ ||\ exit\ 2_zmodload\ -u\ psh_strtol_fixture\ ||\ exit\ 3_print\ -r\ --\ matrix-done_ comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/strtol-native actual
+==429585== Parent PID: 282026
+==429585== 
+==429585== 
+==429585== HEAP SUMMARY:
+==429585==     in use at exit: 45,750 bytes in 742 blocks
+==429585==   total heap usage: 1,785,375 allocs, 1,784,633 frees, 19,509,172 bytes allocated
+==429585== 
+==429585== For a detailed leak analysis, rerun with: --leak-check=full
+==429585== 
+==429585== For lists of detected and suppressed errors, rerun with: -s
+==429585== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

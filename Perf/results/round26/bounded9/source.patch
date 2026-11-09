@@ -1,0 +1,30 @@
+diff --git a/Src/utils.c b/Src/utils.c
+index 7e15c35..06c33de 100644
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -2444,6 +2444,25 @@ zstrtol_underscore(const char *s, char **t, int base, int underscore)
+     zulong calc = 0, newcalc = 0;
+     int neg;
+ 
++    /* Nine decimal digits fit even a 32-bit zlong.  Keep unusual leading
++     * blanks and every continuation that needs general parsing on that path. */
++    if (base == 10 && !inblank(*s)) {
++	const char *decimal = s;
++	zlong value = 0;
++	int digits = 0;
++
++	while (digits < 9 && (unsigned)(*decimal - '0') < 10) {
++	    value = value * 10 + *decimal++ - '0';
++	    digits++;
++	}
++	if (digits && (unsigned)(*decimal - '0') >= 10 &&
++	    !(underscore && *decimal == '_')) {
++	    if (t)
++		*t = (char *)decimal;
++	    return value;
++	}
++    }
++
+     while (inblank(*s))
+ 	s++;
+ 

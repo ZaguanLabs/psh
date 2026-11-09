@@ -854,3 +854,33 @@ Use configured headers matching the host profile. The default paths refer to
 the pristine debug baseline; release hosts omit debug-only exports required by
 a fixture built from debug headers. No native interface change is introduced.
 The expanded fixture performs 1,299,456 checks per host/locale on this build.
+
+## Decimal conversion (round twenty-six)
+
+The [round twenty-six report](round26.md) compares the public conversion API
+with the unchanged original release function. The native fixture covers integer
+bounds, bases, underscore flags, changed classification, exact-ending allocations,
+optional end pointers, errno seeds and diagnostic bytes. No warning-producing
+input is timed by the separate 64-bit-host API benchmark.
+
+```sh
+python3 Perf/check-strtol-module.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --headers-build /path/to/previous --headers-source /path/to/previous-source \
+  --memcheck --output .work/logs/strtol-native.json
+python3 Perf/strtol-benchmark.py /path/to/previous/Src/zsh /path/to/candidate/Src/zsh \
+  --headers-build /path/to/previous --headers-source /path/to/previous-source \
+  --cpu 2 --output .work/logs/conversion-benchmarks.json
+```
+
+The functional driver compares reference/actual modes on each host in C/C.UTF-8,
+including completion markers and all stdout/stderr bytes. This build performs
+1,663,728 conversion calls per process. Memcheck logs remain beside its report;
+large synthetic result/diagnostic streams are represented by hashes and byte
+counts. All test inputs and host binaries are fingerprinted.
+
+The timing driver records nine alternating samples per case, one million calls
+per sample, with module setup outside the native timer. A matching digest is
+required. It includes 19-digit and underscore continuation controls; an early
+restart implementation regressed these despite improving short conversions.
+Run timing after builds, tests and profilers finish. These native loop ratios
+are separate from the actual project-kernel measurements.

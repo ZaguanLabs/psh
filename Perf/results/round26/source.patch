@@ -1,0 +1,46 @@
+--- a/Src/utils.c
++++ b/Src/utils.c
+@@ -2444,6 +2444,35 @@
+     zulong calc = 0, newcalc = 0;
+     int neg;
+ 
++    /* Eighteen decimal digits fit a 64-bit zlong; nine fit 32 bits.
++     * Keep unusual leading
++     * blanks and every continuation that needs general parsing on that path. */
++    if (base == 10 && !inblank(*s)) {
++	const char *decimal = s;
++	zlong value = 0;
++	int digits = 0;
++
++	while (digits < (sizeof(zlong) >= 8 ? 18 : 9) && (unsigned)(*decimal - '0') < 10) {
++	    value = value * 10 + *decimal++ - '0';
++	    digits++;
++	}
++	if (digits && (unsigned)(*decimal - '0') >= 10 &&
++	    !(underscore && *decimal == '_')) {
++	    if (t)
++		*t = (char *)decimal;
++	    return value;
++	}
++	if (digits) {
++	    /* The prefix has the same value as the ordinary decimal loop,
++	     * with no sign, skipped leading blank or possible truncation. */
++	    calc = value;
++	    inp = s;
++	    s = decimal;
++	    neg = 0;
++	    goto decimal_digits;
++	}
++    }
++
+     while (inblank(*s))
+ 	s++;
+ 
+@@ -2467,6 +2496,7 @@
+ 	zerr("invalid base (must be 2 to 36 inclusive): %d", base);
+ 	return (zlong)0;
+     } else if (base <= 10) {
++    decimal_digits:
+ 	for (; (*s >= '0' && *s < ('0' + base)) ||
+ 		 (underscore && *s == '_'); s++) {
+ 	    if (trunc || *s == '_')

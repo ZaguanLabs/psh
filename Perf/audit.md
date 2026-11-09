@@ -94,3 +94,12 @@ flag check. Conversion initialization, non-ASCII processing, byte mode and
 signal boundaries remain unchanged. Native coverage adds combined class masks,
 more prefix lengths and non-boolean `once` values, checked against the original
 release implementation and subsequent converter state.
+
+[Round twenty-six](round26.md) follows integer-conversion cost into
+`zstrtol_underscore()`. A word-size-bounded decimal prefix avoids general sign,
+base and overflow work; continuations seed the original loop rather than
+restarting. The original input pointer and zero sign are restored for identical
+truncation checks and diagnostics. A direct public-API oracle covers values,
+consumed bytes, errno, error flags, exact diagnostic bytes and input integrity,
+including changed leading-blank classification. Two restarting prototypes and
+their long/underscore costs remain in the evidence.

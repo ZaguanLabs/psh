@@ -1,0 +1,138 @@
+[
+  {
+    "name": "customer-benchmarks",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/customer-benchmarks.json"
+    ]
+  },
+  {
+    "name": "library-benchmarks",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/library-benchmarks.json"
+    ]
+  },
+  {
+    "name": "parser-benchmarks",
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/parser-benchmarks.json"
+    ]
+  },
+  {
+    "name": "search-benchmarks",
+    "command": [
+      "python3",
+      "Perf/search-benchmark.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/search-benchmarks.json"
+    ]
+  },
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/customer-repeat.json"
+    ]
+  },
+  {
+    "name": "library-repeat",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/library-repeat.json"
+    ]
+  },
+  {
+    "name": "hardware",
+    "command": [
+      "python3",
+      "Perf/hardware-benchmark.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/hardware.json"
+    ]
+  },
+  {
+    "name": "conversion-benchmarks",
+    "command": [
+      "python3",
+      "Perf/strtol-benchmark.py",
+      ".work/round26/previous/Src/zsh",
+      ".work/round26/candidate/Src/zsh",
+      "--headers-build",
+      ".work/round26/previous",
+      "--headers-source",
+      ".work/round26/previous-source",
+      "--cpu",
+      "2",
+      "--output",
+      ".work/logs/round26/conversion-benchmarks.json"
+    ]
+  }
+]

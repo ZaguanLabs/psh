@@ -1,0 +1,3458 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh"
+  ],
+  "binary_sha256": [
+    "188686d3bd1eb518ee48748df98b253c2565b22f848a7cb012a0ce1c6bcf653e",
+    "4f1a5b1a707624256974b5a2d97d9c62dd7fd35b048dfe287b141a841cb8fbe7"
+  ],
+  "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+  "launcher_sha256": "25d80ef0cab7fcd35241c813735f2404919fb59455631ee3bd560eedc294db53",
+  "launcher_source_sha256": "c9f6f881a19afac667557aca6ab5ebede10f21ca3c806906d0a982e91407c19c",
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/count-command.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command"
+  ],
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "cpu_affinity": [
+    2
+  ],
+  "samples": 9,
+  "scope": "user space, exec through exit, inherited tasks",
+  "cases": [
+    {
+      "case": "zcoder.zsh/coder-paste",
+      "source_sha256": {
+        "lib/acp.zsh": "00e8849428de1a5e64ed6961dac716e0d0d5cd905234a66c9e043bf2051e7f39",
+        "lib/agent.zsh": "6501bb86cced52aff53e8a6887455b216a87f0acf5a57d2787fbd0914ab71d31",
+        "lib/agent_lfm.zsh": "a237ad35834c6fd5ee3a8ba925c393760c5eaea864db8c81f78d383227925f47",
+        "lib/agent_loop.zsh": "96ff422b908f0f90e614c9c23166a9f5fd20d972b95713d9ab5117fc2a1de6f9",
+        "lib/agent_prompts.zsh": "2dc60229db8dab8c05c16781d4a4a8eb7a5e0def63709d47430cb43778dd2140",
+        "lib/command_dispatch.zsh": "987565404517ca3040ef8f6ffb5b8dc5352560d84b9c0fe814c28f7755131f97",
+        "lib/command_safety.zsh": "b4647d732c439eab2c9fdd4459c112954fd261138dec8a0ca7fff78c49ae1475",
+        "lib/commands.zsh": "858b68ff45f1ac0f87a986e2c7b18daaf4797e14c6917a3469fb82a653ff784c",
+        "lib/compact.zsh": "803b0645fc3ecc277436abbfee3574b3b33fb26d5bfa8c23e4313ddd5d5aacb1",
+        "lib/curses.zsh": "cda85cde43fbe94fdca8f9b3a1a093f4da4a3916762f8aa4c965055f9375294b",
+        "lib/delegate.zsh": "c33d397cf012709eb77596494e8cf43a84bf73689ce524809bdbd85fe64ec495",
+        "lib/diff.zsh": "ad3c0b18e98d19d4e3ef3c96c971decb6252a7290ef993bb91eac08e6daa56a9",
+        "lib/document_context.zsh": "27140e727b12226b1060c40a64586dd631cdc571bfddbacc3514366b40a3049c",
+        "lib/document_files.zsh": "64e2b07e02a4060006987321ade9468112f8967f4a1bf379de5bfa6c1b677ab3",
+        "lib/document_tabs.zsh": "e55efd42d4683655fef9324f7ba62a8c004dbf0aace99683674f8c9879be123d",
+        "lib/document_view.zsh": "0e077bccb213d9611d43a04f7fe3cc87eb5c9674ba93e56bdc388445096ffaed",
+        "lib/drawing.zsh": "343572193aaf3726bf14bdd3bb20de2e53f68b13002476b2540a0d1f3851b1f2",
+        "lib/goal.zsh": "35b95ad2611152d234a6bac35e24fe22d44896382e864040639bf9cc4e655aca",
+        "lib/harnesses.zsh": "e1959df7612bd64f3b29669cf0ac115368b62c0a68140b890ff62ce509b2bfbc",
+        "lib/http.zsh": "ec719de8de15fbbacec66acfa5a7fedcd8ebd6378da9e8124a93e2a0d96802bd",
+        "lib/input.zsh": "b0398a5d303ff1944dd350e770754a305061f5482a5b552714b4860147289879",
+        "lib/input_queue.zsh": "680c6aa921c0a0b88a89e13450a546f74c05c172437db19afd18e89b03570d8c",
+        "lib/instructions.zsh": "4bb7bf1d5e15e543115ce34d0e1020e843841ecdb487b3d94db9e240576bf71d",
+        "lib/json.zsh": "85cb47b5397de9aff0714122e7f87fd067631497af61c7c0f9f07b7244603e62",
+        "lib/markdown.zsh": "5169dd713e40fc2ce06b523ebbc5705768ef5b6d64947bf86b18574712e90872",
+        "lib/markdown_native.zsh": "3efe8eee8a1060480736bac043f3b08c6e18c944b48838552f75583a4d3b466d",
+        "lib/mcp.zsh": "a518f89091bcf8f9176ab75406a5b7b8399cb742fa94d4ca01076f7f7372b6a4",
+        "lib/overlays.zsh": "6fa8b8fa42ef275ceaab3028c2eda950d3e356c1a2ab3c9498653b53abe068ed",
+        "lib/process.zsh": "a6f79fff6cfe42e60a768b5ecaf865b537299780d81568b4d09c3f363a59c6aa",
+        "lib/relay.zsh": "2c1e78a1857aef088b2189fcfca9884162838cb31e061d4cbf1aed8b14b5c462",
+        "lib/remote.zsh": "30872e1f5ff5db096746832fbfebe97ad7f07b0cec1e1236a8686fa20380f4ff",
+        "lib/remote_client.zsh": "a6a75a92640dc959405bffd326dfa780452c8b723be017a50ec65b8ce68d3a8c",
+        "lib/remote_server.zsh": "c143c499bb7d8baec621c69bb81ce380523440cd7e7802c1ac9f27b10f18d21d",
+        "lib/remote_server_agent.zsh": "1f9d1eebbc44a6a00b2233abe477b5494ef39d1fcde315ee94ba570a8fa3acc0",
+        "lib/runtime.zsh": "8eebc234158998756f01a0c479ff7726c9c30ce53d459ac52bac9a022e75948a",
+        "lib/search.zsh": "711aa27797c1f2e84ca50b3fe04c221f78118598e48f1c2f7e9b2a7ad0cfc68f",
+        "lib/selection.zsh": "26903b1106de89b57ba4e4010e67b30270d66d2a00fb7196f6ef8fe9defc013a",
+        "lib/skills.zsh": "cfee75b3f1817a180d50d7a6b17cbfd1c86808bc3ff387638928341531bd4786",
+        "lib/state.zsh": "c4d02c2db8c39cf18011406ede6960932c44a14259087b9239a743181c96f819",
+        "lib/stream.zsh": "6529134ae4631e9c3450b207faa134fc7bf755f460bc0b4415e980e13306290e",
+        "lib/tasks.zsh": "7b24ce4f2780b702879bcd0b11e4446b8006b7e3520bcb51e883fcb2cc1ae3cc",
+        "lib/terminal.zsh": "9730807372507698c0784cd5b614abd94dc84248d161f9b6f386298c14f92e67",
+        "lib/tools.zsh": "9550e0e1c70fbb1825612de140950929dd27c14997783181345797e68655aa6a",
+        "lib/transcript.zsh": "70858f0931331727aa56cdd64a5a9f78895d98b2dc742a1c14fa1c1e5ae739f7",
+        "lib/tui.zsh": "8300fe98f58ebba21962e153f1083c9f063cde94c18b2a283934d67fa7b3c140",
+        "lib/ui.zsh": "e215a1cde05ff10db867ce9bc95d8ef3a0690a204e03f21b9ceed24b793f4c8b",
+        "lib/ui_preferences.zsh": "d22a49ba92fd2000e3fcb3197b881d29270d30d0dd108caa346ef2a5ae430625",
+        "lib/util.zsh": "48252a050a00bff3f48dbecfe7c0ab372cb7f9bdbfd9a8b4bcd64334f8ce96c4"
+      },
+      "state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf",
+      "iterations": 1,
+      "measurements": [
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 230569074,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.148316,
+            "system_seconds": 0.082175,
+            "max_rss_kib": 3964,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 710512445,
+                "enabled_ns": 230303575,
+                "running_ns": 230303575
+              },
+              {
+                "name": "instructions",
+                "value": 1390505720,
+                "enabled_ns": 230303575,
+                "running_ns": 230303575
+              },
+              {
+                "name": "branches",
+                "value": 335463637,
+                "enabled_ns": 230303575,
+                "running_ns": 230303575
+              },
+              {
+                "name": "branch_misses",
+                "value": 1328168,
+                "enabled_ns": 230303575,
+                "running_ns": 230303575
+              }
+            ],
+            "warm_batch_ms": 115.185,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 225008621,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.135352,
+            "system_seconds": 0.089571,
+            "max_rss_kib": 3852,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 704187419,
+                "enabled_ns": 224743752,
+                "running_ns": 224743752
+              },
+              {
+                "name": "instructions",
+                "value": 1390505729,
+                "enabled_ns": 224743752,
+                "running_ns": 224743752
+              },
+              {
+                "name": "branches",
+                "value": 335463633,
+                "enabled_ns": 224743752,
+                "running_ns": 224743752
+              },
+              {
+                "name": "branch_misses",
+                "value": 1235874,
+                "enabled_ns": 224743752,
+                "running_ns": 224743752
+              }
+            ],
+            "warm_batch_ms": 111.689,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 228541847,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.154229,
+            "system_seconds": 0.07411,
+            "max_rss_kib": 3848,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 714741426,
+                "enabled_ns": 228151893,
+                "running_ns": 228151893
+              },
+              {
+                "name": "instructions",
+                "value": 1390505611,
+                "enabled_ns": 228151893,
+                "running_ns": 228151893
+              },
+              {
+                "name": "branches",
+                "value": 335463633,
+                "enabled_ns": 228151893,
+                "running_ns": 228151893
+              },
+              {
+                "name": "branch_misses",
+                "value": 1347234,
+                "enabled_ns": 228151893,
+                "running_ns": 228151893
+              }
+            ],
+            "warm_batch_ms": 113.469,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 228571958,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.138301,
+            "system_seconds": 0.090196,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 719090466,
+                "enabled_ns": 228311614,
+                "running_ns": 228311614
+              },
+              {
+                "name": "instructions",
+                "value": 1390505621,
+                "enabled_ns": 228311614,
+                "running_ns": 228311614
+              },
+              {
+                "name": "branches",
+                "value": 335463631,
+                "enabled_ns": 228311614,
+                "running_ns": 228311614
+              },
+              {
+                "name": "branch_misses",
+                "value": 1179437,
+                "enabled_ns": 228311614,
+                "running_ns": 228311614
+              }
+            ],
+            "warm_batch_ms": 113.65,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 227347049,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.155499,
+            "system_seconds": 0.071769,
+            "max_rss_kib": 3972,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 717525610,
+                "enabled_ns": 227081244,
+                "running_ns": 227081244
+              },
+              {
+                "name": "instructions",
+                "value": 1390505627,
+                "enabled_ns": 227081244,
+                "running_ns": 227081244
+              },
+              {
+                "name": "branches",
+                "value": 335463637,
+                "enabled_ns": 227081244,
+                "running_ns": 227081244
+              },
+              {
+                "name": "branch_misses",
+                "value": 1279152,
+                "enabled_ns": 227081244,
+                "running_ns": 227081244
+              }
+            ],
+            "warm_batch_ms": 113.73400000000001,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 230330082,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.16674,
+            "system_seconds": 0.06352,
+            "max_rss_kib": 3880,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 729991344,
+                "enabled_ns": 230076165,
+                "running_ns": 230076165
+              },
+              {
+                "name": "instructions",
+                "value": 1390505777,
+                "enabled_ns": 230076165,
+                "running_ns": 230076165
+              },
+              {
+                "name": "branches",
+                "value": 335463661,
+                "enabled_ns": 230076165,
+                "running_ns": 230076165
+              },
+              {
+                "name": "branch_misses",
+                "value": 1406972,
+                "enabled_ns": 230076165,
+                "running_ns": 230076165
+              }
+            ],
+            "warm_batch_ms": 114.241,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 228634119,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.139119,
+            "system_seconds": 0.089434,
+            "max_rss_kib": 4100,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 715434435,
+                "enabled_ns": 228362765,
+                "running_ns": 228362765
+              },
+              {
+                "name": "instructions",
+                "value": 1390505599,
+                "enabled_ns": 228362765,
+                "running_ns": 228362765
+              },
+              {
+                "name": "branches",
+                "value": 335463625,
+                "enabled_ns": 228362765,
+                "running_ns": 228362765
+              },
+              {
+                "name": "branch_misses",
+                "value": 1353038,
+                "enabled_ns": 228362765,
+                "running_ns": 228362765
+              }
+            ],
+            "warm_batch_ms": 113.735,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 225918627,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.131888,
+            "system_seconds": 0.09392,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 705211045,
+                "enabled_ns": 225641463,
+                "running_ns": 225641463
+              },
+              {
+                "name": "instructions",
+                "value": 1390505611,
+                "enabled_ns": 225641463,
+                "running_ns": 225641463
+              },
+              {
+                "name": "branches",
+                "value": 335463625,
+                "enabled_ns": 225641463,
+                "running_ns": 225641463
+              },
+              {
+                "name": "branch_misses",
+                "value": 1242050,
+                "enabled_ns": 225641463,
+                "running_ns": 225641463
+              }
+            ],
+            "warm_batch_ms": 111.84700000000001,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 229517265,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.159562,
+            "system_seconds": 0.069808,
+            "max_rss_kib": 3972,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 715663465,
+                "enabled_ns": 229157655,
+                "running_ns": 229157655
+              },
+              {
+                "name": "instructions",
+                "value": 1390505652,
+                "enabled_ns": 229157655,
+                "running_ns": 229157655
+              },
+              {
+                "name": "branches",
+                "value": 335463645,
+                "enabled_ns": 229157655,
+                "running_ns": 229157655
+              },
+              {
+                "name": "branch_misses",
+                "value": 1267220,
+                "enabled_ns": 229157655,
+                "running_ns": 229157655
+              }
+            ],
+            "warm_batch_ms": 113.792,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          }
+        ],
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 232815541,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.154481,
+            "system_seconds": 0.078243,
+            "max_rss_kib": 3900,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 729346734,
+                "enabled_ns": 232520097,
+                "running_ns": 232520097
+              },
+              {
+                "name": "instructions",
+                "value": 1387795359,
+                "enabled_ns": 232520097,
+                "running_ns": 232520097
+              },
+              {
+                "name": "branches",
+                "value": 334308875,
+                "enabled_ns": 232520097,
+                "running_ns": 232520097
+              },
+              {
+                "name": "branch_misses",
+                "value": 1452483,
+                "enabled_ns": 232520097,
+                "running_ns": 232520097
+              }
+            ],
+            "warm_batch_ms": 115.29899999999999,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 229301574,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.162883,
+            "system_seconds": 0.06636,
+            "max_rss_kib": 3972,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 701806733,
+                "enabled_ns": 229048465,
+                "running_ns": 229048465
+              },
+              {
+                "name": "instructions",
+                "value": 1387795235,
+                "enabled_ns": 229048465,
+                "running_ns": 229048465
+              },
+              {
+                "name": "branches",
+                "value": 334308873,
+                "enabled_ns": 229048465,
+                "running_ns": 229048465
+              },
+              {
+                "name": "branch_misses",
+                "value": 1361809,
+                "enabled_ns": 229048465,
+                "running_ns": 229048465
+              }
+            ],
+            "warm_batch_ms": 112.281,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 226510352,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.138222,
+            "system_seconds": 0.088141,
+            "max_rss_kib": 4044,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 713842608,
+                "enabled_ns": 226177033,
+                "running_ns": 226177033
+              },
+              {
+                "name": "instructions",
+                "value": 1387795213,
+                "enabled_ns": 226177033,
+                "running_ns": 226177033
+              },
+              {
+                "name": "branches",
+                "value": 334308852,
+                "enabled_ns": 226177033,
+                "running_ns": 226177033
+              },
+              {
+                "name": "branch_misses",
+                "value": 1425104,
+                "enabled_ns": 226177033,
+                "running_ns": 226177033
+              }
+            ],
+            "warm_batch_ms": 112.775,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 224637057,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.144359,
+            "system_seconds": 0.080199,
+            "max_rss_kib": 3876,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 704436138,
+                "enabled_ns": 224369802,
+                "running_ns": 224369802
+              },
+              {
+                "name": "instructions",
+                "value": 1387795372,
+                "enabled_ns": 224369802,
+                "running_ns": 224369802
+              },
+              {
+                "name": "branches",
+                "value": 334308882,
+                "enabled_ns": 224369802,
+                "running_ns": 224369802
+              },
+              {
+                "name": "branch_misses",
+                "value": 1408379,
+                "enabled_ns": 224369802,
+                "running_ns": 224369802
+              }
+            ],
+            "warm_batch_ms": 111.343,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 227611031,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.161669,
+            "system_seconds": 0.065865,
+            "max_rss_kib": 3880,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 718126142,
+                "enabled_ns": 227360654,
+                "running_ns": 227360654
+              },
+              {
+                "name": "instructions",
+                "value": 1387795602,
+                "enabled_ns": 227360654,
+                "running_ns": 227360654
+              },
+              {
+                "name": "branches",
+                "value": 334308948,
+                "enabled_ns": 227360654,
+                "running_ns": 227360654
+              },
+              {
+                "name": "branch_misses",
+                "value": 1458873,
+                "enabled_ns": 227360654,
+                "running_ns": 227360654
+              }
+            ],
+            "warm_batch_ms": 112.66,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 227857812,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.147852,
+            "system_seconds": 0.07992,
+            "max_rss_kib": 3896,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 716348391,
+                "enabled_ns": 227565804,
+                "running_ns": 227565804
+              },
+              {
+                "name": "instructions",
+                "value": 1387795355,
+                "enabled_ns": 227565804,
+                "running_ns": 227565804
+              },
+              {
+                "name": "branches",
+                "value": 334308872,
+                "enabled_ns": 227565804,
+                "running_ns": 227565804
+              },
+              {
+                "name": "branch_misses",
+                "value": 1460581,
+                "enabled_ns": 227565804,
+                "running_ns": 227565804
+              }
+            ],
+            "warm_batch_ms": 112.856,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 226295351,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.152065,
+            "system_seconds": 0.074031,
+            "max_rss_kib": 3844,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 705381083,
+                "enabled_ns": 225903423,
+                "running_ns": 225903423
+              },
+              {
+                "name": "instructions",
+                "value": 1387795618,
+                "enabled_ns": 225903423,
+                "running_ns": 225903423
+              },
+              {
+                "name": "branches",
+                "value": 334308948,
+                "enabled_ns": 225903423,
+                "running_ns": 225903423
+              },
+              {
+                "name": "branch_misses",
+                "value": 1392148,
+                "enabled_ns": 225903423,
+                "running_ns": 225903423
+              }
+            ],
+            "warm_batch_ms": 112.297,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 226428382,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.174266,
+            "system_seconds": 0.052079,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 711929641,
+                "enabled_ns": 226174833,
+                "running_ns": 226174833
+              },
+              {
+                "name": "instructions",
+                "value": 1387795316,
+                "enabled_ns": 226174833,
+                "running_ns": 226174833
+              },
+              {
+                "name": "branches",
+                "value": 334308895,
+                "enabled_ns": 226174833,
+                "running_ns": 226174833
+              },
+              {
+                "name": "branch_misses",
+                "value": 1578338,
+                "enabled_ns": 226174833,
+                "running_ns": 226174833
+              }
+            ],
+            "warm_batch_ms": 112.391,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 226453301,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.164813,
+            "system_seconds": 0.061556,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 705515647,
+                "enabled_ns": 226181703,
+                "running_ns": 226181703
+              },
+              {
+                "name": "instructions",
+                "value": 1387795266,
+                "enabled_ns": 226181703,
+                "running_ns": 226181703
+              },
+              {
+                "name": "branches",
+                "value": 334308878,
+                "enabled_ns": 226181703,
+                "running_ns": 226181703
+              },
+              {
+                "name": "branch_misses",
+                "value": 1464263,
+                "enabled_ns": 226181703,
+                "running_ns": 226181703
+              }
+            ],
+            "warm_batch_ms": 112.18400000000001,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "coder-paste",
+              "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+              "1"
+            ]
+          }
+        ]
+      ],
+      "median_scaled_events": [
+        {
+          "cycles": 715434435.0,
+          "instructions": 1390505627.0,
+          "branches": 335463633.0,
+          "branch_misses": 1279152.0
+        },
+        {
+          "cycles": 711929641.0,
+          "instructions": 1387795355.0,
+          "branches": 334308878.0,
+          "branch_misses": 1452483.0
+        }
+      ]
+    },
+    {
+      "case": "endgame/endgame-world",
+      "source_sha256": {
+        "lib/adventure.zsh": "1a2904170518e81f618273a389a35722e62cbfb55f2ea4303be13672f1e9ede0",
+        "lib/art.zsh": "a52adc4af0bd5c946e84cda8c4817802c5071a3ddca7f7a08fd6da6840af36a2",
+        "lib/data.zsh": "f85d09ed342f6714bf2edac96969aff0048c1c3af17a93fcb715825b79d75814",
+        "lib/engine.zsh": "735ff895344d264e3025c980933d886fa9b1a96fdba969d4d8b11dbc77d29bb7",
+        "lib/expedition.zsh": "09bf2032c1239b7aed0544c95376dd4b81c3b958ea7efa2fd787f710a66fdcdb",
+        "lib/observatory.zsh": "3cb45623d579b259767d372fd1205afc895992825d7f2b3df17ee673337ad881",
+        "lib/pixels.zsh": "7cc8ed88b364492b924fc1f9286d52b15904ca9337fb117d7c2c7296ca8b2619",
+        "lib/runtime.zsh": "ed2fbc00dc164b56c32c14ab7bc7be37c07450ea8fa84caff19e1f17a15e148e",
+        "lib/save.zsh": "c7a4ef245897ca490e2918244197aaea5b8938745d7d9011c7de82818b5407eb",
+        "lib/shaders.zsh": "cfcde8882681090c2fce5fa998af2f22217b31d2ffb44a568a071e57419b05fd",
+        "lib/ui.zsh": "8b48ac86ccfec87826278594bc992735faced344668b5bd8696d0ad1fc90da56",
+        "lib/vista.zsh": "022a90bcb0da2f72b4816b671ce9694f5becc89a1d816284e17e038c28580dc6"
+      },
+      "state_sha256": "6299c35a068a34015a5c807070152d168e7d3604771a24d83d9bed2a4da3fead",
+      "iterations": 2,
+      "measurements": [
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87911314,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.087839,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4660,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 411438063,
+                "enabled_ns": 87679571,
+                "running_ns": 87679571
+              },
+              {
+                "name": "instructions",
+                "value": 1154633191,
+                "enabled_ns": 87679571,
+                "running_ns": 87679571
+              },
+              {
+                "name": "branches",
+                "value": 275044577,
+                "enabled_ns": 87679571,
+                "running_ns": 87679571
+              },
+              {
+                "name": "branch_misses",
+                "value": 808522,
+                "enabled_ns": 87679571,
+                "running_ns": 87679571
+              }
+            ],
+            "warm_batch_ms": 42.886,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87907144,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.087848,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4644,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 411745269,
+                "enabled_ns": 87684212,
+                "running_ns": 87684212
+              },
+              {
+                "name": "instructions",
+                "value": 1154633137,
+                "enabled_ns": 87684212,
+                "running_ns": 87684212
+              },
+              {
+                "name": "branches",
+                "value": 275044577,
+                "enabled_ns": 87684212,
+                "running_ns": 87684212
+              },
+              {
+                "name": "branch_misses",
+                "value": 798359,
+                "enabled_ns": 87684212,
+                "running_ns": 87684212
+              }
+            ],
+            "warm_batch_ms": 42.901,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87645822,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.087566,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4748,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 409448293,
+                "enabled_ns": 87373361,
+                "running_ns": 87373361
+              },
+              {
+                "name": "instructions",
+                "value": 1154633184,
+                "enabled_ns": 87373361,
+                "running_ns": 87373361
+              },
+              {
+                "name": "branches",
+                "value": 275044583,
+                "enabled_ns": 87373361,
+                "running_ns": 87373361
+              },
+              {
+                "name": "branch_misses",
+                "value": 792152,
+                "enabled_ns": 87373361,
+                "running_ns": 87373361
+              }
+            ],
+            "warm_batch_ms": 42.771,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87023787,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.084969,
+            "system_seconds": 0.001976,
+            "max_rss_kib": 4696,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 406756915,
+                "enabled_ns": 86771771,
+                "running_ns": 86771771
+              },
+              {
+                "name": "instructions",
+                "value": 1154633329,
+                "enabled_ns": 86771771,
+                "running_ns": 86771771
+              },
+              {
+                "name": "branches",
+                "value": 275044617,
+                "enabled_ns": 86771771,
+                "running_ns": 86771771
+              },
+              {
+                "name": "branch_misses",
+                "value": 738516,
+                "enabled_ns": 86771771,
+                "running_ns": 86771771
+              }
+            ],
+            "warm_batch_ms": 42.084,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 88799760,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.088724,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4736,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 416004583,
+                "enabled_ns": 88575182,
+                "running_ns": 88575182
+              },
+              {
+                "name": "instructions",
+                "value": 1154633422,
+                "enabled_ns": 88575182,
+                "running_ns": 88575182
+              },
+              {
+                "name": "branches",
+                "value": 275044652,
+                "enabled_ns": 88575182,
+                "running_ns": 88575182
+              },
+              {
+                "name": "branch_misses",
+                "value": 930822,
+                "enabled_ns": 88575182,
+                "running_ns": 88575182
+              }
+            ],
+            "warm_batch_ms": 42.652,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87923144,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.085736,
+            "system_seconds": 0.001993,
+            "max_rss_kib": 4764,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 410368315,
+                "enabled_ns": 87576822,
+                "running_ns": 87576822
+              },
+              {
+                "name": "instructions",
+                "value": 1154633235,
+                "enabled_ns": 87576822,
+                "running_ns": 87576822
+              },
+              {
+                "name": "branches",
+                "value": 275044578,
+                "enabled_ns": 87576822,
+                "running_ns": 87576822
+              },
+              {
+                "name": "branch_misses",
+                "value": 758261,
+                "enabled_ns": 87576822,
+                "running_ns": 87576822
+              }
+            ],
+            "warm_batch_ms": 42.537,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87432950,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.085379,
+            "system_seconds": 0.001985,
+            "max_rss_kib": 4652,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 409659858,
+                "enabled_ns": 87225121,
+                "running_ns": 87225121
+              },
+              {
+                "name": "instructions",
+                "value": 1154633119,
+                "enabled_ns": 87225121,
+                "running_ns": 87225121
+              },
+              {
+                "name": "branches",
+                "value": 275044564,
+                "enabled_ns": 87225121,
+                "running_ns": 87225121
+              },
+              {
+                "name": "branch_misses",
+                "value": 740818,
+                "enabled_ns": 87225121,
+                "running_ns": 87225121
+              }
+            ],
+            "warm_batch_ms": 42.949,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87713092,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.085637,
+            "system_seconds": 0.001991,
+            "max_rss_kib": 4660,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 410257175,
+                "enabled_ns": 87447732,
+                "running_ns": 87447732
+              },
+              {
+                "name": "instructions",
+                "value": 1154633242,
+                "enabled_ns": 87447732,
+                "running_ns": 87447732
+              },
+              {
+                "name": "branches",
+                "value": 275044578,
+                "enabled_ns": 87447732,
+                "running_ns": 87447732
+              },
+              {
+                "name": "branch_misses",
+                "value": 751114,
+                "enabled_ns": 87447732,
+                "running_ns": 87447732
+              }
+            ],
+            "warm_batch_ms": 42.724,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 90921657,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.090838,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4664,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 410781237,
+                "enabled_ns": 90611743,
+                "running_ns": 90611743
+              },
+              {
+                "name": "instructions",
+                "value": 1154634192,
+                "enabled_ns": 90611743,
+                "running_ns": 90611743
+              },
+              {
+                "name": "branches",
+                "value": 275044805,
+                "enabled_ns": 90611743,
+                "running_ns": 90611743
+              },
+              {
+                "name": "branch_misses",
+                "value": 816459,
+                "enabled_ns": 90611743,
+                "running_ns": 90611743
+              }
+            ],
+            "warm_batch_ms": 43.726,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          }
+        ],
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87765822,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.085704,
+            "system_seconds": 0.001993,
+            "max_rss_kib": 4764,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 411029287,
+                "enabled_ns": 87560671,
+                "running_ns": 87560671
+              },
+              {
+                "name": "instructions",
+                "value": 1144897580,
+                "enabled_ns": 87560671,
+                "running_ns": 87560671
+              },
+              {
+                "name": "branches",
+                "value": 270903020,
+                "enabled_ns": 87560671,
+                "running_ns": 87560671
+              },
+              {
+                "name": "branch_misses",
+                "value": 892666,
+                "enabled_ns": 87560671,
+                "running_ns": 87560671
+              }
+            ],
+            "warm_batch_ms": 43.124,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87400260,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.085346,
+            "system_seconds": 0.001984,
+            "max_rss_kib": 4648,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 409286021,
+                "enabled_ns": 87192411,
+                "running_ns": 87192411
+              },
+              {
+                "name": "instructions",
+                "value": 1144897662,
+                "enabled_ns": 87192411,
+                "running_ns": 87192411
+              },
+              {
+                "name": "branches",
+                "value": 270903016,
+                "enabled_ns": 87192411,
+                "running_ns": 87192411
+              },
+              {
+                "name": "branch_misses",
+                "value": 739660,
+                "enabled_ns": 87192411,
+                "running_ns": 87192411
+              }
+            ],
+            "warm_batch_ms": 42.58,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 86789465,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.084754,
+            "system_seconds": 0.001971,
+            "max_rss_kib": 4764,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 406691250,
+                "enabled_ns": 86580840,
+                "running_ns": 86580840
+              },
+              {
+                "name": "instructions",
+                "value": 1144898014,
+                "enabled_ns": 86580840,
+                "running_ns": 86580840
+              },
+              {
+                "name": "branches",
+                "value": 270903115,
+                "enabled_ns": 86580840,
+                "running_ns": 86580840
+              },
+              {
+                "name": "branch_misses",
+                "value": 829110,
+                "enabled_ns": 86580840,
+                "running_ns": 86580840
+              }
+            ],
+            "warm_batch_ms": 42.66,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87794173,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.08573,
+            "system_seconds": 0.001993,
+            "max_rss_kib": 4868,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 411479828,
+                "enabled_ns": 87598592,
+                "running_ns": 87598592
+              },
+              {
+                "name": "instructions",
+                "value": 1144897669,
+                "enabled_ns": 87598592,
+                "running_ns": 87598592
+              },
+              {
+                "name": "branches",
+                "value": 270903022,
+                "enabled_ns": 87598592,
+                "running_ns": 87598592
+              },
+              {
+                "name": "branch_misses",
+                "value": 785657,
+                "enabled_ns": 87598592,
+                "running_ns": 87598592
+              }
+            ],
+            "warm_batch_ms": 42.840999999999994,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 88094236,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.088006,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4644,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 411548862,
+                "enabled_ns": 87795332,
+                "running_ns": 87795332
+              },
+              {
+                "name": "instructions",
+                "value": 1144897691,
+                "enabled_ns": 87795332,
+                "running_ns": 87795332
+              },
+              {
+                "name": "branches",
+                "value": 270903027,
+                "enabled_ns": 87795332,
+                "running_ns": 87795332
+              },
+              {
+                "name": "branch_misses",
+                "value": 887263,
+                "enabled_ns": 87795332,
+                "running_ns": 87795332
+              }
+            ],
+            "warm_batch_ms": 42.698,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 86445603,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.086369,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4696,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 403731948,
+                "enabled_ns": 86177081,
+                "running_ns": 86177081
+              },
+              {
+                "name": "instructions",
+                "value": 1144897562,
+                "enabled_ns": 86177081,
+                "running_ns": 86177081
+              },
+              {
+                "name": "branches",
+                "value": 270903013,
+                "enabled_ns": 86177081,
+                "running_ns": 86177081
+              },
+              {
+                "name": "branch_misses",
+                "value": 757131,
+                "enabled_ns": 86177081,
+                "running_ns": 86177081
+              }
+            ],
+            "warm_batch_ms": 42.18,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 88346507,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.088275,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4764,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 413914608,
+                "enabled_ns": 88119711,
+                "running_ns": 88119711
+              },
+              {
+                "name": "instructions",
+                "value": 1144897568,
+                "enabled_ns": 88119711,
+                "running_ns": 88119711
+              },
+              {
+                "name": "branches",
+                "value": 270903016,
+                "enabled_ns": 88119711,
+                "running_ns": 88119711
+              },
+              {
+                "name": "branch_misses",
+                "value": 861376,
+                "enabled_ns": 88119711,
+                "running_ns": 88119711
+              }
+            ],
+            "warm_batch_ms": 43.372,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 87253598,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.087179,
+            "system_seconds": 0.0,
+            "max_rss_kib": 4740,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 408678745,
+                "enabled_ns": 87023131,
+                "running_ns": 87023131
+              },
+              {
+                "name": "instructions",
+                "value": 1144897589,
+                "enabled_ns": 87023131,
+                "running_ns": 87023131
+              },
+              {
+                "name": "branches",
+                "value": 270903022,
+                "enabled_ns": 87023131,
+                "running_ns": 87023131
+              },
+              {
+                "name": "branch_misses",
+                "value": 815766,
+                "enabled_ns": 87023131,
+                "running_ns": 87023131
+              }
+            ],
+            "warm_batch_ms": 42.264,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 86331472,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.084257,
+            "system_seconds": 0.002006,
+            "max_rss_kib": 4764,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 403480719,
+                "enabled_ns": 86089071,
+                "running_ns": 86089071
+              },
+              {
+                "name": "instructions",
+                "value": 1144897720,
+                "enabled_ns": 86089071,
+                "running_ns": 86089071
+              },
+              {
+                "name": "branches",
+                "value": 270903032,
+                "enabled_ns": 86089071,
+                "running_ns": 86089071
+              },
+              {
+                "name": "branch_misses",
+                "value": 745462,
+                "enabled_ns": 86089071,
+                "running_ns": 86089071
+              }
+            ],
+            "warm_batch_ms": 41.497,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "endgame-world",
+              "/home/stig/dev/challenge/endgame",
+              "2"
+            ]
+          }
+        ]
+      ],
+      "median_scaled_events": [
+        {
+          "cycles": 410368315.0,
+          "instructions": 1154633235.0,
+          "branches": 275044578.0,
+          "branch_misses": 792152.0
+        },
+        {
+          "cycles": 409286021.0,
+          "instructions": 1144897662.0,
+          "branches": 270903022.0,
+          "branch_misses": 815766.0
+        }
+      ]
+    },
+    {
+      "case": "z3dfx.mario/mario-race",
+      "source_sha256": {
+        "lib/display.zsh": "e927ba1322070f9c6b0d8cd2ca77b05c3a37fd29c5330a06f5259447bcba33b4",
+        "lib/engine.zsh": "1eb639ea4d62ba846c78c54d0128e9e7aa53842a7eeececc5834f4afc466910e",
+        "lib/input.zsh": "304fcc6dd1552e0d445899b35b699543662a44a7ce5e3f682ea60f1cfbef5528",
+        "lib/render.zsh": "8db01f3d3e23122667f9435c4480e6b8e7e07f8d232d63c71849af06f2e5042a",
+        "lib/timing.zsh": "a4741544731e10636aeafbd0833c4e37917add88c3f2711e3d2fe7861b3353ef",
+        "lib/track.zsh": "ab6612898cf3a00f03f392a57bdfd102fcd9a32bac506a73c0e9bece86acd51b"
+      },
+      "state_sha256": "07ac3a55aba8ffa02f364b643943700996ee235e789fe35d6cb8f967a4155b2e",
+      "iterations": 120,
+      "measurements": [
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45140031,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.038944,
+            "system_seconds": 0.006149,
+            "max_rss_kib": 3904,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 189638958,
+                "enabled_ns": 44964737,
+                "running_ns": 44964737
+              },
+              {
+                "name": "instructions",
+                "value": 432182178,
+                "enabled_ns": 44964737,
+                "running_ns": 44964737
+              },
+              {
+                "name": "branches",
+                "value": 101483183,
+                "enabled_ns": 44964737,
+                "running_ns": 44964737
+              },
+              {
+                "name": "branch_misses",
+                "value": 509996,
+                "enabled_ns": 44964737,
+                "running_ns": 44964737
+              }
+            ],
+            "warm_batch_ms": 19.633000000000003,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 48230545,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.038543,
+            "system_seconds": 0.009635,
+            "max_rss_kib": 4012,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 192918215,
+                "enabled_ns": 47984978,
+                "running_ns": 47984978
+              },
+              {
+                "name": "instructions",
+                "value": 432236081,
+                "enabled_ns": 47984978,
+                "running_ns": 47984978
+              },
+              {
+                "name": "branches",
+                "value": 101497248,
+                "enabled_ns": 47984978,
+                "running_ns": 47984978
+              },
+              {
+                "name": "branch_misses",
+                "value": 514363,
+                "enabled_ns": 47984978,
+                "running_ns": 47984978
+              }
+            ],
+            "warm_batch_ms": 21.118000000000002,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45994087,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.037942,
+            "system_seconds": 0.007987,
+            "max_rss_kib": 4072,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 191134269,
+                "enabled_ns": 45712797,
+                "running_ns": 45712797
+              },
+              {
+                "name": "instructions",
+                "value": 432195655,
+                "enabled_ns": 45712797,
+                "running_ns": 45712797
+              },
+              {
+                "name": "branches",
+                "value": 101486788,
+                "enabled_ns": 45712797,
+                "running_ns": 45712797
+              },
+              {
+                "name": "branch_misses",
+                "value": 504264,
+                "enabled_ns": 45712797,
+                "running_ns": 45712797
+              }
+            ],
+            "warm_batch_ms": 19.820999999999998,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44966730,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.044928,
+            "system_seconds": 0.0,
+            "max_rss_kib": 3888,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 189339390,
+                "enabled_ns": 44809166,
+                "running_ns": 44809166
+              },
+              {
+                "name": "instructions",
+                "value": 432189738,
+                "enabled_ns": 44809166,
+                "running_ns": 44809166
+              },
+              {
+                "name": "branches",
+                "value": 101484921,
+                "enabled_ns": 44809166,
+                "running_ns": 44809166
+              },
+              {
+                "name": "branch_misses",
+                "value": 497786,
+                "enabled_ns": 44809166,
+                "running_ns": 44809166
+              }
+            ],
+            "warm_batch_ms": 19.549,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45075841,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.043075,
+            "system_seconds": 0.001957,
+            "max_rss_kib": 3904,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 189890028,
+                "enabled_ns": 44907067,
+                "running_ns": 44907067
+              },
+              {
+                "name": "instructions",
+                "value": 432232681,
+                "enabled_ns": 44907067,
+                "running_ns": 44907067
+              },
+              {
+                "name": "branches",
+                "value": 101496810,
+                "enabled_ns": 44907067,
+                "running_ns": 44907067
+              },
+              {
+                "name": "branch_misses",
+                "value": 475907,
+                "enabled_ns": 44907067,
+                "running_ns": 44907067
+              }
+            ],
+            "warm_batch_ms": 19.881,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45969228,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.039939,
+            "system_seconds": 0.00599,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 193477048,
+                "enabled_ns": 45811947,
+                "running_ns": 45811947
+              },
+              {
+                "name": "instructions",
+                "value": 432235925,
+                "enabled_ns": 45811947,
+                "running_ns": 45811947
+              },
+              {
+                "name": "branches",
+                "value": 101497773,
+                "enabled_ns": 45811947,
+                "running_ns": 45811947
+              },
+              {
+                "name": "branch_misses",
+                "value": 502857,
+                "enabled_ns": 45811947,
+                "running_ns": 45811947
+              }
+            ],
+            "warm_batch_ms": 20.42,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45033561,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.034766,
+            "system_seconds": 0.010225,
+            "max_rss_kib": 4116,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 188869388,
+                "enabled_ns": 44859147,
+                "running_ns": 44859147
+              },
+              {
+                "name": "instructions",
+                "value": 432187721,
+                "enabled_ns": 44859147,
+                "running_ns": 44859147
+              },
+              {
+                "name": "branches",
+                "value": 101484423,
+                "enabled_ns": 44859147,
+                "running_ns": 44859147
+              },
+              {
+                "name": "branch_misses",
+                "value": 504702,
+                "enabled_ns": 44859147,
+                "running_ns": 44859147
+              }
+            ],
+            "warm_batch_ms": 19.461,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45537294,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.041537,
+            "system_seconds": 0.003955,
+            "max_rss_kib": 4116,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 190889385,
+                "enabled_ns": 45349596,
+                "running_ns": 45349596
+              },
+              {
+                "name": "instructions",
+                "value": 432236250,
+                "enabled_ns": 45349596,
+                "running_ns": 45349596
+              },
+              {
+                "name": "branches",
+                "value": 101497501,
+                "enabled_ns": 45349596,
+                "running_ns": 45349596
+              },
+              {
+                "name": "branch_misses",
+                "value": 467574,
+                "enabled_ns": 45349596,
+                "running_ns": 45349596
+              }
+            ],
+            "warm_batch_ms": 19.677,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45900377,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.033898,
+            "system_seconds": 0.011964,
+            "max_rss_kib": 3888,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 192638473,
+                "enabled_ns": 45724357,
+                "running_ns": 45724357
+              },
+              {
+                "name": "instructions",
+                "value": 432199228,
+                "enabled_ns": 45724357,
+                "running_ns": 45724357
+              },
+              {
+                "name": "branches",
+                "value": 101485981,
+                "enabled_ns": 45724357,
+                "running_ns": 45724357
+              },
+              {
+                "name": "branch_misses",
+                "value": 497270,
+                "enabled_ns": 45724357,
+                "running_ns": 45724357
+              }
+            ],
+            "warm_batch_ms": 20.235,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          }
+        ],
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45570945,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.039592,
+            "system_seconds": 0.005938,
+            "max_rss_kib": 4012,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 188559520,
+                "enabled_ns": 45418817,
+                "running_ns": 45418817
+              },
+              {
+                "name": "instructions",
+                "value": 431733548,
+                "enabled_ns": 45418817,
+                "running_ns": 45418817
+              },
+              {
+                "name": "branches",
+                "value": 101253090,
+                "enabled_ns": 45418817,
+                "running_ns": 45418817
+              },
+              {
+                "name": "branch_misses",
+                "value": 480921,
+                "enabled_ns": 45418817,
+                "running_ns": 45418817
+              }
+            ],
+            "warm_batch_ms": 20.604999999999997,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 46425792,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.038647,
+            "system_seconds": 0.007729,
+            "max_rss_kib": 4060,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 186582329,
+                "enabled_ns": 46224197,
+                "running_ns": 46224197
+              },
+              {
+                "name": "instructions",
+                "value": 431538270,
+                "enabled_ns": 46224197,
+                "running_ns": 46224197
+              },
+              {
+                "name": "branches",
+                "value": 101216264,
+                "enabled_ns": 46224197,
+                "running_ns": 46224197
+              },
+              {
+                "name": "branch_misses",
+                "value": 468246,
+                "enabled_ns": 46224197,
+                "running_ns": 46224197
+              }
+            ],
+            "warm_batch_ms": 20.047,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 45251832,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.041279,
+            "system_seconds": 0.003931,
+            "max_rss_kib": 3944,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 190465793,
+                "enabled_ns": 45070387,
+                "running_ns": 45070387
+              },
+              {
+                "name": "instructions",
+                "value": 431555208,
+                "enabled_ns": 45070387,
+                "running_ns": 45070387
+              },
+              {
+                "name": "branches",
+                "value": 101220951,
+                "enabled_ns": 45070387,
+                "running_ns": 45070387
+              },
+              {
+                "name": "branch_misses",
+                "value": 481723,
+                "enabled_ns": 45070387,
+                "running_ns": 45070387
+              }
+            ],
+            "warm_batch_ms": 19.956000000000003,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44676627,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.036514,
+            "system_seconds": 0.008114,
+            "max_rss_kib": 3888,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 188116488,
+                "enabled_ns": 44495646,
+                "running_ns": 44495646
+              },
+              {
+                "name": "instructions",
+                "value": 431540108,
+                "enabled_ns": 44495646,
+                "running_ns": 44495646
+              },
+              {
+                "name": "branches",
+                "value": 101216740,
+                "enabled_ns": 44495646,
+                "running_ns": 44495646
+              },
+              {
+                "name": "branch_misses",
+                "value": 506838,
+                "enabled_ns": 44495646,
+                "running_ns": 44495646
+              }
+            ],
+            "warm_batch_ms": 20.067999999999998,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44674827,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.038812,
+            "system_seconds": 0.005821,
+            "max_rss_kib": 4048,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 187252046,
+                "enabled_ns": 44494146,
+                "running_ns": 44494146
+              },
+              {
+                "name": "instructions",
+                "value": 431719353,
+                "enabled_ns": 44494146,
+                "running_ns": 44494146
+              },
+              {
+                "name": "branches",
+                "value": 101253935,
+                "enabled_ns": 44494146,
+                "running_ns": 44494146
+              },
+              {
+                "name": "branch_misses",
+                "value": 482425,
+                "enabled_ns": 44494146,
+                "running_ns": 44494146
+              }
+            ],
+            "warm_batch_ms": 19.95,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44798579,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.040689,
+            "system_seconds": 0.004068,
+            "max_rss_kib": 3860,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 188683053,
+                "enabled_ns": 44625146,
+                "running_ns": 44625146
+              },
+              {
+                "name": "instructions",
+                "value": 431579462,
+                "enabled_ns": 44625146,
+                "running_ns": 44625146
+              },
+              {
+                "name": "branches",
+                "value": 101227289,
+                "enabled_ns": 44625146,
+                "running_ns": 44625146
+              },
+              {
+                "name": "branch_misses",
+                "value": 487764,
+                "enabled_ns": 44625146,
+                "running_ns": 44625146
+              }
+            ],
+            "warm_batch_ms": 19.39,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44847939,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.038699,
+            "system_seconds": 0.00611,
+            "max_rss_kib": 3872,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 189137879,
+                "enabled_ns": 44696986,
+                "running_ns": 44696986
+              },
+              {
+                "name": "instructions",
+                "value": 431633574,
+                "enabled_ns": 44696986,
+                "running_ns": 44696986
+              },
+              {
+                "name": "branches",
+                "value": 101242338,
+                "enabled_ns": 44696986,
+                "running_ns": 44696986
+              },
+              {
+                "name": "branch_misses",
+                "value": 489660,
+                "enabled_ns": 44696986,
+                "running_ns": 44696986
+              }
+            ],
+            "warm_batch_ms": 19.789,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44318015,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.036215,
+            "system_seconds": 0.008047,
+            "max_rss_kib": 3904,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 186161143,
+                "enabled_ns": 44130706,
+                "running_ns": 44130706
+              },
+              {
+                "name": "instructions",
+                "value": 431599526,
+                "enabled_ns": 44130706,
+                "running_ns": 44130706
+              },
+              {
+                "name": "branches",
+                "value": 101233082,
+                "enabled_ns": 44130706,
+                "running_ns": 44130706
+              },
+              {
+                "name": "branch_misses",
+                "value": 451811,
+                "enabled_ns": 44130706,
+                "running_ns": 44130706
+              }
+            ],
+            "warm_batch_ms": 19.772000000000002,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 44429736,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.044399,
+            "system_seconds": 0.0,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 187564161,
+                "enabled_ns": 44238256,
+                "running_ns": 44238256
+              },
+              {
+                "name": "instructions",
+                "value": 431584963,
+                "enabled_ns": 44238256,
+                "running_ns": 44238256
+              },
+              {
+                "name": "branches",
+                "value": 101229019,
+                "enabled_ns": 44238256,
+                "running_ns": 44238256
+              },
+              {
+                "name": "branch_misses",
+                "value": 475295,
+                "enabled_ns": 44238256,
+                "running_ns": 44238256
+              }
+            ],
+            "warm_batch_ms": 20.006,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "mario-race",
+              "/home/stig/dev/challenge/z3dfx.mario",
+              "120"
+            ]
+          }
+        ]
+      ],
+      "median_scaled_events": [
+        {
+          "cycles": 190889385.0,
+          "instructions": 432199228.0,
+          "branches": 101486788.0,
+          "branch_misses": 502857.0
+        },
+        {
+          "cycles": 188116488.0,
+          "instructions": 431584963.0,
+          "branches": 101229019.0,
+          "branch_misses": 481723.0
+        }
+      ]
+    },
+    {
+      "case": "z3dfx.drawing/drawing-binning",
+      "source_sha256": {
+        "lib/brushwork.zsh": "71940db7cfe57f46a627573335720aff15667a44e97e52a7dae938f6802dac7f",
+        "lib/cache.zsh": "1b373cbcbdd6e66b74acc1e1787605c50531567ba7caa6b12403e244936dde60",
+        "lib/details.zsh": "aa520fb7ec645c23e225759762c20fff6bf247e26e08d883f6d83b4c4750ac94",
+        "lib/native-painting.zsh": "58d0bf30219d66057f28528976783d9a97962b4dcdd338198d9ab32b0a0d308a",
+        "lib/paint.zsh": "b30c804f3fdf7233dde00ee61e57978a7d32b2d910db8c0f32fc346ab7eb9a9d",
+        "lib/painting.zsh": "2b4e9815c8b9c6ed04ff51e94edb5281f065efc1a6435fa50f64205b70380678",
+        "lib/scene.zsh": "1d70b82e2b76fa255122dacfe049ecb6c115a99b990d7d9f8cbb9f69077ea576",
+        "lib/view.zsh": "193310f798db7eca3d72c7220d832a63b9d14f2eda09e28c4214d292d25e49f9"
+      },
+      "state_sha256": "aeb9d274b31e6046b8d5b0ca1c08a8c9341e4d357a94a4b6e2132a4f079ebcb8",
+      "iterations": 3,
+      "measurements": [
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39067424,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.032854,
+            "system_seconds": 0.00616,
+            "max_rss_kib": 4100,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170731978,
+                "enabled_ns": 38895663,
+                "running_ns": 38895663
+              },
+              {
+                "name": "instructions",
+                "value": 423688369,
+                "enabled_ns": 38895663,
+                "running_ns": 38895663
+              },
+              {
+                "name": "branches",
+                "value": 99419402,
+                "enabled_ns": 38895663,
+                "running_ns": 38895663
+              },
+              {
+                "name": "branch_misses",
+                "value": 410502,
+                "enabled_ns": 38895663,
+                "running_ns": 38895663
+              }
+            ],
+            "warm_batch_ms": 12.353,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39226265,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.033296,
+            "system_seconds": 0.005875,
+            "max_rss_kib": 3984,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170415711,
+                "enabled_ns": 39041923,
+                "running_ns": 39041923
+              },
+              {
+                "name": "instructions",
+                "value": 423688723,
+                "enabled_ns": 39041923,
+                "running_ns": 39041923
+              },
+              {
+                "name": "branches",
+                "value": 99419500,
+                "enabled_ns": 39041923,
+                "running_ns": 39041923
+              },
+              {
+                "name": "branch_misses",
+                "value": 404913,
+                "enabled_ns": 39041923,
+                "running_ns": 39041923
+              }
+            ],
+            "warm_batch_ms": 12.979,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 38735451,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.034608,
+            "system_seconds": 0.004071,
+            "max_rss_kib": 3984,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 169169030,
+                "enabled_ns": 38561953,
+                "running_ns": 38561953
+              },
+              {
+                "name": "instructions",
+                "value": 423688330,
+                "enabled_ns": 38561953,
+                "running_ns": 38561953
+              },
+              {
+                "name": "branches",
+                "value": 99419393,
+                "enabled_ns": 38561953,
+                "running_ns": 38561953
+              },
+              {
+                "name": "branch_misses",
+                "value": 408052,
+                "enabled_ns": 38561953,
+                "running_ns": 38561953
+              }
+            ],
+            "warm_batch_ms": 12.312999999999999,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39325516,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.03731,
+            "system_seconds": 0.001963,
+            "max_rss_kib": 3876,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 171907161,
+                "enabled_ns": 39162903,
+                "running_ns": 39162903
+              },
+              {
+                "name": "instructions",
+                "value": 423689268,
+                "enabled_ns": 39162903,
+                "running_ns": 39162903
+              },
+              {
+                "name": "branches",
+                "value": 99419537,
+                "enabled_ns": 39162903,
+                "running_ns": 39162903
+              },
+              {
+                "name": "branch_misses",
+                "value": 401516,
+                "enabled_ns": 39162903,
+                "running_ns": 39162903
+              }
+            ],
+            "warm_batch_ms": 12.927,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39137594,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.037028,
+            "system_seconds": 0.002057,
+            "max_rss_kib": 3860,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 171378838,
+                "enabled_ns": 38967773,
+                "running_ns": 38967773
+              },
+              {
+                "name": "instructions",
+                "value": 423688404,
+                "enabled_ns": 38967773,
+                "running_ns": 38967773
+              },
+              {
+                "name": "branches",
+                "value": 99419406,
+                "enabled_ns": 38967773,
+                "running_ns": 38967773
+              },
+              {
+                "name": "branch_misses",
+                "value": 409631,
+                "enabled_ns": 38967773,
+                "running_ns": 38967773
+              }
+            ],
+            "warm_batch_ms": 13.082,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39301436,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.039239,
+            "system_seconds": 0.0,
+            "max_rss_kib": 3972,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 171227819,
+                "enabled_ns": 39097253,
+                "running_ns": 39097253
+              },
+              {
+                "name": "instructions",
+                "value": 423688268,
+                "enabled_ns": 39097253,
+                "running_ns": 39097253
+              },
+              {
+                "name": "branches",
+                "value": 99419398,
+                "enabled_ns": 39097253,
+                "running_ns": 39097253
+              },
+              {
+                "name": "branch_misses",
+                "value": 408398,
+                "enabled_ns": 39097253,
+                "running_ns": 39097253
+              }
+            ],
+            "warm_batch_ms": 12.444,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39727669,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.037484,
+            "system_seconds": 0.002082,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 173101106,
+                "enabled_ns": 39457662,
+                "running_ns": 39457662
+              },
+              {
+                "name": "instructions",
+                "value": 423688367,
+                "enabled_ns": 39457662,
+                "running_ns": 39457662
+              },
+              {
+                "name": "branches",
+                "value": 99419402,
+                "enabled_ns": 39457662,
+                "running_ns": 39457662
+              },
+              {
+                "name": "branch_misses",
+                "value": 420821,
+                "enabled_ns": 39457662,
+                "running_ns": 39457662
+              }
+            ],
+            "warm_batch_ms": 12.975999999999999,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 38593831,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.034486,
+            "system_seconds": 0.004057,
+            "max_rss_kib": 3972,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 168976370,
+                "enabled_ns": 38435642,
+                "running_ns": 38435642
+              },
+              {
+                "name": "instructions",
+                "value": 423688523,
+                "enabled_ns": 38435642,
+                "running_ns": 38435642
+              },
+              {
+                "name": "branches",
+                "value": 99419470,
+                "enabled_ns": 38435642,
+                "running_ns": 38435642
+              },
+              {
+                "name": "branch_misses",
+                "value": 404078,
+                "enabled_ns": 38435642,
+                "running_ns": 38435642
+              }
+            ],
+            "warm_batch_ms": 12.207,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 38961403,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.036859,
+            "system_seconds": 0.002047,
+            "max_rss_kib": 3996,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170363627,
+                "enabled_ns": 38793713,
+                "running_ns": 38793713
+              },
+              {
+                "name": "instructions",
+                "value": 423688647,
+                "enabled_ns": 38793713,
+                "running_ns": 38793713
+              },
+              {
+                "name": "branches",
+                "value": 99419482,
+                "enabled_ns": 38793713,
+                "running_ns": 38793713
+              },
+              {
+                "name": "branch_misses",
+                "value": 407137,
+                "enabled_ns": 38793713,
+                "running_ns": 38793713
+              }
+            ],
+            "warm_batch_ms": 12.383999999999999,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/previous/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          }
+        ],
+        [
+          {
+            "exit_status": 0,
+            "elapsed_ns": 38735202,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.036646,
+            "system_seconds": 0.002035,
+            "max_rss_kib": 4100,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 169323213,
+                "enabled_ns": 38562732,
+                "running_ns": 38562732
+              },
+              {
+                "name": "instructions",
+                "value": 422824659,
+                "enabled_ns": 38562732,
+                "running_ns": 38562732
+              },
+              {
+                "name": "branches",
+                "value": 99052563,
+                "enabled_ns": 38562732,
+                "running_ns": 38562732
+              },
+              {
+                "name": "branch_misses",
+                "value": 407601,
+                "enabled_ns": 38562732,
+                "running_ns": 38562732
+              }
+            ],
+            "warm_batch_ms": 12.302999999999999,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39383046,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.037363,
+            "system_seconds": 0.001966,
+            "max_rss_kib": 3940,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170608889,
+                "enabled_ns": 39198083,
+                "running_ns": 39198083
+              },
+              {
+                "name": "instructions",
+                "value": 422824548,
+                "enabled_ns": 39198083,
+                "running_ns": 39198083
+              },
+              {
+                "name": "branches",
+                "value": 99052563,
+                "enabled_ns": 39198083,
+                "running_ns": 39198083
+              },
+              {
+                "name": "branch_misses",
+                "value": 407238,
+                "enabled_ns": 39198083,
+                "running_ns": 39198083
+              }
+            ],
+            "warm_batch_ms": 12.911000000000001,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39156945,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.035188,
+            "system_seconds": 0.003909,
+            "max_rss_kib": 3900,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170147479,
+                "enabled_ns": 38967943,
+                "running_ns": 38967943
+              },
+              {
+                "name": "instructions",
+                "value": 422824529,
+                "enabled_ns": 38967943,
+                "running_ns": 38967943
+              },
+              {
+                "name": "branches",
+                "value": 99052560,
+                "enabled_ns": 38967943,
+                "running_ns": 38967943
+              },
+              {
+                "name": "branch_misses",
+                "value": 403830,
+                "enabled_ns": 38967943,
+                "running_ns": 38967943
+              }
+            ],
+            "warm_batch_ms": 12.370000000000001,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 38719401,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.034797,
+            "system_seconds": 0.003866,
+            "max_rss_kib": 3948,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 169422537,
+                "enabled_ns": 38546503,
+                "running_ns": 38546503
+              },
+              {
+                "name": "instructions",
+                "value": 422824908,
+                "enabled_ns": 38546503,
+                "running_ns": 38546503
+              },
+              {
+                "name": "branches",
+                "value": 99052662,
+                "enabled_ns": 38546503,
+                "running_ns": 38546503
+              },
+              {
+                "name": "branch_misses",
+                "value": 395397,
+                "enabled_ns": 38546503,
+                "running_ns": 38546503
+              }
+            ],
+            "warm_batch_ms": 12.337000000000002,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39756739,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.033043,
+            "system_seconds": 0.005831,
+            "max_rss_kib": 3876,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 169890829,
+                "enabled_ns": 38716462,
+                "running_ns": 38716462
+              },
+              {
+                "name": "instructions",
+                "value": 422824502,
+                "enabled_ns": 38716462,
+                "running_ns": 38716462
+              },
+              {
+                "name": "branches",
+                "value": 99052548,
+                "enabled_ns": 38716462,
+                "running_ns": 38716462
+              },
+              {
+                "name": "branch_misses",
+                "value": 408117,
+                "enabled_ns": 38716462,
+                "running_ns": 38716462
+              }
+            ],
+            "warm_batch_ms": 12.368,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39083604,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.039013,
+            "system_seconds": 0.0,
+            "max_rss_kib": 3892,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170733440,
+                "enabled_ns": 38895333,
+                "running_ns": 38895333
+              },
+              {
+                "name": "instructions",
+                "value": 422824557,
+                "enabled_ns": 38895333,
+                "running_ns": 38895333
+              },
+              {
+                "name": "branches",
+                "value": 99052524,
+                "enabled_ns": 38895333,
+                "running_ns": 38895333
+              },
+              {
+                "name": "branch_misses",
+                "value": 426840,
+                "enabled_ns": 38895333,
+                "running_ns": 38895333
+              }
+            ],
+            "warm_batch_ms": 12.431,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 38943103,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.033057,
+            "system_seconds": 0.005833,
+            "max_rss_kib": 3804,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 170346069,
+                "enabled_ns": 38776753,
+                "running_ns": 38776753
+              },
+              {
+                "name": "instructions",
+                "value": 422824729,
+                "enabled_ns": 38776753,
+                "running_ns": 38776753
+              },
+              {
+                "name": "branches",
+                "value": 99052601,
+                "enabled_ns": 38776753,
+                "running_ns": 38776753
+              },
+              {
+                "name": "branch_misses",
+                "value": 412113,
+                "enabled_ns": 38776753,
+                "running_ns": 38776753
+              }
+            ],
+            "warm_batch_ms": 12.966,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39053514,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.037052,
+            "system_seconds": 0.00195,
+            "max_rss_kib": 3948,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 169854188,
+                "enabled_ns": 38865193,
+                "running_ns": 38865193
+              },
+              {
+                "name": "instructions",
+                "value": 422824520,
+                "enabled_ns": 38865193,
+                "running_ns": 38865193
+              },
+              {
+                "name": "branches",
+                "value": 99052556,
+                "enabled_ns": 38865193,
+                "running_ns": 38865193
+              },
+              {
+                "name": "branch_misses",
+                "value": 414647,
+                "enabled_ns": 38865193,
+                "running_ns": 38865193
+              }
+            ],
+            "warm_batch_ms": 12.281,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          },
+          {
+            "exit_status": 0,
+            "elapsed_ns": 39290905,
+            "scope": "user space, exec through exit, inherited tasks",
+            "user_seconds": 0.035316,
+            "system_seconds": 0.003924,
+            "max_rss_kib": 3880,
+            "events": [
+              {
+                "name": "cycles",
+                "value": 171136828,
+                "enabled_ns": 39110773,
+                "running_ns": 39110773
+              },
+              {
+                "name": "instructions",
+                "value": 422824633,
+                "enabled_ns": 39110773,
+                "running_ns": 39110773
+              },
+              {
+                "name": "branches",
+                "value": 99052564,
+                "enabled_ns": 39110773,
+                "running_ns": 39110773
+              },
+              {
+                "name": "branch_misses",
+                "value": 399379,
+                "enabled_ns": 39110773,
+                "running_ns": 39110773
+              }
+            ],
+            "warm_batch_ms": 12.876999999999999,
+            "command": [
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/count-command",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round26/hardware-fixture-hardware/counters.json",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round26/candidate/Src/zsh",
+              "-df",
+              "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+              "drawing-binning",
+              "/home/stig/dev/challenge/z3dfx.drawing",
+              "3"
+            ]
+          }
+        ]
+      ],
+      "median_scaled_events": [
+        {
+          "cycles": 170731978.0,
+          "instructions": 423688404.0,
+          "branches": 99419406.0,
+          "branch_misses": 408052.0
+        },
+        {
+          "cycles": 170147479.0,
+          "instructions": 422824557.0,
+          "branches": 99052563.0,
+          "branch_misses": 407601.0
+        }
+      ]
+    }
+  ]
+}
