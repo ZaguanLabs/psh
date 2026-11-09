@@ -138,3 +138,11 @@ and JSON encoding regressions. The selected and one-digit prototypes remain
 unadopted. New native tests compare endpoints, arithmetic globals, floating-point
 environment and boundary allocations against pristine and accepted hosts.
 Long integers, floats and exponent fallbacks remain important cost controls.
+
+[Round thirty-one](round31.md) follows deferred arithmetic variables through
+`getmathparam()`, descriptor allocation and recursive `mathevall()` calls.
+A per-evaluation descriptor buffer saves some instructions but has mixed private
+customer timing. A parser inline hint produces identical `math.o` text; an
+accessor hint removes calls while increasing Endgame's instruction count.
+All three remain unadopted. The expanded corpus covers descriptor exhaustion,
+recursive callbacks, cached subscript side effects, retyping and deep lvalues.

@@ -1,0 +1,58 @@
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..c4e7dc0 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -327,6 +327,12 @@ struct mathvalue {
+ 
+ static struct mathvalue *stack;
+ 
++/* Descriptors are private to one arithmetic evaluation.  Keep a small
++ * initial batch on its C stack; longer expressions retain heap allocation. */
++#define MATH_VALUE_SLOTS 8
++static Value math_values;
++static unsigned math_values_left;
++
+ enum prec_type {
+     /* Evaluating a top-level expression */
+     MPREC_TOP,
+@@ -345,7 +351,11 @@ getmathparam(struct mathvalue *mptr)
+     mnumber result;
+     if (!mptr->pval) {
+ 	char *s = mptr->lval;
+-	mptr->pval = (Value)zhalloc(sizeof(struct value));
++	if (math_values_left) {
++	    mptr->pval = math_values++;
++	    math_values_left--;
++	} else
++	    mptr->pval = (Value)zhalloc(sizeof(struct value));
+ 	if (!getvalue(mptr->pval, &s, 1))
+ 	{
+ 	    if (unset(UNSET))
+@@ -378,6 +388,9 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     char *xyylval;
+     int xsp;
+     struct mathvalue *xstack = 0, nstack[STACKSZ];
++    struct value nvalues[MATH_VALUE_SLOTS];
++    Value xvalues = math_values;
++    unsigned xvalues_left = math_values_left;
+     mnumber ret;
+ 
+     if (mlevel >= MAX_MLEVEL) {
+@@ -410,6 +423,8 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     }
+     prec = isset(CPRECEDENCES) ? c_prec : z_prec;
+     stack = nstack;
++    math_values = nvalues;
++    math_values_left = MATH_VALUE_SLOTS;
+     lastbase = -1;
+     ptr = s;
+     sp = -1;
+@@ -461,6 +476,8 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+ 	stack = xstack;
+ 	prec = xprec;
+     }
++    math_values = xvalues;
++    math_values_left = xvalues_left;
+     return lastmathval = ret;
+ }
+ 

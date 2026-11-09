@@ -23,7 +23,19 @@ def main():
                         help="include operator/operand token pairs and diagnostic boundaries")
     parser.add_argument("--operators", action="store_true",
                         help="include valid operators, lazy lvalues, recursive callbacks and stack boundaries")
+    parser.add_argument("--descriptors", action="store_true",
+                        help="include repeated lookups, descriptor exhaustion and recursive lvalue lifetimes")
+    parser.add_argument("--descriptors-only", action="store_true",
+                        help="run only the focused descriptor cases, including their callbacks")
+    parser.add_argument("--memcheck", action="store_true",
+                        help="run hosts under Memcheck and reject every reported memory error")
+    parser.add_argument("--timeout", type=int, default=300,
+                        help="maximum seconds per host and locale (default: 300)")
     args = parser.parse_args()
+    if args.timeout < 1:
+        parser.error("--timeout must be positive")
+    if args.descriptors_only:
+        args.descriptors = True
     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
     literals = ["0", "-0", "0.0", "-0.0", ".5", "1.", "1.25", "-1.25", "1e20",
@@ -81,6 +93,27 @@ def main():
             "(x=psh_pop_recursive(7)), x", "1/0 + psh_pop_callback()",
             "psh_pop_callback() + 1/0", "(x++) + (a[1]+=h[k])"]
         expressions = list(dict.fromkeys(expressions))
+    if args.descriptors:
+        if args.descriptors_only:
+            expressions = []
+        for n in [1, 2, 7, 8, 9, 15, 16, 17, 32, 64, 96, 128]:
+            for item in ["x", "i", "a[1]", "h[k]", "a[++i%3+1]", "h[k]+=1"]:
+                expressions += ["+".join(["(" + item + ")"] * n)]
+            prefix = "+".join(["x"] * n)
+            expressions += [prefix + " + psh_pop_recursive(7) + x",
+                prefix + " + psh_pop_callback() + x",
+                prefix + " + (a[1]+=psh_pop_recursive(3)) + a[1]",
+                prefix + " + (h[k]+=psh_pop_retype()) + h[k]",
+                "x += (" + prefix + ")", "a[1] += (" + prefix + ")"]
+        for n in [1, 2, 7, 8, 9, 16, 32, 64, 96]:
+            expressions += ["a[++i%3+1]+=(" * n + "2" + ")" * n,
+                "h[k]+=(" * n + "psh_pop_recursive(7)" + ")" * n,
+                "1 ? (" + "+".join(["x"] * n) + ") : psh_pop_callback()",
+                "0 && (" + "+".join(["x"] * n) + ")",
+                "x + psh_pop_recursive(" + str(n) + ") + x"]
+        expressions += ["x += (x='x', x)", "x='a[1]', x+x+x+x+x+x+x+x+x",
+                        "x='h[k]', x+x+x+x+x+x+x+x+x"]
+        expressions = list(dict.fromkeys(expressions))
     arrays = "expressions=(" + " ".join(map(quote, expressions)) + ")\n"
     script = '''emulate -R zsh
 zmodload zsh/mathfunc || exit 1
@@ -119,7 +152,7 @@ for emulation in zsh ksh sh; do
 done
 exit 0
 '''
-    if args.operators:
+    if args.operators or args.descriptors:
         prelude = '''psh_pop_callback() {
   psh_pop_trace+=(callback)
   (( ++psh_pop_calls ))
@@ -148,13 +181,24 @@ functions -M psh_pop_recursive 1 1 psh_pop_recursive
     report = {"shells": list(map(str, shells)), "binary_sha256": [sha(p) for p in shells],
               "driver_sha256": sha(Path(__file__)), "script_sha256": hashlib.sha256(script.encode()).hexdigest(),
               "expressions": len(expressions), "syntax": args.syntax, "operators": args.operators,
+              "descriptors": args.descriptors,
+              "descriptors_only": args.descriptors_only, "timeout_seconds": args.timeout,
+              "memcheck": args.memcheck,
               "checks_per_locale": len(expressions) * 12, "cases": []}
     for locale in args.locales or ("C", "C.UTF-8", "fr_FR.UTF-8", "nb_NO.UTF-8", "tr_TR.UTF-8"):
         outputs = []
-        for shell in shells:
-            r = subprocess.run([str(shell), "-dfc", script, "arithmetic-comparison"],
+        for index, shell in enumerate(shells):
+            prefix = []
+            if args.memcheck:
+                memory_log = args.output.with_suffix(f".{locale}.{index}.memcheck.log")
+                memory_log.unlink(missing_ok=True)
+                prefix = ["valgrind", "--quiet", "--error-exitcode=97", "--leak-check=no",
+                          "--log-file=" + str(memory_log.resolve())]
+            r = subprocess.run(prefix + [str(shell), "-dfc", script, "arithmetic-comparison"],
                 env={"PATH": "/usr/bin:/bin", "LC_ALL": locale, "LANG": locale},
-                capture_output=True, timeout=300)
+                capture_output=True, timeout=args.timeout)
+            if args.memcheck and memory_log.read_bytes().strip():
+                raise RuntimeError((str(shell), locale, "Memcheck reported errors", str(memory_log)))
             completed = len(re.findall(rb"(?m)^subshell=[0-9]+$", r.stdout))
             if completed != report["checks_per_locale"]:
                 raise RuntimeError((str(shell), locale, "incomplete arithmetic corpus",
@@ -171,6 +215,8 @@ functions -M psh_pop_recursive 1 1 psh_pop_recursive
         print(locale, report["checks_per_locale"], "arithmetic cases matched", flush=True)
     if report["binary_sha256"] != [sha(p) for p in shells]:
         raise RuntimeError("arithmetic binaries changed")
+    if report["driver_sha256"] != sha(Path(__file__)):
+        raise RuntimeError("arithmetic driver changed")
     args.output.write_text(json.dumps(report, indent=2) + "\n")
 
 

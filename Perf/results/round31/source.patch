@@ -1,0 +1,13 @@
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..0895505 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -339,7 +339,7 @@ enum prec_type {
+  * Get a number from a variable.
+  * Try to be clever about reusing subscripts by caching the Value structure.
+  */
+-static mnumber
++static inline mnumber
+ getmathparam(struct mathvalue *mptr)
+ {
+     mnumber result;

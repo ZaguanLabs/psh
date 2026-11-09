@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "arithmetic_reports": [
+    {
+      "report": "descriptor-pool/math.json",
+      "driver": ".work/logs/round31/descriptor-pool/pilot-math-compare.py",
+      "checks_per_locale": 38472,
+      "locales": 5
+    },
+    {
+      "report": "math.json",
+      "driver": ".work/logs/round31/memory-timeout/math-compare.py",
+      "checks_per_locale": 38472,
+      "locales": 5
+    },
+    {
+      "report": "pristine-restored-math.json",
+      "driver": ".work/logs/round31/memory-timeout/math-compare.py",
+      "checks_per_locale": 5352,
+      "locales": 1
+    },
+    {
+      "report": "descriptor-memory.json",
+      "driver": "Perf/math-compare.py",
+      "checks_per_locale": 2292,
+      "locales": 1
+    },
+    {
+      "report": "pristine-focused-math.json",
+      "driver": "Perf/math-compare.py",
+      "checks_per_locale": 2292,
+      "locales": 1
+    }
+  ],
+  "focused_memcheck_logs_clear": 2,
+  "incomplete_memory_attempt_counted_as_pass": false,
+  "accessor_upstream": [
+    63,
+    0,
+    2
+  ],
+  "private_timing_groups_completed": 4,
+  "private_trials_only": true
+}

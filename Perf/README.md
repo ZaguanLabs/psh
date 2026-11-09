@@ -986,3 +986,33 @@ The timing driver uses nine alternating fresh processes for thirteen literal
 forms in normal and FORCEFLOAT modes. Timers cover warm shell repeat batches,
 excluding definition and warmup; they include interpreter dispatch. Result
 fingerprints must match. These controls do not replace customer measurements.
+
+## Arithmetic descriptor lifetime investigation
+
+[Round thirty-one](round31.md) retains three unadopted private trials involving
+descriptor allocation and inlining. No new package or activation is produced.
+
+```sh
+python3 Perf/math-compare.py .work/baseline/Src/zsh ./psh \
+  --syntax --operators --descriptors --output .work/logs/math-descriptors.json
+python3 Perf/math-compare.py /path/to/reference/psh /path/to/trial/psh \
+  --descriptors-only --memcheck --timeout 600 --locale C.UTF-8 \
+  --output .work/logs/math-descriptor-memory.json
+```
+
+`--descriptors` extends the existing corpus with repeated scalar, integer, array
+and hash lookups, recursive callbacks, retyping, side-effecting subscripts,
+short-circuit cases and nested assignments. `--descriptors-only` selects that
+focused extension and its callback setup. Each expression runs in native, ksh
+and sh modes with four option configurations, preserving subshell isolation.
+Results, variable state, callback traces, diagnostics and completion counts must
+match between hosts. The full combined corpus has 38,472 comparisons per locale;
+the focused extension has 2,292. The combined corpus deduplicates expressions
+that also appear in its existing cases.
+
+`--memcheck` instruments both hosts and their forked subshells, disables leak
+checks and rejects any reported memory error. Quiet Memcheck logs must be empty;
+completed state comparisons are required too. `--timeout` bounds each host and
+locale, defaulting to 300 seconds. Instrumented forks can make the broad corpus
+exceed that limit. An incomplete timeout is not a passing memory receipt; retain
+it separately when using the focused extension or a longer explicit allowance.

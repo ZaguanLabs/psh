@@ -1,0 +1,13 @@
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..1d6833b 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -1605,7 +1605,7 @@ checkunary(int mtokc, char *mptr)
+ /* operator-precedence parse the string and execute */
+ 
+ /**/
+-static void
++static inline void
+ mathparse(int pc)
+ {
+     zlong q;

@@ -303,3 +303,9 @@ Endgame improves, but repeated installed-build measurements show slower coder
 paste, chat paste and JSON encoding. The prototype is not adopted; the active
 release retains twenty-six optimizations. New native arithmetic boundary and
 state checks remain available for future work.
+
+The [thirty-first investigation](Perf/round31.md) tests arithmetic descriptor
+allocation and compiler inlining. The descriptor buffer has mixed customer
+results, the parser hint produces identical object code, and the accessor hint
+increases Endgame instructions. These private trials are not adopted. Expanded
+recursive lookup and lvalue tests remain available for future work.

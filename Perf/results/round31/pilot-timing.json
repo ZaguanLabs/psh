@@ -1,0 +1,41 @@
+[
+  {
+    "name": "customer-inline",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round31/previous/Src/zsh",
+      ".work/round31/candidate/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round31/customer-inline.json"
+    ],
+    "status": 0,
+    "seconds": 24.20205453201197
+  },
+  {
+    "name": "library-inline",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round31/previous/Src/zsh",
+      ".work/round31/candidate/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round31/library-inline.json"
+    ],
+    "status": 0,
+    "seconds": 23.00524280103855
+  }
+]
