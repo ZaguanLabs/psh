@@ -21,6 +21,14 @@ For shallow clones, fetch it with `git fetch origin tag upstream/zsh-5.9.2`.
 Historical experiment binaries stay local; their source patches, build settings,
 hashes and measurements are committed so revisions can be rebuilt.
 
+For a release-profile core trial, use `python3 Perf/build.py --which candidate
+--profile release`. Assertions are disabled, symbols are retained, and its build
+and modules live under `.work/release-candidate` and `.work/release-runtime`.
+The reference release build uses `.work/release-baseline` and
+`.work/release-baseline-runtime`. Debug remains the default for development;
+profile-specific directories keep their native SDKs from replacing one another.
+The complete bundled installer uses `Packaging/build.py`, which splits symbols.
+
 ## Rebuild and verify
 
 Run from the project root:

@@ -193,16 +193,17 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-six
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-seven
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
-arithmetic and option emulation. This is not a completed audit of the complete interpreter.
+arithmetic, option emulation and local-parameter cleanup. This is not a completed
+audit of the complete interpreter.
 
 Evidence includes upstream scripts, byte-for-byte differential results, native
 fixtures built with pristine headers, allocation-boundary and floating-state
 checks, several encodings and emulations, PTY completion/startup checks, and the
-author's real project workloads. [RC results](Releases/1.0.0-rc0.md) identify the
-actual tested builds; the [private release-profile iteration](Releases/rc0-release-profile.md)
+author's real project workloads. [RC notes](Releases/1.0.0-rc0.md) identify the
+current tested build; the [release-profile history](Releases/rc0-release-profile.md)
 records the subsequent configuration change. General asynchronous trap
 schedules, all external modules, all locale implementations, other operating
 systems and all downstream patch
@@ -232,12 +233,13 @@ that fails under psh deserves investigation even when every existing test passes
 
 ## RC and promotion policy
 
-The project version remains `1.0.0-rc0` throughout private testing until public
-release. Source commit, build digest and binary hashes distinguish those
-iterations. The existing `v1.0.0-rc0` tag and its draft identify the initial
-checkpoint while work continues on `main`; earlier source artifacts and
-installed builds are retained. Public release tags and source archives are
-immutable; fixes after public release get a new candidate/version. Wider
+The project version remains `1.0.0-rc0` through preparation of the first public
+candidate. Source commit, build digest and binary hashes distinguish development
+iterations. The initial private tag/draft, earlier source artifacts and installed
+builds are historical checkpoints and must be retained when the public tag is
+prepared. The public tag, `SOURCE-INFO.json` and attached archive must identify
+the same source commit. Public release tags and source archives are immutable;
+fixes after public release get a new candidate/version. Wider
 testing and reported regressions inform promotion to 1.0.0. The RC label is not
 a claim that compatibility review is complete. Existing private releases remain
 available for rollback without changing the account login shell or stable Zsh.

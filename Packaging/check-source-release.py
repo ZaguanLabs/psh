@@ -59,6 +59,29 @@ def main():
         # Upstream test fixtures may themselves use Git as a utility; they
         # still run outside a repository. Both builds above have Git disabled.
         run("core-tests", ["make", "-C", ".work/candidate", "check"], env)
+        run("release-core-build", ["python3", "Perf/build.py", "--profile", "release",
+                                   "--jobs", str(args.jobs)], build_env)
+        run("release-core-tests", ["make", "-C", ".work/release-candidate", "check"], env)
+        core_profiles = []
+        for profile, names in [("debug", ["baseline", "candidate"]),
+                               ("release", ["release-baseline", "release-candidate"])]:
+            for name in names:
+                folder = root / ".work" / name
+                debug_enabled = "#define DEBUG 1" in (folder / "config.h").read_text().splitlines()
+                assert debug_enabled == (profile == "debug")
+                binary = folder / "Src/zsh"
+                if name.endswith("candidate"):
+                    assert subprocess.check_output([str(binary), "--version"], env=env) == expected
+                script = ('zmodload zsh/mathfunc || exit 1; '
+                          '(( sqrt(4) == 2 )) || exit 2; print -rl -- $module_path')
+                result = subprocess.run([str(binary), "-dfc", script], env=env,
+                                        capture_output=True, text=True, timeout=30)
+                assert result.returncode == 0 and not result.stderr, result
+                core_profiles.append({"profile": profile, "host": name,
+                                      "shell_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
+                                      "module_path": result.stdout.strip()})
+        assert len({row["module_path"] for row in core_profiles}) == 4
+        assert (root / "psh").read_bytes() == (root / ".work/release-candidate/Src/zsh").read_bytes()
         run("package-stage", ["python3", "Packaging/build.py", "--jobs", str(args.jobs)], build_env)
         staged = json.loads((root / ".work/package/latest.json").read_text())
         assert staged["project_version"] == metadata["project_version"]
@@ -94,6 +117,9 @@ def main():
                   "git_disabled_during_builds": True, "test_environment": {"TERM": "xterm", "LC_ALL": "C.UTF-8"},
                   "baseline_files_verified": metadata["baseline_files_verified"],
                   "package_staged_without_installing": True, "runs": rows}
+        report["core_profiles"] = core_profiles
+        report["core_profile_module_paths_isolated"] = True
+        report["core_trial_release_published"] = True
         report.update(release_profile=staged["settings"], debug_profile=debug["settings"],
                       distinct_profile_build_ids=True, debug_package_staged_without_installing=True,
                       debugger_checks=debugger_checks)

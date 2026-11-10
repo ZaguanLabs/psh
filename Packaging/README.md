@@ -9,9 +9,10 @@ The current project version is **1.0.0-rc0**. `psh --version` reports
 `psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
-The [append-prefix iteration](../Perf/round28.md) records the current private
+The [current maintenance iteration](../Perf/round37.md) records the validated
 build; [release-profile notes](../Releases/rc0-release-profile.md) describe its
-configuration and debugger symbols. The project version stays rc0 until public release.
+configuration and debugger symbols. See the [public rc0 notes](../Releases/1.0.0-rc0.md)
+for source-release instructions and compatibility limits.
 
 The [first installed release's validation record](validation-2026-11-07.json)
 contains executable and native-module hashes, pinned revisions, suite results,
@@ -73,6 +74,13 @@ Use the private installer below for installation. The retained upstream
 installation; it is not the psh installation workflow.
 
 Run the build and tests as your normal user. Use `sudo` only for installation:
+
+The activation verifier currently requires an Oh My Zsh checkout to exercise
+the framework compatibility gate, even if you do not use that framework daily.
+It uses isolated test homes and does not install Oh My Zsh or edit your startup
+files. A checkout can be selected with `Packaging/verify.py verify
+--ohmyzsh-root PATH`. The uninstalled core trial in the release notes does not
+require Oh My Zsh.
 
 ```sh
 python3 Packaging/build.py

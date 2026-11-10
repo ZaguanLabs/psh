@@ -68,6 +68,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--which", choices=("baseline", "candidate", "all"), default="all")
     p.add_argument("--jobs", type=int, default=8)
+    p.add_argument("--profile", choices=("debug", "release"), default="debug",
+                   help="debug retains assertions; release uses separate build/module directories")
     args = p.parse_args()
     if args.jobs < 1:
         p.error("--jobs must be positive")
@@ -81,20 +83,24 @@ def main():
         p.error(str(error))
     selected = ("baseline", "candidate") if args.which == "all" else (args.which,)
     for name in selected:
-        build = work / name
+        label = name if args.profile == "debug" else "release-" + name
+        build = work / label
         build.mkdir(exist_ok=True)
         source = pristine if name == "baseline" else root
-        runtime = work / ("baseline-runtime" if name == "baseline" else "runtime")
+        runtime_name = "baseline-runtime" if name == "baseline" else "runtime"
+        runtime = work / (runtime_name if args.profile == "debug" else "release-" + runtime_name)
         commands = [
             [str(source / "configure"), f"--prefix={runtime}",
-             "--enable-multibyte", "--enable-zsh-debug", "CFLAGS=-O2 -g"],
+             "--enable-multibyte",
+             "--enable-zsh-debug" if args.profile == "debug" else "--disable-zsh-debug",
+             "CFLAGS=-O2 -g", "LDFLAGS=-g"],
             ["make", f"-j{args.jobs}"],
             ["make", f"MODDIR={build / 'modules'}", "install.modules"],
             ["make", f"MODDIR={runtime / 'lib/zsh/5.9.2'}", "install.modules"],
         ]
         for phase, command in enumerate(commands):
-            print(f"{name}: {' '.join(command)}", flush=True)
-            with (logs / f"{name}-build-{phase}.log").open("w") as log:
+            print(f"{label}: {' '.join(command)}", flush=True)
+            with (logs / f"{label}-build-{phase}.log").open("w") as log:
                 subprocess.run(command, cwd=build, stdout=log,
                                stderr=subprocess.STDOUT, check=True)
         if name == "candidate":

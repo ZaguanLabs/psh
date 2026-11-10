@@ -1,0 +1,80 @@
+[
+  {
+    "name": "customer-benchmarks",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "/usr/local/psh/releases/1.0.0-rc0-7e8f4c48abf5/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/public-rc0/customer-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 28.175488190026954
+  },
+  {
+    "name": "library-benchmarks",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "/usr/local/psh/releases/1.0.0-rc0-7e8f4c48abf5/bin/psh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/public-rc0/library-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 23.942353269085288
+  },
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "/usr/local/psh/releases/1.0.0-rc0-7e8f4c48abf5/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/public-rc0/customer-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 34.58222853206098
+  },
+  {
+    "name": "library-repeat",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "/usr/local/psh/releases/1.0.0-rc0-7e8f4c48abf5/bin/psh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/public-rc0/library-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 23.77417291305028
+  }
+]

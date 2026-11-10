@@ -1,0 +1,147 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+    "/usr/local/psh/releases/1.0.0-rc0-7e8f4c48abf5/bin/psh"
+  ],
+  "cpu_affinity": [
+    13
+  ],
+  "driver_sha256": "48c121c63eef0d778fe8849a5115cade26667ab312c005fddf02d05162bbf45c",
+  "binary_sha256": [
+    "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+    "8f4b852f5e26aac6942b956f064ee1629177c0c5ffc3702b57b2513be8db837d"
+  ],
+  "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+  "samples": 9,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "locale": "C.UTF-8",
+  "cases": [
+    {
+      "operation": "zjson-array",
+      "source_sha256": {
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "samples_ms_per_call": [
+        [
+          113.524,
+          115.571,
+          113.83,
+          115.04100000000001,
+          114.43100000000001,
+          115.619,
+          113.27,
+          113.454,
+          113.855
+        ],
+        [
+          92.807,
+          96.982,
+          95.39699999999999,
+          95.051,
+          94.178,
+          95.363,
+          93.428,
+          92.919,
+          95.764
+        ]
+      ],
+      "median_ms": [
+        113.855,
+        95.051
+      ],
+      "state_sha256": "eb9a272c562d5101f91f34d4c06bdb05fc99ccf0394c2179a8da185e80ce723f",
+      "iterations": 1
+    },
+    {
+      "operation": "zjson-encode-array",
+      "source_sha256": {
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "samples_ms_per_call": [
+        [
+          246.811,
+          242.57500000000002,
+          242.2,
+          243.665,
+          244.35299999999998,
+          244.93699999999998,
+          245.568,
+          244.82000000000002,
+          243.42600000000002
+        ],
+        [
+          205.549,
+          206.653,
+          201.488,
+          201.486,
+          205.463,
+          206.238,
+          209.99300000000002,
+          202.137,
+          204.049
+        ]
+      ],
+      "median_ms": [
+        244.35299999999998,
+        205.463
+      ],
+      "state_sha256": "1d1e99c34c1a3cf20ece17bc7501e899f9c0c0b87780958f202ac46beb0e7cb3",
+      "iterations": 1
+    },
+    {
+      "operation": "zjson",
+      "source_sha256": {
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "samples_ms_per_call": [
+        [
+          107.895,
+          106.36199999999998,
+          109.012,
+          108.23433333333334,
+          109.42899999999999,
+          107.98766666666667,
+          109.13333333333334,
+          106.12166666666667,
+          109.77466666666668
+        ],
+        [
+          91.81366666666666,
+          89.89266666666667,
+          91.56433333333335,
+          92.098,
+          90.84033333333333,
+          92.09599999999999,
+          90.75633333333333,
+          90.51299999999999,
+          88.16699999999999
+        ]
+      ],
+      "median_ms": [
+        108.23433333333334,
+        90.84033333333333
+      ],
+      "state_sha256": "0608e1cd18757b4c410bf56704689c7b1e647a66e44103c21e1bf18be157a0bf",
+      "iterations": 3
+    }
+  ]
+}

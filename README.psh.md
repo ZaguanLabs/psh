@@ -1,5 +1,9 @@
 # psh — Performance SHell
 
+For the public rc0 introduction and quick start, see the
+[project overview](.github/README.md) and [release notes](Releases/1.0.0-rc0.md).
+This file retains the detailed development history.
+
 psh 1.0.0-rc0 pursues meaningful performance gains on Zsh 5.9.2 while preserving
 existing behavior by default. Limited, deliberate differences need substantial
 measured benefit, understood consequences and a documented migration or fallback.
