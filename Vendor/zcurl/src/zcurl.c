@@ -1088,6 +1088,9 @@ static struct features module_features = {
 
 int setup_(UNUSED(Module m))
 {
+#ifdef PSH_SCOPE_INDEX_VERSION
+    psh_scope_module_ack(m);
+#endif
     size_t i;
     const curl_version_info_data *curl_info;
     const char *const *protocol;

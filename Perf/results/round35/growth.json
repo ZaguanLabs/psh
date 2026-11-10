@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "host": "previous",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/previous-growth.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-growth.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/growth/previous",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/runtime-previous/lib/zsh/5.9.2",
+        "0"
+      ],
+      "status": 0,
+      "binary_sha256": "daf80861317181a445b122405390b32aacd1921c7440d49675c3da874937e32e",
+      "source_sha256": "472f950e83f1de9dbe5a1e242feae96ab1fe26feb885f8791bdae7ffb897e966"
+    },
+    {
+      "host": "candidate",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/candidate-growth.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-growth.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/growth/candidate",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/runtime-candidate/lib/zsh/5.9.2",
+        "1"
+      ],
+      "status": 0,
+      "binary_sha256": "e50e628bc1ed413ba0735b843e2d8d510d9cb02511a1793a491b369b943572a4",
+      "source_sha256": "472f950e83f1de9dbe5a1e242feae96ab1fe26feb885f8791bdae7ffb897e966"
+    },
+    {
+      "host": "pristine",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/pristine-growth.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-growth.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/growth/pristine",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/modules",
+        "0"
+      ],
+      "status": 0,
+      "binary_sha256": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+      "source_sha256": "472f950e83f1de9dbe5a1e242feae96ab1fe26feb885f8791bdae7ffb897e966"
+    },
+    {
+      "host": "development",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/development-growth.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-growth.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/growth/development",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/modules",
+        "1"
+      ],
+      "status": 0,
+      "binary_sha256": "f5474719b0d227a57412e8dd674bf059ac551322160a76c8d97771e0a2a470d0",
+      "source_sha256": "472f950e83f1de9dbe5a1e242feae96ab1fe26feb885f8791bdae7ffb897e966"
+    }
+  ]
+}

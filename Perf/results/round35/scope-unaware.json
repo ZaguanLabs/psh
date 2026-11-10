@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh": "daf80861317181a445b122405390b32aacd1921c7440d49675c3da874937e32e",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh": "e50e628bc1ed413ba0735b843e2d8d510d9cb02511a1793a491b369b943572a4",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-cleanup-module.c": "1dee430e9663fbc6cbc3f0dc3346fe3ee8c4ad6ede9fa048bf40ff98810a8db6",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/0/psh_scope_cleanup_fixture.so": "c2f4c9d66ea6b1f263c76fe7204707f1369c29d43d5158e3d329ca68946c05ce",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/1/psh_scope_cleanup_fixture.so": "79fee91048f3ecab20f8566293c9ff25928f3a2d2c67d0143886bc7301e66bde",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-scope-cleanup-module.py": "df5660a6a924e72b482774ee5e500e1e80f13fc15083a2f0e244c7424a4f5ba4"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous-source/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-cleanup-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/0/psh_scope_cleanup_fixture.so"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/scope-cleanup-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/1/psh_scope_cleanup_fixture.so"
+    ]
+  ],
+  "checks": 4368,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+      "locale": "C",
+      "memcheck": true,
+      "checks": 1092,
+      "stdout": "checks=1092 digest=16444478884902714080\nscope-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/0-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_scope_cleanup_fixture || exit 1; psh-scope-cleanup-check \"$2\" || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3",
+        "scope-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/0",
+        "auto"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+      "locale": "C",
+      "memcheck": true,
+      "checks": 1092,
+      "stdout": "checks=1092 digest=16444478884902714080\nscope-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/1-C.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_scope_cleanup_fixture || exit 1; psh-scope-cleanup-check \"$2\" || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3",
+        "scope-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/1",
+        "auto"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+      "locale": "C.UTF-8",
+      "memcheck": true,
+      "checks": 1092,
+      "stdout": "checks=1092 digest=16444478884902714080\nscope-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/0-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_scope_cleanup_fixture || exit 1; psh-scope-cleanup-check \"$2\" || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3",
+        "scope-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/0",
+        "auto"
+      ],
+      "status": 0
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+      "locale": "C.UTF-8",
+      "memcheck": true,
+      "checks": 1092,
+      "stdout": "checks=1092 digest=16444478884902714080\nscope-done\n",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/1-C.UTF-8.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_scope_cleanup_fixture || exit 1; psh-scope-cleanup-check \"$2\" || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3",
+        "scope-comparison",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware/1",
+        "auto"
+      ],
+      "status": 0
+    }
+  ]
+}

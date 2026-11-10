@@ -1,0 +1,169 @@
+[
+  {
+    "name": "customer-benchmarks",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/customer-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 23.161105571081862
+  },
+  {
+    "name": "library-benchmarks",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/library-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 21.802417009836063
+  },
+  {
+    "name": "parser-benchmarks",
+    "command": [
+      "python3",
+      "Perf/parser-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--zhtml2md",
+      "/home/stig/dev/ai/zaguan/labs/zhtml2md",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--zoup",
+      "/home/stig/dev/ai/zaguan/labs/zoup",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/parser-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 42.63536597904749
+  },
+  {
+    "name": "search-benchmarks",
+    "command": [
+      "python3",
+      "Perf/search-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/search-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 6.407945296028629
+  },
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/customer-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 23.266642863862216
+  },
+  {
+    "name": "library-repeat",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/library-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 22.058648499893025
+  },
+  {
+    "name": "hardware",
+    "command": [
+      "python3",
+      "Perf/hardware-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/hardware.json"
+    ],
+    "status": 0,
+    "seconds": 7.854792195139453
+  },
+  {
+    "name": "array-benchmarks",
+    "command": [
+      "python3",
+      "Perf/benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/array-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 52.01656974409707
+  },
+  {
+    "name": "scope-benchmarks",
+    "command": [
+      "python3",
+      "Perf/scope-pair-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--baseline-module-dir",
+      ".work/round35/observer/previous",
+      "--candidate-module-dir",
+      ".work/round35/observer/candidate",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round35/scope-benchmarks.json"
+    ],
+    "status": 0,
+    "seconds": 41.70046698395163
+  }
+]

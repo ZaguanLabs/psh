@@ -1,0 +1,50 @@
+[
+  {
+    "name": "installed-unaware",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--headers-build",
+      ".work/package/1.0.0-rc0-56f97a85e8cb/core",
+      "--headers-source",
+      ".work/package/1.0.0-rc0-56f97a85e8cb/core",
+      "--candidate-headers-build",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-bde30291d0ec/core",
+      "--candidate-headers-source",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-bde30291d0ec/core",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/installed-unaware.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "installed-opaque",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "--headers-build",
+      ".work/package/1.0.0-rc0-56f97a85e8cb/core",
+      "--headers-source",
+      ".work/package/1.0.0-rc0-56f97a85e8cb/core",
+      "--candidate-headers-build",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-bde30291d0ec/core",
+      "--candidate-headers-source",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc0-bde30291d0ec/core",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--aware",
+      "--opaque",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/installed-opaque.json"
+    ],
+    "status": 0
+  }
+]

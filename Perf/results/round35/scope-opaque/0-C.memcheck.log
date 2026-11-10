@@ -1,0 +1,15 @@
+==3176264== Memcheck, a memory error detector
+==3176264== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3176264== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3176264== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh -dfc module_path=("$1");\ typeset\ psh_opaque_ctor_target=global;\ ()\ {\ local\ psh_seed=1;\ };\ zmodload\ psh_scope_opaque\ ||\ exit\ 4;\ ((\ ${+psh_opaque_ctor_target}\ ==\ 0\ ))\ ||\ exit\ 5;\ module_path=("$1");\ zmodload\ psh_scope_cleanup_fixture\ ||\ exit\ 1;\ psh-scope-cleanup-check\ "$2"\ ||\ exit\ 2;\ zmodload\ -u\ psh_scope_cleanup_fixture\ ||\ exit\ 3 scope-comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-opaque/0 legacy
+==3176264== Parent PID: 3176220
+==3176264== 
+==3176264== 
+==3176264== HEAP SUMMARY:
+==3176264==     in use at exit: 47,725 bytes in 748 blocks
+==3176264==   total heap usage: 39,242 allocs, 38,494 frees, 1,965,620 bytes allocated
+==3176264== 
+==3176264== For a detailed leak analysis, rerun with: --leak-check=full
+==3176264== 
+==3176264== For lists of detected and suppressed errors, rerun with: -s
+==3176264== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

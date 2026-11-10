@@ -176,3 +176,14 @@ checks pass. Private coder/chat gains disappear in installed timing and JSON
 kernels regress. Dense global tables improve while retained sparse capacity
 can slow further. The trial is rejected. Ordered candidate-bucket tracking with
 conservative native fallback remains a design direction, not an implementation.
+
+[Round thirty-five](round35.md) implements the candidate-bucket bitmap for the
+standard real parameter table. It preserves ordinary ordering, mutation tracking
+and the complete cleanup callback; rehashes invalidate it. Atomic level updates
+and explicit module acknowledgment support indexed scopes, while unacknowledged
+native code permanently selects legacy scanning. A private module registry,
+constructor barrier, reload and signal-unload checks protect native lifetimes.
+The installed build improves coder/chat paste by about 8%, simulation kernels
+by about 4% and JSON kernels by 3–6%; URL encoding is about 1% slower. The change
+is adopted after native/compiler/upstream/package checks and 24 OMZ sessions.
+Rebuilds, collisions, parent locals and the bitmap-capacity term remain costs.

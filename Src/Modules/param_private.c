@@ -598,6 +598,7 @@ static struct reswd reswd_private = {{NULL, "private", 0}, TYPESET};
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     HashNode hn = builtintab->getnode(builtintab, "local");
 
     /* Horrible, horrible hack */

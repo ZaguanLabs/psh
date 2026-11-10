@@ -203,7 +203,7 @@ makezleparams(int ro)
 	    pm = (Param) paramtab->getnode(paramtab, zp->name);
 	DPUTS(!pm, "param not set in makezleparams");
 
-	pm->level = locallevel + 1;
+	psh_scope_setlevel(pm, locallevel + 1);
 	pm->u.data = zp->data;
 	switch(PM_TYPE(zp->type)) {
 	    case PM_SCALAR:
@@ -224,7 +224,7 @@ makezleparams(int ro)
     reg_param = createspecialhash("registers", get_registers, &scan_registers,
 	    PM_LOCAL|PM_REMOVABLE);
     reg_param->gsu.h = &registers_gsu;
-    reg_param->level = locallevel + 1;
+    psh_scope_setlevel(reg_param, locallevel + 1);
 }
 
 /* Special unset function for ZLE special parameters: act like the standard *

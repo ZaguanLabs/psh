@@ -70,6 +70,121 @@ struct scanstatus {
     } u;
 };
 
+/* Only the real parameter table is indexed. No public layout is changed. */
+#define SCOPE_WORD_BITS (sizeof(unsigned long) * CHAR_BIT)
+static HashTable scope_owner;
+static HashNode *scope_nodes;
+static HashFunc scope_hash;
+static unsigned long *scope_bits;
+static int scope_size, scope_valid, scope_opaque;
+static unsigned scope_loading;
+
+/**/
+mod_export int
+psh_scope_tracking(void)
+{
+    return !scope_opaque && !scope_loading;
+}
+
+/**/
+void
+psh_scope_native_begin(void)
+{
+    scope_loading++;
+    scope_valid = 0;
+}
+
+/**/
+void
+psh_scope_native_end(int aware)
+{
+    if (!aware)
+	scope_opaque = 1;
+    scope_loading--;
+    scope_valid = 0;
+}
+
+static inline void
+scope_mark_bucket(HashTable ht, unsigned bucket)
+{
+    if (ht == scope_owner && scope_valid && ht->nodes == scope_nodes &&
+	ht->hsize == scope_size && ht->hash == scope_hash)
+	scope_bits[bucket / SCOPE_WORD_BITS] |=
+	    1UL << (bucket % SCOPE_WORD_BITS);
+}
+
+/* An aware native module must notify after promoting a visible parameter.
+ * Detached snapshots and associative elements are deliberately not indexed. */
+static void
+scope_mark_parameter(Param pm)
+{
+    if (scope_valid && paramtab == scope_owner && paramtab->hash == hasher &&
+	paramtab->cmpnodes == strcmp && pm) {
+	unsigned bucket = hasher(pm->node.nam) % paramtab->hsize;
+	HashNode hn;
+	for (hn = paramtab->nodes[bucket]; hn && hn != (HashNode)pm; hn = hn->next)
+	    ;
+	if (hn)
+	    scope_mark_bucket(paramtab, bucket);
+    }
+}
+
+/**/
+mod_export void
+psh_scope_mark(Param pm)
+{
+    if (pm && pm->level > 0)
+	scope_mark_parameter(pm);
+}
+
+/* The level and its candidate bucket must be published atomically. This
+ * nested critical section ends before any caller's restoration callbacks. */
+/**/
+mod_export void
+psh_scope_setlevel(Param pm, int level)
+{
+    queue_signals();
+    pm->level = level;
+    if (level > 0)
+	scope_mark_parameter(pm);
+    unqueue_signals();
+}
+
+static void
+scope_invalidate(HashTable ht)
+{
+    if (ht == scope_owner)
+	scope_valid = 0;
+}
+
+static int
+scope_rebuild(HashTable ht)
+{
+    size_t words = ((size_t)ht->hsize + SCOPE_WORD_BITS - 1) / SCOPE_WORD_BITS;
+    int i, saved_errno = errno;
+    unsigned long *bits = (unsigned long *)calloc(words, sizeof(*bits));
+    errno = saved_errno;
+    if (!bits)
+	return 0;
+    free(scope_bits);
+    errno = saved_errno;
+    scope_bits = bits;
+    scope_owner = ht;
+    scope_nodes = ht->nodes;
+    scope_hash = ht->hash;
+    scope_size = ht->hsize;
+    for (i = 0; i < ht->hsize; i++) {
+	HashNode hn;
+	for (hn = ht->nodes[i]; hn; hn = hn->next)
+	    if (((Param)hn)->level > 0) {
+		scope_bits[i / SCOPE_WORD_BITS] |= 1UL << (i % SCOPE_WORD_BITS);
+		break;
+	    }
+    }
+    scope_valid = 1;
+    return 1;
+}
+
 /********************************/
 /* Generic Hash Table functions */
 /********************************/
@@ -128,6 +243,7 @@ newhashtable(int size, UNUSED(char const *name), UNUSED(PrintTableStats printinf
 mod_export void
 deletehashtable(HashTable ht)
 {
+    scope_invalidate(ht);
     ht->emptytable(ht);
 #ifdef ZSH_HASH_DEBUG
     if(impl(ht)->next)
@@ -174,6 +290,7 @@ addhashnode2(HashTable ht, char *nam, void *nodeptr)
     hn->nam = nam;
 
     hashval = ht->hash(hn->nam) % ht->hsize;
+    scope_mark_bucket(ht, hashval);
     hp = ht->nodes[hashval];
 
     /* check if this is the first node for this hash value */
@@ -450,6 +567,67 @@ scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
 			  scanfunc, scanflags);
 }
 
+/* Walk candidate buckets in exactly the ordinary unsorted order. Re-read
+ * the bitmap after each bucket: callbacks can mark a later bucket. */
+/**/
+void
+psh_scanparamscope(HashTable ht, ScanFunc scanfunc)
+{
+    struct scanstatus st;
+    int i = 0, hsize = ht->hsize;
+    HashNode *nodes = ht->nodes;
+
+    if (!psh_scope_tracking() || ht != realparamtab || ht->scantab ||
+	ht->hash != hasher || ht->cmpnodes != strcmp ||
+	ht->addnode != addhashnode || ht->removenode != removehashnode ||
+	locallevel < 0 || impl(ht)->scan) {
+	scope_valid = 0;
+	scanhashtable(ht, 0, 0, 0, scanfunc, 0);
+	return;
+    }
+    if ((!scope_valid || scope_owner != ht || scope_nodes != nodes ||
+	 scope_size != hsize || scope_hash != ht->hash) && !scope_rebuild(ht)) {
+	scanhashtable(ht, 0, 0, 0, scanfunc, 0);
+	return;
+    }
+    st.sorted = 0;
+    impl(ht)->scan = &st;
+    while (i < hsize) {
+	if (scope_valid && psh_scope_tracking()) {
+	    unsigned long bits = scope_bits[i / SCOPE_WORD_BITS] &
+		(~0UL << (i % SCOPE_WORD_BITS));
+	    if (!bits) {
+		unsigned skip = SCOPE_WORD_BITS - (i % SCOPE_WORD_BITS);
+		i = (unsigned)(hsize - i) <= skip ? hsize : i + skip;
+		continue;
+	    }
+#ifdef __GNUC__
+	    i = (i / SCOPE_WORD_BITS) * SCOPE_WORD_BITS + __builtin_ctzl(bits);
+#else
+	    while (!(bits & (1UL << (i % SCOPE_WORD_BITS))))
+		i++;
+#endif
+	}
+	if (i >= hsize)
+	    break;
+	for (st.u.u = nodes[i]; st.u.u; ) {
+	    HashNode hn = st.u.u;
+	    st.u.u = hn->next;
+	    scanfunc(hn, 0);
+	}
+	if (scope_valid && psh_scope_tracking()) {
+	    HashNode hn;
+	    for (hn = nodes[i]; hn; hn = hn->next)
+		if (((Param)hn)->level > 0)
+		    break;
+	    if (!hn)
+		scope_bits[i / SCOPE_WORD_BITS] &= ~(1UL << (i % SCOPE_WORD_BITS));
+	}
+	i++;
+    }
+    impl(ht)->scan = NULL;
+}
+
 /* Expand hash tables when they get too many entries. *
  * The new size is 4 times the previous size.         */
 
@@ -460,6 +638,7 @@ expandhashtable(HashTable ht)
     struct hashnode **onodes, **ha, *hn, *hp;
     int i, osize;
 
+    scope_invalidate(ht);
     osize = ht->hsize;
     onodes = ht->nodes;
 
@@ -488,6 +667,7 @@ resizehashtable(HashTable ht, int newsize)
     struct hashnode **ha, *hn, *hp;
     int i;
 
+    scope_invalidate(ht);
     /* free all the hash nodes */
     ha = ht->nodes;
     for (i = 0; i < ht->hsize; i++, ha++) {

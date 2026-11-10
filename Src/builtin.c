@@ -2520,9 +2520,9 @@ typeset_single(char *cname, char *pname, Param pm, int func,
     }
 
     if (keeplocal)
-	pm->level = keeplocal;
+	psh_scope_setlevel(pm, keeplocal);
     else if (on & PM_LOCAL)
-	pm->level = locallevel;
+	psh_scope_setlevel(pm, locallevel);
     if (ASG_VALUEP(asg) && !dont_set) {
 	Param ipm = pm;
 	if (pm->node.flags & (PM_ARRAY|PM_HASHED)) {

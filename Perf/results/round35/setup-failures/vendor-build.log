@@ -1,0 +1,21 @@
+patching file configure.ac
+patching file Doc/Makefile.in
+Running: autoconf
+Running: autoheader
+Running: make -j4
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/build.py", line 209, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/build.py", line 106, in main
+    run(["make", f"-j{args.jobs}"], core, logs / "core-build.log")
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/build.py", line 26, in run
+    subprocess.run(list(map(str, command)), cwd=cwd, stdout=out,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   stderr=subprocess.STDOUT, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['make', '-j4']' returned non-zero exit status 2.

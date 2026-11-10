@@ -17,6 +17,8 @@ def main():
     p.add_argument('--candidate-headers-build', type=Path)
     p.add_argument('--candidate-headers-source', type=Path)
     p.add_argument('--memcheck', action='store_true')
+    p.add_argument('--aware', action='store_true', help='opt in to notified level promotions on psh')
+    p.add_argument('--opaque', action='store_true', help='preload an unacknowledged module with a constructor')
     p.add_argument('--locale', action='append', dest='locales')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
@@ -35,16 +37,31 @@ def main():
         command = ['cc', '-O2', '-g', '-shared', '-fPIC', '-DMODULE', '-DHAVE_CONFIG_H',
                    '-I' + str(headers.resolve(strict=True) / 'Src'),
                    '-I' + str(sources.resolve(strict=True) / 'Src'), str(source), '-o', str(module)]
+        if a.aware:
+            command.insert(1, '-DPSH_SCOPE_FIXTURE_AWARE')
         subprocess.run(command, check=True)
         modules.append(module)
         commands.append(command)
+        if a.opaque:
+            opaque = destination / 'psh_scope_opaque.so'
+            command = command[:]
+            command[command.index(str(source))] = str(source.with_name('scope-opaque-module.c'))
+            command[command.index(str(module))] = str(opaque)
+            subprocess.run(command, check=True)
+            commands.append(command)
     shells = [s.resolve(strict=True) for s in [a.baseline, a.candidate]]
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     inputs = [*shells, source, *modules, Path(__file__).resolve()]
+    if a.opaque:
+        inputs += [source.with_name('scope-opaque-module.c'), *[m.with_name('psh_scope_opaque.so') for m in modules]]
     fingerprints = {str(p): sha(p) for p in inputs}
     runs = []
     script = ('module_path=("$1"); zmodload psh_scope_cleanup_fixture || exit 1; '
-              'psh-scope-cleanup-check || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3')
+              'psh-scope-cleanup-check "$2" || exit 2; zmodload -u psh_scope_cleanup_fixture || exit 3')
+    if a.opaque:
+        script = ('module_path=("$1"); typeset psh_opaque_ctor_target=global; '
+                  '() { local psh_seed=1; }; zmodload psh_scope_opaque || exit 4; '
+                  '(( ${+psh_opaque_ctor_target} == 0 )) || exit 5; ') + script
     for locale in a.locales or ['C', 'C.UTF-8']:
         expected = None
         for host in range(2):
@@ -55,11 +72,11 @@ def main():
                 prefix = ['valgrind', '--error-exitcode=97', '--leak-check=no',
                           '--log-file=' + str(memory_log)]
             command = prefix + [str(shells[host]), '-dfc', script, 'scope-comparison',
-                                str(modules[host].parent)]
+                                str(modules[host].parent), 'legacy' if a.opaque else 'auto']
             result = subprocess.run(command, env={'PATH': '/usr/bin:/bin', 'LC_ALL': locale},
                                     capture_output=True, timeout=120)
             count = re.fullmatch(rb'checks=(\d+) digest=\d+\nscope-done\n', result.stdout)
-            if result.returncode or result.stderr or not count or int(count[1]) != 1008:
+            if result.returncode or result.stderr or not count or int(count[1]) != 1092:
                 raise RuntimeError((label, result.returncode, result.stdout[-1000:], result.stderr[-2000:]))
             if a.memcheck:
                 assert 'ERROR SUMMARY: 0 errors' in memory_log.read_text()

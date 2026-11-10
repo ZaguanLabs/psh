@@ -25,11 +25,28 @@ bin_observe(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops),
     return 0;
 }
 
+static int
+bin_tracking(UNUSED(char *n), UNUSED(char **a), UNUSED(Options o), UNUSED(int f))
+{
+#ifdef PSH_SCOPE_INDEX_VERSION
+    printf("%d\n", psh_scope_tracking());
+#else
+    printf("0\n");
+#endif
+    return 0;
+}
+
 static struct builtin bintab[] = {
-    BUILTIN("psh-scope-observe", 0, bin_observe, 0, 0, 0, NULL, NULL)
+    BUILTIN("psh-scope-observe", 0, bin_observe, 0, 0, 0, NULL, NULL),
+    BUILTIN("psh-scope-tracking", 0, bin_tracking, 0, 0, 0, NULL, NULL)
 };
-static struct features features = {bintab, 1, NULL, 0, NULL, 0, NULL, 0, 0};
-int setup_(UNUSED(Module m)) { return 0; }
+static struct features features = {bintab, 2, NULL, 0, NULL, 0, NULL, 0, 0};
+int setup_(UNUSED(Module m)) {
+#ifdef PSH_SCOPE_INDEX_VERSION
+    psh_scope_module_ack(m);
+#endif
+    return 0;
+}
 int features_(Module m, char ***out) { *out = featuresarray(m, &features); return 0; }
 int enables_(Module m, int **out) { return handlefeatures(m, &features, out); }
 int boot_(UNUSED(Module m)) { return 0; }

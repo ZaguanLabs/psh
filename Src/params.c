@@ -1232,7 +1232,7 @@ createspecialhash(char *name, GetNodeFunc get, ScanTabFunc scan, int flags)
      * within a function without a local definition.
      */
     if (pm->old)
-	pm->level = locallevel;
+	psh_scope_setlevel(pm, locallevel);
     pm->gsu.h = (flags & PM_READONLY) ? &stdhash_gsu :
 	&nullsethash_gsu;
     pm->u.hash = ht = newhashtable(0, name, NULL);
@@ -5927,7 +5927,7 @@ endparamscope(void)
 #ifdef USE_LOCALE
     lc_update_needed = 0;
 #endif
-    scanhashtable(paramtab, 0, 0, 0, scanendscope, 0);
+    psh_scanparamscope(paramtab, scanendscope);
 #ifdef USE_LOCALE
     if (lc_update_needed)
     {

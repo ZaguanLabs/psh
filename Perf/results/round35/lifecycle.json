@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "host": "previous",
+      "test": "signal",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/previous-signal.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path)\nzmodload zsh/parameter || exit 1\nTRAPUSR1() { zmodload -u psh_scope_signal || return 7; }\nzmodload psh_scope_signal || exit 2\n(( ${+modules[psh_scope_signal]} == 0 )) || exit 3\nprint -r -- SIGNAL_UNLOAD_OK\n",
+        "lifecycle",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/lifecycle/previous",
+        "0"
+      ],
+      "status": 0,
+      "stdout": "SIGNAL_UNLOAD_OK\n",
+      "binary_sha256": "daf80861317181a445b122405390b32aacd1921c7440d49675c3da874937e32e"
+    },
+    {
+      "host": "previous",
+      "test": "reload",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/previous-reload.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path)\nzmodload psh_scope_observer || exit 1\n[[ $(psh-scope-tracking) == \"$2\" ]] || exit 2\nrepeat 2 {\n zmodload psh_scope_switch || exit 3\n [[ $(psh-scope-tracking) == \"$2\" ]] || exit 4\n zmodload -u psh_scope_switch || exit 5\n}\ncp -- \"$1/psh_scope_opaque.so\" \"$1/psh_scope_switch.so\" || exit 6\ntypeset psh_opaque_ctor_target=global\n() { local seed=1; }\nzmodload psh_scope_switch || exit 7\n(( ${+psh_opaque_ctor_target} == 0 )) || exit 8\n[[ $(psh-scope-tracking) == 0 ]] || exit 9\nprint -r -- RELOAD_FALLBACK_OK\n",
+        "lifecycle",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/lifecycle/previous",
+        "0"
+      ],
+      "status": 0,
+      "stdout": "RELOAD_FALLBACK_OK\n",
+      "binary_sha256": "daf80861317181a445b122405390b32aacd1921c7440d49675c3da874937e32e"
+    },
+    {
+      "host": "candidate",
+      "test": "signal",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/candidate-signal.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path)\nzmodload zsh/parameter || exit 1\nTRAPUSR1() { zmodload -u psh_scope_signal || return 7; }\nzmodload psh_scope_signal || exit 2\n(( ${+modules[psh_scope_signal]} == 0 )) || exit 3\nprint -r -- SIGNAL_UNLOAD_OK\n",
+        "lifecycle",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/lifecycle/candidate",
+        "1"
+      ],
+      "status": 0,
+      "stdout": "SIGNAL_UNLOAD_OK\n",
+      "binary_sha256": "e50e628bc1ed413ba0735b843e2d8d510d9cb02511a1793a491b369b943572a4"
+    },
+    {
+      "host": "candidate",
+      "test": "reload",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/candidate-reload.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path)\nzmodload psh_scope_observer || exit 1\n[[ $(psh-scope-tracking) == \"$2\" ]] || exit 2\nrepeat 2 {\n zmodload psh_scope_switch || exit 3\n [[ $(psh-scope-tracking) == \"$2\" ]] || exit 4\n zmodload -u psh_scope_switch || exit 5\n}\ncp -- \"$1/psh_scope_opaque.so\" \"$1/psh_scope_switch.so\" || exit 6\ntypeset psh_opaque_ctor_target=global\n() { local seed=1; }\nzmodload psh_scope_switch || exit 7\n(( ${+psh_opaque_ctor_target} == 0 )) || exit 8\n[[ $(psh-scope-tracking) == 0 ]] || exit 9\nprint -r -- RELOAD_FALLBACK_OK\n",
+        "lifecycle",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/lifecycle/candidate",
+        "1"
+      ],
+      "status": 0,
+      "stdout": "RELOAD_FALLBACK_OK\n",
+      "binary_sha256": "e50e628bc1ed413ba0735b843e2d8d510d9cb02511a1793a491b369b943572a4"
+    }
+  ]
+}

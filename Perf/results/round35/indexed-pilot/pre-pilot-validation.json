@@ -1,0 +1,84 @@
+[
+  {
+    "name": "scope-aware",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      ".work/round35/previous/Src/zsh",
+      ".work/round35/candidate/Src/zsh",
+      "--headers-build",
+      ".work/round35/previous",
+      "--headers-source",
+      ".work/round35/previous-source",
+      "--candidate-headers-build",
+      ".work/round35/candidate",
+      "--candidate-headers-source",
+      ".",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--aware",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-aware.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "scope-unaware",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      ".work/round35/previous/Src/zsh",
+      ".work/round35/candidate/Src/zsh",
+      "--headers-build",
+      ".work/round35/previous",
+      "--headers-source",
+      ".work/round35/previous-source",
+      "--candidate-headers-build",
+      ".work/round35/candidate",
+      "--candidate-headers-source",
+      ".",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-unaware.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "scope-opaque",
+    "command": [
+      "python3",
+      "Perf/check-scope-cleanup-module.py",
+      ".work/round35/previous/Src/zsh",
+      ".work/round35/candidate/Src/zsh",
+      "--headers-build",
+      ".work/round35/previous",
+      "--headers-source",
+      ".work/round35/previous-source",
+      "--candidate-headers-build",
+      ".work/round35/candidate",
+      "--candidate-headers-source",
+      ".",
+      "--memcheck",
+      "--locale",
+      "C.UTF-8",
+      "--aware",
+      "--opaque",
+      "--output",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-opaque.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "candidate-upstream",
+    "command": [
+      "make",
+      "-C",
+      ".work/round35/candidate",
+      "check"
+    ],
+    "status": 0
+  }
+]

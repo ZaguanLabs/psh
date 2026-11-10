@@ -29,6 +29,97 @@
 #include "zsh.mdh"
 #include "module.pro"
 
+/* Awareness is private: old modules may use otherwise unused node flag bits.
+ * Only an explicit acknowledgment during setup can enter this registry. */
+struct scope_module_entry {
+    struct scope_module_entry *next;
+    Module module;
+    void *handle;
+};
+struct scope_load_frame {
+    struct scope_load_frame *previous;
+    Module module, acknowledged;
+    int paused;
+};
+static struct scope_module_entry *scope_modules;
+static struct scope_load_frame *scope_load_frame;
+
+static void
+scope_module_pause(void)
+{
+    if (scope_load_frame && !scope_load_frame->paused) {
+	scope_load_frame->paused = 1;
+	psh_scope_native_begin();
+    }
+}
+
+static int
+scope_module_known(Module m)
+{
+    struct scope_module_entry *entry;
+    for (entry = scope_modules; entry; entry = entry->next)
+	if (entry->module == m && entry->handle == m->u.handle)
+	    return 1;
+    return 0;
+}
+
+static int
+scope_module_remember(Module m)
+{
+    int saved_errno = errno;
+    struct scope_module_entry *entry;
+    if (scope_module_known(m))
+	return 1;
+    entry = (struct scope_module_entry *)malloc(sizeof(*entry));
+    errno = saved_errno;
+    if (!entry)
+	return 0;
+    entry->module = m;
+    entry->handle = m->u.handle;
+    entry->next = scope_modules;
+    scope_modules = entry;
+    return 1;
+}
+
+/* Called under the loader's original queue, before any pending signal trap. */
+static void
+scope_module_leave(int ret)
+{
+    struct scope_load_frame *frame = scope_load_frame;
+    Module m = frame->module;
+    if (frame->paused) {
+        int aware = ret != 1 && m && m->u.handle &&
+            (frame->acknowledged == m || scope_module_known(m));
+        if (aware)
+            aware = scope_module_remember(m);
+        psh_scope_native_end(aware);
+    }
+    scope_load_frame = frame->previous;
+}
+
+static void
+scope_module_forget(Module m)
+{
+    int saved_errno = errno;
+    struct scope_module_entry **link = &scope_modules;
+    struct scope_load_frame *frame;
+    for (frame = scope_load_frame; frame; frame = frame->previous) {
+	if (frame->module == m)
+	    frame->module = NULL;
+	if (frame->acknowledged == m)
+	    frame->acknowledged = NULL;
+    }
+    while (*link) {
+	struct scope_module_entry *entry = *link;
+	if (entry->module == m) {
+	    *link = entry->next;
+	    free(entry);
+	} else
+	    link = &entry->next;
+    }
+    errno = saved_errno;
+}
+
 /*
  * List of linked-in modules.
  * This is set up at boot and remains for the life of the shell;
@@ -120,6 +211,7 @@ freemodulenode(HashNode hn)
 {
     Module m = (Module) hn;
 
+    scope_module_forget(m);
     if (m->node.flags & MOD_ALIAS)
 	zsfree(m->u.alias);
     zsfree(m->node.nam);
@@ -305,6 +397,7 @@ newmoduletable(int size, char const *name)
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     return 0;
 }
 
@@ -2194,11 +2287,30 @@ modname_ok(char const *p)
  * 1 for complete failure, 2 if some features couldn't be set.
  */
 
+/* Native constructors and setup run behind a conservative scope barrier.
+ * An unacknowledged module permanently retains legacy scope scans. */
+/**/
+mod_export void
+psh_scope_module_ack(Module m)
+{
+    if (scope_load_frame && scope_load_frame->module == m)
+	scope_load_frame->acknowledged = m;
+}
+
 /**/
 mod_export int
 load_module(char const *name, Feature_enables enablesarr, int silent)
 {
+    struct scope_load_frame frame;
+    return load_module_tracked_body(name, enablesarr, silent, &frame);
+}
+
+/**/
+static int
+load_module_tracked_body(char const *name, Feature_enables enablesarr, int silent, void *context)
+{
     Module m;
+    struct scope_load_frame *frame = (struct scope_load_frame *)context;
     void *handle = NULL;
     Linkedmod linked;
     int set, bootret;
@@ -2214,9 +2326,15 @@ load_module(char const *name, Feature_enables enablesarr, int silent)
      * is the right one.
      */
     queue_signals();
+    frame->previous = scope_load_frame;
+    frame->module = frame->acknowledged = NULL;
+    frame->paused = 0;
+    scope_load_frame = frame;
     if (!(m = find_module(name, FINDMOD_ALIASP, &name))) {
+	scope_module_pause();
 	if (!(linked = module_linked(name)) &&
 	    !(handle = do_load_module(name, silent))) {
+	    scope_module_leave(1);
 	    unqueue_signals();
 	    return 1;
 	}
@@ -2229,6 +2347,7 @@ load_module(char const *name, Feature_enables enablesarr, int silent)
 	    m->node.flags |= MOD_SETUP | MOD_LINKED;
 	}
 	modulestab->addnode(modulestab, ztrdup(name), m);
+	scope_load_frame->module = m;
 
 	if ((set = setup_module(m)) ||
 	    (bootret = do_boot_module(m, enablesarr, silent)) == 1) {
@@ -2236,25 +2355,31 @@ load_module(char const *name, Feature_enables enablesarr, int silent)
 		do_cleanup_module(m);
 	    finish_module(m);
 	    delete_module(m);
+	    scope_module_leave(1);
 	    unqueue_signals();
 	    return 1;
 	}
 	m->node.flags |= MOD_INIT_S | MOD_INIT_B;
 	m->node.flags &= ~MOD_SETUP;
+	scope_module_leave(bootret);
 	unqueue_signals();
 	return bootret;
     }
+    scope_load_frame->module = m;
     if (m->node.flags & MOD_SETUP) {
+	scope_module_leave(0);
 	unqueue_signals();
 	return 0;
     }
     if (m->node.flags & MOD_UNLOAD)
 	m->node.flags &= ~MOD_UNLOAD;
     else if ((m->node.flags & MOD_LINKED) ? m->u.linked : m->u.handle) {
+	scope_module_leave(0);
 	unqueue_signals();
 	return 0;
     }
     if (m->node.flags & MOD_BUSY) {
+	scope_module_leave(1);
 	unqueue_signals();
 	zerr("circular dependencies for module ;%s", name);
 	return 1;
@@ -2269,15 +2394,20 @@ load_module(char const *name, Feature_enables enablesarr, int silent)
 	for (n = firstnode(m->deps); n; incnode(n))
 	    if (load_module((char *) getdata(n), NULL, silent) == 1) {
 		m->node.flags &= ~MOD_BUSY;
+		scope_module_leave(1);
 		unqueue_signals();
 		return 1;
 	    }
     }
     m->node.flags &= ~MOD_BUSY;
     if (!m->u.handle) {
+	scope_module_forget(m);
+	scope_load_frame->module = m;
+	scope_module_pause();
 	handle = NULL;
 	if (!(linked = module_linked(name)) &&
 	    !(handle = do_load_module(name, silent))) {
+	    scope_module_leave(1);
 	    unqueue_signals();
 	    return 1;
 	}
@@ -2295,11 +2425,13 @@ load_module(char const *name, Feature_enables enablesarr, int silent)
 	    else
 		m->u.linked = NULL;
 	    m->node.flags &= ~MOD_SETUP;
+	    scope_module_leave(1);
 	    unqueue_signals();
 	    return 1;
 	}
 	m->node.flags |= MOD_INIT_S;
     }
+    scope_module_pause();
     m->node.flags |= MOD_SETUP;
     if ((bootret = do_boot_module(m, enablesarr, silent)) == 1) {
 	do_cleanup_module(m);
@@ -2309,11 +2441,13 @@ load_module(char const *name, Feature_enables enablesarr, int silent)
 	else
 	    m->u.handle = NULL;
 	m->node.flags &= ~MOD_SETUP;
+	scope_module_leave(1);
 	unqueue_signals();
 	return 1;
     }
     m->node.flags |= MOD_INIT_B;
     m->node.flags &= ~MOD_SETUP;
+    scope_module_leave(bootret);
     unqueue_signals();
     return bootret;
 }

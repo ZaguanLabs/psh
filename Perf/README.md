@@ -1111,3 +1111,29 @@ table/binding restoration. Warm timing includes dispatch/body work; setup,
 warmup and native observations are excluded. All dense/sparse/loop controls
 remain. No localization journal, new scope scanner or native ABI change is
 adopted; the unapplied proposal is retained under `results/round34/`.
+
+[Round thirty-five](round35.md) adopts indexed parameter-scope buckets and
+extends the native fixture to 1,092 scenarios per host/locale. The earlier
+round-34 count describes that historical fixture. Current native checks can
+exercise opt-in, legacy and opaque-constructor modes:
+
+```sh
+python3 Perf/check-scope-cleanup-module.py /path/to/reference/psh /path/to/new/psh \
+  --headers-build /path/to/reference/build --headers-source /path/to/reference/source \
+  --candidate-headers-build /path/to/new/build --candidate-headers-source /path/to/new/source \
+  --aware --memcheck --output .work/logs/indexed-scope.json
+```
+
+Leave off `--aware` to exercise an unacknowledged module. Add `--opaque` to
+preload a constructor which changes a parameter's level without notification;
+the later aware module must retain legacy behavior. The matrix uses standard
+hash keys chosen for controlled bucket order and adds promotion into a later
+previously unmarked bucket. It also compares errno.
+
+`scope-observer-module.c` opts in as a read-only observer and adds the diagnostic
+`psh-scope-tracking` builtin. Its normal JSON shape stays unchanged for the
+paired timer. `scope-growth.zsh` tests actual rehashing, retained capacity,
+caller locals and name reuse under Memcheck. `scope-load-signal-module.c`
+supports the signal-unload lifecycle test; these are isolated test modules,
+not additions to the installed shell's builtins. The SDK cooperation contract
+and fallback are documented in [COMPATIBILITY.md](../COMPATIBILITY.md).

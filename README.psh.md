@@ -97,7 +97,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-six accepted optimizations.
+The executable now includes twenty-seven accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -127,7 +127,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-six changes; the fourth experiment compares against
+executable includes all twenty-seven changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -332,3 +332,11 @@ profiles and dense-namespace controls improve, but installed paste gains do not
 persist and JSON kernels slow down. The candidate is shelved; callback mutation
 tests, paired scope benchmarks and all results remain. The active release still
 contains twenty-six accepted optimizations.
+
+The [twenty-seventh accepted change](Perf/round35.md) indexes buckets that may
+contain local parameters. Repeated installed measurements show coder/chat paste
+taking about 8% less time, simulation kernels about 4% less, and JSON kernels
+3–6% less. Existing native modules retain legacy scope scanning; audited modules
+opt in explicitly. The new private rc0 iteration is active, with all seven
+package suites and 24 unchanged Oh My Zsh sessions passing. URL encoding has
+a retained roughly 1% slowdown. No Zsh language divergence is intended.

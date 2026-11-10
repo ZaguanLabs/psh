@@ -1522,6 +1522,8 @@ struct module {
 #define MOD_INIT_B  (1<<5)
 /* Module record is an alias */
 #define MOD_ALIAS   (1<<6)
+/* Explicit native opt-in: notify promotions of live parameter scope levels. */
+#define PSH_SCOPE_INDEX_VERSION 1
 
 typedef int (*Module_generic_func) (void);
 typedef int (*Module_void_func) (Module);

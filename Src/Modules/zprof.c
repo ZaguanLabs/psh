@@ -332,6 +332,7 @@ static struct features module_features = {
 int
 setup_(Module m)
 {
+    psh_scope_module_ack(m);
     zprof_module = m;
     return 0;
 }

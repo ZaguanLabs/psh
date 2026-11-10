@@ -667,7 +667,7 @@ static Param createhash( char *name, int flags ) {
     }
 
     if (pm->old)
-	pm->level = locallevel;
+	psh_scope_setlevel(pm, locallevel);
 
     /* This creates standard hash. */
     ht = pm->u.hash = newparamtable(17, name);

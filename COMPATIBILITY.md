@@ -21,6 +21,53 @@ future update or platform. Undocumented or accidental behavioral differences
 remain bugs, including those found outside the author's projects. Memory
 corruption and unsafe ownership are never accepted as compatibility tradeoffs.
 
+## Parameter-scope index and native opt-in
+
+Round 35 adds a private bitmap for buckets that may contain local parameters.
+The indexed walk retains ordinary bucket order, callback successor tracking,
+history/locale restoration and the existing cleanup callback. Generated tables,
+nonstandard real-table methods and nested scans retain the legacy path.
+Uncertain index state is rebuilt or falls back. Rehashing invalidates the bitmap;
+allocation failure falls back
+without adding an interpreter error. No public structure layout changes.
+
+**Existing native modules need no scope-related changes.** Before native module
+initialization or constructors execute, tracking is suspended. A module which
+does not explicitly acknowledge the protocol leaves the process using legacy
+scope scans, including after that module unloads. Previously built compatible
+modules can still load. Autoload declarations and already-loaded module queries
+do not alone disable indexing. Failed native-loading attempts may conservatively
+select the legacy path. This is a performance fallback, not a script migration.
+
+Audited modules may opt in during setup using the matching psh SDK:
+
+```c
+#ifdef PSH_SCOPE_INDEX_VERSION
+    psh_scope_module_ack(m);
+#endif
+```
+
+Opt in only when real-parameter-table changes use the standard core hash
+operations, its methods/representation/bucket links remain under core control,
+and every in-place promotion of a visible parameter's level is notified.
+`psh_scope_setlevel(pm, level)` publishes the field and bitmap atomically using
+the existing signal queue. Alternatively, a caller already holding that queue
+may update the level and call `psh_scope_mark(pm)` before releasing it. Detached
+snapshots and associative elements are not indexed. Merely rebuilding a module
+against the SDK does not opt it in. Omit acknowledgment when these guarantees
+cannot be made; the legacy scanner preserves support for direct native writes.
+
+`psh_scope_tracking()` reports whether the native policy currently permits the
+index; individual ineligible walks can still fall back. This API is conditional
+on the psh SDK feature macro. Modules using it must run against a matching psh
+core. The conditional setup acknowledgment preserves source builds against
+ordinary Zsh headers. The three bundled native projects carry recorded local
+patches for this acknowledgment; their imported revisions and original hashes
+remain in `Vendor/sources.json`.
+
+This change introduces no intended Zsh language divergence. Coverage, limits
+and the unchanged-framework evidence are recorded in [round 35](Perf/round35.md).
+
 ## Required Oh My Zsh gate
 
 `Packaging/check-ohmyzsh.py` sources the installed framework, theme, plugins

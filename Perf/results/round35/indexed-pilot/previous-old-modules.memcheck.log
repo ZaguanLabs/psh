@@ -1,0 +1,15 @@
+==2257634== Memcheck, a memory error detector
+==2257634== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==2257634== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==2257634== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh -dfc module_path=("$1");\ zmodload\ psh_scope_cleanup_fixture\ ||\ exit\ 1_psh-scope-cleanup-check\ auto\ ||\ exit\ 2_module_path=("$2");\ zmodload\ zsh/parameter\ zsh/mathfunc\ ||\ exit\ 3_psh-scope-cleanup-check\ legacy\ ||\ exit\ 4_zmodload\ -u\ psh_scope_cleanup_fixture\ ||\ exit\ 5 old-modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-aware/0 /usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2
+==2257634== Parent PID: 2257632
+==2257634== 
+==2257634== 
+==2257634== HEAP SUMMARY:
+==2257634==     in use at exit: 52,028 bytes in 765 blocks
+==2257634==   total heap usage: 77,935 allocs, 77,170 frees, 3,861,409 bytes allocated
+==2257634== 
+==2257634== For a detailed leak analysis, rerun with: --leak-check=full
+==2257634== 
+==2257634== For lists of detected and suppressed errors, rerun with: -s
+==2257634== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

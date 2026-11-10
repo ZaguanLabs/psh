@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "host": "previous",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/previous-old-modules.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_scope_cleanup_fixture || exit 1\npsh-scope-cleanup-check auto || exit 2\nmodule_path=(\"$2\"); zmodload zsh/parameter zsh/mathfunc || exit 3\npsh-scope-cleanup-check legacy || exit 4\nzmodload -u psh_scope_cleanup_fixture || exit 5",
+        "old-modules",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-aware/0",
+        "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2"
+      ],
+      "status": 0,
+      "checks": 2184,
+      "stdout": "checks=1092 digest=16444478884902714080\nscope-done\nchecks=1092 digest=16444478884902714080\nscope-done\n",
+      "fingerprints": {
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh": "daf80861317181a445b122405390b32aacd1921c7440d49675c3da874937e32e",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-aware/0/psh_scope_cleanup_fixture.so": "c2f4c9d66ea6b1f263c76fe7204707f1369c29d43d5158e3d329ca68946c05ce",
+        "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2/zsh/parameter.so": "9f2c32ef1f3a96ca3c94c6c430d83f5708efc1fa01893da46d8a241d5cbc9d94",
+        "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2/zsh/mathfunc.so": "feb1ef597b638de6afdc6babf0595260861fe8b8896dd66fa9341b2e25b16f60"
+      }
+    },
+    {
+      "host": "candidate",
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--log-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/candidate-old-modules.memcheck.log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_scope_cleanup_fixture || exit 1\npsh-scope-cleanup-check auto || exit 2\nmodule_path=(\"$2\"); zmodload zsh/parameter zsh/mathfunc || exit 3\npsh-scope-cleanup-check legacy || exit 4\nzmodload -u psh_scope_cleanup_fixture || exit 5",
+        "old-modules",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-aware/1",
+        "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2"
+      ],
+      "status": 0,
+      "checks": 2184,
+      "stdout": "checks=1092 digest=16444478884902714080\nscope-done\nchecks=1092 digest=16444478884902714080\nscope-done\n",
+      "fingerprints": {
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/candidate/Src/zsh": "e50e628bc1ed413ba0735b843e2d8d510d9cb02511a1793a491b369b943572a4",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/scope-aware/1/psh_scope_cleanup_fixture.so": "a34d9869443e82e25cd9d897a5d08b8a28508c8f898245c9f2724c3ce5d970a4",
+        "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2/zsh/parameter.so": "9f2c32ef1f3a96ca3c94c6c430d83f5708efc1fa01893da46d8a241d5cbc9d94",
+        "/usr/local/psh/releases/1.0.0-rc0-56f97a85e8cb/lib/psh/5.9.2/zsh/mathfunc.so": "feb1ef597b638de6afdc6babf0595260861fe8b8896dd66fa9341b2e25b16f60"
+      }
+    }
+  ],
+  "checks": 4368
+}

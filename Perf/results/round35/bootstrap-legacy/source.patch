@@ -1,0 +1,632 @@
+diff --git a/Src/Modules/curses.c b/Src/Modules/curses.c
+index 63f4a33..cb832bf 100644
+--- a/Src/Modules/curses.c
++++ b/Src/Modules/curses.c
+@@ -1791,6 +1791,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/datetime.c b/Src/Modules/datetime.c
+index 085e4cc..8ab1686 100644
+--- a/Src/Modules/datetime.c
++++ b/Src/Modules/datetime.c
+@@ -193,7 +193,7 @@ bin_strftime(char *nam, char **argv, Options ops, int func)
+     if (tz && *tz) {
+ 	Param pm = createparam("TZ", PM_LOCAL|PM_SCALAR|PM_EXPORTED);
+ 	if (pm)
+-	    pm->level = locallevel; /* because createparam() doesn't */
++	    pm->level = locallevel, psh_scope_mark(pm); /* because createparam() doesn't */
+ 	setsparam("TZ", ztrdup(tz));
+     }
+     result = output_strftime(nam, argv, ops, func);
+@@ -269,6 +269,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/db_gdbm.c b/Src/Modules/db_gdbm.c
+index 7e11ec9..2b4da46 100644
+--- a/Src/Modules/db_gdbm.c
++++ b/Src/Modules/db_gdbm.c
+@@ -667,7 +667,7 @@ static Param createhash( char *name, int flags ) {
+     }
+ 
+     if (pm->old)
+-	pm->level = locallevel;
++	pm->level = locallevel, psh_scope_mark(pm);
+ 
+     /* This creates standard hash. */
+     ht = pm->u.hash = newparamtable(17, name);
+diff --git a/Src/Modules/files.c b/Src/Modules/files.c
+index a3fec1d..2bb3cba 100644
+--- a/Src/Modules/files.c
++++ b/Src/Modules/files.c
+@@ -837,6 +837,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/langinfo.c b/Src/Modules/langinfo.c
+index 3f5af82..9608dd1 100644
+--- a/Src/Modules/langinfo.c
++++ b/Src/Modules/langinfo.c
+@@ -466,6 +466,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/mathfunc.c b/Src/Modules/mathfunc.c
+index fc2593d..bf2cbdb 100644
+--- a/Src/Modules/mathfunc.c
++++ b/Src/Modules/mathfunc.c
+@@ -533,6 +533,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/param_private.c b/Src/Modules/param_private.c
+index 8da4b1c..91b17eb 100644
+--- a/Src/Modules/param_private.c
++++ b/Src/Modules/param_private.c
+@@ -598,6 +598,7 @@ static struct reswd reswd_private = {{NULL, "private", 0}, TYPESET};
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     HashNode hn = builtintab->getnode(builtintab, "local");
+ 
+     /* Horrible, horrible hack */
+diff --git a/Src/Modules/parameter.c b/Src/Modules/parameter.c
+index f23e7a2..3d6ed8c 100644
+--- a/Src/Modules/parameter.c
++++ b/Src/Modules/parameter.c
+@@ -2312,6 +2312,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/pcre.c b/Src/Modules/pcre.c
+index 079ecc2..fc8c4f2 100644
+--- a/Src/Modules/pcre.c
++++ b/Src/Modules/pcre.c
+@@ -465,6 +465,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/regex.c b/Src/Modules/regex.c
+index 859312a..a155109 100644
+--- a/Src/Modules/regex.c
++++ b/Src/Modules/regex.c
+@@ -228,6 +228,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/stat.c b/Src/Modules/stat.c
+index 1237913..648522f 100644
+--- a/Src/Modules/stat.c
++++ b/Src/Modules/stat.c
+@@ -651,6 +651,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/system.c b/Src/Modules/system.c
+index 3439fb7..4744666 100644
+--- a/Src/Modules/system.c
++++ b/Src/Modules/system.c
+@@ -905,6 +905,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/termcap.c b/Src/Modules/termcap.c
+index 2187bec..4aded84 100644
+--- a/Src/Modules/termcap.c
++++ b/Src/Modules/termcap.c
+@@ -335,6 +335,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/terminfo.c b/Src/Modules/terminfo.c
+index 1df5f5c..7813a23 100644
+--- a/Src/Modules/terminfo.c
++++ b/Src/Modules/terminfo.c
+@@ -329,6 +329,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/zprof.c b/Src/Modules/zprof.c
+index 171a15b..3069606 100644
+--- a/Src/Modules/zprof.c
++++ b/Src/Modules/zprof.c
+@@ -332,6 +332,7 @@ static struct features module_features = {
+ int
+ setup_(Module m)
+ {
++    psh_scope_module_ack(m);
+     zprof_module = m;
+     return 0;
+ }
+diff --git a/Src/Modules/zpty.c b/Src/Modules/zpty.c
+index d87e327..9512244 100644
+--- a/Src/Modules/zpty.c
++++ b/Src/Modules/zpty.c
+@@ -913,6 +913,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/zselect.c b/Src/Modules/zselect.c
+index 92a3b38..d8e5478 100644
+--- a/Src/Modules/zselect.c
++++ b/Src/Modules/zselect.c
+@@ -291,6 +291,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/zutil.c b/Src/Modules/zutil.c
+index dbfeaea..55d011d 100644
+--- a/Src/Modules/zutil.c
++++ b/Src/Modules/zutil.c
+@@ -2045,6 +2045,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     zstyletab = newzstyletable(17, "zstyletab");
+ 
+     return 0;
+diff --git a/Src/Zle/compctl.c b/Src/Zle/compctl.c
+index 08355d1..ef02cab 100644
+--- a/Src/Zle/compctl.c
++++ b/Src/Zle/compctl.c
+@@ -4013,6 +4013,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     compctlreadptr = compctlread;
+     createcompctltable();
+     cc_compos.mask = CC_COMMPATH;
+diff --git a/Src/Zle/complete.c b/Src/Zle/complete.c
+index 5efc5e4..ce9593f 100644
+--- a/Src/Zle/complete.c
++++ b/Src/Zle/complete.c
+@@ -1311,7 +1311,7 @@ addcompparams(struct compparam *cp, Param *pp)
+ 	DPUTS(!pm, "param not set in addcompparams");
+ 
+ 	*pp = pm;
+-	pm->level = locallevel + 1;
++	pm->level = locallevel + 1, psh_scope_mark(pm);
+ 	if ((pm->u.data = cp->var)) {
+ 	    switch(PM_TYPE(cp->type)) {
+ 	    case PM_SCALAR:
+@@ -1351,7 +1351,7 @@ makecompparams(void)
+ 
+     comprpms[CPN_COMPSTATE] = cpm;
+     tht = paramtab;
+-    cpm->level = locallevel + 1;
++    cpm->level = locallevel + 1, psh_scope_mark(cpm);
+     cpm->gsu.h = &compstate_gsu;
+     cpm->u.hash = paramtab = newparamtable(31, COMPSTATENAME);
+     addcompparams(compkparams, compkpms);
+@@ -1725,6 +1725,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     hasperm = 0;
+ 
+     comprpms = compkpms = NULL;
+diff --git a/Src/Zle/complist.c b/Src/Zle/complist.c
+index 5d7065a..8b62c39 100644
+--- a/Src/Zle/complist.c
++++ b/Src/Zle/complist.c
+@@ -3520,6 +3520,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Zle/computil.c b/Src/Zle/computil.c
+index 4b0424e..a2921ef 100644
+--- a/Src/Zle/computil.c
++++ b/Src/Zle/computil.c
+@@ -5127,6 +5127,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     memset(cadef_cache, 0, sizeof(cadef_cache));
+     memset(cvdef_cache, 0, sizeof(cvdef_cache));
+ 
+diff --git a/Src/Zle/zle_main.c b/Src/Zle/zle_main.c
+index 44ee63d..0ec1d1c 100644
+--- a/Src/Zle/zle_main.c
++++ b/Src/Zle/zle_main.c
+@@ -2214,6 +2214,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     char **bpaste;
+ 
+     /* Set up editor entry points */
+diff --git a/Src/Zle/zle_params.c b/Src/Zle/zle_params.c
+index a109c9b..a3acc0d 100644
+--- a/Src/Zle/zle_params.c
++++ b/Src/Zle/zle_params.c
+@@ -203,7 +203,7 @@ makezleparams(int ro)
+ 	    pm = (Param) paramtab->getnode(paramtab, zp->name);
+ 	DPUTS(!pm, "param not set in makezleparams");
+ 
+-	pm->level = locallevel + 1;
++	pm->level = locallevel + 1, psh_scope_mark(pm);
+ 	pm->u.data = zp->data;
+ 	switch(PM_TYPE(zp->type)) {
+ 	    case PM_SCALAR:
+@@ -224,7 +224,7 @@ makezleparams(int ro)
+     reg_param = createspecialhash("registers", get_registers, &scan_registers,
+ 	    PM_LOCAL|PM_REMOVABLE);
+     reg_param->gsu.h = &registers_gsu;
+-    reg_param->level = locallevel + 1;
++    reg_param->level = locallevel + 1, psh_scope_mark(reg_param);
+ }
+ 
+ /* Special unset function for ZLE special parameters: act like the standard *
+diff --git a/Src/Zle/zleparameter.c b/Src/Zle/zleparameter.c
+index ab988d6..e044ef6 100644
+--- a/Src/Zle/zleparameter.c
++++ b/Src/Zle/zleparameter.c
+@@ -146,6 +146,7 @@ static struct features module_features = {
+ int
+ setup_(UNUSED(Module m))
+ {
++    psh_scope_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/builtin.c b/Src/builtin.c
+index 4933d3c..6c0811d 100644
+--- a/Src/builtin.c
++++ b/Src/builtin.c
+@@ -2523,6 +2523,7 @@ typeset_single(char *cname, char *pname, Param pm, int func,
+ 	pm->level = keeplocal;
+     else if (on & PM_LOCAL)
+ 	pm->level = locallevel;
++    psh_scope_mark(pm);
+     if (ASG_VALUEP(asg) && !dont_set) {
+ 	Param ipm = pm;
+ 	if (pm->node.flags & (PM_ARRAY|PM_HASHED)) {
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 75b06c4..643c22e 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -70,6 +70,96 @@ struct scanstatus {
+     } u;
+ };
+ 
++/* Only the real parameter table is indexed. No public layout is changed. */
++#define SCOPE_WORD_BITS (sizeof(unsigned long) * CHAR_BIT)
++static HashTable scope_owner;
++static HashNode *scope_nodes;
++static HashFunc scope_hash;
++static unsigned long *scope_bits;
++static int scope_size, scope_valid, scope_opaque;
++static unsigned scope_loading;
++
++/**/
++int
++psh_scope_tracking(void)
++{
++    return !scope_opaque && !scope_loading;
++}
++
++/**/
++void
++psh_scope_native_begin(void)
++{
++    scope_loading++;
++    scope_valid = 0;
++}
++
++/**/
++void
++psh_scope_native_end(int aware)
++{
++    if (!aware)
++	scope_opaque = 1;
++    scope_loading--;
++    scope_valid = 0;
++}
++
++static void
++scope_mark_bucket(HashTable ht, unsigned bucket)
++{
++    if (scope_valid && ht == scope_owner && ht->nodes == scope_nodes &&
++	ht->hsize == scope_size && ht->hash == scope_hash)
++	scope_bits[bucket / SCOPE_WORD_BITS] |=
++	    1UL << (bucket % SCOPE_WORD_BITS);
++}
++
++/* An aware native module must notify after promoting a visible parameter.
++ * Detached snapshots and associative elements are deliberately not indexed. */
++/**/
++mod_export void
++psh_scope_mark(Param pm)
++{
++    if (scope_valid && paramtab == scope_owner && paramtab->hash == hasher &&
++	paramtab->cmpnodes == strcmp && pm && pm->level > 0 &&
++	gethashnode2(paramtab, pm->node.nam) == (HashNode)pm)
++	scope_mark_bucket(paramtab, paramtab->hash(pm->node.nam) % paramtab->hsize);
++}
++
++static void
++scope_invalidate(HashTable ht)
++{
++    if (ht == scope_owner)
++	scope_valid = 0;
++}
++
++static int
++scope_rebuild(HashTable ht)
++{
++    size_t words = ((size_t)ht->hsize + SCOPE_WORD_BITS - 1) / SCOPE_WORD_BITS;
++    int i, saved_errno = errno;
++    unsigned long *bits = (unsigned long *)calloc(words, sizeof(*bits));
++    errno = saved_errno;
++    if (!bits)
++	return 0;
++    free(scope_bits);
++    errno = saved_errno;
++    scope_bits = bits;
++    scope_owner = ht;
++    scope_nodes = ht->nodes;
++    scope_hash = ht->hash;
++    scope_size = ht->hsize;
++    for (i = 0; i < ht->hsize; i++) {
++	HashNode hn;
++	for (hn = ht->nodes[i]; hn; hn = hn->next)
++	    if (((Param)hn)->level > 0) {
++		scope_bits[i / SCOPE_WORD_BITS] |= 1UL << (i % SCOPE_WORD_BITS);
++		break;
++	    }
++    }
++    scope_valid = 1;
++    return 1;
++}
++
+ /********************************/
+ /* Generic Hash Table functions */
+ /********************************/
+@@ -128,6 +218,7 @@ newhashtable(int size, UNUSED(char const *name), UNUSED(PrintTableStats printinf
+ mod_export void
+ deletehashtable(HashTable ht)
+ {
++    scope_invalidate(ht);
+     ht->emptytable(ht);
+ #ifdef ZSH_HASH_DEBUG
+     if(impl(ht)->next)
+@@ -174,6 +265,7 @@ addhashnode2(HashTable ht, char *nam, void *nodeptr)
+     hn->nam = nam;
+ 
+     hashval = ht->hash(hn->nam) % ht->hsize;
++    scope_mark_bucket(ht, hashval);
+     hp = ht->nodes[hashval];
+ 
+     /* check if this is the first node for this hash value */
+@@ -450,6 +542,67 @@ scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
+ 			  scanfunc, scanflags);
+ }
+ 
++/* Walk candidate buckets in exactly the ordinary unsorted order. Re-read
++ * the bitmap after each bucket: callbacks can mark a later bucket. */
++/**/
++void
++scanparamscope(HashTable ht, ScanFunc scanfunc)
++{
++    struct scanstatus st;
++    int i = 0, hsize = ht->hsize;
++    HashNode *nodes = ht->nodes;
++
++    if (!psh_scope_tracking() || ht != realparamtab || ht->scantab ||
++	ht->hash != hasher || ht->cmpnodes != strcmp ||
++	ht->addnode != addhashnode || ht->removenode != removehashnode ||
++	locallevel < 0 || impl(ht)->scan) {
++	scope_valid = 0;
++	scanhashtable(ht, 0, 0, 0, scanfunc, 0);
++	return;
++    }
++    if ((!scope_valid || scope_owner != ht || scope_nodes != nodes ||
++	 scope_size != hsize || scope_hash != ht->hash) && !scope_rebuild(ht)) {
++	scanhashtable(ht, 0, 0, 0, scanfunc, 0);
++	return;
++    }
++    st.sorted = 0;
++    impl(ht)->scan = &st;
++    while (i < hsize) {
++	if (scope_valid && psh_scope_tracking()) {
++	    unsigned long bits = scope_bits[i / SCOPE_WORD_BITS] &
++		(~0UL << (i % SCOPE_WORD_BITS));
++	    if (!bits) {
++		unsigned skip = SCOPE_WORD_BITS - (i % SCOPE_WORD_BITS);
++		i = (unsigned)(hsize - i) <= skip ? hsize : i + skip;
++		continue;
++	    }
++#ifdef __GNUC__
++	    i = (i / SCOPE_WORD_BITS) * SCOPE_WORD_BITS + __builtin_ctzl(bits);
++#else
++	    while (!(bits & (1UL << (i % SCOPE_WORD_BITS))))
++		i++;
++#endif
++	}
++	if (i >= hsize)
++	    break;
++	for (st.u.u = nodes[i]; st.u.u; ) {
++	    HashNode hn = st.u.u;
++	    st.u.u = hn->next;
++	    scanfunc(hn, 0);
++	}
++	if (scope_valid && psh_scope_tracking()) {
++	    HashNode hn;
++	    for (hn = nodes[i]; hn; hn = hn->next)
++		if (((Param)hn)->level > 0)
++		    break;
++	    if (!hn)
++		scope_bits[i / SCOPE_WORD_BITS] &= ~(1UL << (i % SCOPE_WORD_BITS));
++	}
++	i++;
++    }
++    impl(ht)->scan = NULL;
++}
++
+ /* Expand hash tables when they get too many entries. *
+  * The new size is 4 times the previous size.         */
+ 
+@@ -460,6 +613,7 @@ expandhashtable(HashTable ht)
+     struct hashnode **onodes, **ha, *hn, *hp;
+     int i, osize;
+ 
++    scope_invalidate(ht);
+     osize = ht->hsize;
+     onodes = ht->nodes;
+ 
+@@ -488,6 +642,7 @@ resizehashtable(HashTable ht, int newsize)
+     struct hashnode **ha, *hn, *hp;
+     int i;
+ 
++    scope_invalidate(ht);
+     /* free all the hash nodes */
+     ha = ht->nodes;
+     for (i = 0; i < ht->hsize; i++, ha++) {
+diff --git a/Src/module.c b/Src/module.c
+index 159ed02..ae1ef27 100644
+--- a/Src/module.c
++++ b/Src/module.c
+@@ -2194,9 +2194,39 @@ modname_ok(char const *p)
+  * 1 for complete failure, 2 if some features couldn't be set.
+  */
+ 
++/* Native constructors and setup run behind a conservative scope barrier.
++ * An unacknowledged module permanently retains legacy scope scans. */
++/**/
++mod_export void
++psh_scope_module_ack(Module m)
++{
++    m->node.flags |= MOD_SCOPE_TRACKED;
++}
++
+ /**/
+ mod_export int
+ load_module(char const *name, Feature_enables enablesarr, int silent)
++{
++    Module m;
++    int ret;
++    if (!modname_ok(name))
++        return load_module_tracked_body(name, enablesarr, silent);
++    m = find_module(name, FINDMOD_ALIASP, NULL);
++    if (m && m->u.handle && (m->node.flags & MOD_SCOPE_TRACKED) &&
++        !(m->node.flags & (MOD_UNLOAD|MOD_SETUP|MOD_BUSY)))
++        return load_module_tracked_body(name, enablesarr, silent);
++    if (m && !m->u.handle)
++        m->node.flags &= ~MOD_SCOPE_TRACKED;
++    psh_scope_native_begin();
++    ret = load_module_tracked_body(name, enablesarr, silent);
++    m = find_module(name, FINDMOD_ALIASP, NULL);
++    psh_scope_native_end(ret != 1 && m && (m->node.flags & MOD_SCOPE_TRACKED));
++    return ret;
++}
++
++/**/
++static int
++load_module_tracked_body(char const *name, Feature_enables enablesarr, int silent)
+ {
+     Module m;
+     void *handle = NULL;
+diff --git a/Src/params.c b/Src/params.c
+index a33b9ad..7741074 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -1232,7 +1232,7 @@ createspecialhash(char *name, GetNodeFunc get, ScanTabFunc scan, int flags)
+      * within a function without a local definition.
+      */
+     if (pm->old)
+-	pm->level = locallevel;
++	pm->level = locallevel, psh_scope_mark(pm);
+     pm->gsu.h = (flags & PM_READONLY) ? &stdhash_gsu :
+ 	&nullsethash_gsu;
+     pm->u.hash = ht = newhashtable(0, name, NULL);
+@@ -5927,7 +5927,7 @@ endparamscope(void)
+ #ifdef USE_LOCALE
+     lc_update_needed = 0;
+ #endif
+-    scanhashtable(paramtab, 0, 0, 0, scanendscope, 0);
++    scanparamscope(paramtab, scanendscope);
+ #ifdef USE_LOCALE
+     if (lc_update_needed)
+     {
+diff --git a/Src/zsh.h b/Src/zsh.h
+index 35b4d61..27d25a1 100644
+--- a/Src/zsh.h
++++ b/Src/zsh.h
+@@ -1522,6 +1522,10 @@ struct module {
+ #define MOD_INIT_B  (1<<5)
+ /* Module record is an alias */
+ #define MOD_ALIAS   (1<<6)
++#define MOD_SCOPE_TRACKED (1<<7)
++
++/* Explicit native opt-in: notify promotions of live parameter scope levels. */
++#define PSH_SCOPE_INDEX_VERSION 1
+ 
+ typedef int (*Module_generic_func) (void);
+ typedef int (*Module_void_func) (Module);

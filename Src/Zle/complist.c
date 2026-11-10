@@ -3520,6 +3520,7 @@ static struct features module_features = {
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     return 0;
 }
 

@@ -228,6 +228,14 @@ snapshots, preserving their licences and tests; local uncommitted changes in the
 original repositories are not included or modified. Native rendering and network
 code still link the system ncurses/libcurl libraries normally.
 
+Recorded local patches are listed in each import's `psh_patches` metadata,
+alongside the original and patched file hashes. The scope-index iteration adds
+conditional SDK acknowledgment to zdraw, zcurl and zmdown; imported revisions,
+licences and every unpatched file stay pinned. Package construction still
+rejects any source whose bytes differ from the current manifest. Modules built
+with the psh cooperation API require that matching psh core; ordinary Zsh-header
+source builds skip the conditional calls.
+
 ## Returning to Zsh
 
 Exit the trial psh session to return to the launching shell. Installation does

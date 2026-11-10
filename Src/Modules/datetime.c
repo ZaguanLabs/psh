@@ -193,7 +193,7 @@ bin_strftime(char *nam, char **argv, Options ops, int func)
     if (tz && *tz) {
 	Param pm = createparam("TZ", PM_LOCAL|PM_SCALAR|PM_EXPORTED);
 	if (pm)
-	    pm->level = locallevel; /* because createparam() doesn't */
+	    psh_scope_setlevel(pm, locallevel); /* because createparam() doesn't */
 	setsparam("TZ", ztrdup(tz));
     }
     result = output_strftime(nam, argv, ops, func);
@@ -269,6 +269,7 @@ static struct features module_features = {
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     return 0;
 }
 

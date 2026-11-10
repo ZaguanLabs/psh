@@ -1311,7 +1311,7 @@ addcompparams(struct compparam *cp, Param *pp)
 	DPUTS(!pm, "param not set in addcompparams");
 
 	*pp = pm;
-	pm->level = locallevel + 1;
+	psh_scope_setlevel(pm, locallevel + 1);
 	if ((pm->u.data = cp->var)) {
 	    switch(PM_TYPE(cp->type)) {
 	    case PM_SCALAR:
@@ -1351,7 +1351,7 @@ makecompparams(void)
 
     comprpms[CPN_COMPSTATE] = cpm;
     tht = paramtab;
-    cpm->level = locallevel + 1;
+    psh_scope_setlevel(cpm, locallevel + 1);
     cpm->gsu.h = &compstate_gsu;
     cpm->u.hash = paramtab = newparamtable(31, COMPSTATENAME);
     addcompparams(compkparams, compkpms);
@@ -1725,6 +1725,7 @@ static struct features module_features = {
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     hasperm = 0;
 
     comprpms = compkpms = NULL;

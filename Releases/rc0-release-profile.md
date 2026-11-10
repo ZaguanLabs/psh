@@ -167,3 +167,8 @@ Its inactive candidate and validation evidence are retained separately.
 The [round-thirty decimal lexer investigation](../Perf/round30.md) also leaves
 the active release unchanged. Its Endgame gains do not outweigh repeated
 coder/chat paste and JSON encoding regressions in installed-build measurements.
+
+The [round-thirty-five scope-index iteration](../Perf/round35.md) is the next
+accepted daily-driver build, `1.0.0-rc0-bde30291d0ec`, using the same release
+profile. It retains the rc0 version, isolated paths, unchanged framework setup
+and historical tag/draft/assets while adding the 27th accepted optimization.

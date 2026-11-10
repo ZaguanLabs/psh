@@ -6419,6 +6419,9 @@ static struct features module_features = {
 int
 setup_(UNUSED(Module m))
 {
+#ifdef PSH_SCOPE_INDEX_VERSION
+    psh_scope_module_ack(m);
+#endif
     return 0;
 }
 

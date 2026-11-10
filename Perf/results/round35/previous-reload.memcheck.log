@@ -1,0 +1,51 @@
+==3195176== Memcheck, a memory error detector
+==3195176== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==3195176== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==3195176== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round35/previous/Src/zsh -dfc module_path=("$1"\ $module_path)_zmodload\ psh_scope_observer\ ||\ exit\ 1_[[\ $(psh-scope-tracking)\ ==\ "$2"\ ]]\ ||\ exit\ 2_repeat\ 2\ {_\ zmodload\ psh_scope_switch\ ||\ exit\ 3_\ [[\ $(psh-scope-tracking)\ ==\ "$2"\ ]]\ ||\ exit\ 4_\ zmodload\ -u\ psh_scope_switch\ ||\ exit\ 5_}_cp\ --\ "$1/psh_scope_opaque.so"\ "$1/psh_scope_switch.so"\ ||\ exit\ 6_typeset\ psh_opaque_ctor_target=global_()\ {\ local\ seed=1;\ }_zmodload\ psh_scope_switch\ ||\ exit\ 7_((\ ${+psh_opaque_ctor_target}\ ==\ 0\ ))\ ||\ exit\ 8_[[\ $(psh-scope-tracking)\ ==\ 0\ ]]\ ||\ exit\ 9_print\ -r\ --\ RELOAD_FALLBACK_OK_ lifecycle /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round35/lifecycle/previous 0
+==3195176== Parent PID: 3195144
+==3195176== 
+==3195177== 
+==3195177== HEAP SUMMARY:
+==3195177==     in use at exit: 48,064 bytes in 750 blocks
+==3195177==   total heap usage: 1,041 allocs, 291 frees, 116,857 bytes allocated
+==3195177== 
+==3195177== For a detailed leak analysis, rerun with: --leak-check=full
+==3195177== 
+==3195177== For lists of detected and suppressed errors, rerun with: -s
+==3195177== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3195178== 
+==3195178== HEAP SUMMARY:
+==3195178==     in use at exit: 50,289 bytes in 763 blocks
+==3195178==   total heap usage: 1,060 allocs, 297 frees, 123,612 bytes allocated
+==3195178== 
+==3195178== For a detailed leak analysis, rerun with: --leak-check=full
+==3195178== 
+==3195178== For lists of detected and suppressed errors, rerun with: -s
+==3195178== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3195179== 
+==3195179== HEAP SUMMARY:
+==3195179==     in use at exit: 50,289 bytes in 763 blocks
+==3195179==   total heap usage: 1,072 allocs, 309 frees, 127,077 bytes allocated
+==3195179== 
+==3195179== For a detailed leak analysis, rerun with: --leak-check=full
+==3195179== 
+==3195179== For lists of detected and suppressed errors, rerun with: -s
+==3195179== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3195181== 
+==3195181== HEAP SUMMARY:
+==3195181==     in use at exit: 50,206 bytes in 763 blocks
+==3195181==   total heap usage: 1,102 allocs, 339 frees, 131,455 bytes allocated
+==3195181== 
+==3195181== For a detailed leak analysis, rerun with: --leak-check=full
+==3195181== 
+==3195181== For lists of detected and suppressed errors, rerun with: -s
+==3195181== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3195176== 
+==3195176== HEAP SUMMARY:
+==3195176==     in use at exit: 50,190 bytes in 762 blocks
+==3195176==   total heap usage: 1,101 allocs, 339 frees, 131,429 bytes allocated
+==3195176== 
+==3195176== For a detailed leak analysis, rerun with: --leak-check=full
+==3195176== 
+==3195176== For lists of detected and suppressed errors, rerun with: -s
+==3195176== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

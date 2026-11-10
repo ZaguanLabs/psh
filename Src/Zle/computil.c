@@ -5127,6 +5127,7 @@ static struct features module_features = {
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     memset(cadef_cache, 0, sizeof(cadef_cache));
     memset(cvdef_cache, 0, sizeof(cvdef_cache));
 

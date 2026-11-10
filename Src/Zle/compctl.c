@@ -4013,6 +4013,7 @@ static struct features module_features = {
 int
 setup_(UNUSED(Module m))
 {
+    psh_scope_module_ack(m);
     compctlreadptr = compctlread;
     createcompctltable();
     cc_compos.mask = CC_COMMPATH;
