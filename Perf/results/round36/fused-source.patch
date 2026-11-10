@@ -1,0 +1,57 @@
+diff --git a/Src/hashtable.c b/Src/hashtable.c
+index 2e688c9..c0854d2 100644
+--- a/Src/hashtable.c
++++ b/Src/hashtable.c
+@@ -567,6 +567,34 @@ scanhashtable(HashTable ht, int sorted, int flags1, int flags2,
+ 			  scanfunc, scanflags);
+ }
+ 
++/* Fused option-default writes for tables without a generated provider.
++ * Keep the ordinary successor and scan-time resize protocol, and read flags
++ * at the visit: output may alias later node flags. The mode and destination
++ * are the original shared callback state, including after signal reentry. */
++/**/
++void
++scanoptiondefaults(HashTable ht, int *mode, char **out, int fully,
++		   int emulate_mask, int special_mask, int alias_mask)
++{
++    struct scanstatus st;
++    int i, hsize = ht->hsize;
++    HashNode *nodes = ht->nodes;
++
++    st.sorted = 0;
++    impl(ht)->scan = &st;
++    for (i = 0; i < hsize; i++) {
++	for (st.u.u = nodes[i]; st.u.u; ) {
++	    Optname on = (Optname)st.u.u;
++	    int flags = on->node.flags;
++	    st.u.u = on->node.next;
++	    if (!(flags & alias_mask) &&
++		((fully && !(flags & special_mask)) || (flags & emulate_mask)))
++		(*out)[on->optno] = !!(flags & *mode);
++	}
++    }
++    impl(ht)->scan = NULL;
++}
++
+ /* Walk candidate buckets in exactly the ordinary unsorted order. Re-read
+  * the bitmap after each bucket: callbacks can mark a later bucket. */
+ /**/
+diff --git a/Src/options.c b/Src/options.c
+index ba21eb2..a624886 100644
+--- a/Src/options.c
++++ b/Src/options.c
+@@ -527,6 +527,13 @@ installemulation(int new_emulation, char *new_opts)
+ 
+     setemulate_emulation = new_emulation;
+     setemulate_opts = new_opts;
++    /* Fuse the ordinary walk with its writes. Generated providers retain
++     * the callback interface and its original shared state. */
++    if (!optiontab->scantab) {
++	scanoptiondefaults(optiontab, &setemulate_emulation, &setemulate_opts,
++			   fully, OPT_EMULATE, OPT_SPECIAL, OPT_ALIAS);
++	return;
++    }
+     /* Prefilter ordinary tables.  Keep the original callback's checks:
+      * generated scanners ignore these masks and still visit every entry. */
+     scanhashtable(optiontab, 0, fully ? 0 : OPT_EMULATE, OPT_ALIAS,

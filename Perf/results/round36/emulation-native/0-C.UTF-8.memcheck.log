@@ -1,0 +1,15 @@
+==40096== Memcheck, a memory error detector
+==40096== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==40096== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==40096== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round36/previous/Src/zsh -dfc module_path=("$1");\ zmodload\ psh_emulation_fixture\ ||\ exit\ 1;\ psh-emulation-check\ ||\ exit\ 2;\ zmodload\ -u\ psh_emulation_fixture\ ||\ exit\ 3 comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round36/emulation-native
+==40096== Parent PID: 34004
+==40096== 
+==40096== 
+==40096== HEAP SUMMARY:
+==40096==     in use at exit: 45,721 bytes in 741 blocks
+==40096==   total heap usage: 124,975 allocs, 124,234 frees, 21,812,805 bytes allocated
+==40096== 
+==40096== For a detailed leak analysis, rerun with: --leak-check=full
+==40096== 
+==40096== For lists of detected and suppressed errors, rerun with: -s
+==40096== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

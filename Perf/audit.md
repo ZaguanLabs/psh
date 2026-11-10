@@ -187,3 +187,12 @@ The installed build improves coder/chat paste by about 8%, simulation kernels
 by about 4% and JSON kernels by 3–6%; URL encoding is about 1% slower. The change
 is adopted after native/compiler/upstream/package checks and 24 OMZ sessions.
 Rebuilds, collisions, parent locals and the bitmap-capacity term remain costs.
+
+[Round thirty-six](round36.md) follows the remaining option-default scanner cost.
+A queued-only fused loop barely runs in customer profiles. An ordinary-table
+fused loop preserves live flags, successor tracking and shared setter state,
+reducing chat/JSON instructions by roughly 1%, but paired elapsed times remain
+unfavorable. Both proposals are shelved before packaging. Deterministic nested
+generated-provider tests retain the released shared-state behavior, extending
+the native fixture to 58,258 scenarios per host/locale. Production source and
+the 27-optimization daily driver remain unchanged.

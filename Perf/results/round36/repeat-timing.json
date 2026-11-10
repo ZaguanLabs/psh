@@ -1,0 +1,41 @@
+[
+  {
+    "name": "customer-repeat",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round36/previous/Src/zsh",
+      ".work/round36/fused/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round36/customer-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 23.68988216202706
+  },
+  {
+    "name": "library-repeat",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round36/previous/Src/zsh",
+      ".work/round36/fused/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round36/library-repeat.json"
+    ],
+    "status": 0,
+    "seconds": 22.3153870170936
+  }
+]

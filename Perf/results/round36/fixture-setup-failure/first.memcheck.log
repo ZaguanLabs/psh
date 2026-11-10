@@ -1,0 +1,47 @@
+==801224== Memcheck, a memory error detector
+==801224== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==801224== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==801224== Command: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round36/previous/Src/zsh -dfc module_path=("$1");\ zmodload\ psh_emulation_fixture\ ||\ exit\ 1;\ psh-emulation-check\ ||\ exit\ 2;\ zmodload\ -u\ psh_emulation_fixture\ ||\ exit\ 3 comparison /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round36/emulation-reentry
+==801224== Parent PID: 801218
+==801224== 
+==801224== Jump to the invalid address stated on the next line
+==801224==    at 0x0: ???
+==801224==    by 0x44200F: expandhashtable (hashtable.c:654)
+==801224==    by 0x4433E2: addhashnode2 (hashtable.c:301)
+==801224==    by 0x4433F8: addhashnode (hashtable.c:275)
+==801224==    by 0x485E46D: reentry_cases (emulation-module.c:190)
+==801224==    by 0x485E46D: bin_check (emulation-module.c:304)
+==801224==    by 0x42105A: execbuiltin (builtin.c:506)
+==801224==    by 0x432B78: execcmd_exec (exec.c:4259)
+==801224==    by 0x43316B: execpline2 (exec.c:2012)
+==801224==    by 0x43352C: execpline (exec.c:1737)
+==801224==    by 0x43532E: execlist (exec.c:1531)
+==801224==    by 0x4356A3: execode (exec.c:1266)
+==801224==    by 0x435783: execstring (exec.c:1232)
+==801224==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==801224== 
+==801224== 
+==801224== Process terminating with default action of signal 11 (SIGSEGV): dumping core
+==801224==  Bad permissions for mapped region at address 0x0
+==801224==    at 0x0: ???
+==801224==    by 0x44200F: expandhashtable (hashtable.c:654)
+==801224==    by 0x4433E2: addhashnode2 (hashtable.c:301)
+==801224==    by 0x4433F8: addhashnode (hashtable.c:275)
+==801224==    by 0x485E46D: reentry_cases (emulation-module.c:190)
+==801224==    by 0x485E46D: bin_check (emulation-module.c:304)
+==801224==    by 0x42105A: execbuiltin (builtin.c:506)
+==801224==    by 0x432B78: execcmd_exec (exec.c:4259)
+==801224==    by 0x43316B: execpline2 (exec.c:2012)
+==801224==    by 0x43352C: execpline (exec.c:1737)
+==801224==    by 0x43532E: execlist (exec.c:1531)
+==801224==    by 0x4356A3: execode (exec.c:1266)
+==801224==    by 0x435783: execstring (exec.c:1232)
+==801224== 
+==801224== HEAP SUMMARY:
+==801224==     in use at exit: 56,811 bytes in 789 blocks
+==801224==   total heap usage: 124,786 allocs, 123,997 frees, 21,793,838 bytes allocated
+==801224== 
+==801224== For a detailed leak analysis, rerun with: --leak-check=full
+==801224== 
+==801224== For lists of detected and suppressed errors, rerun with: -s
+==801224== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

@@ -1,0 +1,41 @@
+[
+  {
+    "name": "customer-pilot",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      ".work/round36/previous/Src/zsh",
+      ".work/round36/fused/Src/zsh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round36/customer-pilot.json"
+    ],
+    "status": 0,
+    "seconds": 22.988211319083348
+  },
+  {
+    "name": "library-pilot",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      ".work/round36/previous/Src/zsh",
+      ".work/round36/fused/Src/zsh",
+      "--arrays",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--z3dfx",
+      "/home/stig/dev/challenge/z3dfx",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/logs/round36/library-pilot.json"
+    ],
+    "status": 0,
+    "seconds": 22.320805880939588
+  }
+]

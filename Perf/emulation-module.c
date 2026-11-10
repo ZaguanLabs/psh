@@ -142,6 +142,92 @@ static void free_alias(HashNode hn) {
     zsfree(hn->nam); zfree(hn, sizeof(struct alias_option));
 }
 
+static HashTable nested_table;
+static char *nested_out;
+static int nested_mode;
+
+/* The released setter uses shared state. A generated provider can overwrite
+ * it by installing defaults recursively: later outer visits then write into
+ * the inner destination using the inner mode but the outer fully argument. */
+static void
+reentrant_generated(HashTable ht, ScanFunc fn, int flags)
+{
+    HashNode hn = ht->nodes[0];
+    HashTable saved_table = optiontab;
+    if (queue_signal_level() != expected_queue) bad = 1;
+    generated_count++;
+    fn(hn, flags);
+    optiontab = nested_table;
+    if (fn == reference_set)
+        reference_install(nested_mode, nested_out);
+    else
+        installemulation(nested_mode, nested_out);
+    optiontab = saved_table;
+    for (hn = hn->next; hn; hn = hn->next)
+        fn(hn, flags);
+}
+
+static void
+reentry_cases(int own_level)
+{
+    HashTable saved_table = optiontab;
+    HashTable outer = newhashtable(1, "outer emulation provider", NULL);
+    unsigned i, mode, variant, queued, gen;
+    char a[OPT_SIZE], b[OPT_SIZE], ia[OPT_SIZE], ib[OPT_SIZE];
+    outer->hash = alias_hash; outer->cmpnodes = strcmp;
+    outer->addnode = addhashnode;
+    outer->emptytable = empty_options; outer->freenode = free_option;
+    outer->scantab = reentrant_generated;
+    nested_table = newhashtable(7, "inner emulation table", NULL);
+    nested_table->hash = hasher; nested_table->cmpnodes = strcmp;
+    nested_table->addnode = addhashnode;
+    nested_table->emptytable = empty_options; nested_table->freenode = free_option;
+    for (i = 0; i < 8; i++) {
+        char key[16];
+        Optname on = zshcalloc(sizeof(*on)), inner = zshcalloc(sizeof(*inner));
+        sprintf(key, "nested_%u", i);
+        on->optno = inner->optno = i + 1;
+        on->node.flags = i == 7 ? F_EMULATE | EMULATE_SH : (i * 73) & 511;
+        inner->node.flags = F_EMULATE | EMULATE_ZSH | EMULATE_KSH;
+        addhashnode(outer, ztrdup(key), on);
+        addhashnode(nested_table, ztrdup(key), inner);
+    }
+    for (mode = 0; mode < 128 && !bad; mode++)
+    for (variant = 0; variant < 3 && !bad; variant++)
+    for (queued = 0; queued < 2 && !bad; queued++)
+    for (gen = 0; gen < 2 && !bad; gen++) {
+        unsigned count, trace;
+        int flags;
+        nested_table->scantab = gen ? generated : NULL;
+        nested_mode = variant == 0 ? (mode ^ 127) :
+            variant == 1 ? EMULATE_ZSH : EMULATE_SH | EMULATE_FULLY;
+        for (i = 0; i < OPT_SIZE; i++) {
+            a[i] = b[i] = (char)(i * 37 + mode);
+            ia[i] = ib[i] = (char)(i * 19 + variant);
+        }
+        dont_queue_signals(); restore_queue_signals(queued ? own_level : 0);
+        expected_queue = queue_signal_level();
+        if (expected_queue) saw_queued++; else saw_unqueued++;
+        optiontab = outer; nested_out = ia;
+        generated_count = generated_trace = 0; generated_flags = -99;
+        reference_install(mode, a);
+        count = generated_count; trace = generated_trace; flags = generated_flags;
+        nested_out = ib;
+        generated_count = generated_trace = 0; generated_flags = -99;
+        installemulation(mode, b);
+        if (memcmp(a, b, OPT_SIZE) || memcmp(ia, ib, OPT_SIZE) ||
+            generated_count != count || generated_trace != trace ||
+            generated_flags != flags || queue_signal_level() != expected_queue)
+            bad = 1;
+        restore_queue_signals(own_level);
+        for (i = 0; i < OPT_SIZE; i++)
+            digest = digest * 33 + (unsigned char)b[i] + (unsigned char)ib[i];
+        checks++;
+    }
+    optiontab = saved_table;
+    deletehashtable(outer); deletehashtable(nested_table);
+}
+
 /* A valid character-array view into an extended node lets earlier writes
  * change a later node's flags. Selection must observe those live changes. */
 static void
@@ -217,6 +303,7 @@ bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(i
             for (queued = 0; queued < 2; queued++)
                 alias_case(i, queued, alias, own_level);
     }
+    reentry_cases(own_level);
     optiontab = saved_table;
     installemulation(emulation, opts);
     memcpy(opts, saved_opts, sizeof(saved_opts));

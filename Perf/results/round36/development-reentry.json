@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/candidate/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round36/development-reentry/psh_emulation_fixture.so"
+  ],
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh": "ce907ad8b7fb96e60df5b943ec7dc4c7557eb7e6abaf62520707319e129f777d",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh": "f5474719b0d227a57412e8dd674bf059ac551322160a76c8d97771e0a2a470d0",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c": "2a410f51aa9a65429e3ac5c735c9515274710141ad8fd38a47dfa7ebc0c6122f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round36/development-reentry/psh_emulation_fixture.so": "cdf0764d90e29780fa9bb392a23758dbe4874991911b9b299c9ccffddeb5ad93"
+  },
+  "checks": 233032,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh",
+      "locale": "C",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/psh",
+      "locale": "C.UTF-8",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    }
+  ]
+}

@@ -340,3 +340,9 @@ taking about 8% less time, simulation kernels about 4% less, and JSON kernels
 opt in explicitly. The new private rc0 iteration is active, with all seven
 package suites and 24 unchanged Oh My Zsh sessions passing. URL encoding has
 a retained roughly 1% slowdown. No Zsh language divergence is intended.
+
+The [round-thirty-six investigation](Perf/round36.md) tests fusing option-default
+traversal with its writes. Lower instruction counts do not yield useful customer
+timings, so both proposals remain shelved. Native regression coverage now also
+checks recursive generated option providers. The active build still contains
+27 accepted optimizations.

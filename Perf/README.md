@@ -914,6 +914,13 @@ options, generated callback flags/order and output aliases that change later
 node flags. Configured headers must match the host profile; the defaults refer
 to the pristine debug baseline.
 
+[Round thirty-six](round36.md) adds 1,536 deterministic nested-provider cases,
+bringing the current fixture to 58,258 scenarios per host/locale. A generated
+provider recursively installs defaults into another buffer through either an
+ordinary or generated inner table. Both buffers, shared setter state, callback
+traces and queue levels must match the original oracle. The loop-fusion trials
+remain unadopted; these regression cases apply to the unchanged core as well.
+
 ## Confirmed prefixes before append
 
 [Round twenty-eight](round28.md) resumes the pre-append length count after an

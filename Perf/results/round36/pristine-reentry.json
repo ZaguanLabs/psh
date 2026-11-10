@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round36/pristine-reentry/psh_emulation_fixture.so"
+  ],
+  "fingerprints": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline/Src/zsh": "f6576b9b096a050a11e98e8bcd7cb38b1f30074f36edea1547a5498ab2a81123",
+    "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh": "f3123ab771535d73d98ff318fac408b2a339dac0980b5fe9f7cf42fb7ed5a9a6",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/emulation-module.c": "2a410f51aa9a65429e3ac5c735c9515274710141ad8fd38a47dfa7ebc0c6122f",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/logs/round36/pristine-reentry/psh_emulation_fixture.so": "f41f1a4540f7df31369308d555c33f144ec538be16553150b0b6d613893eda89"
+  },
+  "checks": 233032,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline/Src/zsh",
+      "locale": "C",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "locale": "C",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    },
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/rc0-release-baseline/Src/zsh",
+      "locale": "C.UTF-8",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc0-bde30291d0ec/bin/psh",
+      "locale": "C.UTF-8",
+      "checks": 58258,
+      "queued": 29129,
+      "unqueued": 29129,
+      "memcheck": true,
+      "status": 0,
+      "stdout": "checks=58258 digest=4047668352 queued=29129 unqueued=29129\nmatrix-done\n"
+    }
+  ]
+}
