@@ -346,3 +346,11 @@ traversal with its writes. Lower instruction counts do not yield useful customer
 timings, so both proposals remain shelved. Native regression coverage now also
 checks recursive generated option providers. The active build still contains
 27 accepted optimizations.
+
+The [round-thirty-seven maintenance iteration](Perf/round37.md) pairs arithmetic
+state saves/restores, documents ownership and shared results, and adds recursive
+state/error-recovery tests. The development builder now isolates pristine native
+modules from psh's modules. The new private rc0 iteration is active after seven
+package suites and 24 unchanged OMZ sessions. Core machine code and all 40 native
+module text sections remain identical; this adds no new speedup to the count of
+27 optimizations.

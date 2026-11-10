@@ -196,3 +196,14 @@ unfavorable. Both proposals are shelved before packaging. Deterministic nested
 generated-provider tests retain the released shared-state behavior, extending
 the native fixture to 58,258 scenarios per host/locale. Production source and
 the 27-optimization daily driver remain unchanged.
+
+[Round thirty-seven](round37.md) begins arithmetic maintenance by documenting
+parser state, result channels and ownership. A shared private field list pairs
+the nine existing recursive saves/restores without a runtime object. GCC/Clang
+tokens, allocated arithmetic-object sections and text relocations match; the
+entire installed core machine code and all 40 native-module text sections remain
+identical. A larger typed-record trial is retained. New state/recursion/recovery
+tests pass; a detected pristine DEBUG module-path collision is fixed in the
+builder. Seven package suites and 24 OMZ sessions pass before the maintenance
+iteration activates. The optimization count stays 27; timing fluctuations and
+all slower controls are retained without a speedup claim.

@@ -327,6 +327,23 @@ struct mathvalue {
 
 static struct mathvalue *stack;
 
+/* The same field list drives recursive saves and restores. Keep the flat
+ * locals below: grouping them into a C object can enlarge each recursive
+ * frame. mtok belongs to the entry-point wrappers; lastmathval and output
+ * radix/underscore settings deliberately remain result channels. */
+#define MATH_EVAL_SAVE_FIELDS(APPLY) \
+    APPLY(lastbase, xlastbase) \
+    APPLY(noeval, xnoeval) \
+    APPLY(unary, xunary) \
+    APPLY(ptr, xptr) \
+    APPLY(yyval, xyyval) \
+    APPLY(yylval, xyylval) \
+    APPLY(sp, xsp) \
+    APPLY(stack, xstack) \
+    APPLY(prec, xprec)
+#define SAVE_MATH_FIELD(active, saved) saved = active;
+#define RESTORE_MATH_FIELD(active, saved) active = saved;
+
 enum prec_type {
     /* Evaluating a top-level expression */
     MPREC_TOP,
@@ -390,16 +407,7 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
 	return xyyval;
     }
     if (mlevel++) {
-	xlastbase = lastbase;
-	xnoeval = noeval;
-	xunary = unary;
-	xptr = ptr;
-	xyyval = yyval;
-	xyylval = yylval;
-
-	xsp = sp;
-	xstack = stack;
-	xprec = prec;
+	MATH_EVAL_SAVE_FIELDS(SAVE_MATH_FIELD)
     } else {
 	xlastbase = xnoeval = xunary = xsp = 0;
 	xyyval.type = MN_INTEGER;
@@ -450,19 +458,14 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
     }
 
     if (--mlevel) {
-	lastbase = xlastbase;
-	noeval = xnoeval;
-	unary = xunary;
-	ptr = xptr;
-	yyval = xyyval;
-	yylval = xyylval;
-
-	sp = xsp;
-	stack = xstack;
-	prec = xprec;
+	MATH_EVAL_SAVE_FIELDS(RESTORE_MATH_FIELD)
     }
     return lastmathval = ret;
 }
+
+#undef MATH_EVAL_SAVE_FIELDS
+#undef SAVE_MATH_FIELD
+#undef RESTORE_MATH_FIELD
 
 /* Keep locale setup off the integer lexer's hot path. */
 #if defined(__GNUC__)

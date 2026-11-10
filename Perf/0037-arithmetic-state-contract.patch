@@ -1,0 +1,319 @@
+Round 37: paired arithmetic state contract
+Parent: 9c04d7a6bc055e510bc45ab8cb2f08f1dec8a369
+
+diff --git a/Perf/README.md b/Perf/README.md
+index a162763..6c073b2 100644
+--- a/Perf/README.md
++++ b/Perf/README.md
+@@ -4,9 +4,15 @@
+ with identical `-O2 -g`, multibyte support and Zsh debug assertions. Compiler
+ and configure output is retained under `.work/logs/`. The candidate is published
+ atomically as the real executable `../psh`, with private native modules under
+-the configured `.work/runtime` prefix. Normal builds retain upstream target
++the configured `.work/runtime` prefix. The pristine baseline uses
++`.work/baseline-runtime`; both builds install their own default native modules
++as well as their per-build `modules` directories. Normal builds retain upstream target
+ names internally. Nothing is installed system-wide.
+ 
++Keep those default runtimes separate: a pristine shell cannot load psh-aware
++modules from the candidate's SDK. Run `python3 Perf/build.py --which baseline`
++to refresh an older baseline configured with the previously shared prefix.
++
+ Clean clones reconstruct `.work/pristine` from the `upstream/zsh-5.9.2` tag and
+ verify its exact file list and contents against `upstream-sha256.json`. Existing
+ snapshots are verified against that committed manifest too. The tag is an import
+@@ -885,6 +891,28 @@ restart implementation regressed these despite improving short conversions.
+ Run timing after builds, tests and profilers finish. These native loop ratios
+ are separate from the actual project-kernel measurements.
+ 
++## Arithmetic state contract (round thirty-seven)
++
++The [state and ownership map](arithmetic-internals.md) distinguishes the nine
++paired recursive save/restore fields from wrapper-owned token state, shared
++numeric results/formatting and shell-owned options/errors. The private field
++list keeps the old flat locals and emits both assignment sequences; GCC and
++Clang release builds preserve the runtime arithmetic object bytes and relocations.
++
++```sh
++python3 Perf/math-compare.py /path/to/reference/zsh /path/to/candidate/psh \
++  --state-frames-only --memcheck --timeout 600 --locale C --locale C.UTF-8 \
++  --output .work/logs/arithmetic-state.json
++```
++
++The focused corpus contains 54 expressions in native/ksh/sh modes and four
++option contexts, 648 paired comparisons per locale. It covers nested precedence,
++radix, floating results, lazy lvalues, native math-function arguments, recursion
++limits, short circuiting and recovery after errors. `--state-frames` adds these
++cases to a broader selected corpus. Its callbacks run unchanged on pristine Zsh.
++The [round 37 report](round37.md) includes the larger typed-record trial and
++object-only alternatives; those are not the selected implementation.
++
+ ## Option emulation scans (round twenty-seven)
+ 
+ The [round twenty-seven report](round27.md) measures using existing scanner
+diff --git a/Perf/build.py b/Perf/build.py
+index 0203879..0dbc5e1 100644
+--- a/Perf/build.py
++++ b/Perf/build.py
+@@ -84,15 +84,14 @@ def main():
+         build = work / name
+         build.mkdir(exist_ok=True)
+         source = pristine if name == "baseline" else root
++        runtime = work / ("baseline-runtime" if name == "baseline" else "runtime")
+         commands = [
+-            [str(source / "configure"), f"--prefix={work / 'runtime'}",
++            [str(source / "configure"), f"--prefix={runtime}",
+              "--enable-multibyte", "--enable-zsh-debug", "CFLAGS=-O2 -g"],
+             ["make", f"-j{args.jobs}"],
+             ["make", f"MODDIR={build / 'modules'}", "install.modules"],
++            ["make", f"MODDIR={runtime / 'lib/zsh/5.9.2'}", "install.modules"],
+         ]
+-        if name == "candidate":
+-            commands.append(["make", f"MODDIR={work / 'runtime/lib/zsh/5.9.2'}",
+-                             "install.modules"])
+         for phase, command in enumerate(commands):
+             print(f"{name}: {' '.join(command)}", flush=True)
+             with (logs / f"{name}-build-{phase}.log").open("w") as log:
+diff --git a/Perf/math-compare.py b/Perf/math-compare.py
+index 0f17712..620fbff 100644
+--- a/Perf/math-compare.py
++++ b/Perf/math-compare.py
+@@ -27,6 +27,10 @@ def main():
+                         help="include repeated lookups, descriptor exhaustion and recursive lvalue lifetimes")
+     parser.add_argument("--descriptors-only", action="store_true",
+                         help="run only the focused descriptor cases, including their callbacks")
++    parser.add_argument("--state-frames", action="store_true",
++                        help="include recursive state, precedence, radix and error-recovery cases")
++    parser.add_argument("--state-frames-only", action="store_true",
++                        help="run only the focused recursive-state cases")
+     parser.add_argument("--memcheck", action="store_true",
+                         help="run hosts under Memcheck and reject every reported memory error")
+     parser.add_argument("--timeout", type=int, default=300,
+@@ -36,6 +40,8 @@ def main():
+         parser.error("--timeout must be positive")
+     if args.descriptors_only:
+         args.descriptors = True
++    if args.state_frames_only:
++        args.state_frames = True
+     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
+     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+     literals = ["0", "-0", "0.0", "-0.0", ".5", "1.", "1.25", "-1.25", "1e20",
+@@ -114,6 +120,28 @@ def main():
+         expressions += ["x += (x='x', x)", "x='a[1]', x+x+x+x+x+x+x+x+x",
+                         "x='h[k]', x+x+x+x+x+x+x+x+x"]
+         expressions = list(dict.fromkeys(expressions))
++    if args.state_frames:
++        if args.state_frames_only:
++            expressions = []
++        expressions += [
++            "psh_state_prec()", "1<<2 + psh_state_prec()", "psh_state_prec() + 1<<2",
++            "psh_state_prec() + psh_state_prec()", "max(psh_state_prec(), 2, 3)",
++            "sin(psh_state_prec())", "psh_state_base()", "16#f + psh_state_base() + 2#11",
++            "psh_state_radix()", "[##16]psh_state_radix()+1", "[#8_2]psh_state_radix()",
++            "psh_state_float()", "x + psh_state_float() + x", "a[++i]+=psh_state_float()",
++            "x='psh_state_prec()+1', x+x", "x='16#f', x+psh_state_base()+x",
++            "h[k]+=psh_state_prec()", "a[++i]+=psh_state_prec()", "i + (i=5)",
++            "psh_state_prec() ? psh_state_float() : psh_state_bad()",
++            "0 && psh_state_bad()", "1 || psh_state_bad()", "0 ? psh_state_bad() : 3",
++            "1 ? 3 : psh_state_bad()", "psh_state_bad()", "1+psh_state_bad()",
++            "psh_state_bad()+1", "psh_state_prec()+1/0", "1/0+psh_state_prec()",
++            "max(psh_state_prec(),)", "(psh_state_prec()", "psh_state_prec())",
++            "x='x', x", "x='h[k]', h[k]='x', x",
++        ]
++        for depth in [0, 1, 7, 31, 127, 253, 254, 255, 256, 257]:
++            expressions += [f"psh_state_recursive({depth})",
++                            f"x + psh_state_recursive({depth}) + x"]
++        expressions = list(dict.fromkeys(expressions))
+     arrays = "expressions=(" + " ".join(map(quote, expressions)) + ")\n"
+     script = '''emulate -R zsh
+ zmodload zsh/mathfunc || exit 1
+@@ -177,12 +205,44 @@ functions -M psh_pop_recursive 1 1 psh_pop_recursive
+             "        integer psh_pop_calls=0\n        typeset -a psh_pop_trace=()\n")
+         script = script.replace("        exit $arithmetic_status\n",
+             "        typeset -p psh_pop_calls psh_pop_trace\n        exit $arithmetic_status\n")
++    if args.state_frames:
++        prelude = '''psh_state_prec() {
++  setopt localoptions
++  if [[ -o cprecedences ]]; then unsetopt cprecedences; else setopt cprecedences; fi
++  psh_state_trace+=(prec)
++  (( 1<<2 + 1 ))
++}
++psh_state_base() { psh_state_trace+=(base); (( 8#17 )); }
++psh_state_radix() { psh_state_trace+=(radix); (( [##8_2]1234 )); }
++psh_state_float() {
++  setopt localoptions forcefloat
++  psh_state_trace+=(float)
++  (( 1.25 + 2 ))
++}
++psh_state_bad() { psh_state_trace+=(bad); (( 2 + )); }
++psh_state_recursive() { (( $1 ? psh_state_recursive($1-1)+1 : 7 )); }
++functions -M psh_state_prec 0 0 psh_state_prec
++functions -M psh_state_base 0 0 psh_state_base
++functions -M psh_state_radix 0 0 psh_state_radix
++functions -M psh_state_float 0 0 psh_state_float
++functions -M psh_state_bad 0 0 psh_state_bad
++functions -M psh_state_recursive 1 1 psh_state_recursive
++'''
++        script = script.replace("for emulation in zsh ksh sh; do", prelude + "for emulation in zsh ksh sh; do")
++        script = script.replace("        unset answer\n", "        unset answer\n"
++            "        typeset -a psh_state_trace=()\n")
++        script = script.replace("        exit $arithmetic_status\n",
++            "        typeset -p psh_state_trace\n"
++            "        (( psh_state_recovered = 3 + 4*2 ))\n"
++            "        print -r -- \"recovered=$psh_state_recovered status=$?\"\n"
++            "        exit $arithmetic_status\n")
+     args.output.parent.mkdir(parents=True, exist_ok=True)
+     report = {"shells": list(map(str, shells)), "binary_sha256": [sha(p) for p in shells],
+               "driver_sha256": sha(Path(__file__)), "script_sha256": hashlib.sha256(script.encode()).hexdigest(),
+               "expressions": len(expressions), "syntax": args.syntax, "operators": args.operators,
+               "descriptors": args.descriptors,
+               "descriptors_only": args.descriptors_only, "timeout_seconds": args.timeout,
++              "state_frames": args.state_frames, "state_frames_only": args.state_frames_only,
+               "memcheck": args.memcheck,
+               "checks_per_locale": len(expressions) * 12, "cases": []}
+     for locale in args.locales or ("C", "C.UTF-8", "fr_FR.UTF-8", "nb_NO.UTF-8", "tr_TR.UTF-8"):
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..fee8178 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -327,6 +327,23 @@ struct mathvalue {
+ 
+ static struct mathvalue *stack;
+ 
++/* The same field list drives recursive saves and restores. Keep the flat
++ * locals below: grouping them into a C object can enlarge each recursive
++ * frame. mtok belongs to the entry-point wrappers; lastmathval and output
++ * radix/underscore settings deliberately remain result channels. */
++#define MATH_EVAL_SAVE_FIELDS(APPLY) \
++    APPLY(lastbase, xlastbase) \
++    APPLY(noeval, xnoeval) \
++    APPLY(unary, xunary) \
++    APPLY(ptr, xptr) \
++    APPLY(yyval, xyyval) \
++    APPLY(yylval, xyylval) \
++    APPLY(sp, xsp) \
++    APPLY(stack, xstack) \
++    APPLY(prec, xprec)
++#define SAVE_MATH_FIELD(active, saved) saved = active;
++#define RESTORE_MATH_FIELD(active, saved) active = saved;
++
+ enum prec_type {
+     /* Evaluating a top-level expression */
+     MPREC_TOP,
+@@ -390,16 +407,7 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+ 	return xyyval;
+     }
+     if (mlevel++) {
+-	xlastbase = lastbase;
+-	xnoeval = noeval;
+-	xunary = unary;
+-	xptr = ptr;
+-	xyyval = yyval;
+-	xyylval = yylval;
+-
+-	xsp = sp;
+-	xstack = stack;
+-	xprec = prec;
++	MATH_EVAL_SAVE_FIELDS(SAVE_MATH_FIELD)
+     } else {
+ 	xlastbase = xnoeval = xunary = xsp = 0;
+ 	xyyval.type = MN_INTEGER;
+@@ -450,20 +458,15 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     }
+ 
+     if (--mlevel) {
+-	lastbase = xlastbase;
+-	noeval = xnoeval;
+-	unary = xunary;
+-	ptr = xptr;
+-	yyval = xyyval;
+-	yylval = xyylval;
+-
+-	sp = xsp;
+-	stack = xstack;
+-	prec = xprec;
++	MATH_EVAL_SAVE_FIELDS(RESTORE_MATH_FIELD)
+     }
+     return lastmathval = ret;
+ }
+ 
++#undef MATH_EVAL_SAVE_FIELDS
++#undef SAVE_MATH_FIELD
++#undef RESTORE_MATH_FIELD
++
+ /* Keep locale setup off the integer lexer's hot path. */
+ #if defined(__GNUC__)
+ __attribute__((__noinline__))
+diff --git a/Perf/arithmetic-internals.md b/Perf/arithmetic-internals.md
+new file mode 100644
+index 0000000..1fe20b2
+--- /dev/null
++++ b/Perf/arithmetic-internals.md
+@@ -0,0 +1,67 @@
++# Arithmetic state and ownership
++
++This map describes psh's Zsh 5.9.2 evaluator in `Src/math.c`. It records existing
++behavior; it does not promise independent parser instances or thread safety.
++
++## Three different boundaries
++
++| State | Lifetime and restoration rule |
++| --- | --- |
++| `ptr`, `yyval`, `yylval` | Current lexer position and token payload; saved/restored by nested `mathevall()` |
++| `sp`, `stack` | Current operand-stack index and borrowed pointer to that invocation's C-frame array; saved/restored by nested `mathevall()` |
++| `prec` | Selected precedence table; saved/restored across nested calls, even when an inner callback uses another option setting |
++| `lastbase` | Reset to -1 on evaluation entry, restored on nested exit; outermost evaluation leaves it available to parameter conversion |
++| `noeval`, `unary` | Parse-only nesting and operator/operand expectation; saved/restored on nested exit; entry resets `unary` but inherits `noeval` |
++| `mtok` | Current token; restored by `matheval()`/`mathevalarg()`, not by `mathevall()`; function-argument parsing needs the terminating comma token |
++| `lastmathval` | Last computed result; deliberately published across levels and used by user-defined arithmetic functions |
++| `outputradix`, `outputunderscore` | Shared formatting result; reset by outermost `matheval()` and retained across nested evaluation |
++| `mlevel` | Recursion counter, checked before increment; a rejected over-limit call does not increment/decrement it |
++| `errflag`, options, locale, parameters | Shell state with its existing owners; not private parser state and not restored wholesale by an arithmetic frame |
++| `math_c_locale` | Immutable conversion locale retained for process lifetime, when that API is configured |
++
++`MATH_EVAL_SAVE_FIELDS` pairs only the nine fields already restored by nested
++`mathevall()`. The same private list emits both assignment sequences, so adding
++a save without its matching restore requires changing that mechanism explicitly.
++Active globals and flat C-frame locals retain their identities, types and access
++paths. There is no runtime context object or context-pointer lookup in the lexer
++or operator loop. Save, initialization and restore statements retain their
++original order. Outermost calls keep the old explicit initialization of the
++otherwise unused save slots. The helper macros are undefined after this routine.
++
++Error exits require the same care as successful evaluation. The recursion-limit
++path returns integer zero and reports the original input endpoint before any
++new frame is entered; that early return does not publish a new `lastmathval`.
++Ordinary parse errors still pass through the existing
++result/restoration tail. The final `getmathparam()` may itself recurse before
++restoration; moving the restore earlier would invalidate its evaluation state.
++
++## Values and borrowing
++
++Each evaluation has its own fixed C-frame operand array. `push()` initializes a
++slot; a parameter reference may carry an unevaluated `lval` until an operator
++needs its value. Reading all variables at parse time would change expressions
++such as `i + (i=5)` and side-effecting subscripts.
++
++`mathvalue.lval` borrows text whose storage belongs to the surrounding
++evaluation/heap. `getmathparam()` obtains its cached `Value` descriptor through
++the shell heap allocator. That descriptor references a parameter; it does not
++own that parameter. `setmathvar()` rechecks the current parameter identity before
++reusing a cached descriptor for assignment. Unset/redeclare and custom callbacks
++are therefore lifetime boundaries, not opportunities to retain a raw pointer
++indefinitely. This modernization changes none of those allocations or checks.
++
++`callmathfunc()` obtains argument descriptors, argument vectors and list nodes
++from the existing shell heap. Arguments are evaluated in sequence through
++`mathevall(..., MPREC_ARG, ...)`; native numeric functions, native string functions
++and shell-defined math functions use different interfaces. The `mtok` comma
++protocol and `lastmathval` result channel connect those interfaces to the parser.
++
++## Constraints on later changes
++
++A future evaluation context must distinguish nested parser state, wrapper-owned
++token state, shared result channels and shell-owned state. An execution plan
++must preserve lazy reads, callback-driven changes, parse/error ordering,
++precedence selection and locale/option behavior. A new ownership scheme must
++cover recursive getters, setters, native functions, shell functions and failure
++unwinding before changing allocation lifetimes. The paired state list is a
++bounded first step, not an implementation of any of those larger designs.

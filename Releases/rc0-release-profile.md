@@ -172,3 +172,9 @@ The [round-thirty-five scope-index iteration](../Perf/round35.md) is the next
 accepted daily-driver build, `1.0.0-rc0-bde30291d0ec`, using the same release
 profile. It retains the rc0 version, isolated paths, unchanged framework setup
 and historical tag/draft/assets while adding the 27th accepted optimization.
+
+The [round-thirty-seven arithmetic maintenance iteration](../Perf/round37.md)
+activates `1.0.0-rc0-7e8f4c48abf5` with the same core machine code, executable
+size and 27 accepted optimizations. It clarifies the recursive state contract
+and isolates pristine development modules; rc0 and the historical release
+checkpoint remain unchanged.

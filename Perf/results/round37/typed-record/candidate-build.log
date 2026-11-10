@@ -1,0 +1,996 @@
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+cd .. && /bin/sh $top_srcdir/Src/mkmakemod.sh Src Makemod
+creating Src/Makemod.in
+config.status: creating Src/Makemod
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/signames1.awk  /usr/include/bits/signum-arch.h /usr/include/bits/signum-generic.h >sigtmp.c
+case "`gcc -E --version </dev/null 2>&1`" in \
+*"Free Software Foundation"*) \
+gcc -E -P sigtmp.c >sigtmp.out;; \
+*) \
+gcc -E sigtmp.c >sigtmp.out;; \
+esac
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/signames2.awk sigtmp.out > signames.c
+rm -f sigtmp.c sigtmp.out
+grep 'define.*SIGCOUNT' signames.c > sigcount.h
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+Updated `zsh.mdh'.
+echo 'timestamp for zsh.mdh against zsh.mdd' > zsh.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/builtin.c Src > builtin.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < builtin.syms) \
+	> builtin.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < builtin.syms) \
+	> `echo builtin.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/compat.c Src > compat.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compat.syms) \
+	> compat.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compat.syms) \
+	> `echo compat.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c Src > cond.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < cond.syms) \
+	> cond.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < cond.syms) \
+	> `echo cond.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/context.c Src > context.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < context.syms) \
+	> context.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < context.syms) \
+	> `echo context.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/exec.c Src > exec.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < exec.syms) \
+	> exec.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < exec.syms) \
+	> `echo exec.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/glob.c Src > glob.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < glob.syms) \
+	> glob.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < glob.syms) \
+	> `echo glob.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/hashtable.c Src > hashtable.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < hashtable.syms) \
+	> hashtable.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < hashtable.syms) \
+	> `echo hashtable.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/hashnameddir.c Src > hashnameddir.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < hashnameddir.syms) \
+	> hashnameddir.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < hashnameddir.syms) \
+	> `echo hashnameddir.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/hist.c Src > hist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < hist.syms) \
+	> hist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < hist.syms) \
+	> `echo hist.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/init.c Src > init.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < init.syms) \
+	> init.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < init.syms) \
+	> `echo init.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/input.c Src > input.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < input.syms) \
+	> input.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < input.syms) \
+	> `echo input.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/jobs.c Src > jobs.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < jobs.syms) \
+	> jobs.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < jobs.syms) \
+	> `echo jobs.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/lex.c Src > lex.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < lex.syms) \
+	> lex.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < lex.syms) \
+	> `echo lex.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/linklist.c Src > linklist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < linklist.syms) \
+	> linklist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < linklist.syms) \
+	> `echo linklist.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/loop.c Src > loop.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < loop.syms) \
+	> loop.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < loop.syms) \
+	> `echo loop.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/math.c Src > math.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < math.syms) \
+	> math.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < math.syms) \
+	> `echo math.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/mem.c Src > mem.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < mem.syms) \
+	> mem.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < mem.syms) \
+	> `echo mem.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/module.c Src > module.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < module.syms) \
+	> module.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < module.syms) \
+	> `echo module.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/options.c Src > options.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < options.syms) \
+	> options.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < options.syms) \
+	> `echo options.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c Src > params.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < params.syms) \
+	> params.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < params.syms) \
+	> `echo params.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/parse.c Src > parse.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < parse.syms) \
+	> parse.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < parse.syms) \
+	> `echo parse.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/pattern.c Src > pattern.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < pattern.syms) \
+	> pattern.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < pattern.syms) \
+	> `echo pattern.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/prompt.c Src > prompt.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < prompt.syms) \
+	> prompt.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < prompt.syms) \
+	> `echo prompt.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/signals.c Src > signals.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < signals.syms) \
+	> signals.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < signals.syms) \
+	> `echo signals.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk signames.c Src > signames.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < signames.syms) \
+	> signames.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < signames.syms) \
+	> `echo signames.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/sort.c Src > sort.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < sort.syms) \
+	> sort.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < sort.syms) \
+	> `echo sort.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/string.c Src > string.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < string.syms) \
+	> string.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < string.syms) \
+	> `echo string.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c Src > subst.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < subst.syms) \
+	> subst.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < subst.syms) \
+	> `echo subst.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/text.c Src > text.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < text.syms) \
+	> text.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < text.syms) \
+	> `echo text.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c Src > utils.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < utils.syms) \
+	> utils.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < utils.syms) \
+	> `echo utils.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/openssh_bsd_setres_id.c Src > openssh_bsd_setres_id.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < openssh_bsd_setres_id.syms) \
+	> openssh_bsd_setres_id.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < openssh_bsd_setres_id.syms) \
+	> `echo openssh_bsd_setres_id.epro | sed 's/\.epro$/.pro/'`
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+Updated `zsh.mdh'.
+make -f Makemod prefix='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate' exec_prefix='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate' bindir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/bin' libdir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/lib' MODDIR='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/lib/zsh/5.9.2' infodir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/share/info' mandir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/share/man' datadir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/share' fndir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/share/zsh/5.9.2/functions' htmldir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/share/zsh/htmldoc' runhelpdir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/runtime-candidate/share/zsh/5.9.2/help' CC='gcc' CPPFLAGS='' DEFS='-DHAVE_CONFIG_H' CFLAGS='-O2 -g' LDFLAGS='-g' EXTRA_LDFLAGS='-rdynamic' DLCFLAGS='-fPIC' DLLDFLAGS='-shared' LIBLDFLAGS='' EXELDFLAGS='' LIBS='-lpcre2-8 -ldl -lncursesw -lrt -lm  -lc' DL_EXT='so' DLLD='gcc' AWK='gawk' YODL='yodl -k -L' YODL2TXT='yodl2txt' YODL2HTML='yodl2html' FUNCTIONS_INSTALL='' tzsh='zsh' prep
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+creating Src/Builtins/Makefile.in
+config.status: creating Src/Builtins/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+creating Src/Modules/Makefile.in
+config.status: creating Src/Modules/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+creating Src/Zle/Makefile.in
+config.status: creating Src/Zle/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+echo 'timestamp for *.mdd files' > ../Src/modules.stamp
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+Updated `rlimits.mdh'.
+echo 'timestamp for rlimits.mdh against rlimits.mdd' > rlimits.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Builtins/rlimits.c Src/Builtins > rlimits.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < rlimits.syms) \
+	> rlimits.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < rlimits.syms) \
+	> `echo rlimits.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+Updated `rlimits.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+Updated `sched.mdh'.
+echo 'timestamp for sched.mdh against sched.mdd' > sched.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Builtins/sched.c Src/Builtins > sched.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < sched.syms) \
+	> sched.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < sched.syms) \
+	> `echo sched.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+Updated `sched.mdh'.
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `attr.mdh'.
+echo 'timestamp for attr.mdh against attr.mdd' > attr.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/attr.c Src/Modules > attr.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < attr.syms) \
+	> attr.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < attr.syms) \
+	> `echo attr.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `attr.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `cap.mdh'.
+echo 'timestamp for cap.mdh against cap.mdd' > cap.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/cap.c Src/Modules > cap.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < cap.syms) \
+	> cap.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < cap.syms) \
+	> `echo cap.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `cap.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `clone.mdh'.
+echo 'timestamp for clone.mdh against clone.mdd' > clone.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/clone.c Src/Modules > clone.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < clone.syms) \
+	> clone.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < clone.syms) \
+	> `echo clone.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `clone.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `curses.mdh'.
+echo 'timestamp for curses.mdh against curses.mdd' > curses.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/curses.c Src/Modules > curses.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < curses.syms) \
+	> curses.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < curses.syms) \
+	> `echo curses.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `curses.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `datetime.mdh'.
+echo 'timestamp for datetime.mdh against datetime.mdd' > datetime.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/datetime.c Src/Modules > datetime.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < datetime.syms) \
+	> datetime.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < datetime.syms) \
+	> `echo datetime.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `datetime.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `example.mdh'.
+echo 'timestamp for example.mdh against example.mdd' > example.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/example.c Src/Modules > example.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < example.syms) \
+	> example.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < example.syms) \
+	> `echo example.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `example.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `files.mdh'.
+echo 'timestamp for files.mdh against files.mdd' > files.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/files.c Src/Modules > files.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < files.syms) \
+	> files.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < files.syms) \
+	> `echo files.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `files.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `langinfo.mdh'.
+echo 'timestamp for langinfo.mdh against langinfo.mdd' > langinfo.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/langinfo.c Src/Modules > langinfo.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < langinfo.syms) \
+	> langinfo.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < langinfo.syms) \
+	> `echo langinfo.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `langinfo.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `mapfile.mdh'.
+echo 'timestamp for mapfile.mdh against mapfile.mdd' > mapfile.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/mapfile.c Src/Modules > mapfile.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < mapfile.syms) \
+	> mapfile.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < mapfile.syms) \
+	> `echo mapfile.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `mapfile.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `mathfunc.mdh'.
+echo 'timestamp for mathfunc.mdh against mathfunc.mdd' > mathfunc.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/mathfunc.c Src/Modules > mathfunc.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < mathfunc.syms) \
+	> mathfunc.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < mathfunc.syms) \
+	> `echo mathfunc.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `mathfunc.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `nearcolor.mdh'.
+echo 'timestamp for nearcolor.mdh against nearcolor.mdd' > nearcolor.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/nearcolor.c Src/Modules > nearcolor.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < nearcolor.syms) \
+	> nearcolor.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < nearcolor.syms) \
+	> `echo nearcolor.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `nearcolor.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `newuser.mdh'.
+echo 'timestamp for newuser.mdh against newuser.mdd' > newuser.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/newuser.c Src/Modules > newuser.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < newuser.syms) \
+	> newuser.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < newuser.syms) \
+	> `echo newuser.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `newuser.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `param_private.mdh'.
+echo 'timestamp for param_private.mdh against param_private.mdd' > param_private.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/param_private.c Src/Modules > param_private.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < param_private.syms) \
+	> param_private.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < param_private.syms) \
+	> `echo param_private.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `param_private.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `parameter.mdh'.
+echo 'timestamp for parameter.mdh against parameter.mdd' > parameter.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/parameter.c Src/Modules > parameter.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < parameter.syms) \
+	> parameter.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < parameter.syms) \
+	> `echo parameter.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `parameter.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `pcre.mdh'.
+echo 'timestamp for pcre.mdh against pcre.mdd' > pcre.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/pcre.c Src/Modules > pcre.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < pcre.syms) \
+	> pcre.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < pcre.syms) \
+	> `echo pcre.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `pcre.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `regex.mdh'.
+echo 'timestamp for regex.mdh against regex.mdd' > regex.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/regex.c Src/Modules > regex.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < regex.syms) \
+	> regex.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < regex.syms) \
+	> `echo regex.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `regex.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `socket.mdh'.
+echo 'timestamp for socket.mdh against socket.mdd' > socket.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/socket.c Src/Modules > socket.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < socket.syms) \
+	> socket.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < socket.syms) \
+	> `echo socket.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `socket.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `stat.mdh'.
+echo 'timestamp for stat.mdh against stat.mdd' > stat.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/stat.c Src/Modules > stat.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < stat.syms) \
+	> stat.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < stat.syms) \
+	> `echo stat.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `stat.mdh'.
+if [ x" /usr/include/asm-generic/errno.h /usr/include/bits/errno.h /usr/include/asm-generic/errno-base.h" = x ]; then \
+	touch errtmp.out; \
+   else \
+	gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/errnames1.awk  /usr/include/asm-generic/errno.h /usr/include/bits/errno.h /usr/include/asm-generic/errno-base.h >errtmp.c; \
+	case "`gcc -E --version </dev/null 2>&1`" in \
+	*"Free Software Foundation"*) \
+	gcc -E -P errtmp.c >errtmp.out;; \
+	*) \
+	gcc -E errtmp.c >errtmp.out;; \
+	esac; \
+   fi
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/errnames2.awk errtmp.out > errnames.c
+rm -f errtmp.c errtmp.out
+grep 'define.*ERRCOUNT' errnames.c > errcount.h
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `system.mdh'.
+echo 'timestamp for system.mdh against system.mdd' > system.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/system.c Src/Modules > system.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < system.syms) \
+	> system.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < system.syms) \
+	> `echo system.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk errnames.c Src/Modules > errnames.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < errnames.syms) \
+	> errnames.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < errnames.syms) \
+	> `echo errnames.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `system.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `tcp.mdh'.
+echo 'timestamp for tcp.mdh against tcp.mdd' > tcp.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/tcp.c Src/Modules > tcp.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < tcp.syms) \
+	> tcp.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < tcp.syms) \
+	> `echo tcp.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `tcp.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `termcap.mdh'.
+echo 'timestamp for termcap.mdh against termcap.mdd' > termcap.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/termcap.c Src/Modules > termcap.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < termcap.syms) \
+	> termcap.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < termcap.syms) \
+	> `echo termcap.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `termcap.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `terminfo.mdh'.
+echo 'timestamp for terminfo.mdh against terminfo.mdd' > terminfo.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/terminfo.c Src/Modules > terminfo.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < terminfo.syms) \
+	> terminfo.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < terminfo.syms) \
+	> `echo terminfo.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `terminfo.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `watch.mdh'.
+echo 'timestamp for watch.mdh against watch.mdd' > watch.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/watch.c Src/Modules > watch.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < watch.syms) \
+	> watch.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < watch.syms) \
+	> `echo watch.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `watch.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zftp.mdh'.
+echo 'timestamp for zftp.mdh against zftp.mdd' > zftp.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zftp.c Src/Modules > zftp.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zftp.syms) \
+	> zftp.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zftp.syms) \
+	> `echo zftp.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zftp.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zprof.mdh'.
+echo 'timestamp for zprof.mdh against zprof.mdd' > zprof.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zprof.c Src/Modules > zprof.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zprof.syms) \
+	> zprof.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zprof.syms) \
+	> `echo zprof.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zprof.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zpty.mdh'.
+echo 'timestamp for zpty.mdh against zpty.mdd' > zpty.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zpty.c Src/Modules > zpty.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zpty.syms) \
+	> zpty.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zpty.syms) \
+	> `echo zpty.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zpty.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zselect.mdh'.
+echo 'timestamp for zselect.mdh against zselect.mdd' > zselect.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zselect.c Src/Modules > zselect.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zselect.syms) \
+	> zselect.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zselect.syms) \
+	> `echo zselect.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zselect.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+( \
+    echo '/** thingies.list                            **/'; \
+    echo '/** thingy structures for the known thingies **/'; \
+    echo; \
+    echo '/* format: T("name", TH_FLAGS, w_widget, t_nextthingy) */'; \
+    echo; \
+    sed -e 's/#.*//; /^$/d; s/" *,.*/"/' \
+	-e 's/^"/T("/; s/$/, 0,/; h' \
+	-e 's/-//g; s/^.*"\(.*\)".*/w_\1, t_D\1)/' \
+	-e 'H; g; s/\n/ /' \
+	< /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/iwidgets.list; \
+    sed -e 's/#.*//; /^$/d; s/" *,.*/"/' \
+	-e 's/^"/T("./; s/$/, TH_IMMORTAL,/; h' \
+	-e 's/-//g; s/^.*"\.\(.*\)".*/w_\1, t_\1)/' \
+	-e 'H; g; s/\n/ /' \
+	< /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/iwidgets.list; \
+) > thingies.list
+( \
+    echo '/** zle_things.h                              **/'; \
+    echo '/** indices of and pointers to known thingies **/'; \
+    echo; \
+    echo 'enum {'; \
+    sed -n -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_things.sed < thingies.list; \
+    echo '    ZLE_BUILTIN_THINGY_COUNT'; \
+    echo '};'; \
+) > zle_things.h
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `zle.mdh'.
+echo 'timestamp for zle.mdh against zle.mdd' > zle.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_bindings.c Src/Zle > zle_bindings.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_bindings.syms) \
+	> zle_bindings.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_bindings.syms) \
+	> `echo zle_bindings.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_hist.c Src/Zle > zle_hist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_hist.syms) \
+	> zle_hist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_hist.syms) \
+	> `echo zle_hist.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_keymap.c Src/Zle > zle_keymap.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_keymap.syms) \
+	> zle_keymap.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_keymap.syms) \
+	> `echo zle_keymap.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_main.c Src/Zle > zle_main.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_main.syms) \
+	> zle_main.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_main.syms) \
+	> `echo zle_main.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_misc.c Src/Zle > zle_misc.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_misc.syms) \
+	> zle_misc.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_misc.syms) \
+	> `echo zle_misc.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_move.c Src/Zle > zle_move.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_move.syms) \
+	> zle_move.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_move.syms) \
+	> `echo zle_move.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_params.c Src/Zle > zle_params.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_params.syms) \
+	> zle_params.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_params.syms) \
+	> `echo zle_params.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_refresh.c Src/Zle > zle_refresh.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_refresh.syms) \
+	> zle_refresh.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_refresh.syms) \
+	> `echo zle_refresh.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_thingy.c Src/Zle > zle_thingy.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_thingy.syms) \
+	> zle_thingy.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_thingy.syms) \
+	> `echo zle_thingy.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_tricky.c Src/Zle > zle_tricky.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_tricky.syms) \
+	> zle_tricky.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_tricky.syms) \
+	> `echo zle_tricky.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_utils.c Src/Zle > zle_utils.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_utils.syms) \
+	> zle_utils.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_utils.syms) \
+	> `echo zle_utils.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_vi.c Src/Zle > zle_vi.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_vi.syms) \
+	> zle_vi.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_vi.syms) \
+	> `echo zle_vi.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_word.c Src/Zle > zle_word.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_word.syms) \
+	> zle_word.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_word.syms) \
+	> `echo zle_word.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/textobjects.c Src/Zle > textobjects.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < textobjects.syms) \
+	> textobjects.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < textobjects.syms) \
+	> `echo textobjects.epro | sed 's/\.epro$/.pro/'`
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `zle.mdh'.
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `complete.mdh'.
+echo 'timestamp for complete.mdh against complete.mdd' > complete.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/complete.c Src/Zle > complete.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < complete.syms) \
+	> complete.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < complete.syms) \
+	> `echo complete.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compcore.c Src/Zle > compcore.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compcore.syms) \
+	> compcore.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compcore.syms) \
+	> `echo compcore.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compmatch.c Src/Zle > compmatch.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compmatch.syms) \
+	> compmatch.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compmatch.syms) \
+	> `echo compmatch.epro | sed 's/\.epro$/.pro/'`
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compresult.c Src/Zle > compresult.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compresult.syms) \
+	> compresult.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compresult.syms) \
+	> `echo compresult.epro | sed 's/\.epro$/.pro/'`
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `complete.mdh'.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zutil.mdh'.
+echo 'timestamp for zutil.mdh against zutil.mdd' > zutil.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zutil.c Src/Modules > zutil.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zutil.syms) \
+	> zutil.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zutil.syms) \
+	> `echo zutil.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+Updated `zutil.mdh'.
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `compctl.mdh'.
+echo 'timestamp for compctl.mdh against compctl.mdd' > compctl.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compctl.c Src/Zle > compctl.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compctl.syms) \
+	> compctl.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compctl.syms) \
+	> `echo compctl.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `compctl.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `complist.mdh'.
+echo 'timestamp for complist.mdh against complist.mdd' > complist.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/complist.c Src/Zle > complist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < complist.syms) \
+	> complist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < complist.syms) \
+	> `echo complist.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `complist.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `computil.mdh'.
+echo 'timestamp for computil.mdh against computil.mdd' > computil.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/computil.c Src/Zle > computil.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < computil.syms) \
+	> computil.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < computil.syms) \
+	> `echo computil.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `computil.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `deltochar.mdh'.
+echo 'timestamp for deltochar.mdh against deltochar.mdd' > deltochar.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/deltochar.c Src/Zle > deltochar.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < deltochar.syms) \
+	> deltochar.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < deltochar.syms) \
+	> `echo deltochar.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `deltochar.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `zleparameter.mdh'.
+echo 'timestamp for zleparameter.mdh against zleparameter.mdd' > zleparameter.mdhs
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zleparameter.c Src/Zle > zleparameter.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zleparameter.syms) \
+	> zleparameter.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zleparameter.syms) \
+	> `echo zleparameter.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+Updated `zleparameter.mdh'.
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+rm -f stamp-modobjs.tmp
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o builtin.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/builtin.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o compat.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/compat.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o cond.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/cond.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o context.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/context.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o exec.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/exec.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o glob.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/glob.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o hashtable.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/hashtable.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o hashnameddir.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/hashnameddir.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o hist.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/hist.c
+srcdir='/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src' CFMOD='../config.modules' \
+  /bin/sh /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/mkbltnmlst.sh bltinmods.list
+Updated `zshpaths.h'.
+Creating `zshxmods.h'.
+echo '#define ZSH_VERSION "'5.9.2'"' > version.h
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o init.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/init.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o input.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/input.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o jobs.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/jobs.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o lex.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/lex.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o linklist.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/linklist.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o loop.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/loop.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o math.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/math.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o mem.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/mem.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o module.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/module.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o options.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/options.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o params.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/params.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o parse.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/parse.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o pattern.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/pattern.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o prompt.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/prompt.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o signals.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/signals.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o signames.o signames.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o sort.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/sort.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o string.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/string.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o subst.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/subst.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o text.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/text.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o utils.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c
+gcc -c -I. -I../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g  -o openssh_bsd_setres_id.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/openssh_bsd_setres_id.c
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+Updated `stamp-modobjs'.
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/makepro.awk /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/main.c Src > main.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < main.syms) \
+	> main.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < main.syms) \
+	> `echo main.epro | sed 's/\.epro$/.pro/'`
+gcc -c -I. -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src  -DHAVE_CONFIG_H -O2 -g -o main.o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/main.c
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+rm -f zsh
+gcc -g  -rdynamic -o zsh main.o  `cat stamp-modobjs`   -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc
+/usr/bin/ld: utils.o: in function `gettempname':
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/utils.c:2205:(.text+0x3b64): warning: the use of `mktemp' is dangerous, better use `mkstemp' or `mkdtemp'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Builtins  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o rlimits..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Builtins/rlimits.c
+rm -f rlimits.so
+gcc -g  -shared -o rlimits.so   rlimits..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Builtins  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o sched..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Builtins/sched.c
+rm -f sched.so
+gcc -g  -shared -o sched.so   sched..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o attr..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/attr.c
+rm -f attr.so
+gcc -g  -shared -o attr.so   attr..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o cap..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/cap.c
+rm -f cap.so
+gcc -g  -shared -o cap.so   cap..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o clone..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/clone.c
+rm -f clone.so
+gcc -g  -shared -o clone.so   clone..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gawk -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/curses_keys.awk /usr/include/curses.h /dev/null >curses_keys.h
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o curses..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/curses.c
+rm -f curses.so
+gcc -g  -shared -o curses.so   curses..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o datetime..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/datetime.c
+rm -f datetime.so
+gcc -g  -shared -o datetime.so   datetime..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o example..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/example.c
+rm -f example.so
+gcc -g  -shared -o example.so   example..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o files..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/files.c
+rm -f files.so
+gcc -g  -shared -o files.so   files..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o langinfo..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/langinfo.c
+rm -f langinfo.so
+gcc -g  -shared -o langinfo.so   langinfo..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o mapfile..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/mapfile.c
+rm -f mapfile.so
+gcc -g  -shared -o mapfile.so   mapfile..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o mathfunc..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/mathfunc.c
+rm -f mathfunc.so
+gcc -g  -shared -o mathfunc.so   mathfunc..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o nearcolor..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/nearcolor.c
+rm -f nearcolor.so
+gcc -g  -shared -o nearcolor.so   nearcolor..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o newuser..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/newuser.c
+rm -f newuser.so
+gcc -g  -shared -o newuser.so   newuser..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o param_private..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/param_private.c
+rm -f param_private.so
+gcc -g  -shared -o param_private.so   param_private..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o parameter..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/parameter.c
+rm -f parameter.so
+gcc -g  -shared -o parameter.so   parameter..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o pcre..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/pcre.c
+rm -f pcre.so
+gcc -g  -shared -o pcre.so   pcre..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o regex..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/regex.c
+rm -f regex.so
+gcc -g  -shared -o regex.so   regex..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o socket..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/socket.c
+rm -f socket.so
+gcc -g  -shared -o socket.so   socket..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o stat..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/stat.c
+rm -f stat.so
+gcc -g  -shared -o stat.so   stat..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o system..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/system.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o errnames..o errnames.c
+rm -f system.so
+gcc -g  -shared -o system.so   system..o errnames..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o tcp..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/tcp.c
+rm -f tcp.so
+gcc -g  -shared -o tcp.so   tcp..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o termcap..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/termcap.c
+rm -f termcap.so
+gcc -g  -shared -o termcap.so   termcap..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o terminfo..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/terminfo.c
+rm -f terminfo.so
+gcc -g  -shared -o terminfo.so   terminfo..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o watch..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/watch.c
+rm -f watch.so
+gcc -g  -shared -o watch.so   watch..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zftp..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zftp.c
+rm -f zftp.so
+gcc -g  -shared -o zftp.so   zftp..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zprof..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zprof.c
+rm -f zprof.so
+gcc -g  -shared -o zprof.so   zprof..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zpty..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zpty.c
+rm -f zpty.so
+gcc -g  -shared -o zpty.so   zpty..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zselect..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zselect.c
+rm -f zselect.so
+gcc -g  -shared -o zselect.so   zselect..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zutil..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Modules/zutil.c
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+rm -f zutil.so
+gcc -g  -shared -o zutil.so   zutil..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o compctl..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compctl.c
+rm -f compctl.so
+gcc -g  -shared -o compctl.so   compctl..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o complete..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/complete.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o compcore..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compcore.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o compmatch..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compmatch.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o compresult..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/compresult.c
+rm -f complete.so
+gcc -g  -shared -o complete.so   complete..o compcore..o compmatch..o compresult..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o complist..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/complist.c
+rm -f complist.so
+gcc -g  -shared -o complist.so   complist..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o computil..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/computil.c
+rm -f computil.so
+gcc -g  -shared -o computil.so   computil..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o deltochar..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/deltochar.c
+rm -f deltochar.so
+gcc -g  -shared -o deltochar.so   deltochar..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+( \
+    echo '/** widgets.list                               **/'; \
+    echo '/** widget structures for the internal widgets **/'; \
+    echo; \
+    echo '/* format: W(ZLE_FLAGS, t_firstname, functionname) */'; \
+    echo; \
+    sed -e 's/#.*//; /^$/d; s/-//g' \
+	-e 's/^"\(.*\)" *, *\([^ ]*\) *, *\(.*\)/W(\3, t_\1, \2)/' \
+	< /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/iwidgets.list; \
+) > widgets.list
+( \
+    echo '/** zle_widget.h                                **/'; \
+    echo '/** indices of and pointers to internal widgets **/'; \
+    echo; \
+    echo 'enum {'; \
+    sed -n -f /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_widget.sed < widgets.list; \
+    echo '    ZLE_BUILTIN_WIDGET_COUNT'; \
+    echo '};'; \
+) > zle_widget.h
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_bindings..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_bindings.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_hist..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_hist.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_keymap..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_keymap.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_main..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_main.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_misc..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_misc.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_move..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_move.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_params..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_params.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_refresh..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_refresh.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_thingy..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_thingy.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_tricky..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_tricky.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_utils..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_utils.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_vi..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_vi.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zle_word..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zle_word.c
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o textobjects..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/textobjects.c
+rm -f zle.so
+gcc -g  -shared -o zle.so   zle_bindings..o zle_hist..o zle_keymap..o zle_main..o zle_misc..o zle_move..o zle_params..o zle_refresh..o zle_thingy..o zle_tricky..o zle_utils..o zle_vi..o zle_word..o textobjects..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle -I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle  -DHAVE_CONFIG_H -DMODULE -O2 -g -fPIC -o zleparameter..o /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src/Zle/zleparameter.c
+rm -f zleparameter.so
+gcc -g  -shared -o zleparameter.so   zleparameter..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Src'
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Doc'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round37/candidate/Doc'

@@ -27,6 +27,10 @@ def main():
                         help="include repeated lookups, descriptor exhaustion and recursive lvalue lifetimes")
     parser.add_argument("--descriptors-only", action="store_true",
                         help="run only the focused descriptor cases, including their callbacks")
+    parser.add_argument("--state-frames", action="store_true",
+                        help="include recursive state, precedence, radix and error-recovery cases")
+    parser.add_argument("--state-frames-only", action="store_true",
+                        help="run only the focused recursive-state cases")
     parser.add_argument("--memcheck", action="store_true",
                         help="run hosts under Memcheck and reject every reported memory error")
     parser.add_argument("--timeout", type=int, default=300,
@@ -36,6 +40,8 @@ def main():
         parser.error("--timeout must be positive")
     if args.descriptors_only:
         args.descriptors = True
+    if args.state_frames_only:
+        args.state_frames = True
     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
     literals = ["0", "-0", "0.0", "-0.0", ".5", "1.", "1.25", "-1.25", "1e20",
@@ -114,6 +120,28 @@ def main():
         expressions += ["x += (x='x', x)", "x='a[1]', x+x+x+x+x+x+x+x+x",
                         "x='h[k]', x+x+x+x+x+x+x+x+x"]
         expressions = list(dict.fromkeys(expressions))
+    if args.state_frames:
+        if args.state_frames_only:
+            expressions = []
+        expressions += [
+            "psh_state_prec()", "1<<2 + psh_state_prec()", "psh_state_prec() + 1<<2",
+            "psh_state_prec() + psh_state_prec()", "max(psh_state_prec(), 2, 3)",
+            "sin(psh_state_prec())", "psh_state_base()", "16#f + psh_state_base() + 2#11",
+            "psh_state_radix()", "[##16]psh_state_radix()+1", "[#8_2]psh_state_radix()",
+            "psh_state_float()", "x + psh_state_float() + x", "a[++i]+=psh_state_float()",
+            "x='psh_state_prec()+1', x+x", "x='16#f', x+psh_state_base()+x",
+            "h[k]+=psh_state_prec()", "a[++i]+=psh_state_prec()", "i + (i=5)",
+            "psh_state_prec() ? psh_state_float() : psh_state_bad()",
+            "0 && psh_state_bad()", "1 || psh_state_bad()", "0 ? psh_state_bad() : 3",
+            "1 ? 3 : psh_state_bad()", "psh_state_bad()", "1+psh_state_bad()",
+            "psh_state_bad()+1", "psh_state_prec()+1/0", "1/0+psh_state_prec()",
+            "max(psh_state_prec(),)", "(psh_state_prec()", "psh_state_prec())",
+            "x='x', x", "x='h[k]', h[k]='x', x",
+        ]
+        for depth in [0, 1, 7, 31, 127, 253, 254, 255, 256, 257]:
+            expressions += [f"psh_state_recursive({depth})",
+                            f"x + psh_state_recursive({depth}) + x"]
+        expressions = list(dict.fromkeys(expressions))
     arrays = "expressions=(" + " ".join(map(quote, expressions)) + ")\n"
     script = '''emulate -R zsh
 zmodload zsh/mathfunc || exit 1
@@ -177,12 +205,44 @@ functions -M psh_pop_recursive 1 1 psh_pop_recursive
             "        integer psh_pop_calls=0\n        typeset -a psh_pop_trace=()\n")
         script = script.replace("        exit $arithmetic_status\n",
             "        typeset -p psh_pop_calls psh_pop_trace\n        exit $arithmetic_status\n")
+    if args.state_frames:
+        prelude = '''psh_state_prec() {
+  setopt localoptions
+  if [[ -o cprecedences ]]; then unsetopt cprecedences; else setopt cprecedences; fi
+  psh_state_trace+=(prec)
+  (( 1<<2 + 1 ))
+}
+psh_state_base() { psh_state_trace+=(base); (( 8#17 )); }
+psh_state_radix() { psh_state_trace+=(radix); (( [##8_2]1234 )); }
+psh_state_float() {
+  setopt localoptions forcefloat
+  psh_state_trace+=(float)
+  (( 1.25 + 2 ))
+}
+psh_state_bad() { psh_state_trace+=(bad); (( 2 + )); }
+psh_state_recursive() { (( $1 ? psh_state_recursive($1-1)+1 : 7 )); }
+functions -M psh_state_prec 0 0 psh_state_prec
+functions -M psh_state_base 0 0 psh_state_base
+functions -M psh_state_radix 0 0 psh_state_radix
+functions -M psh_state_float 0 0 psh_state_float
+functions -M psh_state_bad 0 0 psh_state_bad
+functions -M psh_state_recursive 1 1 psh_state_recursive
+'''
+        script = script.replace("for emulation in zsh ksh sh; do", prelude + "for emulation in zsh ksh sh; do")
+        script = script.replace("        unset answer\n", "        unset answer\n"
+            "        typeset -a psh_state_trace=()\n")
+        script = script.replace("        exit $arithmetic_status\n",
+            "        typeset -p psh_state_trace\n"
+            "        (( psh_state_recovered = 3 + 4*2 ))\n"
+            "        print -r -- \"recovered=$psh_state_recovered status=$?\"\n"
+            "        exit $arithmetic_status\n")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = {"shells": list(map(str, shells)), "binary_sha256": [sha(p) for p in shells],
               "driver_sha256": sha(Path(__file__)), "script_sha256": hashlib.sha256(script.encode()).hexdigest(),
               "expressions": len(expressions), "syntax": args.syntax, "operators": args.operators,
               "descriptors": args.descriptors,
               "descriptors_only": args.descriptors_only, "timeout_seconds": args.timeout,
+              "state_frames": args.state_frames, "state_frames_only": args.state_frames_only,
               "memcheck": args.memcheck,
               "checks_per_locale": len(expressions) * 12, "cases": []}
     for locale in args.locales or ("C", "C.UTF-8", "fr_FR.UTF-8", "nb_NO.UTF-8", "tr_TR.UTF-8"):

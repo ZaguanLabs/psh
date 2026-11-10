@@ -1,0 +1,65 @@
+[
+  {
+    "name": "package-snapshot",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "snapshot"
+    ],
+    "status": 0,
+    "seconds": 1.3323860608506948
+  },
+  {
+    "name": "package-install",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "candidate"
+    ],
+    "status": 0,
+    "seconds": 0.27142220293171704
+  },
+  {
+    "name": "package-tests",
+    "command": [
+      "python3",
+      "Packaging/test.py"
+    ],
+    "status": 0,
+    "seconds": 404.7436894720886
+  },
+  {
+    "name": "stage-modules",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "stage-modules"
+    ],
+    "status": 0,
+    "seconds": 0.0471497259568423
+  },
+  {
+    "name": "refresh-modules",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "refresh-modules"
+    ],
+    "status": 0,
+    "seconds": 0.24164953688159585
+  },
+  {
+    "name": "package-verification",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "verify"
+    ],
+    "status": 0,
+    "seconds": 9.344739635940641
+  }
+]

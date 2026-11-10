@@ -4,8 +4,14 @@
 with identical `-O2 -g`, multibyte support and Zsh debug assertions. Compiler
 and configure output is retained under `.work/logs/`. The candidate is published
 atomically as the real executable `../psh`, with private native modules under
-the configured `.work/runtime` prefix. Normal builds retain upstream target
+the configured `.work/runtime` prefix. The pristine baseline uses
+`.work/baseline-runtime`; both builds install their own default native modules
+as well as their per-build `modules` directories. Normal builds retain upstream target
 names internally. Nothing is installed system-wide.
+
+Keep those default runtimes separate: a pristine shell cannot load psh-aware
+modules from the candidate's SDK. Run `python3 Perf/build.py --which baseline`
+to refresh an older baseline configured with the previously shared prefix.
 
 Clean clones reconstruct `.work/pristine` from the `upstream/zsh-5.9.2` tag and
 verify its exact file list and contents against `upstream-sha256.json`. Existing
@@ -884,6 +890,28 @@ required. It includes 19-digit and underscore continuation controls; an early
 restart implementation regressed these despite improving short conversions.
 Run timing after builds, tests and profilers finish. These native loop ratios
 are separate from the actual project-kernel measurements.
+
+## Arithmetic state contract (round thirty-seven)
+
+The [state and ownership map](arithmetic-internals.md) distinguishes the nine
+paired recursive save/restore fields from wrapper-owned token state, shared
+numeric results/formatting and shell-owned options/errors. The private field
+list keeps the old flat locals and emits both assignment sequences; GCC and
+Clang release builds preserve the runtime arithmetic object bytes and relocations.
+
+```sh
+python3 Perf/math-compare.py /path/to/reference/zsh /path/to/candidate/psh \
+  --state-frames-only --memcheck --timeout 600 --locale C --locale C.UTF-8 \
+  --output .work/logs/arithmetic-state.json
+```
+
+The focused corpus contains 54 expressions in native/ksh/sh modes and four
+option contexts, 648 paired comparisons per locale. It covers nested precedence,
+radix, floating results, lazy lvalues, native math-function arguments, recursion
+limits, short circuiting and recovery after errors. `--state-frames` adds these
+cases to a broader selected corpus. Its callbacks run unchanged on pristine Zsh.
+The [round 37 report](round37.md) includes the larger typed-record trial and
+object-only alternatives; those are not the selected implementation.
 
 ## Option emulation scans (round twenty-seven)
 

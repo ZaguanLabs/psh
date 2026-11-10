@@ -84,15 +84,14 @@ def main():
         build = work / name
         build.mkdir(exist_ok=True)
         source = pristine if name == "baseline" else root
+        runtime = work / ("baseline-runtime" if name == "baseline" else "runtime")
         commands = [
-            [str(source / "configure"), f"--prefix={work / 'runtime'}",
+            [str(source / "configure"), f"--prefix={runtime}",
              "--enable-multibyte", "--enable-zsh-debug", "CFLAGS=-O2 -g"],
             ["make", f"-j{args.jobs}"],
             ["make", f"MODDIR={build / 'modules'}", "install.modules"],
+            ["make", f"MODDIR={runtime / 'lib/zsh/5.9.2'}", "install.modules"],
         ]
-        if name == "candidate":
-            commands.append(["make", f"MODDIR={work / 'runtime/lib/zsh/5.9.2'}",
-                             "install.modules"])
         for phase, command in enumerate(commands):
             print(f"{name}: {' '.join(command)}", flush=True)
             with (logs / f"{name}-build-{phase}.log").open("w") as log:

@@ -1,0 +1,116 @@
+diff --git a/Src/math.c b/Src/math.c
+index 86ec051..bb03f68 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -327,6 +327,20 @@ struct mathvalue {
+ 
+ static struct mathvalue *stack;
+ 
++/* Only this state is restored by a nested mathevall(). Keep the active
++ * globals above: exported state and the hot parser do not gain indirection.
++ * mtok is handled by the entry-point wrappers; lastmathval and the output
++ * radix/underscore settings deliberately communicate results across calls.
++ * Pointers here borrow the caller's storage, including its C-frame stack. */
++struct math_eval_save {
++    int lastbase, noeval, unary, *prec;
++    char *ptr;
++    mnumber yyval;
++    char *yylval;
++    int sp;
++    struct mathvalue *stack;
++};
++
+ enum prec_type {
+     /* Evaluating a top-level expression */
+     MPREC_TOP,
+@@ -372,41 +386,38 @@ getmathparam(struct mathvalue *mptr)
+ static mnumber
+ mathevall(char *s, enum prec_type prec_tp, char **ep)
+ {
+-    int xlastbase, xnoeval, xunary, *xprec;
+-    char *xptr;
+-    mnumber xyyval;
+-    char *xyylval;
+-    int xsp;
+-    struct mathvalue *xstack = 0, nstack[STACKSZ];
++    struct math_eval_save saved;
++    struct mathvalue nstack[STACKSZ];
+     mnumber ret;
+ 
++    saved.stack = NULL;
+     if (mlevel >= MAX_MLEVEL) {
+-	xyyval.type = MN_INTEGER;
+-	xyyval.u.l = 0;
++	saved.yyval.type = MN_INTEGER;
++	saved.yyval.u.l = 0;
+ 	*ep = s;
+ 
+ 	zerr("math recursion limit exceeded: %s", *ep);
+ 
+-	return xyyval;
++	return saved.yyval;
+     }
+     if (mlevel++) {
+-	xlastbase = lastbase;
+-	xnoeval = noeval;
+-	xunary = unary;
+-	xptr = ptr;
+-	xyyval = yyval;
+-	xyylval = yylval;
+-
+-	xsp = sp;
+-	xstack = stack;
+-	xprec = prec;
++	saved.lastbase = lastbase;
++	saved.noeval = noeval;
++	saved.unary = unary;
++	saved.ptr = ptr;
++	saved.yyval = yyval;
++	saved.yylval = yylval;
++
++	saved.sp = sp;
++	saved.stack = stack;
++	saved.prec = prec;
+     } else {
+-	xlastbase = xnoeval = xunary = xsp = 0;
+-	xyyval.type = MN_INTEGER;
+-	xyyval.u.l = 0;
+-	xyylval = NULL;
+-	xptr = NULL;
+-	xprec = NULL;
++	saved.lastbase = saved.noeval = saved.unary = saved.sp = 0;
++	saved.yyval.type = MN_INTEGER;
++	saved.yyval.u.l = 0;
++	saved.yylval = NULL;
++	saved.ptr = NULL;
++	saved.prec = NULL;
+     }
+     prec = isset(CPRECEDENCES) ? c_prec : z_prec;
+     stack = nstack;
+@@ -450,16 +461,16 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     }
+ 
+     if (--mlevel) {
+-	lastbase = xlastbase;
+-	noeval = xnoeval;
+-	unary = xunary;
+-	ptr = xptr;
+-	yyval = xyyval;
+-	yylval = xyylval;
+-
+-	sp = xsp;
+-	stack = xstack;
+-	prec = xprec;
++	lastbase = saved.lastbase;
++	noeval = saved.noeval;
++	unary = saved.unary;
++	ptr = saved.ptr;
++	yyval = saved.yyval;
++	yylval = saved.yylval;
++
++	sp = saved.sp;
++	stack = saved.stack;
++	prec = saved.prec;
+     }
+     return lastmathval = ret;
+ }
