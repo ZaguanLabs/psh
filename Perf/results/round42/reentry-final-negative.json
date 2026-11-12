@@ -1,0 +1,59 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-reentry-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-final-negative/psh_hash_reentry.so"
+  ],
+  "memcheck": true,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "binary_sha256": "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_hash_reentry || exit 2; psh-hash-reentry-check || exit 3; zmodload -u psh_hash_reentry || exit 4",
+        "native-hash-reentry",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-final-negative"
+      ],
+      "status": 3,
+      "stdout": "count=2 calls=1 ok=0\nunexpected[0]=X\nunexpected[1]=Y\n",
+      "stderr": ""
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "binary_sha256": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_hash_reentry || exit 2; psh-hash-reentry-check || exit 3; zmodload -u psh_hash_reentry || exit 4",
+        "native-hash-reentry",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-final-negative"
+      ],
+      "status": 3,
+      "stdout": "count=2 calls=1 ok=0\nunexpected[0]=X\nunexpected[1]=Y\n",
+      "stderr": ""
+    }
+  ],
+  "driver_sha256": "37576ab7f83de914c78877925075d3bb4888acdec7e6e365db6636e9afc5fe77",
+  "source_sha256": "2c5869dc06ceb6516921c0b5675f1f95e710c99437191c57f34da85b1ee716f6",
+  "module_sha256": "8d44cc8de8b49a8ff48dabe43a9c675c50f303573127215fb2d0fe84ff195027",
+  "passed": false
+}

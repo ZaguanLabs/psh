@@ -1,0 +1,239 @@
+{
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh"
+  ],
+  "cpu_affinity": [
+    13
+  ],
+  "driver_sha256": "388acf5d4f99474258bf2f48b2d8c1add17d9d41c96321d27339a05378769155",
+  "binary_sha256": [
+    "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+    "d10393954414ba849e7f4759acc0a2e006eb1c9961780d86e3a212d44c2b5102"
+  ],
+  "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+  "samples": 9,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "locale": "C.UTF-8",
+  "cases": [
+    {
+      "operation": "zjson-object",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "worker": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/object-workload.zsh",
+      "worker_sha256": "7d53d631ac8b99449d1c63cd0a4169173eaf0446895bbbf440d09209faca8e6b",
+      "samples_ms_per_call": [
+        [
+          172.827,
+          171.899,
+          172.435,
+          172.779,
+          182.305,
+          172.441,
+          174.77100000000002,
+          175.05599999999998,
+          177.98
+        ],
+        [
+          171.424,
+          170.59199999999998,
+          171.603,
+          172.861,
+          171.41899999999998,
+          173.82500000000002,
+          173.146,
+          173.49800000000002,
+          173.232
+        ]
+      ],
+      "median_ms": [
+        172.827,
+        172.861
+      ],
+      "state_sha256": "11b44c12f947778364f10fbb21cf9e9db72a17c70df41b3c58b905dcd29302df",
+      "iterations": 1
+    },
+    {
+      "operation": "zjson-encode-object",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "worker": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/object-workload.zsh",
+      "worker_sha256": "7d53d631ac8b99449d1c63cd0a4169173eaf0446895bbbf440d09209faca8e6b",
+      "samples_ms_per_call": [
+        [
+          205.172,
+          200.921,
+          199.30100000000002,
+          199.183,
+          203.382,
+          201.647,
+          201.839,
+          202.16500000000002,
+          204.079
+        ],
+        [
+          199.152,
+          198.013,
+          197.964,
+          200.036,
+          198.951,
+          201.807,
+          198.824,
+          203.672,
+          198.377
+        ]
+      ],
+      "median_ms": [
+        201.839,
+        198.951
+      ],
+      "state_sha256": "07db3d876fbc91879c8096f87c61ace210c3dc116d739573924e0d2a1328e3f2",
+      "iterations": 1
+    },
+    {
+      "operation": "zjson-array",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "worker": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+      "samples_ms_per_call": [
+        [
+          75.355,
+          74.924,
+          75.632,
+          73.073,
+          73.666,
+          72.867,
+          73.764,
+          73.322,
+          74.101
+        ],
+        [
+          73.027,
+          75.042,
+          73.48599999999999,
+          73.4,
+          73.453,
+          73.595,
+          72.34599999999999,
+          73.137,
+          72.215
+        ]
+      ],
+      "median_ms": [
+        73.764,
+        73.4
+      ],
+      "state_sha256": "eb9a272c562d5101f91f34d4c06bdb05fc99ccf0394c2179a8da185e80ce723f",
+      "iterations": 1
+    },
+    {
+      "operation": "zjson-encode-array",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "worker": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+      "samples_ms_per_call": [
+        [
+          170.86200000000002,
+          166.46099999999998,
+          166.02700000000002,
+          166.834,
+          167.585,
+          165.368,
+          166.149,
+          168.018,
+          170.131
+        ],
+        [
+          162.915,
+          165.325,
+          162.659,
+          166.056,
+          164.571,
+          165.78699999999998,
+          165.608,
+          167.40800000000002,
+          166.349
+        ]
+      ],
+      "median_ms": [
+        166.834,
+        165.608
+      ],
+      "state_sha256": "1d1e99c34c1a3cf20ece17bc7501e899f9c0c0b87780958f202ac46beb0e7cb3",
+      "iterations": 1
+    },
+    {
+      "operation": "zjson",
+      "source_sha256": {
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+        "/home/stig/dev/ai/zaguan/labs/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383",
+        "/home/stig/dev/ai/zaguan/labs/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2"
+      },
+      "worker": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/application-workload.zsh",
+      "worker_sha256": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+      "samples_ms_per_call": [
+        [
+          71.85366666666667,
+          71.209,
+          72.07133333333333,
+          70.40133333333334,
+          70.90166666666667,
+          70.92466666666667,
+          71.34266666666666,
+          70.359,
+          71.70233333333333
+        ],
+        [
+          70.228,
+          71.11733333333333,
+          70.43166666666667,
+          70.741,
+          69.88600000000001,
+          70.54966666666667,
+          69.92166666666667,
+          70.343,
+          69.998
+        ]
+      ],
+      "median_ms": [
+        71.209,
+        70.343
+      ],
+      "state_sha256": "0608e1cd18757b4c410bf56704689c7b1e647a66e44103c21e1bf18be157a0bf",
+      "iterations": 3
+    }
+  ]
+}

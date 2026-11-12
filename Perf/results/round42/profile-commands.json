@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=.work/round42/hash-baseline.callgrind",
+      "--quiet",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "-df",
+      "Perf/customer-workload.zsh",
+      "drawing-binning",
+      "/home/stig/dev/challenge/z3dfx.drawing",
+      "3"
+    ],
+    "binary_sha256": "db62b371547776e65af4b4b3cb2c340e0fbaaee0fb2c1ec3e08772346c5a45a1",
+    "stdout_sha256": "d00ef989d5c5dfeda7285079970a2cfaef54aaa69ab8917fce05e360dd447b8a",
+    "stderr": "",
+    "worker_snapshot": "Perf/customer-workload.zsh"
+  },
+  {
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=.work/round42/hash-trial.callgrind",
+      "--quiet",
+      "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "-df",
+      "Perf/customer-workload.zsh",
+      "drawing-binning",
+      "/home/stig/dev/challenge/z3dfx.drawing",
+      "3"
+    ],
+    "binary_sha256": "da524b82bde3155ca57d6f69a020e9220dae1ae564988a56677df5717e2c7fd7",
+    "stdout_sha256": "c4a53c3174c6ca4fd6c6164b1a162b6b80964e07334e8eecb3fd38e874c423a8",
+    "stderr": "",
+    "worker_snapshot": "Perf/customer-workload.zsh"
+  },
+  {
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=.work/round42/object-baseline.callgrind",
+      "--quiet",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "-df",
+      "Perf/application-workload.zsh",
+      "zjson-object",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "binary_sha256": "db62b371547776e65af4b4b3cb2c340e0fbaaee0fb2c1ec3e08772346c5a45a1",
+    "stdout_sha256": "aca9ee6d2a4a8881487851f391d1b76755b4427af6b911ccf1a0d39321f7a094",
+    "stderr": "",
+    "worker_snapshot": "profile-object-worker.zsh"
+  },
+  {
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=.work/round42/object-trial.callgrind",
+      "--quiet",
+      "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "-df",
+      "Perf/application-workload.zsh",
+      "zjson-object",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "1"
+    ],
+    "binary_sha256": "da524b82bde3155ca57d6f69a020e9220dae1ae564988a56677df5717e2c7fd7",
+    "stdout_sha256": "c5928f752becfcf7b4391fec3495e8f9b0545b4d1b3a71ebca31de6940772f44",
+    "stderr": "",
+    "worker_snapshot": "profile-object-worker.zsh"
+  }
+]

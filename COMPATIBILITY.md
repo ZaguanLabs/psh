@@ -227,6 +227,17 @@ unsupported bypass and its migration; it is not a supported mutation pattern.
 Cache metadata is used only inside already queued signal regions; unqueued
 queries retain scanning and the caller's signal-delivery boundaries.
 
+## Nested associative getters
+
+Pristine Zsh 5.9.2 and earlier psh builds can return an inner hash's values
+when an outer hash element's native getter calls `gethparam()` for that inner
+hash. psh now preserves the outer expansion's working state and pattern across
+nested getters. This is a corrected wrong-result bug, not a deliberate loss of
+Zsh functionality. Public native layouts and the existing function interface
+remain unchanged. The [reproducer and scope](Perf/bugs/hash-getter-reentry.md)
+include the observed before/after results and limitations; arbitrary table
+destruction or growth during callbacks is not certified by this fix.
+
 ## What has and has not been checked
 
 The [source-review map](Perf/audit.md) describes focused coverage. Twenty-seven

@@ -21,6 +21,8 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--arrays", action="store_true",
                    help="include decoded-array parsing and encoding")
+    p.add_argument("--objects", action="store_true",
+                   help="include associative-object parsing and encoding")
     args = p.parse_args()
     if args.samples < 3:
         p.error("at least three samples are required")
@@ -41,7 +43,13 @@ def main():
     if args.arrays:
         cases = [("zjson-array", args.zjson, 1),
                  ("zjson-encode-array", args.zjson, 1)] + cases
+    if args.objects:
+        cases = [("zjson-object", args.zjson, 1),
+                 ("zjson-encode-object", args.zjson, 1)] + cases
     for operation, root, iterations in cases:
+        worker = (script.with_name("object-workload.zsh")
+                  if operation in ("zjson-object", "zjson-encode-object") else script)
+        worker_hash = hashlib.sha256(worker.read_bytes()).hexdigest()
         root = root.resolve(strict=True)
         sources = sorted((root / "lib").glob("*.zsh"))
         sources += ([root / "zjson.zsh"] if operation.startswith("zjson") else
@@ -51,7 +59,7 @@ def main():
         states = set()
         for sample in range(args.samples):
             for which in ((0, 1) if sample % 2 == 0 else (1, 0)):
-                result = subprocess.run([shells[which], "-df", str(script), operation,
+                result = subprocess.run([shells[which], "-df", str(worker), operation,
                                          str(root), str(iterations)], env=env,
                                         capture_output=True, check=True, timeout=120)
                 if result.stderr:
@@ -61,10 +69,13 @@ def main():
                 states.add(hashlib.sha256(state).hexdigest())
         if len(states) != 1:
             raise RuntimeError(f"{operation}: application state differs")
+        if worker_hash != hashlib.sha256(worker.read_bytes()).hexdigest():
+            raise RuntimeError(f"{operation}: application worker changed")
         if hashes != {str(f): hashlib.sha256(f.read_bytes()).hexdigest() for f in sources}:
             raise RuntimeError(f"{operation}: application sources changed")
         medians = [statistics.median(s) for s in samples]
         report["cases"].append({"operation": operation, "source_sha256": hashes,
+                                "worker": str(worker), "worker_sha256": worker_hash,
                                 "samples_ms_per_call": samples, "median_ms": medians,
                                 "state_sha256": states.pop(), "iterations": iterations})
         print(f"{operation}: {medians[0]:.3f} -> {medians[1]:.3f} ms/call; "

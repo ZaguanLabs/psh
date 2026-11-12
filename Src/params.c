@@ -607,6 +607,9 @@ scanparamvals(HashNode hn, int flags)
 {
     struct value v;
     Patprog prog;
+    Patprog saved_scanprog;
+    char *saved_scanstr, *value;
+    Param saved_foundparam;
 
     if (numparamvals && !(flags & SCANPM_MATCHMANY) &&
 	(flags & (SCANPM_MATCHVAL|SCANPM_MATCHKEY|SCANPM_KEYMATCH)))
@@ -633,7 +636,16 @@ scanparamvals(HashNode hn, int flags)
     v.flags = 0;
     v.start = 0;
     v.end = -1;
-    paramvals[numparamvals] = getstrvalue(&v);
+    /* A native getter can perform another associative expansion, including
+     * a pattern search. Preserve this scan's pattern and assignment target. */
+    saved_scanprog = scanprog;
+    saved_scanstr = scanstr;
+    saved_foundparam = foundparam;
+    value = getstrvalue(&v);
+    scanprog = saved_scanprog;
+    scanstr = saved_scanstr;
+    foundparam = saved_foundparam;
+    paramvals[numparamvals] = value;
     if (flags & SCANPM_MATCHVAL) {
 	if (pattry(scanprog, paramvals[numparamvals])) {
 	    numparamvals += ((flags & SCANPM_WANTVALS) ? 1 :
@@ -646,9 +658,12 @@ scanparamvals(HashNode hn, int flags)
 }
 
 /**/
-char **
-paramvalarr(HashTable ht, int flags)
+static char **
+paramvalarr_count(HashTable ht, int flags, unsigned *count)
 {
+    unsigned saved_numparamvals = numparamvals;
+    char **saved_paramvals = paramvals, **result;
+
     DPUTS((flags & (SCANPM_MATCHKEY|SCANPM_MATCHVAL)) && !scanprog,
 	  "BUG: scanning hash without scanprog set");
     numparamvals = 0;
@@ -660,7 +675,19 @@ paramvalarr(HashTable ht, int flags)
 	scanhashtable(ht, 0, 0, PM_UNSET, scanparamvals, flags);
     }
     paramvals[numparamvals] = 0;
-    return paramvals;
+    result = paramvals;
+    if (count)
+	*count = numparamvals;
+    numparamvals = saved_numparamvals;
+    paramvals = saved_paramvals;
+    return result;
+}
+
+/**/
+char **
+paramvalarr(HashTable ht, int flags)
+{
+    return paramvalarr_count(ht, flags, NULL);
 }
 
 /* Private confirmed bounds for interpreter-owned vectors. A mutable getter
@@ -801,10 +828,12 @@ getvaluearr(Value v)
     else if (PM_TYPE(v->pm->node.flags) == PM_ARRAY)
 	return v->arr = getarrayreadonly(v->pm);
     else if (PM_TYPE(v->pm->node.flags) == PM_HASHED) {
-	v->arr = paramvalarr(v->pm->gsu.h->getfn(v->pm), v->isarr);
+	unsigned count;
+	v->arr = paramvalarr_count(v->pm->gsu.h->getfn(v->pm),
+				  v->isarr, &count);
 	/* Can't take numeric slices of associative arrays */
 	v->start = 0;
-	v->end = numparamvals + 1;
+	v->end = count + 1;
 	return v->arr;
     } else
 	return NULL;

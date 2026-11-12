@@ -1,0 +1,328 @@
+{
+  "passed": true,
+  "shells": {
+    "reference": "/usr/bin/zsh",
+    "candidate": "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh"
+  },
+  "binary_sha256": {
+    "reference": "9407c2fcae8dd1f769c546723d9232c68697aeda7f617728d12cab72df870026",
+    "candidate": "d10393954414ba849e7f4759acc0a2e006eb1c9961780d86e3a212d44c2b5102"
+  },
+  "driver_sha256": "1b283d85276809df1fabb9efea431a1970eb659ee9503e2cbce3f4d59ccd1c0f",
+  "library_source_sha256": "e6d9fc92dd392506a2ae554096df6332ad10c021d7ad4b8be2c2aa72cea04406",
+  "supported": true,
+  "runs": [
+    {
+      "case": "ordinary-C",
+      "host": "reference",
+      "locale": "C",
+      "command": [
+        "/usr/bin/zsh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/ordinary-C-reference.marker"
+      },
+      "loaded": false,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "312e323530300a",
+      "stderr": ""
+    },
+    {
+      "case": "ordinary-C",
+      "host": "candidate",
+      "locale": "C",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/ordinary-C-candidate.marker"
+      },
+      "loaded": false,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "312e323530300a",
+      "stderr": ""
+    },
+    {
+      "case": "interpreter-preload-C",
+      "host": "reference",
+      "locale": "C",
+      "command": [
+        "/lib64/ld-linux-x86-64.so.2",
+        "--preload",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/pshcodec.so",
+        "/usr/bin/zsh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/interpreter-preload-C-reference.marker"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "interpreter-preload-C",
+      "host": "candidate",
+      "locale": "C",
+      "command": [
+        "/lib64/ld-linux-x86-64.so.2",
+        "--preload",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/pshcodec.so",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/interpreter-preload-C-candidate.marker"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "interpreter-preload-C.UTF-8",
+      "host": "reference",
+      "locale": "C.UTF-8",
+      "command": [
+        "/lib64/ld-linux-x86-64.so.2",
+        "--preload",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/pshcodec.so",
+        "/usr/bin/zsh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/interpreter-preload-C.UTF-8-reference.marker"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "interpreter-preload-C.UTF-8",
+      "host": "candidate",
+      "locale": "C.UTF-8",
+      "command": [
+        "/lib64/ld-linux-x86-64.so.2",
+        "--preload",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/pshcodec.so",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/interpreter-preload-C.UTF-8-candidate.marker"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "unused-codec",
+      "host": "reference",
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/bin/zsh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/unused-codec-reference.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": false,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "312e323530300a",
+      "stderr": ""
+    },
+    {
+      "case": "unused-codec",
+      "host": "candidate",
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/unused-codec-candidate.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": false,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "312e323530300a",
+      "stderr": ""
+    },
+    {
+      "case": "startup-codec",
+      "host": "reference",
+      "locale": "ISO-8859-1",
+      "command": [
+        "/usr/bin/zsh",
+        "-dfc",
+        "printf '%b\\n' '\\u0041\\u00e9'; typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "ISO-8859-1",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/startup-codec-reference.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "41e90a676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "startup-codec",
+      "host": "candidate",
+      "locale": "ISO-8859-1",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "printf '%b\\n' '\\u0041\\u00e9'; typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "ISO-8859-1",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/startup-codec-candidate.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "41e90a676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "late-codec",
+      "host": "reference",
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/bin/zsh",
+        "-dfc",
+        "export LC_CTYPE=\"ISO-8859-1\"; printf '%b\\n' '\\u0041\\u00e9'; typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/late-codec-reference.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "41e90a676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "late-codec",
+      "host": "candidate",
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "export LC_CTYPE=\"ISO-8859-1\"; printf '%b\\n' '\\u0041\\u00e9'; typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/late-codec-candidate.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "41e90a676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "clear-codec-marker",
+      "host": "reference",
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/bin/zsh",
+        "-dfc",
+        "export LC_CTYPE=\"ISO-8859-1\"; printf '%b\\n' '\\u0041\\u00e9'; unset GCONV_PATH; typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/clear-codec-marker-reference.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "41e90a676c6f62616c3a432e0a",
+      "stderr": ""
+    },
+    {
+      "case": "clear-codec-marker",
+      "host": "candidate",
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-dfc",
+        "export LC_CTYPE=\"ISO-8859-1\"; printf '%b\\n' '\\u0041\\u00e9'; unset GCONV_PATH; typeset -F 4 value=1.25; print -r -- \"$value\""
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "PSH_LOADER_MARKER": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/clear-codec-marker-candidate.marker",
+        "GCONV_PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders"
+      },
+      "loaded": true,
+      "passed": true,
+      "status": 0,
+      "stdout_hex": "41e90a676c6f62616c3a432e0a",
+      "stderr": ""
+    }
+  ],
+  "skips": [],
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-loader-library.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/native-loaders/pshcodec.so"
+  ],
+  "library_sha256": "0e52abfe51b8d3040e04d06525523be899f097edc1cf42956687be825bd3966c"
+}

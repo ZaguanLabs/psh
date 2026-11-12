@@ -1,5 +1,24 @@
 # Local performance workflow
 
+## Round 42: nested associative getters
+
+[Round 42](round42.md) fixes a native-getter reentrancy defect also reproduced
+on pristine Zsh 5.9.2: expanding one hash from another hash element's getter
+can replace the outer result. The legacy-header regression covers nested
+values and patterns, differing table sizes, unset nodes and generated scans.
+The separate bounded-count performance experiment and its controls are retained.
+
+```sh
+python3 Perf/check-hash-reentry-module.py CANDIDATE \
+  --headers-build PRISTINE_BUILD --headers-source PRISTINE_SOURCE \
+  --memcheck --output .work/logs/hash-reentry.json
+python3 Perf/applications.py BASELINE CANDIDATE --zjson /path/to/zjson \
+  --arrays --objects --samples 9 --cpu 13 --output .work/logs/objects.json
+```
+
+The first command intentionally fails on the affected pristine/preceding
+binaries; the [bug report](bugs/hash-getter-reentry.md) describes the output.
+
 ## Round 41: deeper evaluation trials, not adopted
 
 [Round 41](round41.md) profiles the accepted PGO+LTO release and tests scalar

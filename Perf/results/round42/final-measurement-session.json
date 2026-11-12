@@ -1,0 +1,86 @@
+[
+  {
+    "name": "final-customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/final-customer.json"
+    ],
+    "started_unix": 1794516848.9633248,
+    "elapsed_seconds": 19.73922562599182,
+    "status": 0
+  },
+  {
+    "name": "final-objects",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--arrays",
+      "--objects",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/final-objects.json"
+    ],
+    "started_unix": 1794516868.7027597,
+    "elapsed_seconds": 30.403881549835205,
+    "status": 0
+  },
+  {
+    "name": "final-hash",
+    "command": [
+      "python3",
+      "Perf/hash-expansion-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/final-hash.json"
+    ],
+    "started_unix": 1794516899.1069179,
+    "elapsed_seconds": 27.24976134300232,
+    "status": 0
+  },
+  {
+    "name": "final-moonlit",
+    "command": [
+      "python3",
+      "Perf/scene-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "--project",
+      "/home/stig/dev/challenge/z3dfx.drawing",
+      "--scene",
+      "moonlit",
+      "--samples",
+      "3",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/final-moonlit.json"
+    ],
+    "started_unix": 1794516926.356909,
+    "elapsed_seconds": 44.82097792625427,
+    "status": 0
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-reentry-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-final/psh_hash_reentry.so"
+  ],
+  "memcheck": true,
+  "runs": [
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "binary_sha256": "db62b371547776e65af4b4b3cb2c340e0fbaaee0fb2c1ec3e08772346c5a45a1",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_hash_reentry || exit 2; psh-hash-reentry-check || exit 3; zmodload -u psh_hash_reentry || exit 4",
+        "native-hash-reentry",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-final"
+      ],
+      "status": 0,
+      "stdout": "count=2 calls=1 ok=1\npattern-ok=1\nmatrix-checks=12 ok=1\nboundary-checks=2 ok=1\n",
+      "stderr": ""
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "binary_sha256": "da524b82bde3155ca57d6f69a020e9220dae1ae564988a56677df5717e2c7fd7",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_hash_reentry || exit 2; psh-hash-reentry-check || exit 3; zmodload -u psh_hash_reentry || exit 4",
+        "native-hash-reentry",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-final"
+      ],
+      "status": 0,
+      "stdout": "count=2 calls=1 ok=1\npattern-ok=1\nmatrix-checks=12 ok=1\nboundary-checks=2 ok=1\n",
+      "stderr": ""
+    }
+  ],
+  "driver_sha256": "37576ab7f83de914c78877925075d3bb4888acdec7e6e365db6636e9afc5fe77",
+  "source_sha256": "6457d9e8881ea8eb9a9e2df1928f1041b8c89023a868896710855b3c288b1f13",
+  "module_sha256": "2ed8e8804b9b878a699c181b11c5278769f21695eba233eea0edac7793d0253a",
+  "passed": true
+}

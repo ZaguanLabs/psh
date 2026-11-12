@@ -1,0 +1,23 @@
+array-cache-lifetimes.zsh zsh C malloc matched
+array-cache-lifetimes.zsh zsh C.UTF-8 malloc matched
+array-cache-mutations.zsh zsh C malloc matched
+array-cache-mutations.zsh zsh C.UTF-8 malloc matched
+array-cache-mutations.zsh ksh C malloc matched
+array-cache-mutations.zsh ksh C.UTF-8 malloc matched
+array-cache-mutations.zsh sh C malloc matched
+array-cache-mutations.zsh sh C.UTF-8 malloc matched
+array-cache-lifetimes.zsh zsh C memcheck matched
+array-cache-lifetimes.zsh zsh C.UTF-8 memcheck matched
+array-cache-mutations.zsh zsh C memcheck matched
+array-cache-mutations.zsh zsh C.UTF-8 memcheck matched
+array-cache-mutations.zsh ksh C memcheck matched
+array-cache-mutations.zsh ksh C.UTF-8 memcheck matched
+array-cache-mutations.zsh sh C memcheck matched
+array-cache-mutations.zsh sh C.UTF-8 memcheck matched
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-array-cache.py", line 94, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-array-cache.py", line 83, in main
+    raise RuntimeError((cmd, result.returncode, result.stdout, result.stderr))
+RuntimeError: (['/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh', '-df', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/array-cache-raw-alias.zsh', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/preceding-logs/selected-array-native-native'], 0, b'raw:present=1:value=item\ngetter:present=0:value=\n', b'')
