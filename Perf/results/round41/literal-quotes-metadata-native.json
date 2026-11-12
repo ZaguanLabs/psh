@@ -1,0 +1,65 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/literal-arguments-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/literal-quotes-metadata-native/psh_literal_arguments_fixture.so"
+  ],
+  "memcheck": false,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "command": [
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_literal_arguments_fixture || exit 2\np() { print -rl -- \"$@\"; }\npsh-clear-tilde-token\neval 'psh-restore-tilde-token; p ~ \"\"'\nzmodload -u psh_literal_arguments_fixture || exit 3\n",
+        "literal-native",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/literal-quotes-metadata-native"
+      ],
+      "binary_sha256": "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+      "status": 0,
+      "stdout": "/tmp/psh-literal-fixture-home\n\n",
+      "stderr": ""
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_literal_arguments_fixture || exit 2\np() { print -rl -- \"$@\"; }\npsh-clear-tilde-token\neval 'psh-restore-tilde-token; p ~ \"\"'\nzmodload -u psh_literal_arguments_fixture || exit 3\n",
+        "literal-native",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/literal-quotes-metadata-native"
+      ],
+      "binary_sha256": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+      "status": 0,
+      "stdout": "/tmp/psh-literal-fixture-home\n\n",
+      "stderr": ""
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-be4ed7db95a9/bin/psh",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-be4ed7db95a9/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_literal_arguments_fixture || exit 2\np() { print -rl -- \"$@\"; }\npsh-clear-tilde-token\neval 'psh-restore-tilde-token; p ~ \"\"'\nzmodload -u psh_literal_arguments_fixture || exit 3\n",
+        "literal-native",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/literal-quotes-metadata-native"
+      ],
+      "binary_sha256": "7ad647dae027b0d4688c9d332b8d92faf81fb987804316f2bdd70a18c4030fc5",
+      "status": 0,
+      "stdout": "~\n\n",
+      "stderr": ""
+    }
+  ],
+  "driver_sha256": "b64aa2be8ec0634f1adea9a9ecce86cbb45e9c34fc21dda566449f01d7bf5544",
+  "source_sha256": "44977f5f95fd45519547b5b3fa1eb987afcff69fef7a1b39606b5c9462178c5d",
+  "module_sha256": "751cc4f6ca39175d31225d33cb99ea2459b8e760529bab8c8fbff5a04afc6fe5",
+  "passed": false
+}

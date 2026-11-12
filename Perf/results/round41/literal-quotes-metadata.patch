@@ -1,0 +1,98 @@
+diff --git a/Src/exec.c b/Src/exec.c
+index 3632455..6bfd8f0 100644
+--- a/Src/exec.c
++++ b/Src/exec.c
+@@ -2769,11 +2769,35 @@ resolvebuiltin(const char *cmdarg, HashNode hn)
+  * hierarchy.  Analyse the parameters from the wordcode.
+  */
+ 
++/**/
++static int
++execcmd_literal_quotes(Wordcode words, LinkList args)
++{
++    LinkNode node;
++    for (node = firstnode(args); node; incnode(node), words++) {
++	if (*words & 1) {
++	    unsigned char *s = (unsigned char *)getdata(node);
++	    /* Bound the extra probe to inline wordcode strings.  Longer
++	     * quoted words and every active expansion retain prefork(). */
++	    if (!(*words & 2))
++		return 0;
++	    while (*s) {
++		if (*s >= 128 && *s != (unsigned char)Snull &&
++		    *s != (unsigned char)Dnull && *s != (unsigned char)Nularg)
++		    return 0;
++		s++;
++	    }
++	}
++    }
++    return 1;
++}
++
+ /**/
+ static void
+ execcmd_analyse(Estate state, Execcmd_params eparams)
+ {
+     wordcode code;
++    Wordcode words;
+     int i;
+ 
+     eparams->beg = state->pc;
+@@ -2798,8 +2822,11 @@ execcmd_analyse(Estate state, Execcmd_params eparams)
+      * they don't modify their argument strings. */
+     switch (eparams->type) {
+     case WC_SIMPLE:
++	words = state->pc;
+ 	eparams->args = ecgetlist(state, WC_SIMPLE_ARGC(code), EC_DUP,
+ 				  &eparams->htok);
++	if (eparams->htok && execcmd_literal_quotes(words, eparams->args))
++	    eparams->htok = 2;
+ 	eparams->assignspc = NULL;
+ 	break;
+ 
+@@ -2825,6 +2852,27 @@ execcmd_analyse(Estate state, Execcmd_params eparams)
+     }
+ }
+ 
++/* htok == 2 denotes a simple-command list whose only tokens are inert
++ * short quote markers.  Keep prefork's signal boundary and quote-removal
++ * pass; no parameter, process, command, brace or file expansion is present. */
++static void
++execcmd_prefork(LinkList args, int flags, int htok)
++{
++    if (htok == 2) {
++	LinkNode node, next;
++	queue_signals();
++	for (node = firstnode(args); node && !errflag; node = next) {
++	    next = nextnode(node);
++	    if (*(char *)getdata(node))
++		remnulargs(getdata(node));
++	    else
++		uremnode(args, node);
++	}
++	unqueue_signals();
++    } else
++	prefork(args, flags, NULL);
++}
++
+ /*
+  * Transfer the first node of args to preargs, performing
+  * prefork expansion on the way if necessary.
+@@ -2839,7 +2887,7 @@ static void execcmd_getargs(LinkList preargs, LinkList args, int expand)
+ 	/* not init_list1, as we need real nodes */
+ 	addlinknode(&svl, uremnode(args, firstnode(args)));
+ 	/* Analysing commands, so vanilla options to prefork */
+-	prefork(&svl, 0, NULL);
++	execcmd_prefork(&svl, 0, expand);
+ 	joinlists(preargs, &svl);
+     } else {
+         addlinknode(preargs, uremnode(args, firstnode(args)));
+@@ -3334,7 +3382,7 @@ execcmd_exec(Estate state, Execcmd_params eparams,
+ 
+     if (args) {
+ 	if (eparams->htok)
+-	    prefork(args, esprefork, NULL);
++	    execcmd_prefork(args, esprefork, eparams->htok);
+ 	if (preargs)
+ 	    args = joinlists(preargs, args);
+     }

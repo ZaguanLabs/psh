@@ -1,0 +1,18 @@
+patching file configure.ac
+patching file Doc/Makefile.in
+Running: autoconf
+Running: autoheader
+Running: ./configure --prefix=/usr/local/psh/releases/1.0.0-rc1-5a66afc94be0 --program-transform-name=s/zsh/psh/ --enable-dynamic --enable-multibyte --disable-zsh-debug --enable-pcre --enable-etcdir=/usr/local/psh/etc --enable-site-fndir=no --enable-additional-fpath=/usr/local/psh/site-functions
+Running: make -j4 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/profiles
+Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/profiles
+Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/core/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/training.json
+Running: make clean
+Running: make -j4 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/profiles
+Running: make install DESTDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/stage
+Running: make all ZSH_SRC=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/core CFLAGS=-O2 -g
+{
+  "release": "1.0.0-rc1-5a66afc94be0",
+  "prefix": "/usr/local/psh/releases/1.0.0-rc1-5a66afc94be0",
+  "payload": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/stage/usr/local/psh/releases/1.0.0-rc1-5a66afc94be0",
+  "core": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-5a66afc94be0/core"
+}

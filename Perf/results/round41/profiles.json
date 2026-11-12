@@ -1,0 +1,38 @@
+[
+  {
+    "case": "endgame",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/endgame.callgrind",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "endgame-world",
+      "/home/stig/dev/challenge/endgame",
+      "2"
+    ],
+    "status": 0,
+    "output_state_sha256": "6299c35a068a34015a5c807070152d168e7d3604771a24d83d9bed2a4da3fead",
+    "shell_sha256": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+    "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf"
+  },
+  {
+    "case": "coder",
+    "command": [
+      "valgrind",
+      "--tool=callgrind",
+      "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/coder.callgrind",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "coder-paste",
+      "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "1"
+    ],
+    "status": 0,
+    "output_state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf",
+    "shell_sha256": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+    "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf"
+  }
+]

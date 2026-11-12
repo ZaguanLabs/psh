@@ -1,5 +1,38 @@
 # Local performance workflow
 
+## Round 41: deeper evaluation trials, not adopted
+
+[Round 41](round41.md) profiles the accepted PGO+LTO release and tests scalar
+finishing, two arithmetic storage layouts, scalar append reallocation, literal
+argument handling and complete integer-counter specialization. All proposals
+remain unapplied: isolated wins do not establish useful customer gains. A native
+table-mutation reproducer rejects the first quote shortcut despite its passing
+ordinary differential tests.
+
+New focused drivers compare complete operations against both pristine Zsh and
+the preceding accepted release. Every native fixture is built with legacy
+headers; it does not acknowledge a psh-specific optimization protocol:
+
+```sh
+python3 Perf/math-storage-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/math-storage.json --memcheck
+python3 Perf/scalar-append-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/scalar-append.json
+python3 Perf/literal-arguments-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/literal-arguments.json
+python3 Perf/math-counter-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/math-counter.json
+python3 Perf/check-literal-arguments-module.py REFERENCE PREVIOUS TRIAL \
+  --headers-build LEGACY_BUILD --headers-source LEGACY_SOURCE --memcheck \
+  --output .work/logs/native-literal-arguments.json
+```
+
+`check-scalar-append-module.py` and `check-math-counter-module.py` accept the
+same native-driver arguments. They check scalar ownership/custom setters and
+direct arithmetic returns/custom callbacks/queued signals, respectively.
+These manual screening fixtures do not replace the full package and unchanged
+OMZ gates required before activating any future candidate.
+
 ## Round 40: native loaders and formatter withdrawal
 
 [Round 40](round40.md) withdraws the round-39 shortcut after libc plugins and

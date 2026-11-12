@@ -1,0 +1,27 @@
+diff --git a/Src/params.c b/Src/params.c
+index f4ec8c4..a59b2ec 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -2818,8 +2818,21 @@ assignstrvalue(Value v, char *val, int flags)
+                characters following end index */
+             newsize = v->start + vlen + (zlen - v->end);
+ 
++            /* The ordinary scalar owns its string.  For an append, realloc
++             * can retain the prefix without copying it into a fresh buffer.
++             * Require an existing signal queue: the parameter must not be
++             * observed between moving its allocation and installing it. */
++            if (vlen && v->start == zlen && v->end == zlen &&
++                queue_signal_level() && v->pm->gsu.s == &stdscalar_gsu &&
++                !(v->pm->node.flags & ~(PM_DECLARED | PM_LOCAL | PM_EXPORTED |
++                                        PM_NAMEDDIR)) &&
++                z == v->pm->u.str) {
++                x = zrealloc(z, newsize + 1);
++                memcpy(x + zlen, val, vlen + 1);
++                v->pm->u.str = NULL;
++                strsetfn(v->pm, x);
+             /* Does new size differ? */
+-            if (newsize != zlen || v->pm->gsu.s->setfn != strsetfn) {
++            } else if (newsize != zlen || v->pm->gsu.s->setfn != strsetfn) {
+                 x = (char *) zalloc(newsize + 1);
+                 strncpy(x, z, v->start);
+                 strcpy(x + v->start, val);

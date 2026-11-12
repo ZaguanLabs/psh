@@ -1,0 +1,100 @@
+diff --git a/Src/math.c b/Src/math.c
+index fee8178..f2fc153 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -308,6 +308,7 @@ static int type[TOKCOUNT] =
+ /* the value stack */
+ 
+ #define STACKSZ 100
++#define INITIAL_STACKSZ 16
+ static int mtok;			/* last token */
+ static int sp = -1;			/* stack pointer */
+ 
+@@ -326,6 +327,13 @@ struct mathvalue {
+ };
+ 
+ static struct mathvalue *stack;
++static Value stack_values;
++static int stack_capacity;
++
++struct mathstack_storage {
++    struct mathvalue entries[STACKSZ];
++    struct value values[STACKSZ];
++};
+ 
+ /* The same field list drives recursive saves and restores. Keep the flat
+  * locals below: grouping them into a C object can enlarge each recursive
+@@ -340,6 +348,8 @@ static struct mathvalue *stack;
+     APPLY(yylval, xyylval) \
+     APPLY(sp, xsp) \
+     APPLY(stack, xstack) \
++    APPLY(stack_values, xstack_values) \
++    APPLY(stack_capacity, xstack_capacity) \
+     APPLY(prec, xprec)
+ #define SAVE_MATH_FIELD(active, saved) saved = active;
+ #define RESTORE_MATH_FIELD(active, saved) active = saved;
+@@ -362,7 +372,7 @@ getmathparam(struct mathvalue *mptr)
+     mnumber result;
+     if (!mptr->pval) {
+ 	char *s = mptr->lval;
+-	mptr->pval = (Value)zhalloc(sizeof(struct value));
++	mptr->pval = stack_values + (mptr - stack);
+ 	if (!getvalue(mptr->pval, &s, 1))
+ 	{
+ 	    if (unset(UNSET))
+@@ -393,8 +403,10 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     char *xptr;
+     mnumber xyyval;
+     char *xyylval;
+-    int xsp;
+-    struct mathvalue *xstack = 0, nstack[STACKSZ];
++    int xsp, xstack_capacity;
++    Value xstack_values;
++    struct value nvalues[INITIAL_STACKSZ];
++    struct mathvalue *xstack = 0, nstack[INITIAL_STACKSZ];
+     mnumber ret;
+ 
+     if (mlevel >= MAX_MLEVEL) {
+@@ -409,7 +421,8 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     if (mlevel++) {
+ 	MATH_EVAL_SAVE_FIELDS(SAVE_MATH_FIELD)
+     } else {
+-	xlastbase = xnoeval = xunary = xsp = 0;
++	xlastbase = xnoeval = xunary = xsp = xstack_capacity = 0;
++	xstack_values = NULL;
+ 	xyyval.type = MN_INTEGER;
+ 	xyyval.u.l = 0;
+ 	xyylval = NULL;
+@@ -418,6 +431,8 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     }
+     prec = isset(CPRECEDENCES) ? c_prec : z_prec;
+     stack = nstack;
++    stack_values = nvalues;
++    stack_capacity = INITIAL_STACKSZ;
+     lastbase = -1;
+     ptr = s;
+     sp = -1;
+@@ -946,8 +961,22 @@ push(mnumber val, char *lval, int getme)
+ {
+     if (sp == STACKSZ - 1)
+ 	zerr("stack overflow");
+-    else
++    else {
++	if (sp + 1 == stack_capacity) {
++	    struct mathstack_storage *grown = zhalloc(sizeof(*grown));
++	    int i;
++	    memcpy(grown->entries, stack, stack_capacity * sizeof(*stack));
++	    memcpy(grown->values, stack_values,
++		   stack_capacity * sizeof(*stack_values));
++	    for (i = 0; i <= sp; i++)
++		if (grown->entries[i].pval)
++		    grown->entries[i].pval = grown->values + i;
++	    stack = grown->entries;
++	    stack_values = grown->values;
++	    stack_capacity = STACKSZ;
++	}
+ 	sp++;
++    }
+     stack[sp].val = val;
+     stack[sp].lval = lval;
+     stack[sp].pval = NULL;

@@ -1,0 +1,106 @@
+diff --git a/Src/math.c b/Src/math.c
+index fee8178..d755658 100644
+--- a/Src/math.c
++++ b/Src/math.c
+@@ -424,7 +424,25 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
+     unary = 1;
+     stack[0].val.type = MN_INTEGER;
+     stack[0].val.u.l = 0;
+-    mathparse(prec_tp == MPREC_TOP ? TOPPREC : ARGPREC);
++    /* Check the complete counter once per evaluation, leaving recursive
++     * precedence-parser entries free of eligibility checks. */
++    if (prec_tp == MPREC_TOP && !errflag && !noeval &&
++	isset(EXECOPT) && !isset(FORCEFLOAT) &&
++	((*ptr >= 'a' && *ptr <= 'z') || (*ptr >= 'A' && *ptr <= 'Z') ||
++	 *ptr == '_') && ptr[1] == '+' && ptr[2] == '+' && !ptr[3]) {
++	queue_signals();
++	if (mathpostincrement(ptr, &stack[0].val.u.l)) {
++	    stack[0].val.type = MN_INTEGER;
++	    stack[0].lval = NULL;
++	    stack[0].pval = NULL;
++	    sp = 0;
++	    ptr += 3;
++	    mtok = EOI;
++	    unqueue_signals();
++	} else
++	    mathparse_queued(TOPPREC);
++    } else
++	mathparse(prec_tp == MPREC_TOP ? TOPPREC : ARGPREC);
+     /*
+      * Internally, we parse the contents of parentheses at top
+      * precedence... so we can return a parenthesis here if
+@@ -1605,19 +1623,26 @@ checkunary(int mtokc, char *mptr)
+     unary = !(tp & OP_OPF);
+ }
+ 
+-/* operator-precedence parse the string and execute */
++/**/
++static inline void
++mathparse(int pc)
++{
++    if (errflag)
++	return;
++    queue_signals();
++    mathparse_queued(pc);
++}
+ 
++/* Operator-precedence parse and execute with its entry queue already held.
++ * The body owns the matching unqueue on every exit, including recursion. */
+ /**/
+ static void
+-mathparse(int pc)
++mathparse_queued(int pc)
+ {
+     zlong q;
+     int otok, onoeval;
+     char *optr = ptr;
+ 
+-    if (errflag)
+-	return;
+-    queue_signals();
+     mtok = zzlex();
+     /* Handle empty input */
+     if (pc == TOPPREC && mtok == EOI) {
+diff --git a/Src/params.c b/Src/params.c
+index f4ec8c4..e19e352 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -537,6 +537,38 @@ getparamnode(HashTable ht, const char *nam)
+     return hn;
+ }
+ 
++/* A complete one-letter postfix increment has no callbacks when both
++ * the table and integer parameter use their ordinary implementations.
++ * Called only within the arithmetic parser's existing signal queue. */
++/**/
++int
++mathpostincrement(char *text, zlong *previous)
++{
++    char name[2];
++    Param pm;
++
++    if (!queue_signal_level() || paramtab != realparamtab ||
++	paramtab->getnode != getparamnode ||
++	paramtab->getnode2 != gethashnode2 || paramtab->hash != hasher ||
++	paramtab->cmpnodes != strcmp || isset(ALLEXPORT) ||
++	idigit(*text) || inblank(*text) || inblank('+') ||
++	iident('+') || iident(0))
++	return 0;
++    if (itype_end(text, IIDENT, 0) != text + 1)
++	return 0;
++    name[0] = *text;
++    name[1] = 0;
++    pm = (Param)gethashnode2(paramtab, name);
++    if (!pm || pm->gsu.i != &stdinteger_gsu ||
++	!(pm->node.flags & PM_INTEGER) ||
++	(pm->node.flags & ~(PM_INTEGER | PM_DECLARED | PM_LOCAL)) ||
++	pm->env || pm->ename || pm->u.val == ZLONG_MAX)
++	return 0;
++    *previous = pm->gsu.i->getfn(pm);
++    pm->gsu.i->setfn(pm, *previous + 1);
++    return 1;
++}
++
+ /* Copy a parameter hash table */
+ 
+ static HashTable outtable;
