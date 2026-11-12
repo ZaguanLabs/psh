@@ -1,5 +1,36 @@
 # Local performance workflow
 
+## Round 39: native float output and conservative fallback
+
+[Round 39](round39.md) investigates `convfloat()` on the optimized release,
+including a rejected custom-printf callback regression and the independent
+native formatting acknowledgment. `check-convfloat.py` compiles an oracle module
+for each host's SDK and compares the pristine converter's complete output and
+FP/errno/locale/callback/queue state. For matching packaged builds:
+
+```sh
+python3 Perf/check-convfloat.py /path/to/old/psh /path/to/new/psh \
+  --headers-build /path/to/old/core --headers-source .work/pristine \
+  --candidate-headers-build /path/to/new/core --candidate-headers-source . \
+  --output .work/logs/float-output.json
+python3 Perf/check-convfloat-policy.py /path/to/new/psh \
+  --headers-build /path/to/new/core --output .work/logs/float-policy.json
+```
+
+The full oracle covers five global locales and three thread-locale contexts.
+`--quick`, repeated `--locale`, and `--memcheck` permit smaller checks. Production
+builds intentionally select the legacy converter under Valgrind's LD_PRELOAD.
+The separate diagnostic recipe and positive API-failure counters in the round's
+evidence distinguish fast-path memory checks from exact-release fallback checks.
+Do not enable the compile-time diagnostic preload bypass in distribution builds.
+
+`convfloat-printf-module.c` reproduces a genuine standard-printf extension using
+an older SDK; it deliberately does not acknowledge formatting safety.
+`convfloat-opaque-preload.c` has no hooks or constructors. Compiling it as a shared
+object and supplying `scene-benchmark.py --baseline-preload PATH` selects a
+recorded legacy-converter control with the same executable. Optional preload
+paths and hashes are included in benchmark reports; normal measurements set none.
+
 ## rc1: scene coverage and compiler experiments
 
 `scene-benchmark.py` measures full fresh construction through the customer's

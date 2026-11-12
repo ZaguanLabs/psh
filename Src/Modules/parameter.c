@@ -2313,6 +2313,7 @@ int
 setup_(UNUSED(Module m))
 {
     psh_scope_module_ack(m);
+    psh_float_module_ack(m);
     return 0;
 }
 

@@ -1,0 +1,70 @@
+diff --git a/Src/params.c b/Src/params.c
+index 0f1f529..4bfffb6 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -5754,12 +5754,20 @@ convbase_underscore(char *s, zlong v, int base, int underscore)
+  * a value from the heap.
+  */
+ 
++#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
++/* Immutable formatting locale, retained for the life of the process. */
++static locale_t convfloat_c_locale;
++#endif
++
+ /**/
+ char *
+ convfloat(double dval, int digits, int flags, FILE *fout)
+ {
+     char fmt[] = "%.*e";
+     char *prev_locale, *ret;
++#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
++    locale_t prev_thread_locale = (locale_t)0;
++#endif
+ 
+     /*
+      * The difficulty with the buffer size is that a %f conversion
+@@ -5795,8 +5803,26 @@ convfloat(double dval, int digits, int flags, FILE *fout)
+ 	}
+     }
+ #ifdef USE_LOCALE
+-    prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+-    setlocale(LC_NUMERIC, "POSIX");
++# ifdef HAVE_MATH_STRTOD_L
++    /* No FILE callbacks run in the string path. The caller must already
++     * hold the signal queue, so allocation cannot expose a temporary thread
++     * locale to a shell trap. Private thread locales and unqueued calls keep
++     * the original global-locale sequence and its delivery boundaries. */
++    if (!fout && queue_signal_level() &&
++        uselocale((locale_t)0) == LC_GLOBAL_LOCALE) {
++        int saved_errno = errno;
++        if (!convfloat_c_locale)
++            convfloat_c_locale = newlocale(LC_ALL_MASK, "C", (locale_t)0);
++        if (convfloat_c_locale)
++            prev_thread_locale = uselocale(convfloat_c_locale);
++        errno = saved_errno;
++    }
++    if (!prev_thread_locale)
++# endif
++    {
++        prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
++        setlocale(LC_NUMERIC, "POSIX");
++    }
+ #endif
+     if (fout) {
+ 	fprintf(fout, fmt, digits, dval);
+@@ -5815,7 +5841,14 @@ convfloat(double dval, int digits, int flags, FILE *fout)
+ 	}
+     }
+ #ifdef USE_LOCALE
+-    if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
++# ifdef HAVE_MATH_STRTOD_L
++    if (prev_thread_locale) {
++        int saved_errno = errno;
++        uselocale(prev_thread_locale);
++        errno = saved_errno;
++    } else
++# endif
++        if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+ #endif
+     return ret;
+ }

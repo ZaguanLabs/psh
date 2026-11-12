@@ -207,3 +207,23 @@ tests pass; a detected pristine DEBUG module-path collision is fixed in the
 builder. Seven package suites and 24 OMZ sessions pass before the maintenance
 iteration activates. The optimization count stays 27; timing fluctuations and
 all slower controls are retained without a speedup claim.
+
+[Round thirty-eight](round38.md) adds optional compiler profiles, full scene
+benchmarks and stateful comparisons. PGO+LTO improves all six held-out customer
+scenes; it adds no new interpreter algorithm. An insecure parent-directory mode
+under umask 0002 is repaired without weakening compaudit. The unchanged OMZ gate
+now always runs its inherited-FPATH profile, including from Bash. Published rc0
+and the active daily-driver shell remain intact while rc1 is developed.
+
+[Round thirty-nine](round39.md) follows global locale machinery in floating
+output on the optimized release. A thread-locale prototype is rejected because
+standard printf extensions can observe its changed context. An independent
+native acknowledgment and constructor barrier permit queued string conversions
+only when that context is private; unknown modules, preloads, FILE callbacks,
+private thread locales and API failures preserve the legacy sequence. The
+native oracle compares output and FP/errno/locale/queue/callback state, with
+separate diagnostic fault injection and fast-path memory coverage. The optional
+exports preserve public Module layouts and ordinary-header source builds.
+Package, upstream, broader differential and 24 unchanged OMZ sessions pass;
+customer measurements and the same-executable fallback control are retained.
+rc1 publication remains on hold.

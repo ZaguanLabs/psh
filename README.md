@@ -15,6 +15,10 @@ The author's Zsh projects are the primary customer workloads. Their profiles
 guide optimization priorities; project kernels and controls accompany focused
 shell benchmarks.
 
+The `rc1` development branch remains unpublished while further investigation
+continues. Its latest work targets [float-formatting locale overhead](Perf/round39.md)
+with explicit native-code fallback and expanded compatibility checks.
+
 ```sh
 git clone git@github.com:ZaguanLabs/psh.git
 cd psh

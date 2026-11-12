@@ -1,0 +1,181 @@
+{
+  "passed": true,
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh"
+  ],
+  "shell_sha256": [
+    "b4a7f2a25a7b2fca5bd6c63b2b620aa5e9591a8805e8406b9b33f65c1c4c2a32",
+    "bab62bd68c5e6cd29bf24d56b3d7ad7202c6467f004460282b1ad8463ad2e4ef"
+  ],
+  "source_sha256": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-convfloat.py": "12eaa085af7a7db1bd1d2fe98c962a9923cba5ffb53f49536ae1df1a43794fdd",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c": "705b3d163ed1b39de91510f36d5c912045ff8b913f4060d8cfb59dbadcfa86e5",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-reference.h": "fc434eeab9e9f7e7dca86ff21fb2a87df5926323a2c76a7c7fd687df81d0d769",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-fault.c": "340fa22a7fbe6fd9aa53043acbf9747687ae192d23f9c3740a10b6397fbd4806"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/final-native-full/0/psh_float_output_fixture.so",
+      "-lm",
+      "-ldl"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/final-native-full/1/psh_float_output_fixture.so",
+      "-lm",
+      "-ldl"
+    ]
+  ],
+  "module_sha256": [
+    "d3cf137620c93c054f2698978f0ca3abef16f3f0fd85d0572c6912f25e60411e",
+    "066aa45686b2681e001163e542489562ef57269b8eaf530a1cf9efac9c5d62bd"
+  ],
+  "fault": "none",
+  "memcheck": false,
+  "quick": false,
+  "linked_faults_candidate": false,
+  "runs": [
+    {
+      "host": 0,
+      "locale": "C",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "fr_FR.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "nb_NO.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "tr_TR.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "fr_FR.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "nb_NO.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "tr_TR.UTF-8",
+      "status": 0,
+      "checks": 155520,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=10411948021436935950 faults=0\nchecks=51840 digest=18094625167963951454 faults=0\n"
+    }
+  ]
+}

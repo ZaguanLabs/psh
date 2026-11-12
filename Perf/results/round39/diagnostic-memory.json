@@ -1,0 +1,109 @@
+{
+  "passed": true,
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/diagnostic/core/Src/zsh"
+  ],
+  "shell_sha256": [
+    "b4a7f2a25a7b2fca5bd6c63b2b620aa5e9591a8805e8406b9b33f65c1c4c2a32",
+    "a40b80642ef32a8b372b645cab4b8bf5e682da6c83979cb96ceb157008f68758"
+  ],
+  "source_sha256": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-convfloat.py": "12eaa085af7a7db1bd1d2fe98c962a9923cba5ffb53f49536ae1df1a43794fdd",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c": "705b3d163ed1b39de91510f36d5c912045ff8b913f4060d8cfb59dbadcfa86e5",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-reference.h": "fc434eeab9e9f7e7dca86ff21fb2a87df5926323a2c76a7c7fd687df81d0d769",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-fault.c": "340fa22a7fbe6fd9aa53043acbf9747687ae192d23f9c3740a10b6397fbd4806"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/diagnostic-memory/0/psh_float_output_fixture.so",
+      "-lm",
+      "-ldl"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/diagnostic/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/diagnostic/core/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/diagnostic-memory/1/psh_float_output_fixture.so",
+      "-lm",
+      "-ldl"
+    ]
+  ],
+  "module_sha256": [
+    "d3cf137620c93c054f2698978f0ca3abef16f3f0fd85d0572c6912f25e60411e",
+    "09dbfcd21a01ad0f4f8547414c2bb0a31f98d264237c03c87eb6778c98f615b3"
+  ],
+  "fault": "none",
+  "memcheck": true,
+  "quick": true,
+  "linked_faults_candidate": true,
+  "runs": [
+    {
+      "host": 0,
+      "locale": "C",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=3208805546025541224 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=3208805546025541224 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=3208805546025541224 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=878401940077854036 faults=0\nchecks=4800 digest=3208805546025541224 faults=0\n"
+    }
+  ]
+}

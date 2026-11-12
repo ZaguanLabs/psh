@@ -333,6 +333,7 @@ int
 setup_(Module m)
 {
     psh_scope_module_ack(m);
+    psh_float_module_ack(m);
     zprof_module = m;
     return 0;
 }

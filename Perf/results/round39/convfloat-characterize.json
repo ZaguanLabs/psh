@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+    "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh"
+  ],
+  "shell_sha256": [
+    "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+    "b4a7f2a25a7b2fca5bd6c63b2b620aa5e9591a8805e8406b9b33f65c1c4c2a32"
+  ],
+  "source_sha256": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-convfloat.py": "8d25675df69efe0c4b65a0c03c6583150cbac551a2c48042519894174fd85957",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c": "a678414c09aa636b88dd54946dbfbd5544987650869b4f2ff7ed469c4ea3ba4b",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-reference.h": "fc434eeab9e9f7e7dca86ff21fb2a87df5926323a2c76a7c7fd687df81d0d769",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-fault.c": "fa9dd40970d48fbcd1ec1c4580153184b9fc25b62b5876921d0c79e11549d025"
+  },
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/convfloat-characterize/psh_float_output_fixture.so",
+    "-lm",
+    "-ldl"
+  ],
+  "module_sha256": "de96195a54ee9677bd9199d0d9dfb48d23d6cb5d356576f720a43f8a9b18ca88",
+  "fault": "none",
+  "memcheck": false,
+  "quick": true,
+  "runs": [
+    {
+      "host": 0,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    }
+  ]
+}

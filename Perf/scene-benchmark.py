@@ -40,6 +40,10 @@ def main():
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--baseline-modules", type=Path)
     parser.add_argument("--candidate-modules", type=Path)
+    parser.add_argument("--baseline-preload", type=Path,
+                        help="explicit native preload for a recorded fallback control")
+    parser.add_argument("--candidate-preload", type=Path,
+                        help="explicit native preload for a recorded fallback control")
     parser.add_argument("--scene", choices=SCENES, action="append")
     parser.add_argument("--samples", type=int, default=5)
     parser.add_argument("--cpu", type=int)
@@ -54,6 +58,9 @@ def main():
     shells = [p.resolve(strict=True) for p in (args.baseline, args.candidate)]
     modules = [p.resolve(strict=True) if p else None
                for p in (args.baseline_modules, args.candidate_modules)]
+    preloads = [p.resolve(strict=True) if p else None
+                for p in (args.baseline_preload, args.candidate_preload)]
+    preload_hashes = [sha(p) if p else None for p in preloads]
     inputs = source_hashes(project)
     binary_hashes = list(map(sha, shells))
 
@@ -63,6 +70,8 @@ def main():
         if modules[which]:
             env.update(ZDRAW_MODULE_DIR=str(modules[which]),
                        PSH_SCENE_MODULE_DIR=str(modules[which]))
+        if preloads[which]:
+            env["LD_PRELOAD"] = str(preloads[which])
         return env
 
     native_paths = []
@@ -78,6 +87,8 @@ def main():
     report = {"date_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
               "shells": list(map(str, shells)), "binary_sha256": binary_hashes,
               "module_paths": [str(p) if p else None for p in modules],
+              "preload_paths": [str(p) if p else None for p in preloads],
+              "preload_sha256": preload_hashes,
               "resolved_zdraw_paths": list(map(str, native_paths)),
               "zdraw_sha256": module_hashes, "source_sha256": inputs,
               "worker_sha256": worker_hash, "driver_sha256": driver_hash,
@@ -121,6 +132,7 @@ def main():
         args.output.write_text(json.dumps(report, indent=2) + "\n")
         print(f"{name}: {medians[0]:.6f} -> {medians[1]:.6f}s ({medians[0]/medians[1]:.3f}x); exact output", flush=True)
     if (source_hashes(project) != inputs or list(map(sha, shells)) != binary_hashes or
+            [sha(p) if p else None for p in preloads] != preload_hashes or
             list(map(sha, native_paths)) != module_hashes or
             sha(__file__) != driver_hash or sha(worker) != worker_hash):
         raise RuntimeError("benchmark inputs changed during measurement")

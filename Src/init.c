@@ -1718,6 +1718,8 @@ zsh_main(UNUSED(int argc), char **argv)
 #ifdef USE_LOCALE
     setlocale(LC_ALL, "");
 #endif
+    /* Capture injected native code before startup files can unset its markers. */
+    (void)psh_float_locale_tracking();
 
     init_jobs(argv, environ);
 
