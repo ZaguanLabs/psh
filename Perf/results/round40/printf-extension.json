@@ -1,0 +1,161 @@
+{
+  "passed": true,
+  "inputs": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-printf-module.c": "d9180f1f86f288528f2b00df7a0b7c46f83c3490ac6d1d3d0d1a155cb93e98dd",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-convfloat-printf.py": "375a1437dd1d6def147f50d7c35e2370abd490a90bc743b5de1c819a6614f777",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension/psh_printf_extension_fixture.so": "a0c2d17a4307e0513d5467349e02da454a1b17394c0e5e7cb2f8e010c39915c8",
+    "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh": "b4a7f2a25a7b2fca5bd6c63b2b620aa5e9591a8805e8406b9b33f65c1c4c2a32",
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421"
+  },
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh"
+  ],
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/core/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-printf-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension/psh_printf_extension_fixture.so",
+    "-ldl"
+  ],
+  "runs": [
+    {
+      "host": 0,
+      "locale": "C",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=-1\n",
+      "status": 0
+    },
+    {
+      "host": 1,
+      "locale": "C",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=0\n",
+      "status": 0
+    },
+    {
+      "host": 0,
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=-1\n",
+      "status": 0
+    },
+    {
+      "host": 1,
+      "locale": "C.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=0\n",
+      "status": 0
+    },
+    {
+      "host": 0,
+      "locale": "fr_FR.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=-1\n",
+      "status": 0
+    },
+    {
+      "host": 1,
+      "locale": "fr_FR.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=0\n",
+      "status": 0
+    },
+    {
+      "host": 0,
+      "locale": "nb_NO.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=-1\n",
+      "status": 0
+    },
+    {
+      "host": 1,
+      "locale": "nb_NO.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=0\n",
+      "status": 0
+    },
+    {
+      "host": 0,
+      "locale": "tr_TR.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=-1\n",
+      "status": 0
+    },
+    {
+      "host": 1,
+      "locale": "tr_TR.UTF-8",
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\" $module_path); zmodload psh_printf_extension_fixture || exit 1; psh-printf-extension-check || exit 2; zmodload -u psh_printf_extension_fixture || exit 3",
+        "printf",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension"
+      ],
+      "stdout": "constructor=global:C.\nvalue=global:C.\ntracking=0\n",
+      "status": 0
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+mkdir -p "build"
+mkdir -p "build"
+cc  -O2 -g  -std=c99 -Wall -Wextra -fPIC -shared \
+    -I"/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src" -I"/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core"  src/zcurl.c \
+     -lcurl -o build/zcurl.so.tmp
+mv -f build/zcurl.so.tmp build/zcurl.so
+timeout --verbose --kill-after=5s "240s" python3 -u tests/integration.py
+Testing module: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zcurl/build/zcurl.so
+PASS: HTTP, TLS trust and hostname checks, option reset, errors, bounds, fork guard, unload/reload
+PASS: all 256 byte values and trailing newlines round-trip exactly
+PASS: 11 verified HTTPS requests use one server-observed connection
+PASS: WS/WSS forced first-frame AGAIN with zero bytes sent, OFFSET retry and following frame
+PASS: methods, caller-owned results, scopes/options, limits, partial/chunked responses, HTTP errors and reset
+PASS: server-observed POST, JSON/auth/duplicate headers, request reset, binary upload
+PASS: invalid API inputs rejected without parameter evaluation
+PASS: invalid result targets, headers, methods and options cause no HTTP requests
+PASS: request header boundaries, duplicate ordering, independent ownership and partial-list cleanup
+PASS: project loader is idempotent and preserves module_path and aliases
+PASS: project example runs outside the checkout and preserves response bytes
+PASS: 230 real ZLE completions, operation grammar, quoting, array types and unchanged HTTP state
+PASS: compression negotiation, scalar bytes, per-request reset, concurrent TLS, errors and limits
+PASS: decoded gzip/deflate binary files, raw default, upload round trip and expansion bounds
+PASS: HTTP proxy routing, bypass/reset, concurrent ownership, CONNECT TLS, credentials and binary output
+PASS: WS/WSS proxy routing, CONNECT headers/authentication, binary frames, fragmentation, ping/pong, close and cleanup
+PASS: HTTPS proxy trust, independent origin verification, hostname rejection, reset, concurrent ownership and WS/WSS tunnels
+PASS: named HTTP sessions, independent reuse/reset, binary I/O, option reset, validation and lifecycle
+PASS: session CA defaults, verified TLS, explicit overrides, owned paths, atomic patches and cleanup
+PASS: individual session defaults, atomic unset/update patches, retained jobs, trust, pool reuse and copied ownership
+PASS: session configuration copies, independent pools, retained jobs, atomic creation and owned lifetimes
+PASS: session job discovery, state filters, submission order, owned arrays, scoped cleanup and no-I/O validation
+PASS: session information, owned metadata, configuration visibility, retained-job counts, validation and preserved results
+PASS: session defaults, explicit overrides, atomic updates, retained job snapshots, connection deadlines and admission
+PASS: named concurrent sessions, pool isolation, cross-pool waits, admission limits and retained-job lifecycle
+PASS: synchronous calls leave concurrent jobs undriven
+PASS: handle discovery, ordering, terminal retention, readonly arrays, forks and feature lifecycle
+PASS: invalid/read-only/nonregular output descriptors rejected before HTTP
+PASS: HTTP file output, bounds, append/offsets, descriptor reuse, cancellation and cleanup
+PASS: direct file bytes, partial write failures and descriptor ownership independently verified
+PASS: invalid/nonregular input descriptors and conflicting options rejected before HTTP
+PASS: file uploads, captured ranges, binary round trips, methods, descriptor ownership and cleanup
+PASS: binary upload ranges and large file-to-file HTTPS round trip independently verified
+PASS: protected HTTP/HTTPS/WS/WSS sockets and file duplicates, connection reuse, exec isolation and cleanup
+PASS: response header lookup, duplicates, blocks, trailers, validation, scope and preserved transfer state
+PASS: response field discovery, canonical names, duplicates, block/trailer selection, literal selectors and owned arrays
+PASS: concurrent HTTP/HTTPS overlap, owned requests, pool reuse, cancellation, bounds, collection and lifecycle
+PASS: wait-any selection, validation, ordering, shared-pool progress, deadlines, errors and scope
+PASS: concurrent batch example overlaps requests outside the checkout
+PASS: WS/WSS handles, incremental binary I/O, queues, fragmentation, ping/pong, close/error lifecycle, TLS and cleanup
+PASS: required WebSocket subprotocol, final-response selection, rejection cleanup, scope, tokens and header conflicts
+PASS: shared HTTP/WS/WSS polling, mixed pools, binary chunks, fairness, backpressure, deadlines and lifecycle
+PASS: PTY Ctrl-C interrupts a stalled request; next request succeeds (0.00s)
+PASS: PTY signal traps cannot reenter/unload an active module or overwrite a changed result target
+PASS: PTY WebSocket poll/handshake cancellation, reentry/unload guards, result mutation and connection recovery
+PASS: PTY concurrent HTTP poll/wait/wait-any interrupts preserve requests; reentry/unload and result mutation guards hold
+PASS: PTY shared poll interruption, reentry/unload guards, result mutation and mixed-handle recovery

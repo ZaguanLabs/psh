@@ -2,9 +2,8 @@
 
 The `rc1` development branch adds compiler optimization experiments, full scene
 construction benchmarks, stateful differential coverage and safe completion
-directory permissions under a group-writable umask. Further investigation now
-addresses [float-formatting locale overhead](Perf/round39.md), with conservative
-native-module fallback. **rc1 publication remains on hold.** Published rc0 is
+directory permissions under a group-writable umask. The latest [native-library audit](Perf/round40.md) withdraws a float-formatting
+experiment whose module guard missed libc plugins. **rc1 publication remains on hold.** Published rc0 is
 retained unchanged. See [the packaging guide](Packaging/README.md) for optional
 PGO builds and [the performance workflow](Perf/README.md) for the new checks.
 
@@ -109,7 +108,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The development executable now includes twenty-eight accepted optimizations.
+The development executable now includes twenty-seven accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -139,7 +138,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-development executable includes all twenty-eight changes; the fourth experiment compares against
+development executable includes all twenty-seven changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -367,11 +366,10 @@ package suites and 24 unchanged OMZ sessions. Core machine code and all 40 nativ
 module text sections remain identical; this adds no new speedup to the count of
 27 optimizations.
 
-The [thirty-ninth investigation](Perf/round39.md) adds the twenty-eighth accepted
-optimization: queued string float formatting uses an immutable C thread locale
-when native formatting safety is established. Unknown native modules, custom
-printf extensions, FILE callbacks and private thread locales retain the original
-converter. Native formatting acknowledgment is independent of scope indexing.
-The report retains the rejected callback-breaking prototype, full native state
-oracle, diagnostic failure injection, unchanged OMZ gate and customer controls.
-This remains rc1 development work; publication and activation are on hold.
+The [thirty-ninth investigation](Perf/round39.md) measured an additional
+thread-locale float-formatting optimization. The [fortieth investigation](Perf/round40.md)
+withdraws it after reproducing changed native callback behavior through libc
+conversion plugins and explicit ELF preloading. The original output converter is
+restored; five optional SDK exports remain inert for binary compatibility.
+The current core optimization count stays 27. A mandatory native-library gate
+now complements the unchanged OMZ gate. Publication and activation remain held.

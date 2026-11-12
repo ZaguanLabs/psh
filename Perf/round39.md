@@ -1,5 +1,9 @@
 # Round 39: floating output without repeated global locale changes
 
+**Historical experiment, withdrawn by [round 40](round40.md).** The native-library
+audit found real callback regressions outside Zsh’s module loader. The original
+converter is restored; the gains below are not part of the current candidate.
+
 rc1 publication remains on hold. This round investigates a remaining cost in
 the actual PGO+LTO release build, using the previous accepted rc1 candidate
 `1.0.0-rc1-b0850020f4a1` as the performance baseline. Published rc0, its source

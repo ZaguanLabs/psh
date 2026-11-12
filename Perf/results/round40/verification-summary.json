@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "case": "stage-modules",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "stage-modules",
+        "--build",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/build.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "refresh-modules",
+      "command": [
+        "sudo",
+        "-n",
+        "python3",
+        "Packaging/install.py",
+        "refresh-modules",
+        "--build",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/build.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "package-verify",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "verify",
+        "--build",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/build.json"
+      ],
+      "status": 0
+    }
+  ]
+}

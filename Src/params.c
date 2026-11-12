@@ -5754,69 +5754,12 @@ convbase_underscore(char *s, zlong v, int base, int underscore)
  * a value from the heap.
  */
 
-#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
-/* Immutable formatting locale, retained for the life of the process. */
-static locale_t convfloat_c_locale;
-#endif
-
-/* Unknown native code can register callbacks for standard printf formats.
- * Keep its old locale context, including before constructors and after unload. */
-static unsigned float_locale_loading;
-static int float_locale_opaque, float_locale_preloads_checked;
-
-/**/
-mod_export int
-psh_float_locale_tracking(void)
-{
-#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
-    if (float_locale_opaque || float_locale_loading)
-        return 0;
-    if (!float_locale_preloads_checked) {
-# ifndef PSH_TEST_FLOAT_ALLOW_PRELOAD
-        if (getenv("LD_PRELOAD") || getenv("LD_AUDIT") ||
-            getenv("DYLD_INSERT_LIBRARIES"))
-            float_locale_opaque = 1;
-# endif
-        float_locale_preloads_checked = 1;
-    }
-    return !float_locale_opaque;
-#else
-    return 0;
-#endif
-}
-
-/**/
-mod_export void
-psh_float_locale_disable(void)
-{
-    float_locale_opaque = 1;
-}
-
-/**/
-void
-psh_float_native_begin(void)
-{
-    float_locale_loading++;
-}
-
-/**/
-void
-psh_float_native_end(int aware)
-{
-    if (!aware)
-        float_locale_opaque = 1;
-    float_locale_loading--;
-}
-
 /**/
 char *
 convfloat(double dval, int digits, int flags, FILE *fout)
 {
     char fmt[] = "%.*e";
     char *prev_locale, *ret;
-#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
-    locale_t prev_thread_locale = (locale_t)0;
-#endif
 
     /*
      * The difficulty with the buffer size is that a %f conversion
@@ -5852,26 +5795,8 @@ convfloat(double dval, int digits, int flags, FILE *fout)
 	}
     }
 #ifdef USE_LOCALE
-# ifdef HAVE_MATH_STRTOD_L
-    /* Audited native modules have not installed standard printf callbacks.
-     * The caller must already hold the signal queue, so allocation cannot
-     * expose a temporary thread locale to a shell trap. FILE output, private
-     * thread locales and unqueued calls retain the original sequence. */
-    if (!fout && queue_signal_level() && psh_float_locale_tracking() &&
-        uselocale((locale_t)0) == LC_GLOBAL_LOCALE) {
-        int saved_errno = errno;
-        if (!convfloat_c_locale)
-            convfloat_c_locale = newlocale(LC_ALL_MASK, "C", (locale_t)0);
-        if (convfloat_c_locale)
-            prev_thread_locale = uselocale(convfloat_c_locale);
-        errno = saved_errno;
-    }
-    if (!prev_thread_locale)
-# endif
-    {
-        prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
-        setlocale(LC_NUMERIC, "POSIX");
-    }
+    prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+    setlocale(LC_NUMERIC, "POSIX");
 #endif
     if (fout) {
 	fprintf(fout, fmt, digits, dval);
@@ -5890,14 +5815,7 @@ convfloat(double dval, int digits, int flags, FILE *fout)
 	}
     }
 #ifdef USE_LOCALE
-# ifdef HAVE_MATH_STRTOD_L
-    if (prev_thread_locale) {
-        int saved_errno = errno;
-        uselocale(prev_thread_locale);
-        errno = saved_errno;
-    } else
-# endif
-        if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+    if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
 #endif
     return ret;
 }
@@ -6429,4 +6347,31 @@ printparamnode(HashNode hn, int printflags)
 	putchar(' ');
     else if (!(printflags & PRINT_KV_PAIR))
 	putchar('\n');
+}
+
+/* ABI compatibility with the withdrawn round-39 locale-borrowing experiment.
+ * Formatting always retains the original global/thread locale sequence. */
+/**/
+mod_export int
+psh_float_locale_tracking(void)
+{
+    return 0;
+}
+
+/**/
+mod_export void
+psh_float_locale_disable(void)
+{
+}
+
+/**/
+void
+psh_float_native_begin(void)
+{
+}
+
+/**/
+void
+psh_float_native_end(UNUSED(int aware))
+{
 }

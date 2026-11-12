@@ -57,6 +57,9 @@ def main():
     fingerprints["Packaging/build.py"] = sha(Path(__file__))
     fingerprints["Vendor/sources.json"] = sha(ROOT / "Vendor/sources.json")
     fingerprints["LICENSE"] = sha(ROOT / "LICENSE")
+    for name in ["Packaging/verify.py", "Packaging/install.py",
+                 "Perf/check-convfloat-loaders.py", "Perf/convfloat-loader-library.c"]:
+        fingerprints[name] = sha(ROOT / name)
     for name in ["Src/psh_version.h", "Packaging/elf.py", "Packaging/version.py"]:
         fingerprints[name] = sha(ROOT / name)
     for name in ["Packaging/compiler.py", "Packaging/train-compiler.py", "Perf/compiler-training.zsh",

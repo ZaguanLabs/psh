@@ -17,7 +17,9 @@ limited differences; it is not a test-pass quota or an established measurement.
   highlighter, and test genuine ZLE/completion/history/prompt/async behavior.
   Startup success alone does not establish this requirement.
 - Run `Packaging/verify.py verify` before activation. It includes the required
-  OMZ terminal gate. `Packaging/verify.py ohmyzsh --build PATH` can refresh that
+  OMZ terminal gate and native-library compatibility gate. Native evidence can
+  be refreshed with `Packaging/verify.py native-loaders --build PATH`.
+  `Packaging/verify.py ohmyzsh --build PATH` can refresh OMZ
   evidence for an existing release, including rollback candidates. The
   privileged installer consumes matching evidence; framework code runs only
   under the normal user.

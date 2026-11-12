@@ -12,7 +12,7 @@
       "LICENCE": "623516dcce9c72c4d5818632a1db7916c16bb656068c95d01a07797629597524",
       "Makefile": "85a4b63f6792168838e02c16be4c658383efc49608daae6d15107328a96d8461",
       "README.md": "64a62bd6d67eeeec9b5eb016512ae89d8de9e584bcc381aa6c8444a6951f484b",
-      "Src/Modules/zdraw.c": "abf0f8cce19c60dd7beb999ecb9cf2bd0acc9c70bc5999be82c9f37635e2d97b",
+      "Src/Modules/zdraw.c": "765cc6c0bd54232fbb233233b61293996ffbc0dfdb3f0a72ca77b699dc6f2ffc",
       "Src/Modules/zdraw.mdd": "f7c49d9ccf36e059b6db2fb95cb32217b680455125dc77b6d6c995b2a973f695",
       "Src/Modules/zdraw_grapheme.h": "0c1175df26635b98337765ed0abfb58f821e6292830a4d1cd386cfec732d2a08",
       "Src/Modules/zdraw_grapheme_data.h": "b3b99f1f786398985263f0a308957670cf2636af1d3182e53ede499a306d7699",
@@ -460,6 +460,13 @@
         "upstream_sha256": "765cc6c0bd54232fbb233233b61293996ffbc0dfdb3f0a72ca77b699dc6f2ffc",
         "patched_sha256": "abf0f8cce19c60dd7beb999ecb9cf2bd0acc9c70bc5999be82c9f37635e2d97b",
         "description": "Independent conditional float-locale acknowledgment; no custom standard printf handlers or printf interposition."
+      },
+      {
+        "name": "withdraw-float-locale-awareness",
+        "file": "Src/Modules/zdraw.c",
+        "upstream_sha256": "abf0f8cce19c60dd7beb999ecb9cf2bd0acc9c70bc5999be82c9f37635e2d97b",
+        "patched_sha256": "765cc6c0bd54232fbb233233b61293996ffbc0dfdb3f0a72ca77b699dc6f2ffc",
+        "description": "Withdraw thread-locale formatting acknowledgment after libc plugin regressions; original formatter is restored."
       }
     ]
   },
@@ -539,7 +546,7 @@
       "src/http_sessions.c": "13b287f7ab86d6c57d5f10f067d453347c68c0f0d1adfd77bd247e233ccd9937",
       "src/polling.c": "141a9d1d5340d75010e264620c092fbe01e6cf786757120ce2341147169d4d6a",
       "src/websocket.c": "2f2b1a25278dec91fbeaf42bf8d7b7969b57100d63258106f318b2cd3a5999d9",
-      "src/zcurl.c": "f8e321289738f7a76d9261e8ce401cdaa157ae7ccf3baa2a99394cf0da87c4f9",
+      "src/zcurl.c": "83cd55d500aa6217eb71aa62b6806382d45634782a91f7f87dea45c0344d379a",
       "tests/api.zsh": "e8ea816a3b07c91f86c79cad1f9025a188fd6bcad0832e771566e1a02fd363fa",
       "tests/completion.py": "3742f89167df84813be69ab66475d1720ccd3d17499b3e14053d3e44de3f4e18",
       "tests/compression.py": "70f88b5e08325c4c027386d41f68a23945982d457c19dd744256730fb43a6876",
@@ -593,6 +600,13 @@
         "upstream_sha256": "83cd55d500aa6217eb71aa62b6806382d45634782a91f7f87dea45c0344d379a",
         "patched_sha256": "f8e321289738f7a76d9261e8ce401cdaa157ae7ccf3baa2a99394cf0da87c4f9",
         "description": "Independent conditional float-locale acknowledgment; no custom standard printf handlers or printf interposition."
+      },
+      {
+        "name": "withdraw-float-locale-awareness",
+        "file": "src/zcurl.c",
+        "upstream_sha256": "f8e321289738f7a76d9261e8ce401cdaa157ae7ccf3baa2a99394cf0da87c4f9",
+        "patched_sha256": "83cd55d500aa6217eb71aa62b6806382d45634782a91f7f87dea45c0344d379a",
+        "description": "Withdraw thread-locale formatting acknowledgment after libc plugin regressions; original formatter is restored."
       }
     ]
   },
@@ -620,7 +634,7 @@
       "src/grapheme_data.h": "e749d79dc5b784cac074945d41b417715e56167f05678bcb9043dd91303a54c5",
       "src/render.c": "d91014df5799180a0a7dccd127eaa6d90b834e32e3d0c573417682e111ab9880",
       "src/render.h": "c250c1deb0e06355208b47223be5a7d0587c79165c9bc745cd3f230e78a5b861",
-      "src/zmdown.c": "bc9ec6cd7e9f189a016dc07d2b17ac2a1c069e42ba62b8e0dada3d87658b32f3",
+      "src/zmdown.c": "9b8a3bd988bd1dff455a858c3ec449072683598b54adb02f9e50a25a210a42f0",
       "src/zmdown.mdd": "d4cbda18a703c39918293a7fe8ddcc63387ac459f524015763419fd50d48b5c7",
       "tests/benchmark.c": "f3660bbadc1f5c1864f3a1bafecc60b9e9fab7b777611b1cea460544b99c4915",
       "tests/conformance.py": "7b9e01ba0c2af6b6484ece5f0af338a45c7fcf6e7a84ab1b0c0d7612adcf7cd3",
@@ -664,6 +678,13 @@
         "upstream_sha256": "9b8a3bd988bd1dff455a858c3ec449072683598b54adb02f9e50a25a210a42f0",
         "patched_sha256": "bc9ec6cd7e9f189a016dc07d2b17ac2a1c069e42ba62b8e0dada3d87658b32f3",
         "description": "Independent conditional float-locale acknowledgment; no custom standard printf handlers or printf interposition."
+      },
+      {
+        "name": "withdraw-float-locale-awareness",
+        "file": "src/zmdown.c",
+        "upstream_sha256": "bc9ec6cd7e9f189a016dc07d2b17ac2a1c069e42ba62b8e0dada3d87658b32f3",
+        "patched_sha256": "9b8a3bd988bd1dff455a858c3ec449072683598b54adb02f9e50a25a210a42f0",
+        "description": "Withdraw thread-locale formatting acknowledgment after libc plugin regressions; original formatter is restored."
       }
     ]
   },

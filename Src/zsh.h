@@ -1524,7 +1524,7 @@ struct module {
 #define MOD_ALIAS   (1<<6)
 /* Explicit native opt-in: notify promotions of live parameter scope levels. */
 #define PSH_SCOPE_INDEX_VERSION 1
-/* Independent opt-in: preserve standard floating printf conversions. */
+/* Retained SDK API: the withdrawn locale optimization always reports off. */
 #define PSH_FLOAT_LOCALE_VERSION 1
 
 typedef int (*Module_generic_func) (void);

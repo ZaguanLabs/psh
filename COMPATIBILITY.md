@@ -82,47 +82,27 @@ remain in `Vendor/sources.json`.
 This change introduces no intended Zsh language divergence. Coverage, limits
 and the unchanged-framework evidence are recorded in [round 35](Perf/round35.md).
 
-## Float formatting and native opt-in
+## Withdrawn thread-locale float formatting
 
-Round 39 adds a guarded thread-local C locale for queued, string-only
-`convfloat()` calls. Precision rules, libc conversion, spelling of special
-values and resulting shell text remain unchanged. FILE output, unqueued calls,
-existing private thread locales, missing locale APIs and locale API failures
-retain the original global-locale sequence. The original thread locale and
-`errno` are restored before the caller can release its existing signal queue.
+Round 40 withdraws the round-39 output optimization. The complete original
+`convfloat()` sequence is restored, including the temporary global LC_NUMERIC
+change and restoration. Native printf handlers keep their original thread and
+global locale observations, including handlers introduced by libc plugins.
+The module-only acknowledgment policy could not establish process-wide safety.
 
-**Existing native modules require no formatting-related changes.** Unknown
-native code can register handlers for standard printf formats; those callbacks
-must retain their original global and thread locale context. Fast formatting
-is suspended before native constructors. Unacknowledged or failed loads disable
-it permanently for that process, including after unload. Preload/audit markers
-are captured before startup files run and also select the legacy converter.
-This affects performance, not language behavior or module load compatibility.
+The five optional `psh_float_*` exports introduced during private development
+remain available so already-built SDK clients still load. `PSH_FLOAT_LOCALE_VERSION`
+remains defined as API availability; `psh_float_locale_tracking()` always returns
+zero. Acknowledgment, disable and loader begin/end functions are inert. No
+thread-locale fast path can be enabled through them. Scope indexing retains its
+separate active protocol and original behavior. Public Module layouts are unchanged.
+The three bundled native modules no longer acknowledge formatting safety; their
+recorded patch history retains both the experiment and its withdrawal.
 
-An audited module can acknowledge this independent capability during setup:
-
-```c
-#ifdef PSH_FLOAT_LOCALE_VERSION
-    psh_float_module_ack(m);
-#endif
-```
-
-Only acknowledge when the module and its dependencies do not install callbacks
-or interposition for the standard floating printf conversions or expose the
-temporary formatting locale to native observers. Call
-`psh_float_locale_disable()` before introducing such behavior or running
-unreviewed native code. Omit acknowledgment when that guarantee is uncertain.
-Scope-index acknowledgment does not grant this capability, and formatting
-acknowledgment does not grant scope-index capability. Both registries are private;
-public Module structures and flag ownership stay unchanged. Source builds
-against ordinary Zsh headers remain possible through the conditional macro;
-modules using the new optional exports require the matching psh core/SDK.
-
-`psh_float_locale_tracking()` reports policy eligibility; individual converter
-calls can still use the original path. The three bundled native modules carry
-separately recorded conditional acknowledgments in `Vendor/sources.json`.
-See [round 39](Perf/round39.md) for the rejected callback-breaking prototype,
-native oracle, failure injection, memory checks and customer measurements.
+[Round 40](Perf/round40.md) records the native gconv and explicit ELF-preload
+reproducers, the withdrawal and new mandatory native-library compatibility gate.
+[Round 39](Perf/round39.md) remains a historical experiment with its measured gains
+and earlier tests; those gains are withdrawn from the current development build.
 
 ## Required Oh My Zsh gate
 
@@ -249,10 +229,10 @@ queries retain scanning and the caller's signal-delivery boundaries.
 
 ## What has and has not been checked
 
-The [source-review map](Perf/audit.md) describes focused coverage. Twenty-eight
+The [source-review map](Perf/audit.md) describes focused coverage. Twenty-seven
 accepted optimizations change a limited set of core paths: arrays/subscripts,
 metafied strings, character scanning, terminal-star matching, substitution and
-arithmetic, option emulation, local-parameter cleanup and float formatting. This is not a completed
+arithmetic, option emulation and local-parameter cleanup. This is not a completed
 audit of the complete interpreter.
 
 Evidence includes upstream scripts, byte-for-byte differential results, native

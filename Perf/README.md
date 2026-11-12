@@ -1,8 +1,31 @@
 # Local performance workflow
 
+## Round 40: native loaders and formatter withdrawal
+
+[Round 40](round40.md) withdraws the round-39 shortcut after libc plugins and
+explicit ELF preloading bypassed its module guard. The current converter uses
+the original locale sequence. The core optimization count is again 27;
+compiler-profile improvements remain. The five optional SDK exports are inert,
+and `psh_float_locale_tracking()` always returns zero.
+
+```sh
+python3 Perf/check-convfloat-loaders.py --candidate /path/to/psh \
+  --reference /path/to/pristine/zsh --output .work/logs/native-loaders.json
+```
+
+The fixture is compiled and run as the normal user, without changing system
+configuration. On the tested GNU/Linux host it covers seven cases, comparing
+reference/candidate outputs and proving whether the plugin actually loaded.
+Non-GNU libc is explicitly classified as unsupported; absent locales produce
+recorded skips. ELF preload cases require a GNU loader with `--preload` support.
+`Packaging/verify.py verify` includes this gate, and activation consumes matching
+binary/runner/fixture evidence. `Packaging/verify.py native-loaders --build PATH`
+refreshes it for an existing release or rollback candidate.
+
 ## Round 39: native float output and conservative fallback
 
-[Round 39](round39.md) investigates `convfloat()` on the optimized release,
+[Round 39](round39.md) is a withdrawn historical experiment. It investigates
+`convfloat()` on the optimized release,
 including a rejected custom-printf callback regression and the independent
 native formatting acknowledgment. `check-convfloat.py` compiles an oracle module
 for each host's SDK and compares the pristine converter's complete output and
@@ -14,15 +37,16 @@ python3 Perf/check-convfloat.py /path/to/old/psh /path/to/new/psh \
   --candidate-headers-build /path/to/new/core --candidate-headers-source . \
   --output .work/logs/float-output.json
 python3 Perf/check-convfloat-policy.py /path/to/new/psh \
-  --headers-build /path/to/new/core --output .work/logs/float-policy.json
+  --headers-build /path/to/new/core --retired --output .work/logs/float-policy.json
 ```
 
 The full oracle covers five global locales and three thread-locale contexts.
 `--quick`, repeated `--locale`, and `--memcheck` permit smaller checks. Production
-builds intentionally select the legacy converter under Valgrind's LD_PRELOAD.
-The separate diagnostic recipe and positive API-failure counters in the round's
-evidence distinguish fast-path memory checks from exact-release fallback checks.
-Do not enable the compile-time diagnostic preload bypass in distribution builds.
+builds now always use the original converter, including under Memcheck.
+The round-39 diagnostic recipe and positive API-failure counters describe only
+that historical experiment. Its preload bypass and thread-locale fast path
+have been removed from the current core. Omit `--retired` only when testing
+the historical round-39 native policy.
 
 `convfloat-printf-module.c` reproduces a genuine standard-printf extension using
 an older SDK; it deliberately does not acknowledge formatting safety.

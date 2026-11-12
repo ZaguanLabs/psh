@@ -46,6 +46,24 @@ def check_ohmyzsh(build, omz_root):
             "theme": evidence["theme"], "configured_plugins": evidence["configured_plugins"]}
 
 
+def check_native_loaders(build):
+    work = Path(build["work"])
+    report = work / "native-loaders.json"
+    log = work / "logs/native-loaders.log"
+    shell = Path(build["prefix"]) / "bin/psh"
+    with log.open("wb") as out:
+        result = subprocess.run(["python3", str(ROOT / "Perf/check-convfloat-loaders.py"),
+                                 "--candidate", str(shell), "--output", str(report)],
+                                stdout=out, stderr=subprocess.STDOUT, timeout=120)
+    if result.returncode:
+        raise RuntimeError(f"native library compatibility gate failed; see {log}")
+    evidence = json.loads(report.read_text())
+    assert evidence["passed"] and evidence["binary_sha256"]["candidate"] == sha(shell)
+    return {"passed": True, "report": str(report), "report_sha256": sha(report),
+            "supported": evidence["supported"], "observations": len(evidence["runs"]),
+            "skips": evidence["skips"]}
+
+
 def startup(shell):
     with tempfile.TemporaryDirectory(prefix="psh-startup-") as directory:
         home = Path(directory)
@@ -99,7 +117,7 @@ def startup(shell):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["snapshot", "stage-modules", "verify", "ohmyzsh"])
+    parser.add_argument("action", choices=["snapshot", "stage-modules", "verify", "ohmyzsh", "native-loaders"])
     parser.add_argument("--build", type=Path, default=ROOT / ".work/package/latest.json")
     parser.add_argument("--ohmyzsh-root", type=Path, default=Path.home() / ".oh-my-zsh")
     args = parser.parse_args()
@@ -115,6 +133,10 @@ def main():
     if args.action == "ohmyzsh":
         evidence = check_ohmyzsh(b, args.ohmyzsh_root)
         print(f"Required Oh My Zsh gate passed: {evidence['sessions']} interactive sessions")
+        return
+    if args.action == "native-loaders":
+        evidence = check_native_loaders(b)
+        print(f"Native library compatibility gate passed: {evidence['observations']} observations")
         return
     reports = {name: json.loads((work / f"test-{name}.json").read_text()) for name in SUITES}
     shell = prefix / "bin/psh"
@@ -247,6 +269,7 @@ done < /proc/$$/maps
     if components.returncode != 0:
         raise RuntimeError(f"installed component tests failed; see {component_log}")
     startup_result = startup(shell)
+    native_loaders = check_native_loaders(b)
     omz_result = check_ohmyzsh(b, args.ohmyzsh_root)
     receipt = {"passed": True, "release": b["release"], "payload_manifest": expected,
                "shell_sha256": sha(shell), "native_sha256": {name: sha(file) for name, file in tested.items()},
@@ -254,6 +277,7 @@ done < /proc/$$/maps
                "login_shell_unchanged": True, "mapped_modules": mapped, "startup": startup_result,
                "stock_modules_preserved": sorted(stable_modules),
                "ohmyzsh": omz_result,
+               "native_loaders": native_loaders,
                "installed_component_tests": "file hashes, relative dependencies and change-gutter PTY rendering passed"}
     if b.get("project_version"):
         receipt.update(project_version=b["project_version"], zsh_version=b["zsh_version"],
@@ -267,6 +291,7 @@ done < /proc/$$/maps
     print(startup_result)
     print("Installed zdraw components: source loading and native change-gutter rendering passed")
     print(f"Oh My Zsh: {omz_result['sessions']} interactive sessions passed")
+    print(f"Native library compatibility: {native_loaders['observations']} observations passed")
     print("Validation receipt:", work / "validation.json")
 
 

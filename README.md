@@ -16,8 +16,8 @@ guide optimization priorities; project kernels and controls accompany focused
 shell benchmarks.
 
 The `rc1` development branch remains unpublished while further investigation
-continues. Its latest work targets [float-formatting locale overhead](Perf/round39.md)
-with explicit native-code fallback and expanded compatibility checks.
+continues. Its latest [native-library audit](Perf/round40.md) withdraws an unsafe float-formatting
+experiment and adds compatibility checks for libc plugins and ELF preloading.
 
 ```sh
 git clone git@github.com:ZaguanLabs/psh.git

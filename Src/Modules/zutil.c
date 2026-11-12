@@ -2046,7 +2046,6 @@ int
 setup_(UNUSED(Module m))
 {
     psh_scope_module_ack(m);
-    psh_float_module_ack(m);
     zstyletab = newzstyletable(17, "zstyletab");
 
     return 0;

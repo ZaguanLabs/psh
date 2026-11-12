@@ -18,6 +18,20 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def validated_native_loaders(work, shell):
+    report = work / "native-loaders.json"
+    if not report.is_file():
+        raise RuntimeError("missing native library evidence; run Packaging/verify.py native-loaders as your normal user")
+    evidence = json.loads(report.read_text())
+    if (not evidence.get("passed")
+            or evidence.get("binary_sha256", {}).get("candidate") != sha(shell)
+            or evidence.get("shells", {}).get("candidate") != str(shell.resolve())
+            or evidence.get("driver_sha256") != sha(ROOT / "Perf/check-convfloat-loaders.py")
+            or evidence.get("library_source_sha256") != sha(ROOT / "Perf/convfloat-loader-library.c")):
+        raise RuntimeError("native library evidence is failed, stale or selects another shell; rerun Packaging/verify.py native-loaders")
+    return evidence
+
+
 def manifest(folder):
     entries = {}
     for p in sorted(folder.rglob("*")):
@@ -110,6 +124,7 @@ def main():
             raise RuntimeError("release has no passing validation receipt")
         if manifest(prefix) != expected or receipt["payload_manifest"] != expected:
             raise RuntimeError("release differs from the tested payload")
+        validated_native_loaders(work, prefix / "bin/psh")
         # Run framework code only in the unprivileged verifier. Activation
         # consumes its evidence and binds it to this exact installed shell.
         omz_file = work / "ohmyzsh.json"

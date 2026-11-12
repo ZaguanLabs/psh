@@ -227,3 +227,14 @@ exports preserve public Module layouts and ordinary-header source builds.
 Package, upstream, broader differential and 24 unchanged OMZ sessions pass;
 customer measurements and the same-executable fallback control are retained.
 rc1 publication remains on hold.
+
+[Round forty](round40.md) follows native loading outside `zmodload`. A private
+Latin-1 gconv plugin and explicit ELF preloading reproduce changed standard
+printf callback context in the round-39 candidate, including after clearing a
+loader marker. The thread-locale shortcut is withdrawn and the original converter
+restored. Five optional SDK symbols remain inert for binary compatibility;
+scope indexing and compiler profiles are unchanged. A mandatory unprivileged
+native-library gate binds activation evidence to the candidate and test sources.
+The optimization count returns to 27. Earlier measurements and receipts are
+retained as historical records; the faulty candidate's local activation receipt
+is revoked. Public rc1 publication remains on hold.

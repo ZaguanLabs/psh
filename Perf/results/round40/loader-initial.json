@@ -1,0 +1,89 @@
+[
+  {
+    "host": "pristine",
+    "case": "late-codec",
+    "status": 0,
+    "stdout": "A\n1.2500\n",
+    "stderr": "",
+    "loaded": false,
+    "command": [
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "-dfc",
+      "LC_CTYPE=ISO-8859-1; printf '%b\\n' '\\u0041'; typeset -F 4 value=1.25; print -r -- \"$value\""
+    ]
+  },
+  {
+    "host": "pristine",
+    "case": "direct-preload",
+    "status": 0,
+    "stdout": "global:C.\n",
+    "stderr": "",
+    "loaded": true,
+    "command": [
+      "/lib64/ld-linux-x86-64.so.2",
+      "--preload",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/gconv/pshcodec.so",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "-dfc",
+      "typeset -F 4 value=1.25; print -r -- \"$value\""
+    ]
+  },
+  {
+    "host": "prior",
+    "case": "late-codec",
+    "status": 0,
+    "stdout": "A\n1.2500\n",
+    "stderr": "",
+    "loaded": false,
+    "command": [
+      "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+      "-dfc",
+      "LC_CTYPE=ISO-8859-1; printf '%b\\n' '\\u0041'; typeset -F 4 value=1.25; print -r -- \"$value\""
+    ]
+  },
+  {
+    "host": "prior",
+    "case": "direct-preload",
+    "status": 0,
+    "stdout": "global:C.\n",
+    "stderr": "",
+    "loaded": true,
+    "command": [
+      "/lib64/ld-linux-x86-64.so.2",
+      "--preload",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/gconv/pshcodec.so",
+      "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+      "-dfc",
+      "typeset -F 4 value=1.25; print -r -- \"$value\""
+    ]
+  },
+  {
+    "host": "round39",
+    "case": "late-codec",
+    "status": 0,
+    "stdout": "A\n1.2500\n",
+    "stderr": "",
+    "loaded": false,
+    "command": [
+      "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+      "-dfc",
+      "LC_CTYPE=ISO-8859-1; printf '%b\\n' '\\u0041'; typeset -F 4 value=1.25; print -r -- \"$value\""
+    ]
+  },
+  {
+    "host": "round39",
+    "case": "direct-preload",
+    "status": 0,
+    "stdout": "private:C.UTF-8\n",
+    "stderr": "",
+    "loaded": true,
+    "command": [
+      "/lib64/ld-linux-x86-64.so.2",
+      "--preload",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/gconv/pshcodec.so",
+      "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+      "-dfc",
+      "typeset -F 4 value=1.25; print -r -- \"$value\""
+    ]
+  }
+]

@@ -136,6 +136,25 @@ are published only after successful validation. Activation appends exactly
 `/usr/local/bin/psh` to `/etc/shells`, preserving the existing entries and saving
 a backup. It refuses unrelated existing public entries.
 
+Verification also runs the native-library compatibility gate as the normal
+user. It compares libc codec loading and explicit ELF preloading against system
+Zsh using a compiled fixture in the build's private directory. No system loader,
+NSS, locale or startup configuration is edited. Activation requires a passing
+report matching the candidate binary and current test sources. The tested host
+supports all seven cases; unavailable locale/interface coverage is recorded
+explicitly. See [round 40](../Perf/round40.md).
+
+Existing safe releases, including rollback candidates, can refresh this evidence:
+
+```sh
+python3 Packaging/verify.py native-loaders --build /path/to/build.json
+```
+
+The round-39 thread-locale formatter candidate is withdrawn after confirmed
+native callback regressions. Its earlier successful tests remain historical
+evidence; it is not an activation or release candidate. Compiler-profile gains
+and all 27 preceding core optimizations remain in development.
+
 Oh My Zsh is now a required compatibility gate for private development and
 activation. The normal-user verifier tests the checkout at `~/.oh-my-zsh`, with
 the literal theme/plugin choices and numeric history limits from `.zshrc`, plus its configured syntax

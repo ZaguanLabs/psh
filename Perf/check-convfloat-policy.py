@@ -12,6 +12,8 @@ def main():
     parser.add_argument("shell", type=Path)
     parser.add_argument("--headers-build", type=Path, required=True)
     parser.add_argument("--headers-source", type=Path, default=Path("."))
+    parser.add_argument("--retired", action="store_true",
+                        help="require the withdrawn locale-borrowing capability to stay off")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -30,6 +32,8 @@ def main():
             ("opaque", [], 0),
             ("failed", ["SCOPE", "FLOAT", "FAIL"], 0)]:
         scope_expected = int("SCOPE" in defines and "FAIL" not in defines)
+        if args.retired:
+            expected = 0
         state = f"{expected}:{scope_expected}"
         directory = folder / label
         directory.mkdir(exist_ok=True)
@@ -91,7 +95,8 @@ def main():
                           preload_sha256=sha(preload), source_sha256=sha(preload_source)))
         print(marker, "capture before startup passed", flush=True)
     assert inputs == {str(p): sha(Path(p)) for p in inputs}
-    args.output.write_text(json.dumps(dict(passed=True, inputs=inputs, cases=cases), indent=2) + "\n")
+    args.output.write_text(json.dumps(dict(passed=True, retired=args.retired,
+        inputs=inputs, cases=cases), indent=2) + "\n")
 
 
 if __name__ == "__main__":

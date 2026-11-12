@@ -38,11 +38,10 @@ struct scope_module_entry {
 };
 struct scope_load_frame {
     struct scope_load_frame *previous;
-    Module module, acknowledged, float_acknowledged;
+    Module module, acknowledged;
     int paused;
 };
 static struct scope_module_entry *scope_modules;
-static struct scope_module_entry *float_modules;
 static struct scope_load_frame *scope_load_frame;
 
 static void
@@ -51,7 +50,6 @@ scope_module_pause(void)
     if (scope_load_frame && !scope_load_frame->paused) {
 	scope_load_frame->paused = 1;
 	psh_scope_native_begin();
-	psh_float_native_begin();
     }
 }
 
@@ -83,34 +81,6 @@ scope_module_remember(Module m)
     return 1;
 }
 
-static int
-float_module_known(Module m)
-{
-    struct scope_module_entry *entry;
-    for (entry = float_modules; entry; entry = entry->next)
-        if (entry->module == m && entry->handle == m->u.handle)
-            return 1;
-    return 0;
-}
-
-static int
-float_module_remember(Module m)
-{
-    int saved_errno = errno;
-    struct scope_module_entry *entry;
-    if (float_module_known(m))
-        return 1;
-    entry = (struct scope_module_entry *)malloc(sizeof(*entry));
-    errno = saved_errno;
-    if (!entry)
-        return 0;
-    entry->module = m;
-    entry->handle = m->u.handle;
-    entry->next = float_modules;
-    float_modules = entry;
-    return 1;
-}
-
 /* Called under the loader's original queue, before any pending signal trap. */
 static void
 scope_module_leave(int ret)
@@ -123,11 +93,6 @@ scope_module_leave(int ret)
         if (aware)
             aware = scope_module_remember(m);
         psh_scope_native_end(aware);
-        aware = ret != 1 && m && m->u.handle &&
-            (frame->float_acknowledged == m || float_module_known(m));
-        if (aware)
-            aware = float_module_remember(m);
-        psh_float_native_end(aware);
     }
     scope_load_frame = frame->previous;
 }
@@ -137,15 +102,12 @@ scope_module_forget(Module m)
 {
     int saved_errno = errno;
     struct scope_module_entry **link = &scope_modules;
-    struct scope_module_entry **float_link = &float_modules;
     struct scope_load_frame *frame;
     for (frame = scope_load_frame; frame; frame = frame->previous) {
 	if (frame->module == m)
 	    frame->module = NULL;
 	if (frame->acknowledged == m)
 	    frame->acknowledged = NULL;
-	if (frame->float_acknowledged == m)
-	    frame->float_acknowledged = NULL;
     }
     while (*link) {
 	struct scope_module_entry *entry = *link;
@@ -154,14 +116,6 @@ scope_module_forget(Module m)
 	    free(entry);
 	} else
 	    link = &entry->next;
-    }
-    while (*float_link) {
-        struct scope_module_entry *entry = *float_link;
-        if (entry->module == m) {
-            *float_link = entry->next;
-            free(entry);
-        } else
-            float_link = &entry->next;
     }
     errno = saved_errno;
 }
@@ -444,7 +398,6 @@ int
 setup_(UNUSED(Module m))
 {
     psh_scope_module_ack(m);
-    psh_float_module_ack(m);
     return 0;
 }
 
@@ -2344,15 +2297,6 @@ psh_scope_module_ack(Module m)
 	scope_load_frame->acknowledged = m;
 }
 
-/* Separate capability: scope acknowledgment never grants formatting trust. */
-/**/
-mod_export void
-psh_float_module_ack(Module m)
-{
-    if (scope_load_frame && scope_load_frame->module == m)
-        scope_load_frame->float_acknowledged = m;
-}
-
 /**/
 mod_export int
 load_module(char const *name, Feature_enables enablesarr, int silent)
@@ -2383,7 +2327,7 @@ load_module_tracked_body(char const *name, Feature_enables enablesarr, int silen
      */
     queue_signals();
     frame->previous = scope_load_frame;
-    frame->module = frame->acknowledged = frame->float_acknowledged = NULL;
+    frame->module = frame->acknowledged = NULL;
     frame->paused = 0;
     scope_load_frame = frame;
     if (!(m = find_module(name, FINDMOD_ALIASP, &name))) {
@@ -3831,4 +3775,11 @@ autofeatures(const char *cmdnam, const char *module, char **features,
     }
 
     return ret;
+}
+
+/* Retain the optional SDK symbol; thread-locale float formatting is retired. */
+/**/
+mod_export void
+psh_float_module_ack(UNUSED(Module m))
+{
 }
