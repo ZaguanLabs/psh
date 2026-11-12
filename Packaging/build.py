@@ -11,6 +11,7 @@ import subprocess
 
 from elf import split_symbols
 from version import versions
+from compiler import compile_core, compiler_flags, compiler_identity
 
 ROOT = Path(__file__).resolve().parent.parent
 PROJECT_VERSION, VERSION = versions(ROOT)
@@ -41,6 +42,8 @@ def main():
     parser.add_argument("--symbols", choices=["split", "embedded"], default="split")
     parser.add_argument("--profile", choices=["release", "debug"], default="release",
                         help="release disables Zsh debug assertions; debug enables them (symbols are independent)")
+    parser.add_argument("--optimization", choices=["standard", "lto", "pgo", "pgo-lto"], default="standard",
+                        help="compiler optimization experiment; default retains the ordinary release flags")
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error("--jobs must be positive")
@@ -56,9 +59,14 @@ def main():
     fingerprints["LICENSE"] = sha(ROOT / "LICENSE")
     for name in ["Src/psh_version.h", "Packaging/elf.py", "Packaging/version.py"]:
         fingerprints[name] = sha(ROOT / name)
+    for name in ["Packaging/compiler.py", "Packaging/train-compiler.py", "Perf/compiler-training.zsh",
+                 "Perf/application-workload.zsh"]:
+        fingerprints[name] = sha(ROOT / name)
     debug_assertions = args.profile == "debug"
-    settings = {"symbols": args.symbols, "cflags": "-O2 -g", "ldflags": "-g", "profile": args.profile,
-                "debug_assertions": debug_assertions}
+    configured_cflags, configured_ldflags = compiler_flags(args.optimization)
+    settings = {"symbols": args.symbols, "cflags": configured_cflags, "ldflags": configured_ldflags, "profile": args.profile,
+                "debug_assertions": debug_assertions, "optimization": args.optimization,
+                "compiler": compiler_identity()}
     digest = hashlib.sha256(json.dumps({"sources": fingerprints, "settings": settings},
                                       sort_keys=True).encode()).hexdigest()[:12]
     release = f"{PROJECT_VERSION}-{digest}"
@@ -99,11 +107,7 @@ def main():
                  "--enable-additional-fpath=/usr/local/psh/site-functions"]
     # Otherwise release configure defaults add -s at link time, before the
     # separate debugger file can be created. Symbols do not require DEBUG.
-    env = dict(os.environ, CFLAGS="-O2 -g", LDFLAGS="-g")
-    with (logs / "configure.log").open("wb") as out:
-        subprocess.run(configure, cwd=core, env=env, stdout=out,
-                       stderr=subprocess.STDOUT, check=True)
-    run(["make", f"-j{args.jobs}"], core, logs / "core-build.log")
+    cflags, ldflags, training = compile_core(ROOT, core, work, configure, args.jobs, args.optimization)
     run(["make", "install", f"DESTDIR={stage}"], core, logs / "core-stage.log")
     payload = stage / prefix.relative_to("/")
     raw_shell_sha256 = sha(core / "Src/zsh")
@@ -119,9 +123,14 @@ def main():
     modules = payload / "lib/psh" / VERSION
     functions = payload / "share/psh" / VERSION / "functions"
     scripts = payload / "share/psh" / VERSION / "scripts"
+    # Compiler experiments must not replace another host's native-module cache.
+    curl_source = work / "zcurl-source"
+    for name in sources["zcurl"]["files"]:
+        if name == "Makefile" or name.startswith("src/"):
+            copy(ROOT / "Vendor/zcurl" / name, curl_source / name)
     run(["make", "all", f"ZSH_SRC={core}", "CFLAGS=-O2 -g"],
-        ROOT / "Vendor/zcurl", logs / "zcurl-build.log")
-    copy(ROOT / "Vendor/zcurl/build/zcurl.so", modules / "zcurl.so")
+        curl_source, logs / "zcurl-build.log")
+    copy(curl_source / "build/zcurl.so", modules / "zcurl.so")
     runtime = {"zjson": ["zjson.zsh", "lib"], "zhtml2md": ["zhtml2md.zsh", "lib", "data"],
                "zoup": ["functions", "bin"],
                "zdraw": ["lib", "VERSION", "examples/components"],
@@ -189,6 +198,12 @@ def main():
         f"  {key}) printf '%s\\n' '{value}' ;;\n" for key, value in values.items()) +
         "  *) echo 'Usage: psh-config [--prefix|--version|--zsh-version|--build-id|--module-dir|--function-dir|--script-dir|--headers-root|--mandir]' >&2; exit 2 ;;\nesac\n")
     config.chmod(0o755)
+    # Python-created parent directories inherit the caller's umask. A 0002
+    # umask otherwise leaves e.g. share/psh/5.9.2 group-writable, which compaudit
+    # correctly rejects even when functions/ itself was installed with 0755.
+    # Tighten only distribution directories; never alter source or user paths.
+    for directory in [payload, *(p for p in payload.rglob("*") if p.is_dir() and not p.is_symlink())]:
+        directory.chmod(directory.stat().st_mode & 0o7777 & ~0o022)
     build = {"release": release, "prefix": str(prefix), "work": str(work), "core": str(core),
              "project_version": PROJECT_VERSION, "zsh_version": VERSION,
              "settings": settings, "raw_shell_sha256": raw_shell_sha256,
@@ -197,7 +212,9 @@ def main():
              "debug_file_sha256": sha(payload / debug_file) if debug_file else None,
              "runtime_sections": runtime_sections,
              "stage": str(stage), "payload": str(payload), "configure": configure,
-             "cflags": "-O2 -g", "core_source_sha256": fingerprints,
+             "cflags": cflags, "ldflags": ldflags, "compiler_training": training,
+             "payload_directory_policy": "remove group/other write permissions independent of caller umask",
+             "core_source_sha256": fingerprints,
              "vendor_commits": {name: row["commit"] for name, row in sources.items()},
              "zjson_autoload_functions": sorted(public)}
     (work / "build.json").write_text(json.dumps(build, indent=2) + "\n")

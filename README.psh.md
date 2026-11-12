@@ -1,5 +1,11 @@
 # psh — Performance SHell
 
+The `rc1` development branch adds compiler optimization experiments, full scene
+construction benchmarks, stateful differential coverage and safe completion
+directory permissions under a group-writable umask. Published rc0 is retained
+unchanged. See [the packaging guide](Packaging/README.md) for optional PGO builds
+and [the performance workflow](Perf/README.md) for the new checks.
+
 For the public rc0 introduction and quick start, see the
 [project overview](.github/README.md) and [release notes](Releases/1.0.0-rc0.md).
 This file retains the detailed development history.

@@ -1,4 +1,4 @@
-# Compatibility policy for psh 1.0.0-rc0
+# Compatibility policy for psh 1.0.0-rc1 development
 
 psh aims for meaningful performance gains on **Zsh 5.9.2** while preserving
 existing behavior by default. Existing scripts working unchanged is the normal
@@ -20,6 +20,20 @@ Passing tests establishes coverage, not universal proof for every plugin,
 future update or platform. Undocumented or accidental behavioral differences
 remain bugs, including those found outside the author's projects. Memory
 corruption and unsafe ownership are never accepted as compatibility tradeoffs.
+
+## rc1 build and test changes
+
+rc1 retains rc0's core-language and native ownership contracts. Its optional
+compiler profiles change code generation, not those contracts. PGO trains on
+checked bundled offline workloads; LTO is a separate experiment. The ordinary
+compiler profile remains available, and all profiles require the existing
+native-module and unchanged-OMZ gates. New stateful differential sequences
+exercise mutation, scope and post-error recovery across long-lived processes.
+
+Package staging now removes group/other write permissions from distribution
+directories even under a `0002` umask. This prevents insecure completion parents;
+the security checks, personal startup files and system Zsh permissions remain
+unchanged. Published rc0 source and release assets are retained intact.
 
 ## Parameter-scope index and native opt-in
 
@@ -137,7 +151,7 @@ controls introduce no installed language, module or ownership difference.
 
 | Surface | Difference and practical consequence |
 | --- | --- |
-| Program identity | Version/help text identifies psh; `psh --version` reports `psh 1.0.0-rc0 (zsh 5.9.2)`. Invocation names naturally affect `$0`, `$ZSH_NAME` and some diagnostic prefixes. Tools parsing the old `zsh --version` format need to use `$ZSH_VERSION` or `psh-config --zsh-version`. |
+| Program identity | Version/help text identifies psh; this branch's `psh --version` reports `psh 1.0.0-rc1 (zsh 5.9.2)`. Invocation names naturally affect `$0`, `$ZSH_NAME` and some diagnostic prefixes. Tools parsing the old `zsh --version` format need to use `$ZSH_VERSION` or `psh-config --zsh-version`. |
 | Language identity | `$ZSH_VERSION` remains `5.9.2`. There is no new reserved `PSH_VERSION` shell parameter. Project versioning does not replace the upstream version used by scripts and module paths. |
 | Global startup | Global startup files live under `/usr/local/psh/etc`, separately from the system Zsh configuration. Personal `.zshenv`, `.zshrc`, `.zprofile`, `.zlogin` and `.zlogout` names retain their meaning. A setup depending on system global startup content may need equivalent psh configuration. |
 | Functions and modules | Default paths are private, versioned psh paths. Bundled stock modules keep their `zsh/*` names and base version. The six added packages provide additional autoload names. Inherited `FPATH`, and user assignments to `fpath` or `module_path`, retain their usual effects. |
@@ -233,11 +247,11 @@ that fails under psh deserves investigation even when every existing test passes
 
 ## RC and promotion policy
 
-The project version remains `1.0.0-rc0` through preparation of the first public
-candidate. Source commit, build digest and binary hashes distinguish development
-iterations. The initial private tag/draft, earlier source artifacts and installed
-builds are historical checkpoints and must be retained when the public tag is
-prepared. The public tag, `SOURCE-INFO.json` and attached archive must identify
+Public rc0 is released; this branch prepares `1.0.0-rc1`. Source commit, build
+digest and binary hashes distinguish development iterations. The initial private
+tag/draft is retained at `archive/private-v1.0.0-rc0`, and the public rc0 tag and
+assets remain immutable. Earlier source artifacts and installed builds are
+historical checkpoints. Each public tag, `SOURCE-INFO.json` and attached archive must identify
 the same source commit. Public release tags and source archives are immutable;
 fixes after public release get a new candidate/version. Wider
 testing and reported regressions inform promotion to 1.0.0. The RC label is not

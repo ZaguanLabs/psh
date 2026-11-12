@@ -1,5 +1,41 @@
 # Local performance workflow
 
+## rc1: scene coverage and compiler experiments
+
+`scene-benchmark.py` measures full fresh construction through the customer's
+actual z3dfx.drawing sources. It invokes the selected binaries directly, uses no
+scene cache, alternates host order, excludes one warmup per host, and compares
+the complete palette and material/depth pixel output. Construction and whole
+process times are separate. Native module directories can be selected explicitly:
+
+```sh
+python3 Perf/scene-benchmark.py /path/to/rc0/psh /path/to/candidate/psh \
+  --project /path/to/z3dfx.drawing --samples 5 --cpu 13 \
+  --output .work/logs/scenes.json
+```
+
+The six cases are Alpine Vigil, Moonlit Vigil, Faerie Pool, Profile Study,
+Per Arne and Emerald Rings. Source, worker, driver, executable and selected native
+module fingerprints are retained. These are scene construction results, not
+cached-launch, frame-rate or network measurements. `scene-workload.zsh` also
+accepts `zprof` as its third argument for a separate function-profile run.
+
+`stateful-compare.py REFERENCE CANDIDATE --output PATH` generates and retains
+eight reproducible 1,000-step mutation sequences, comparing each under C and
+C.UTF-8. It checks complete array/scalar/associative state, dynamic scope,
+redeclare/unset operations, namespace growth and arithmetic-error recovery,
+including exact diagnostics and exit status. `--seed`, `--steps`, `--locale`
+and `--memcheck` allow focused reproduction. This adds stateful coverage to the
+existing targeted/native suites; it is not a general Zsh grammar fuzzer or a
+proof of compatibility. The report remains `passed: false` until all cases pass.
+
+Complete compiler candidates are built using `Packaging/build.py
+--optimization standard|lto|pgo|pgo-lto`; see the packaging guide. Bundled training
+leaves scene and simulation workloads held out. Keep builds, tests and profilers
+finished before timing; retain slower cases and repeat the selected candidate.
+
+## Core development builds
+
 `build.py` builds an immutable-source baseline and the working-tree candidate
 with identical `-O2 -g`, multibyte support and Zsh debug assertions. Compiler
 and configure output is retained under `.work/logs/`. The candidate is published

@@ -5,8 +5,8 @@ It retains `ZSH_VERSION=5.9.2`, `zsh/*` module identities, native package names,
 and the usual personal startup filenames. It does not replace the system Zsh,
 alter personal startup files, or change the account's login shell.
 
-The current project version is **1.0.0-rc0**. `psh --version` reports
-`psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
+This development branch prepares **1.0.0-rc1**. `psh --version` reports
+`psh 1.0.0-rc1 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
 The [current maintenance iteration](../Perf/round37.md) records the validated
@@ -27,7 +27,7 @@ subsequent repair and its installed-package regression tests.
 | `/usr/local/bin/psh` | Public executable, through `current` |
 | `/usr/local/bin/psh-config` | Discover this release's package and SDK paths |
 | `/usr/local/psh/current` | Active release symlink |
-| `/usr/local/psh/releases/1.0.0-rc0-<digest>/bin/psh` | Versioned executable |
+| `/usr/local/psh/releases/1.0.0-rc1-<digest>/bin/psh` | Versioned executable |
 | `<release>/lib/psh/5.9.2/` | `zdraw.so`, `zcurl.so`, `zmdown.so`, and stock `zsh/*.so` |
 | `<release>/share/psh/5.9.2/functions/` | Stock functions, completions, and package autoloads |
 | `<release>/share/psh/5.9.2/scripts/` | Package libraries, data, documentation, and licences |
@@ -69,6 +69,42 @@ is created. Native modules retain the exact bytes exercised by their suites.
 The separate debug file is installed too, so this reduces executable size rather
 than promising an equivalent reduction in total installation space.
 
+### Compiler optimization profiles
+
+The ordinary build retains `--optimization standard`. GCC users can build a
+separate profile-guided candidate with:
+
+```sh
+python3 Packaging/build.py --optimization pgo
+```
+
+This performs an instrumented build, executes checked offline core and bundled
+JSON workloads, then cleans and rebuilds with the resulting profile. It does
+not source personal startup files, access services or use the customer's scene
+projects for training. Training modules, gcov data, input hashes, compiler
+identity and logs remain in the candidate's private work directory. Existing
+work directories and profiles are never silently reused. Training/configuration
+failures stop the build; they do not silently produce an untrained release.
+
+PGO currently requires GCC with `-fprofile-partial-training` support. Unexecuted
+functions and optional modules retain ordinary compiler heuristics; missing
+optional-module profiles are recorded in `training.json`. Core training data is
+required for execution, parameters, arithmetic, strings, patterns and allocation.
+Configure probes use ordinary flags so unrelated `conftest` programs cannot
+contaminate profile data. The final executable has no profiling instrumentation.
+
+`--optimization lto` and `--optimization pgo-lto` are also available for measured
+compiler experiments. They are separate choices, not automatic promises of
+better performance. The build digest records the compiler, profile and flags.
+Every choice still needs the same package and unchanged-OMZ verification before
+activation. Standalone zcurl builds use a private source copy instead of
+overwriting the shared Vendor build cache.
+
+Staged distribution directories have group/other write permissions removed,
+including parents of `functions/`, regardless of the invoking umask. This keeps
+completion security auditing effective under both `0022` and `0002`; it never
+changes permissions on personal files, source directories or the stable Zsh.
+
 Use the private installer below for installation. The retained upstream
 `make install` target follows configure's Zsh defaults and can target a Zsh
 installation; it is not the psh installation workflow.
@@ -108,6 +144,11 @@ unrelated startup programs are not sourced. All framework/theme/plugin files
 remain unchanged; update checks are disabled only in those test sessions and
 completion security auditing stays enabled. Use `--ohmyzsh-root PATH` with the
 verifier to select another checkout.
+
+The inherited-`FPATH` profile runs even when the launcher does not export
+`FPATH`: the gate obtains the reference shell's default function path in that
+case. Switching the test launcher from Zsh to Bash cannot silently remove this
+coverage.
 
 Activation refuses missing, failed, stale or different-executable OMZ evidence.
 Only the unprivileged verifier executes framework code. Refresh the gate for an

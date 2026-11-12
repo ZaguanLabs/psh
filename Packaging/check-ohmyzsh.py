@@ -252,8 +252,17 @@ def main():
     binary_hashes = {k: sha(p) for k, p in shells.items()}
     profiles = [("configured", plugins, False, None), ("configured-login", plugins, True, None),
                 ("extended", list(dict.fromkeys(plugins + ["git", "gitfast", "z", "extract", "sudo", "history-substring-search"])), False, None)]
-    if "FPATH" in os.environ:
-        profiles.append(("configured-inherited-fpath", plugins, False, os.environ["FPATH"]))
+    inherited_fpath = os.environ.get("FPATH")
+    if inherited_fpath is None:
+        # Coverage must not depend on whether the test launcher happens to be
+        # an interactive Zsh exporting FPATH (Bash normally does not).
+        probe = subprocess.run([str(shells["reference"]), "-dfc", 'print -r -- "${(j.:.)fpath}"'],
+                               env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"},
+                               capture_output=True, text=True, timeout=30)
+        if probe.returncode or probe.stderr or not probe.stdout.strip():
+            raise RuntimeError("could not obtain reference fpath for the inherited-path gate")
+        inherited_fpath = probe.stdout.strip()
+    profiles.append(("configured-inherited-fpath", plugins, False, inherited_fpath))
     rows = []
     with tempfile.TemporaryDirectory(prefix="psh-omz-") as temporary:
         scratch = Path(temporary)

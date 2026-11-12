@@ -23,10 +23,11 @@ limited differences; it is not a test-pass quota or an established measurement.
   under the normal user.
 - Keep the stable Zsh installation, personal startup files and account login
   shell untouched. Install psh only through its isolated packaging workflow.
-- Keep the project version `1.0.0-rc0` until public release. Distinguish private
-  iterations using commits, build digests and binary hashes. Retain historical
-  artifacts and the existing tag/draft checkpoint. Do not publish or change
-  repository visibility without an explicit instruction.
+- Prepare `1.0.0-rc1` on the development branch. Published rc0 tags and source
+  archives are immutable. Distinguish development iterations using commits,
+  build digests and binary hashes. Retain historical artifacts and the archived
+  private tag/draft checkpoint. Do not publish or change repository visibility
+  without an explicit instruction.
 
 ## Performance and compatibility work
 

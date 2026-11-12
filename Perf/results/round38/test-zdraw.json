@@ -1,0 +1,40 @@
+{
+  "release": "1.0.0-rc1-b0850020f4a1",
+  "shell": "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+  "shell_sha256": "b4a7f2a25a7b2fca5bd6c63b2b620aa5e9591a8805e8406b9b33f65c1c4c2a32",
+  "FPATH_unset": true,
+  "environment": {
+    "PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/test-bin:/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "ZSH_TEST_SHELL": "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+    "ZSH_BIN": "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+    "ZSH_BUILD_ROOT": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/core",
+    "ZHTML2MD_TEST_ZSH": "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh"
+  },
+  "runs": [
+    {
+      "command": [
+        "make",
+        "clean"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw",
+      "overrides": {},
+      "status": 0,
+      "seconds": 0.032,
+      "log": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/logs/test-zdraw-0.log"
+    },
+    {
+      "command": [
+        "make",
+        "test",
+        "ZSH_BIN=/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zdraw",
+      "overrides": {},
+      "status": 0,
+      "seconds": 423.977,
+      "log": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-b0850020f4a1/logs/test-zdraw-1.log"
+    }
+  ],
+  "passed": true
+}
