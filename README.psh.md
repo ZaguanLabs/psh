@@ -396,3 +396,9 @@ less time and use about 16% less peak RSS; retained-function qualifiers take
 including small slowdowns, and the binary grows by 4 KiB. Cached and text-only
 customer loading now have separate measurement evidence. All package, OMZ and
 native-library gates pass; the candidate remains inactive.
+
+[Round 47](Perf/round47.md) updates bundled zdraw to 0.1.4 and corrects an
+inherited stock-curses readback buffer overflow. The upstream style-resolution
+improvements and ncurses safety probe are retained; psh's existing conditional
+scope-cooperation hook is the only local zdraw patch. The core optimization
+count stays at 30. This development candidate remains inactive.

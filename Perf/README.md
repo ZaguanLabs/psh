@@ -1410,3 +1410,20 @@ caller locals and name reuse under Memcheck. `scope-load-signal-module.c`
 supports the signal-unload lifecycle test; these are isolated test modules,
 not additions to the installed shell's builtins. The SDK cooperation contract
 and fallback are documented in [COMPATIBILITY.md](../COMPATIBILITY.md).
+
+[Round forty-seven](round47.md) integrates zdraw 0.1.4 and fixes an inherited
+stock-curses readback buffer overflow. Reproduce the focused PTY regression:
+
+```sh
+python3 Perf/check-curses-querychar.py --shell /path/to/release/bin/psh \
+  --modules /path/to/release/lib/psh/5.9.2 --memcheck \
+  --output .work/logs/querychar.json
+python3 Perf/zdraw-components-benchmark.py /path/to/old/release /path/to/new/release \
+  --samples 9 --frames 30 --cpu 13 --output .work/logs/zdraw-components.json
+```
+
+Use matching installed modules and libraries. The benchmark compares complete
+cell snapshots, terminal output and resource state across all 28 cases; it
+records component work separately from staging and presentation. Do not run
+builds, tests or profilers alongside timing. The earlier release intentionally
+fails the querychar attribute oracle; retain that result when checking the fix.

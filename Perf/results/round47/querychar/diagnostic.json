@@ -1,0 +1,21 @@
+{
+  "command": [
+    "gcc",
+    "-O2",
+    "-g",
+    "-fPIC",
+    "-shared",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/Modules",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/querychar/single-wchar-diagnostic.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/querychar/diagnostic/zsh/curses.so",
+    "-lncursesw",
+    "-ltinfo"
+  ],
+  "scope": "original querychar single-wchar capacity moved to an exact heap allocation solely to expose its object boundary to Memcheck; not an unchanged-stock Valgrind run",
+  "source_sha256": "2c5cb478a7bc0c3ae2b0e03cbbb1fd733e0fc2818b97c1c198acdf18efd613c1"
+}

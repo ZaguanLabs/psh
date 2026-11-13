@@ -281,3 +281,10 @@ Strict optional-stack compile checks, three-host Memcheck, upstream/bundled,
 unchanged OMZ and native-library checks pass. The investigation also separates
 existing bytecode caches from private source-only customer loading and guards
 both source and cache metadata. See [round 46](round46.md); no activation occurs.
+
+Round forty-seven reviews stock `zccmd_querychar()`'s wide-character destination
+capacity while integrating zdraw 0.1.4. A full-cell allocation corrects an
+inherited overflow without changing the first-character interface. PTY
+attribute/color/Unicode cases, a seeded stock-versus-zdraw oracle and native
+lifecycle checks are described in [round 47](round47.md). This does not certify
+other curses helpers or runtime behavior on older ncurses installations.

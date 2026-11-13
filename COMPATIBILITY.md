@@ -35,6 +35,23 @@ directories even under a `0002` umask. This prevents insecure completion parents
 the security checks, personal startup files and system Zsh permissions remain
 unchanged. Published rc0 source and release assets are retained intact.
 
+## Bundled zdraw 0.1.4 screen safety
+
+The bundled module probes whether the linked curses library can delete one
+screen without freeing another screen's windows. Fixed or backported libraries
+retain screen coexistence. If that probe fails, `zdraw init` returns failure
+while another curses screen is retained, before allocating a new screen; it
+preserves the other owner's state and emits a diagnostic. For example, a
+`zcurses init; zcurses end; zdraw init` sequence can reach this guard because
+ending curses mode does not delete the retained stock screen.
+
+Use a separate process or a library with the fix when coexistence is required
+on an affected host. This is the upstream module's safety fix, not a core Zsh
+language change or a version-number-based ban. This host passes the probe;
+the package suite also tests a forced guard variant. An older ncurses runtime
+has not been substituted locally. See [round 47](Perf/round47.md) and the
+[zdraw build guide](Vendor/zdraw/docs/building.md).
+
 ## Parameter-scope index and native opt-in
 
 Round 35 adds a private bitmap for buckets that may contain local parameters.
@@ -237,6 +254,15 @@ Zsh functionality. Public native layouts and the existing function interface
 remain unchanged. The [reproducer and scope](Perf/bugs/hash-getter-reentry.md)
 include the observed before/after results and limitations; arbitrary table
 destruction or growth during callbacks is not certified by this fix.
+
+## Stock curses character readback
+
+The wide-character `zcurses querychar` implementation inherited from Zsh 5.9.2
+passed a single `wchar_t` to an API that writes a terminated string. psh now
+allocates the complete cell buffer while continuing to return its first
+character. This corrects memory corruption and observed attribute loss in an
+earlier psh build; it is not a deliberate incompatibility or native ABI change.
+See the [reproducer and evidence limits](Perf/bugs/curses-querychar.md).
 
 ## What has and has not been checked
 

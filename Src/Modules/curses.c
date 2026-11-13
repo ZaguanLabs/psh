@@ -1434,7 +1434,7 @@ zccmd_querychar(const char *nam, char **args)
     LinkList clist;
 #if defined(HAVE_WIN_WCH) && defined(HAVE_GETCCHAR)
     attr_t attrs;
-    wchar_t c;
+    wchar_t *c;
     cchar_t cc;
     int count;
     VARARR(char, instr, 2*MB_CUR_MAX+1);
@@ -1455,7 +1455,13 @@ zccmd_querychar(const char *nam, char **args)
     if (win_wch(w->win, &cc) == ERR)
 	return 1;
 
-    if (getcchar(&cc, &c, &attrs, &cp, NULL) == ERR)
+    /* getcchar writes a terminated string, including combining marks.
+     * Keep the first-character result, but provide room for the full cell. */
+    count = getcchar(&cc, NULL, NULL, NULL, NULL);
+    if (count <= 0)
+	return 1;
+    c = (wchar_t *)zhalloc(count * sizeof(wchar_t));
+    if (getcchar(&cc, c, &attrs, &cp, NULL) == ERR)
 	return 1;
     /* only overwrite with workaround if we do get 0, the winch method
      * is limited to 256 color pairs */
@@ -1463,7 +1469,7 @@ zccmd_querychar(const char *nam, char **args)
 	/* Hmmm... I always get 0 for cp, whereas the following works... */
 	cp = PAIR_NUMBER(winch(w->win));
 
-    count = wctomb(instr, c);
+    count = wctomb(instr, c[0]);
     if (count == -1)
 	return 1;
     (void)metafy(instr, count, META_NOALLOC);

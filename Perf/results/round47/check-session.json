@@ -1,0 +1,79 @@
+[
+  {
+    "name": "snapshot",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "snapshot",
+      "--build",
+      ".work/package/1.0.0-rc1-1d2a092078fb/build.json"
+    ],
+    "status": 0,
+    "seconds": 1.2655062675476074
+  },
+  {
+    "name": "install",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "candidate",
+      "--build",
+      ".work/package/1.0.0-rc1-1d2a092078fb/build.json"
+    ],
+    "status": 0,
+    "seconds": 0.2640964984893799
+  },
+  {
+    "name": "package-test",
+    "command": [
+      "python3",
+      "Packaging/test.py",
+      "--build",
+      ".work/package/1.0.0-rc1-1d2a092078fb/build.json",
+      "--jobs",
+      "1"
+    ],
+    "status": 0,
+    "seconds": 589.3890981674194
+  },
+  {
+    "name": "stage",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "stage-modules",
+      "--build",
+      ".work/package/1.0.0-rc1-1d2a092078fb/build.json"
+    ],
+    "status": 0,
+    "seconds": 0.06372857093811035
+  },
+  {
+    "name": "refresh",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "refresh-modules",
+      "--build",
+      ".work/package/1.0.0-rc1-1d2a092078fb/build.json"
+    ],
+    "status": 0,
+    "seconds": 0.2640419006347656
+  },
+  {
+    "name": "verify",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "verify",
+      "--build",
+      ".work/package/1.0.0-rc1-1d2a092078fb/build.json"
+    ],
+    "status": 0,
+    "seconds": 9.177454233169556
+  }
+]
