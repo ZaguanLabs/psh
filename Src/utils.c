@@ -4516,8 +4516,13 @@ arrdup_max(char **s, unsigned max)
     char **x, **y, **send;
     int len = 0;
 
-    if (max)
+    /* A bounded copy needs no information about the remaining suffix.
+     * Keep the existing full-length path for oversized native limits. */
+    if (max > INT_MAX)
 	len = arrlen(s);
+    else
+	while ((unsigned)len < max && s[len])
+	    len++;
 
     /* Limit has sense only if not equal to len */
     if (max > len)

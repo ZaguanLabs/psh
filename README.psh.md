@@ -108,7 +108,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The development source now includes twenty-eight accepted optimizations.
+The development source now includes twenty-nine accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -138,7 +138,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-development source includes all twenty-eight changes; the fourth experiment compares against
+development source includes all twenty-nine changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -381,3 +381,10 @@ Repeated 10,000-file long-qualifier measurements use about 19% less peak residen
 memory and take 17–19% less time; customer kernels remain effectively flat.
 Escaping functions/traps and old-header native callers pass focused checks,
 alongside the package, OMZ and native-library gates. The candidate is inactive.
+
+The [twenty-ninth accepted change](Perf/round45.md) bounds the scan preceding an
+array slice copy by the number of elements requested. Repeated release tests
+show 7–8% less time in the real zjson object parser and 4–5% less in zcoder/zchat
+ASCII layout. The native API and deep-copy ownership are unchanged. Full-copy
+costs and about 2% slower URL/drawing controls remain documented. The candidate
+passes the package, OMZ and native-library gates and remains inactive.

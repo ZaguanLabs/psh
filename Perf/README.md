@@ -1,5 +1,27 @@
 # Local performance workflow
 
+## Round 45: bounded array-copy scans
+
+[Round 45](round45.md) stops `arrdup_max()`'s count at the requested limit.
+The real zjson object parser and zcoder/zchat ASCII layout improve in repeated
+release comparisons. Full-copy and application costs remain documented,
+including about 2% more time in the focused URL/drawing controls. The core
+optimization count is now 29; native signatures and ownership are unchanged.
+
+```sh
+python3 Perf/check-array-copy.py PRISTINE PREVIOUS CANDIDATE \
+  --headers-build PRISTINE_BUILD --headers-source PRISTINE_SOURCE \
+  --memcheck --output .work/logs/array-copy.json
+python3 Perf/array-copy-benchmark.py PREVIOUS_RELEASE CANDIDATE_RELEASE \
+  --samples 9 --cpu 13 --output .work/logs/array-copy-timing.json
+```
+
+The native fixture checks deep-copy ownership, interior pointers, exact-length
+vectors, empty strings and INT_MAX/UINT_MAX limits. The shell matrix retains
+negative, zero and out-of-range indices across emulations and array types.
+Run timers only after builds, tests and profilers finish; use the existing
+customer/application drivers alongside the focused copy timer.
+
 ## Round 44: temporary glob programs
 
 [Round 44](round44.md) adopts the upstream glob-program lifetime improvement

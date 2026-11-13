@@ -258,3 +258,13 @@ suite, bundled suites and OMZ/native gates pass; the concurrent file-lock timing
 failure is retained. Matched release measurements show lower RSS and elapsed
 time for large qualifier scans, with ordinary-glob/sort and customer controls.
 The optimization count becomes 28; publication and activation remain held.
+
+[Round forty-five](round45.md) follows `arrdup_max()` in the actual zjson object
+parser. Its full remaining-array count accounts for 9.8% of complete-process
+instructions. Counting only to the requested limit preserves allocation,
+duplication order and ownership, with oversized native limits on the original
+path. Native/slice matrices, upstream and bundled suites, OMZ and native-loader
+gates pass. Repeated application comparisons improve JSON object parsing and
+ASCII layout; full-copy costs and roughly 2% slower URL/drawing controls are
+retained. The optimization count becomes 29. Lexer scratch allocation remains
+a separate, unimplemented lead.

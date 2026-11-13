@@ -1,0 +1,157 @@
+{
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh"
+  ],
+  "binary_sha256": [
+    "95998d2dd8b1ee105777fc942d5bdfdb3239b64dd60e57f0b974f3569c6f4e77",
+    "46603868a3b9576e4ecc1cd79d35fb1aa49954fe66a61ab6f0234bdde524c0f4"
+  ],
+  "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+  "samples": 21,
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "C.UTF-8"
+  },
+  "cpu_affinity": [
+    13
+  ],
+  "cases": [
+    {
+      "case": "zfetch/fetch-encode",
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zfetch",
+      "source_sha256": {
+        "lib/config.zsh": "2d6c2d1f3bf97b0a25c225d13578d2d49fd495f01f0755907ca9b235bc2b6962",
+        "lib/http.zsh": "a732a68d4e89a812fdbf6e523c7b15b7172b81a50e71270cdf4a4a3d57b16e8a",
+        "lib/server.zsh": "ac8c8b9c489d19199899962857b0bc42a697e82f38dd43badf900220e4700670",
+        "lib/tools.zsh": "7bf0ad238ebc34dade85a70e3753686ead12887cbce8b7449e70daff98a32224"
+      },
+      "iterations": 3,
+      "samples_ms_per_batch": [
+        [
+          11.445,
+          11.549,
+          11.261000000000001,
+          11.657,
+          11.322000000000001,
+          11.298,
+          11.414,
+          11.372,
+          11.317,
+          11.225999999999999,
+          11.328,
+          11.297,
+          11.291,
+          11.311,
+          11.268,
+          11.411,
+          11.455,
+          11.309,
+          11.274,
+          11.386000000000001,
+          11.286
+        ],
+        [
+          11.507,
+          11.482,
+          11.506,
+          11.629999999999999,
+          11.613,
+          11.534,
+          11.605,
+          11.483,
+          11.485999999999999,
+          12.035,
+          11.568,
+          11.586,
+          11.502,
+          11.849,
+          11.868,
+          11.502,
+          11.58,
+          11.547,
+          11.511000000000001,
+          11.495999999999999,
+          11.491
+        ]
+      ],
+      "median_ms": [
+        11.317,
+        11.534
+      ],
+      "speedup": 0.981186058609329,
+      "state_sha256": "eba833dbb04b17d6d495177d868ab4a2bcb341c657e7f10df8effb6b34cd152d"
+    },
+    {
+      "case": "z3dfx.drawing/drawing-binning",
+      "project_root": "/home/stig/dev/challenge/z3dfx.drawing",
+      "source_sha256": {
+        "lib/brushwork.zsh": "71940db7cfe57f46a627573335720aff15667a44e97e52a7dae938f6802dac7f",
+        "lib/cache.zsh": "be16943428660a957e7624fb80bf808e945142c990170ee106ce193542ba0328",
+        "lib/details.zsh": "aa520fb7ec645c23e225759762c20fff6bf247e26e08d883f6d83b4c4750ac94",
+        "lib/native-painting.zsh": "58d0bf30219d66057f28528976783d9a97962b4dcdd338198d9ab32b0a0d308a",
+        "lib/paint.zsh": "b30c804f3fdf7233dde00ee61e57978a7d32b2d910db8c0f32fc346ab7eb9a9d",
+        "lib/painting.zsh": "2b4e9815c8b9c6ed04ff51e94edb5281f065efc1a6435fa50f64205b70380678",
+        "lib/runtime.zsh": "823919f5c1db0e8047ecb43f7e1199fd092f40832a618ddbbecf13741bea5275",
+        "lib/scene.zsh": "1d70b82e2b76fa255122dacfe049ecb6c115a99b990d7d9f8cbb9f69077ea576",
+        "lib/view.zsh": "193310f798db7eca3d72c7220d832a63b9d14f2eda09e28c4214d292d25e49f9"
+      },
+      "iterations": 3,
+      "samples_ms_per_batch": [
+        [
+          11.349,
+          11.386999999999999,
+          11.447000000000001,
+          11.370999999999999,
+          11.405999999999999,
+          11.357000000000001,
+          11.366,
+          11.431999999999999,
+          11.325999999999999,
+          11.344999999999999,
+          11.376000000000001,
+          11.349,
+          11.312,
+          11.466000000000001,
+          11.276,
+          11.446,
+          11.318,
+          11.360999999999999,
+          11.358,
+          11.349,
+          11.350999999999999
+        ],
+        [
+          11.825000000000001,
+          11.611,
+          11.632,
+          11.673,
+          11.620000000000001,
+          11.58,
+          11.624,
+          11.601,
+          11.603,
+          11.555,
+          11.6,
+          11.613999999999999,
+          11.546000000000001,
+          11.507,
+          11.540999999999999,
+          11.488,
+          11.549999999999999,
+          11.565000000000001,
+          11.596,
+          11.586,
+          11.530000000000001
+        ]
+      ],
+      "median_ms": [
+        11.358,
+        11.596
+      ],
+      "speedup": 0.9794756812694033,
+      "state_sha256": "aeb9d274b31e6046b8d5b0ca1c08a8c9341e4d357a94a4b6e2132a4f079ebcb8"
+    }
+  ]
+}
