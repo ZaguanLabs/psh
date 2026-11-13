@@ -268,3 +268,16 @@ gates pass. Repeated application comparisons improve JSON object parsing and
 ASCII layout; full-copy costs and roughly 2% slower URL/drawing controls are
 retained. The optimization count becomes 29. Lexer scratch allocation remains
 a separate, unimplemented lead.
+
+
+## Round 46: unused lexer scratch
+
+The actual release uses heap-backed VARARR storage. `exalias()` allocated it
+for every word but used it only for internal token markers. Lazy allocation
+preserves token-copy contents, lifetime, lookup order and pointer restoration.
+This becomes the 30th accepted core optimization: repeated large qualifiers
+use less memory/time, with small slower controls and 4 KiB binary growth retained.
+Strict optional-stack compile checks, three-host Memcheck, upstream/bundled,
+unchanged OMZ and native-library checks pass. The investigation also separates
+existing bytecode caches from private source-only customer loading and guards
+both source and cache metadata. See [round 46](round46.md); no activation occurs.

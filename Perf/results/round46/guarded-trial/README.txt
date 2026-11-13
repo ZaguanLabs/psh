@@ -1,0 +1,1 @@
+Guarded trial 884cfe71d8a3 superseded during focused checks: -Wall found always-true array-address warnings in the optional VLA configuration. Final source gives the original stack buffer a separate storage name and a pointer alias; the default heap path is unchanged. No timing or activation decision uses this trial.

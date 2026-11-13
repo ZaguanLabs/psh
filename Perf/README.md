@@ -1,5 +1,29 @@
 # Local performance workflow
 
+## Round 46: unused lexer scratch storage
+
+[Round 46](round46.md) allocates the lexer's heap scratch only for tokenized
+words. Repeated 10,000-file long qualifiers take 14–16% less time and use about
+16% less peak RSS; retained-function qualifiers take 24–27% less time and use
+about 35% less RSS. The 30th core optimization preserves token-copy lifetime,
+alias ordering and native interfaces. Slower customer controls and the 4 KiB
+binary increase remain documented; this is not a general application speedup.
+
+```sh
+python3 Perf/check-lexer-copy.py PRISTINE PREVIOUS CANDIDATE \
+  --memcheck --output .work/logs/lexer-copy.json
+python3 Perf/customer-process-benchmark.py PREVIOUS_RELEASE CANDIDATE_RELEASE \
+  --labs /path/to/labs --challenge /path/to/challenge --cpu 13 --samples 9 \
+  --output .work/logs/customer-process.json
+# Repeat with --source-only to use private text copies without altering caches.
+```
+
+The process timer records source and `.zwc` cache metadata. A fresh process can
+load compiled code instead of lexing source text; both loading modes compare
+complete results. Private text copies must match the current loaded workload.
+Keep warm-operation and whole-process timing scopes distinct, and run timings
+only after all builds, tests and profilers finish.
+
 ## Round 45: bounded array-copy scans
 
 [Round 45](round45.md) stops `arrdup_max()`'s count at the requested limit.

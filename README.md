@@ -49,7 +49,7 @@ For a shallow clone, fetch the baseline tag first:
 git fetch origin tag upstream/zsh-5.9.2
 ```
 
-- [Latest investigation: bounded array copies and application gains](Perf/round45.md)
+- [Latest investigation: lexer scratch memory and cache-aware measurements](Perf/round46.md)
 - [Current private rc0 optimization, measurements and installed build](Perf/round28.md)
 - [Release profile and binary-size details](Releases/rc0-release-profile.md)
 - [Oh My Zsh compatibility gate and fresh release-build profiles](Perf/round21.md)

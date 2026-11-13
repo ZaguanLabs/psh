@@ -1,0 +1,37 @@
+{
+  "syntax_checks": [
+    {
+      "mode": "vla",
+      "command": [
+        "gcc",
+        "-Wall",
+        "-Werror",
+        "-fsyntax-only",
+        "-DHAVE_CONFIG_H",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round46/stack-vla/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-884cfe71d8a3/core/Src",
+        "Src/lex.c"
+      ],
+      "status": 0,
+      "config_sha256": "46cdca3d4f1c870db859691f32291049fee18deec1a42e45d1abdde88a1748b4"
+    },
+    {
+      "mode": "alloca",
+      "command": [
+        "gcc",
+        "-Wall",
+        "-Werror",
+        "-fsyntax-only",
+        "-DHAVE_CONFIG_H",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round46/stack-alloca/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-884cfe71d8a3/core/Src",
+        "Src/lex.c"
+      ],
+      "status": 0,
+      "config_sha256": "3b63931e4a105daf909ae49d4674f35258b8df1479557b94589e6048f5ef3f8c"
+    }
+  ],
+  "default_preprocessed_identical_to_guarded_trial": true,
+  "preprocessed_sha256": "19dba8d35eaed249a8ac5f996d4770e8931fac44a29f3fb184129722fec67c93",
+  "source_sha256": "2dddca31b6ec6f100eddd16a2b67ec8b9665c904f27006afd494066897b1ab44"
+}
