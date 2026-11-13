@@ -238,3 +238,12 @@ native-library gate binds activation evidence to the candidate and test sources.
 The optimization count returns to 27. Earlier measurements and receipts are
 retained as historical records; the faulty candidate's local activation receipt
 is revoked. Public rc1 publication remains on hold.
+
+[Round forty-three](round43.md) backports upstream workers 55250/55251 after
+reproducing stale heap use in failed PATH-based sourcing and malformed-history
+loading. A 124-case differential matrix adds Zsh's allocator-aware Valgrind
+builds, keeping affected pristine and preceding-release controls. Full package,
+24 unchanged OMZ sessions and 14 native-library observations pass. A separate
+glob-program memory screen identifies a possible next target; its exported
+parser signature change is not adopted. Native interfaces and the optimization
+count remain unchanged.

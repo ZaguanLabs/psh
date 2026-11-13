@@ -1,0 +1,28 @@
+{
+  "pristine-heap": {
+    "configure": "$ ../pristine-heap-source/configure --enable-dynamic --enable-multibyte --disable-zsh-debug --enable-zsh-valgrind 'CFLAGS=-O2 -g' LDFLAGS=-g",
+    "binary_sha256": "6854e4c4db5b8e3067e8e8bb8453094e064d793091d54c242cb4ad0f0082c4a5",
+    "valgrind_enabled": true,
+    "source_sha256": {
+      "Src/hist.c": "acec946e646051ea9aafc7d4a41e4a584080cc513cc186550b3ea641ebdf6c4d",
+      "Src/builtin.c": "26efbac972c959441a1d35c2fdb4dc9fcc4a911ef862f2232f74ead050fc4181",
+      "Src/mem.c": "a198b5f9934ebde61984e781f08a4220c1234e5630b6aef9db153418bd46f24d"
+    }
+  },
+  "candidate-heap": {
+    "configure": "$ ../candidate-heap-source/configure --enable-dynamic --enable-multibyte --disable-zsh-debug --enable-zsh-valgrind 'CFLAGS=-O2 -g' LDFLAGS=-g",
+    "binary_sha256": "87b8829baa93c88c0bf25791d280ea193c3853a948ca17a169d063ec2cf36f96",
+    "valgrind_enabled": true,
+    "source_sha256": {
+      "Src/hist.c": "a9046653bfa3061f0360374bcf50493f28f208b253e20d5c5f596eda4aa1082c",
+      "Src/builtin.c": "fc6403676310b37dbb558024c45c94d22c0c58a013196ad4ee82f53af064946c",
+      "Src/mem.c": "a198b5f9934ebde61984e781f08a4220c1234e5630b6aef9db153418bd46f24d"
+    }
+  },
+  "compiler": "gcc (Mageia 15.2.0-1.mga10) 15.2.0",
+  "valgrind": "valgrind-3.24.0",
+  "upstream_oracle": {
+    "commit": "b13bbf2acadb79268311f3dd0683f93992ce69ba",
+    "binary_sha256": "2829a302486de50c115a93a686c577cb48471197d07449447a84e8b1ae2aa3d1"
+  }
+}

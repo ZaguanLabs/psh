@@ -1,0 +1,110 @@
+[
+  {
+    "kind": "history",
+    "host": "pristine",
+    "command": [
+      "valgrind",
+      "--quiet",
+      "--error-exitcode=97",
+      "--track-origins=yes",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "-dfc",
+      "fc -p \"$1/hist\" 100 0; fc -l -n; fc -P",
+      "probe",
+      "/tmp/psh-lifetime-probe-1xv33uc4"
+    ],
+    "status": 0,
+    "stdout": "echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "stderr": ""
+  },
+  {
+    "kind": "history",
+    "host": "accepted",
+    "command": [
+      "valgrind",
+      "--quiet",
+      "--error-exitcode=97",
+      "--track-origins=yes",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "-dfc",
+      "fc -p \"$1/hist\" 100 0; fc -l -n; fc -P",
+      "probe",
+      "/tmp/psh-lifetime-probe-1xv33uc4"
+    ],
+    "status": 0,
+    "stdout": "echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "stderr": ""
+  },
+  {
+    "kind": "history",
+    "host": "upstream",
+    "command": [
+      "valgrind",
+      "--quiet",
+      "--error-exitcode=97",
+      "--track-origins=yes",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-upstream/Src/zsh",
+      "-dfc",
+      "fc -p \"$1/hist\" 100 0; fc -l -n; fc -P",
+      "probe",
+      "/tmp/psh-lifetime-probe-1xv33uc4"
+    ],
+    "status": 0,
+    "stdout": "echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "stderr": ""
+  },
+  {
+    "kind": "source",
+    "host": "pristine",
+    "command": [
+      "valgrind",
+      "--quiet",
+      "--error-exitcode=97",
+      "--track-origins=yes",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "-dfc",
+      "path=(\"$1\"); source blocked; print -r -- status=$?",
+      "probe",
+      "/tmp/psh-lifetime-probe-1xv33uc4"
+    ],
+    "status": 0,
+    "stdout": "status=127\n",
+    "stderr": "zsh:source:1: permission denied: ztmp/pshslifetimh-probe-sxv33uc4oblockedu\n"
+  },
+  {
+    "kind": "source",
+    "host": "accepted",
+    "command": [
+      "valgrind",
+      "--quiet",
+      "--error-exitcode=97",
+      "--track-origins=yes",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "-dfc",
+      "path=(\"$1\"); source blocked; print -r -- status=$?",
+      "probe",
+      "/tmp/psh-lifetime-probe-1xv33uc4"
+    ],
+    "status": 0,
+    "stdout": "status=127\n",
+    "stderr": "zsh:source:1: permission denied: ztmp/pshslifetimh-probe-sxv33uc4oblockedu\n"
+  },
+  {
+    "kind": "source",
+    "host": "upstream",
+    "command": [
+      "valgrind",
+      "--quiet",
+      "--error-exitcode=97",
+      "--track-origins=yes",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-upstream/Src/zsh",
+      "-dfc",
+      "path=(\"$1\"); source blocked; print -r -- status=$?",
+      "probe",
+      "/tmp/psh-lifetime-probe-1xv33uc4"
+    ],
+    "status": 0,
+    "stdout": "status=127\n",
+    "stderr": "zsh:source:1: permission denied: /tmp/psh-lifetime-probe-1xv33uc4/blocked\n"
+  }
+]

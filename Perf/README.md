@@ -1,5 +1,25 @@
 # Local performance workflow
 
+## Round 43: history/source lifetimes
+
+[Round 43](round43.md) backports two existing upstream lifetime fixes and adds
+arena-aware checks against repaired upstream, pristine Zsh and preceding psh.
+Run as an ordinary user: the source cases deliberately create unreadable files.
+
+```sh
+python3 Perf/check-heap-lifetimes.py --reference UPSTREAM_FIXED \
+  --candidate CANDIDATE_RELEASE --baseline PREVIOUS_RELEASE \
+  --heap-reference PRISTINE_VALGRIND_BUILD \
+  --heap-candidate CANDIDATE_VALGRIND_BUILD \
+  --output .work/logs/heap-lifetimes.json
+```
+
+Both diagnostic builds require `--enable-zsh-valgrind`. The driver expects
+affected pristine negative controls, records raw output bytes and checks both
+C and C.UTF-8. It does not benchmark the instrumented binaries. Temporary glob
+program memory is screened separately; that upstream interface change is not
+adopted.
+
 ## Round 42: nested associative getters
 
 [Round 42](round42.md) fixes a native-getter reentrancy defect also reproduced

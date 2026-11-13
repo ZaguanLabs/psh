@@ -1,0 +1,95 @@
+commit 588b37fd70bb9bd42f9abbce4651e1e2dd1d43bd
+Author: Mikael Magnusson <mikachu@gmail.com>
+Date:   Sat Oct 10 01:29:44 2026 +0200
+
+    55203: Avoid accumulating eprog on heap for every file in qualsheval
+
+diff --git a/Src/exec.c b/Src/exec.c
+index b0794ab..4268fe2 100644
+--- a/Src/exec.c
++++ b/Src/exec.c
+@@ -283,9 +283,8 @@ static struct builtin commandbn =
+ 
+ /* parse string into a list */
+ 
+-/**/
+-mod_export Eprog
+-parse_string(char *s, int reset_lineno)
++static Eprog
++parse_string_internal(char *s, int reset_lineno, int heap)
+ {
+     Eprog p;
+     zlong oldlineno;
+@@ -296,7 +295,7 @@ parse_string(char *s, int reset_lineno)
+     oldlineno = lineno;
+     if (reset_lineno)
+ 	lineno = 1;
+-    p = parse_list();
++    p = parse_list(heap);
+     lineno = oldlineno;
+     if (tok == LEXERR && !lastval)
+ 	lastval = 1;
+@@ -306,6 +305,20 @@ parse_string(char *s, int reset_lineno)
+     return p;
+ }
+ 
++/**/
++mod_export Eprog
++parse_ztring(char *s, int reset_lineno)
++{
++    return parse_string_internal(s, reset_lineno, 0);
++}
++
++/**/
++mod_export Eprog
++parse_string(char *s, int reset_lineno)
++{
++    return parse_string_internal(s, reset_lineno, 1);
++}
++
+ /**/
+ #ifdef HAVE_GETRLIMIT
+ 
+diff --git a/Src/glob.c b/Src/glob.c
+index 0b516d2..7ba5860 100644
+--- a/Src/glob.c
++++ b/Src/glob.c
+@@ -3920,7 +3920,7 @@ qualsheval(char *name, UNUSED(struct stat *buf), UNUSED(off_t days), char *str)
+ {
+     Eprog prog;
+ 
+-    if ((prog = parse_string(str, 0))) {
++    if ((prog = parse_ztring(str, 0))) {
+ 	int ef = errflag, lv = lastval, ret;
+ 	int cshglob = badcshglob;
+ 
+@@ -3930,6 +3930,7 @@ qualsheval(char *name, UNUSED(struct stat *buf), UNUSED(off_t days), char *str)
+ 	badcshglob = 0;
+ 
+ 	execode(prog, 1, 0, "globqual");
++	freeeprog(prog);
+ 
+ 	if ((ret = lastval))
+ 	    badcshglob |= cshglob;
+diff --git a/Src/parse.c b/Src/parse.c
+index beb9be0..6f17cdd 100644
+--- a/Src/parse.c
++++ b/Src/parse.c
+@@ -694,7 +694,7 @@ par_event(int endtok)
+ 
+ /**/
+ mod_export Eprog
+-parse_list(void)
++parse_list(int heap)
+ {
+     int c = 0;
+ 
+@@ -708,7 +708,7 @@ parse_list(void)
+ 	yyerror(0);
+ 	return NULL;
+     }
+-    return bld_eprog(1);
++    return bld_eprog(heap);
+ }
+ 
+ /*
