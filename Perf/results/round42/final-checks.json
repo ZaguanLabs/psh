@@ -1,0 +1,109 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "package-final",
+      "command": [
+        "python3",
+        "Packaging/test.py",
+        "--build",
+        ".work/package/1.0.0-rc1-6db51a2527d4/build.json",
+        "--jobs",
+        "3"
+      ],
+      "status": 0,
+      "expected_status": 0
+    },
+    {
+      "name": "final-reference",
+      "command": [
+        "python3",
+        ".work/round42/final-reference.py"
+      ],
+      "status": 0,
+      "expected_status": 0
+    },
+    {
+      "name": "final-preceding",
+      "command": [
+        "python3",
+        ".work/round42/final-preceding.py"
+      ],
+      "status": 0,
+      "expected_status": 0
+    },
+    {
+      "name": "reentry-final-negative",
+      "command": [
+        "python3",
+        "Perf/check-hash-reentry-module.py",
+        ".work/public-rc0/reference/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--headers-source",
+        ".work/pristine",
+        "--memcheck",
+        "--output",
+        ".work/round42/reentry-final-negative.json"
+      ],
+      "status": 1,
+      "expected_status": 1
+    },
+    {
+      "name": "reentry-final-positive",
+      "command": [
+        "python3",
+        "Perf/check-hash-reentry-module.py",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--headers-source",
+        ".work/pristine",
+        "--memcheck",
+        "--output",
+        ".work/round42/reentry-final-positive.json"
+      ],
+      "status": 0,
+      "expected_status": 0
+    },
+    {
+      "name": "stage-final",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "stage-modules",
+        "--build",
+        ".work/package/1.0.0-rc1-6db51a2527d4/build.json"
+      ],
+      "status": 0,
+      "expected_status": 0
+    },
+    {
+      "name": "refresh-final",
+      "command": [
+        "sudo",
+        "-n",
+        "python3",
+        "Packaging/install.py",
+        "refresh-modules",
+        "--build",
+        ".work/package/1.0.0-rc1-6db51a2527d4/build.json"
+      ],
+      "status": 0,
+      "expected_status": 0
+    },
+    {
+      "name": "verify-final",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "verify",
+        "--build",
+        ".work/package/1.0.0-rc1-6db51a2527d4/build.json"
+      ],
+      "status": 0,
+      "expected_status": 0
+    }
+  ]
+}

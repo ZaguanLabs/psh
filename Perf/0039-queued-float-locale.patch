@@ -1,0 +1,672 @@
+diff --git a/Src/Modules/curses.c b/Src/Modules/curses.c
+index cb832bf..a4b5c29 100644
+--- a/Src/Modules/curses.c
++++ b/Src/Modules/curses.c
+@@ -1792,6 +1792,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/datetime.c b/Src/Modules/datetime.c
+index 9e62d4a..f6dcf78 100644
+--- a/Src/Modules/datetime.c
++++ b/Src/Modules/datetime.c
+@@ -270,6 +270,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/files.c b/Src/Modules/files.c
+index 2bb3cba..407b58f 100644
+--- a/Src/Modules/files.c
++++ b/Src/Modules/files.c
+@@ -838,6 +838,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/langinfo.c b/Src/Modules/langinfo.c
+index 9608dd1..ae355db 100644
+--- a/Src/Modules/langinfo.c
++++ b/Src/Modules/langinfo.c
+@@ -467,6 +467,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/mathfunc.c b/Src/Modules/mathfunc.c
+index bf2cbdb..dca457a 100644
+--- a/Src/Modules/mathfunc.c
++++ b/Src/Modules/mathfunc.c
+@@ -534,6 +534,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/param_private.c b/Src/Modules/param_private.c
+index 91b17eb..fea7a75 100644
+--- a/Src/Modules/param_private.c
++++ b/Src/Modules/param_private.c
+@@ -599,6 +599,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     HashNode hn = builtintab->getnode(builtintab, "local");
+ 
+     /* Horrible, horrible hack */
+diff --git a/Src/Modules/parameter.c b/Src/Modules/parameter.c
+index 3d6ed8c..86fe73e 100644
+--- a/Src/Modules/parameter.c
++++ b/Src/Modules/parameter.c
+@@ -2313,6 +2313,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/pcre.c b/Src/Modules/pcre.c
+index fc8c4f2..a237f08 100644
+--- a/Src/Modules/pcre.c
++++ b/Src/Modules/pcre.c
+@@ -466,6 +466,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/regex.c b/Src/Modules/regex.c
+index a155109..f344ec2 100644
+--- a/Src/Modules/regex.c
++++ b/Src/Modules/regex.c
+@@ -229,6 +229,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/stat.c b/Src/Modules/stat.c
+index 648522f..db13ea0 100644
+--- a/Src/Modules/stat.c
++++ b/Src/Modules/stat.c
+@@ -652,6 +652,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/system.c b/Src/Modules/system.c
+index 4744666..4c80ae4 100644
+--- a/Src/Modules/system.c
++++ b/Src/Modules/system.c
+@@ -906,6 +906,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/termcap.c b/Src/Modules/termcap.c
+index 4aded84..d9c18f9 100644
+--- a/Src/Modules/termcap.c
++++ b/Src/Modules/termcap.c
+@@ -336,6 +336,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/terminfo.c b/Src/Modules/terminfo.c
+index 7813a23..c1d6bc2 100644
+--- a/Src/Modules/terminfo.c
++++ b/Src/Modules/terminfo.c
+@@ -330,6 +330,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/zprof.c b/Src/Modules/zprof.c
+index 3069606..af27178 100644
+--- a/Src/Modules/zprof.c
++++ b/Src/Modules/zprof.c
+@@ -333,6 +333,7 @@ int
+ setup_(Module m)
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     zprof_module = m;
+     return 0;
+ }
+diff --git a/Src/Modules/zpty.c b/Src/Modules/zpty.c
+index 9512244..efe16b5 100644
+--- a/Src/Modules/zpty.c
++++ b/Src/Modules/zpty.c
+@@ -914,6 +914,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/zselect.c b/Src/Modules/zselect.c
+index d8e5478..664dbb3 100644
+--- a/Src/Modules/zselect.c
++++ b/Src/Modules/zselect.c
+@@ -292,6 +292,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Modules/zutil.c b/Src/Modules/zutil.c
+index 55d011d..6744413 100644
+--- a/Src/Modules/zutil.c
++++ b/Src/Modules/zutil.c
+@@ -2046,6 +2046,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     zstyletab = newzstyletable(17, "zstyletab");
+ 
+     return 0;
+diff --git a/Src/Zle/compctl.c b/Src/Zle/compctl.c
+index ef02cab..c89aa3f 100644
+--- a/Src/Zle/compctl.c
++++ b/Src/Zle/compctl.c
+@@ -4014,6 +4014,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     compctlreadptr = compctlread;
+     createcompctltable();
+     cc_compos.mask = CC_COMMPATH;
+diff --git a/Src/Zle/complete.c b/Src/Zle/complete.c
+index 45a9fb4..9dd40bc 100644
+--- a/Src/Zle/complete.c
++++ b/Src/Zle/complete.c
+@@ -1726,6 +1726,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     hasperm = 0;
+ 
+     comprpms = compkpms = NULL;
+diff --git a/Src/Zle/complist.c b/Src/Zle/complist.c
+index 8b62c39..f6600fb 100644
+--- a/Src/Zle/complist.c
++++ b/Src/Zle/complist.c
+@@ -3521,6 +3521,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/Zle/computil.c b/Src/Zle/computil.c
+index a2921ef..a1cb65e 100644
+--- a/Src/Zle/computil.c
++++ b/Src/Zle/computil.c
+@@ -5128,6 +5128,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     memset(cadef_cache, 0, sizeof(cadef_cache));
+     memset(cvdef_cache, 0, sizeof(cvdef_cache));
+ 
+diff --git a/Src/Zle/zle_main.c b/Src/Zle/zle_main.c
+index 0ec1d1c..5f1fe61 100644
+--- a/Src/Zle/zle_main.c
++++ b/Src/Zle/zle_main.c
+@@ -2215,6 +2215,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     char **bpaste;
+ 
+     /* Set up editor entry points */
+diff --git a/Src/Zle/zleparameter.c b/Src/Zle/zleparameter.c
+index e044ef6..13165b6 100644
+--- a/Src/Zle/zleparameter.c
++++ b/Src/Zle/zleparameter.c
+@@ -147,6 +147,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+diff --git a/Src/init.c b/Src/init.c
+index a0b39c1..096ad70 100644
+--- a/Src/init.c
++++ b/Src/init.c
+@@ -1718,6 +1718,8 @@ zsh_main(UNUSED(int argc), char **argv)
+ #ifdef USE_LOCALE
+     setlocale(LC_ALL, "");
+ #endif
++    /* Capture injected native code before startup files can unset its markers. */
++    (void)psh_float_locale_tracking();
+ 
+     init_jobs(argv, environ);
+ 
+diff --git a/Src/module.c b/Src/module.c
+index 0a5714e..ef5ce85 100644
+--- a/Src/module.c
++++ b/Src/module.c
+@@ -38,10 +38,11 @@ struct scope_module_entry {
+ };
+ struct scope_load_frame {
+     struct scope_load_frame *previous;
+-    Module module, acknowledged;
++    Module module, acknowledged, float_acknowledged;
+     int paused;
+ };
+ static struct scope_module_entry *scope_modules;
++static struct scope_module_entry *float_modules;
+ static struct scope_load_frame *scope_load_frame;
+ 
+ static void
+@@ -50,6 +51,7 @@ scope_module_pause(void)
+     if (scope_load_frame && !scope_load_frame->paused) {
+ 	scope_load_frame->paused = 1;
+ 	psh_scope_native_begin();
++	psh_float_native_begin();
+     }
+ }
+ 
+@@ -81,6 +83,34 @@ scope_module_remember(Module m)
+     return 1;
+ }
+ 
++static int
++float_module_known(Module m)
++{
++    struct scope_module_entry *entry;
++    for (entry = float_modules; entry; entry = entry->next)
++        if (entry->module == m && entry->handle == m->u.handle)
++            return 1;
++    return 0;
++}
++
++static int
++float_module_remember(Module m)
++{
++    int saved_errno = errno;
++    struct scope_module_entry *entry;
++    if (float_module_known(m))
++        return 1;
++    entry = (struct scope_module_entry *)malloc(sizeof(*entry));
++    errno = saved_errno;
++    if (!entry)
++        return 0;
++    entry->module = m;
++    entry->handle = m->u.handle;
++    entry->next = float_modules;
++    float_modules = entry;
++    return 1;
++}
++
+ /* Called under the loader's original queue, before any pending signal trap. */
+ static void
+ scope_module_leave(int ret)
+@@ -93,6 +123,11 @@ scope_module_leave(int ret)
+         if (aware)
+             aware = scope_module_remember(m);
+         psh_scope_native_end(aware);
++        aware = ret != 1 && m && m->u.handle &&
++            (frame->float_acknowledged == m || float_module_known(m));
++        if (aware)
++            aware = float_module_remember(m);
++        psh_float_native_end(aware);
+     }
+     scope_load_frame = frame->previous;
+ }
+@@ -102,12 +137,15 @@ scope_module_forget(Module m)
+ {
+     int saved_errno = errno;
+     struct scope_module_entry **link = &scope_modules;
++    struct scope_module_entry **float_link = &float_modules;
+     struct scope_load_frame *frame;
+     for (frame = scope_load_frame; frame; frame = frame->previous) {
+ 	if (frame->module == m)
+ 	    frame->module = NULL;
+ 	if (frame->acknowledged == m)
+ 	    frame->acknowledged = NULL;
++	if (frame->float_acknowledged == m)
++	    frame->float_acknowledged = NULL;
+     }
+     while (*link) {
+ 	struct scope_module_entry *entry = *link;
+@@ -117,6 +155,14 @@ scope_module_forget(Module m)
+ 	} else
+ 	    link = &entry->next;
+     }
++    while (*float_link) {
++        struct scope_module_entry *entry = *float_link;
++        if (entry->module == m) {
++            *float_link = entry->next;
++            free(entry);
++        } else
++            float_link = &entry->next;
++    }
+     errno = saved_errno;
+ }
+ 
+@@ -398,6 +444,7 @@ int
+ setup_(UNUSED(Module m))
+ {
+     psh_scope_module_ack(m);
++    psh_float_module_ack(m);
+     return 0;
+ }
+ 
+@@ -2297,6 +2344,15 @@ psh_scope_module_ack(Module m)
+ 	scope_load_frame->acknowledged = m;
+ }
+ 
++/* Separate capability: scope acknowledgment never grants formatting trust. */
++/**/
++mod_export void
++psh_float_module_ack(Module m)
++{
++    if (scope_load_frame && scope_load_frame->module == m)
++        scope_load_frame->float_acknowledged = m;
++}
++
+ /**/
+ mod_export int
+ load_module(char const *name, Feature_enables enablesarr, int silent)
+@@ -2327,7 +2383,7 @@ load_module_tracked_body(char const *name, Feature_enables enablesarr, int silen
+      */
+     queue_signals();
+     frame->previous = scope_load_frame;
+-    frame->module = frame->acknowledged = NULL;
++    frame->module = frame->acknowledged = frame->float_acknowledged = NULL;
+     frame->paused = 0;
+     scope_load_frame = frame;
+     if (!(m = find_module(name, FINDMOD_ALIASP, &name))) {
+diff --git a/Src/params.c b/Src/params.c
+index 0f1f529..efe64ff 100644
+--- a/Src/params.c
++++ b/Src/params.c
+@@ -5754,12 +5754,69 @@ convbase_underscore(char *s, zlong v, int base, int underscore)
+  * a value from the heap.
+  */
+ 
++#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
++/* Immutable formatting locale, retained for the life of the process. */
++static locale_t convfloat_c_locale;
++#endif
++
++/* Unknown native code can register callbacks for standard printf formats.
++ * Keep its old locale context, including before constructors and after unload. */
++static unsigned float_locale_loading;
++static int float_locale_opaque, float_locale_preloads_checked;
++
++/**/
++mod_export int
++psh_float_locale_tracking(void)
++{
++#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
++    if (float_locale_opaque || float_locale_loading)
++        return 0;
++    if (!float_locale_preloads_checked) {
++# ifndef PSH_TEST_FLOAT_ALLOW_PRELOAD
++        if (getenv("LD_PRELOAD") || getenv("LD_AUDIT") ||
++            getenv("DYLD_INSERT_LIBRARIES"))
++            float_locale_opaque = 1;
++# endif
++        float_locale_preloads_checked = 1;
++    }
++    return !float_locale_opaque;
++#else
++    return 0;
++#endif
++}
++
++/**/
++mod_export void
++psh_float_locale_disable(void)
++{
++    float_locale_opaque = 1;
++}
++
++/**/
++void
++psh_float_native_begin(void)
++{
++    float_locale_loading++;
++}
++
++/**/
++void
++psh_float_native_end(int aware)
++{
++    if (!aware)
++        float_locale_opaque = 1;
++    float_locale_loading--;
++}
++
+ /**/
+ char *
+ convfloat(double dval, int digits, int flags, FILE *fout)
+ {
+     char fmt[] = "%.*e";
+     char *prev_locale, *ret;
++#if defined(USE_LOCALE) && defined(HAVE_MATH_STRTOD_L)
++    locale_t prev_thread_locale = (locale_t)0;
++#endif
+ 
+     /*
+      * The difficulty with the buffer size is that a %f conversion
+@@ -5795,8 +5852,26 @@ convfloat(double dval, int digits, int flags, FILE *fout)
+ 	}
+     }
+ #ifdef USE_LOCALE
+-    prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
+-    setlocale(LC_NUMERIC, "POSIX");
++# ifdef HAVE_MATH_STRTOD_L
++    /* Audited native modules have not installed standard printf callbacks.
++     * The caller must already hold the signal queue, so allocation cannot
++     * expose a temporary thread locale to a shell trap. FILE output, private
++     * thread locales and unqueued calls retain the original sequence. */
++    if (!fout && queue_signal_level() && psh_float_locale_tracking() &&
++        uselocale((locale_t)0) == LC_GLOBAL_LOCALE) {
++        int saved_errno = errno;
++        if (!convfloat_c_locale)
++            convfloat_c_locale = newlocale(LC_ALL_MASK, "C", (locale_t)0);
++        if (convfloat_c_locale)
++            prev_thread_locale = uselocale(convfloat_c_locale);
++        errno = saved_errno;
++    }
++    if (!prev_thread_locale)
++# endif
++    {
++        prev_locale = dupstring(setlocale(LC_NUMERIC, NULL));
++        setlocale(LC_NUMERIC, "POSIX");
++    }
+ #endif
+     if (fout) {
+ 	fprintf(fout, fmt, digits, dval);
+@@ -5815,7 +5890,14 @@ convfloat(double dval, int digits, int flags, FILE *fout)
+ 	}
+     }
+ #ifdef USE_LOCALE
+-    if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
++# ifdef HAVE_MATH_STRTOD_L
++    if (prev_thread_locale) {
++        int saved_errno = errno;
++        uselocale(prev_thread_locale);
++        errno = saved_errno;
++    } else
++# endif
++        if (prev_locale) setlocale(LC_NUMERIC, prev_locale);
+ #endif
+     return ret;
+ }
+diff --git a/Src/zsh.h b/Src/zsh.h
+index 6b4eb35..98b2f9b 100644
+--- a/Src/zsh.h
++++ b/Src/zsh.h
+@@ -1524,6 +1524,8 @@ struct module {
+ #define MOD_ALIAS   (1<<6)
+ /* Explicit native opt-in: notify promotions of live parameter scope levels. */
+ #define PSH_SCOPE_INDEX_VERSION 1
++/* Independent opt-in: preserve standard floating printf conversions. */
++#define PSH_FLOAT_LOCALE_VERSION 1
+ 
+ typedef int (*Module_generic_func) (void);
+ typedef int (*Module_void_func) (Module);
+diff --git a/Vendor/sources.json b/Vendor/sources.json
+index 88eb6cb..e99207c 100644
+--- a/Vendor/sources.json
++++ b/Vendor/sources.json
+@@ -12,7 +12,7 @@
+       "LICENCE": "623516dcce9c72c4d5818632a1db7916c16bb656068c95d01a07797629597524",
+       "Makefile": "85a4b63f6792168838e02c16be4c658383efc49608daae6d15107328a96d8461",
+       "README.md": "64a62bd6d67eeeec9b5eb016512ae89d8de9e584bcc381aa6c8444a6951f484b",
+-      "Src/Modules/zdraw.c": "765cc6c0bd54232fbb233233b61293996ffbc0dfdb3f0a72ca77b699dc6f2ffc",
++      "Src/Modules/zdraw.c": "abf0f8cce19c60dd7beb999ecb9cf2bd0acc9c70bc5999be82c9f37635e2d97b",
+       "Src/Modules/zdraw.mdd": "f7c49d9ccf36e059b6db2fb95cb32217b680455125dc77b6d6c995b2a973f695",
+       "Src/Modules/zdraw_grapheme.h": "0c1175df26635b98337765ed0abfb58f821e6292830a4d1cd386cfec732d2a08",
+       "Src/Modules/zdraw_grapheme_data.h": "b3b99f1f786398985263f0a308957670cf2636af1d3182e53ede499a306d7699",
+@@ -453,6 +453,13 @@
+         "upstream_sha256": "5d384a2424bd27250e9d6eaf6d53b67a29e5514a2b46c6b29cc699deb726640e",
+         "patched_sha256": "765cc6c0bd54232fbb233233b61293996ffbc0dfdb3f0a72ca77b699dc6f2ffc",
+         "description": "Conditional psh scope-tracking acknowledgment; module makes no direct parameter-level promotions."
++      },
++      {
++        "name": "float-locale-awareness",
++        "file": "Src/Modules/zdraw.c",
++        "upstream_sha256": "765cc6c0bd54232fbb233233b61293996ffbc0dfdb3f0a72ca77b699dc6f2ffc",
++        "patched_sha256": "abf0f8cce19c60dd7beb999ecb9cf2bd0acc9c70bc5999be82c9f37635e2d97b",
++        "description": "Independent conditional float-locale acknowledgment; no custom standard printf handlers or printf interposition."
+       }
+     ]
+   },
+@@ -532,7 +539,7 @@
+       "src/http_sessions.c": "13b287f7ab86d6c57d5f10f067d453347c68c0f0d1adfd77bd247e233ccd9937",
+       "src/polling.c": "141a9d1d5340d75010e264620c092fbe01e6cf786757120ce2341147169d4d6a",
+       "src/websocket.c": "2f2b1a25278dec91fbeaf42bf8d7b7969b57100d63258106f318b2cd3a5999d9",
+-      "src/zcurl.c": "83cd55d500aa6217eb71aa62b6806382d45634782a91f7f87dea45c0344d379a",
++      "src/zcurl.c": "f8e321289738f7a76d9261e8ce401cdaa157ae7ccf3baa2a99394cf0da87c4f9",
+       "tests/api.zsh": "e8ea816a3b07c91f86c79cad1f9025a188fd6bcad0832e771566e1a02fd363fa",
+       "tests/completion.py": "3742f89167df84813be69ab66475d1720ccd3d17499b3e14053d3e44de3f4e18",
+       "tests/compression.py": "70f88b5e08325c4c027386d41f68a23945982d457c19dd744256730fb43a6876",
+@@ -579,6 +586,13 @@
+         "upstream_sha256": "f0d595b35749939b4d13cdf21548040ac8c7b389ac69cfd151f24e6c1dac5cc7",
+         "patched_sha256": "83cd55d500aa6217eb71aa62b6806382d45634782a91f7f87dea45c0344d379a",
+         "description": "Conditional psh scope-tracking acknowledgment; module makes no direct parameter-level promotions."
++      },
++      {
++        "name": "float-locale-awareness",
++        "file": "src/zcurl.c",
++        "upstream_sha256": "83cd55d500aa6217eb71aa62b6806382d45634782a91f7f87dea45c0344d379a",
++        "patched_sha256": "f8e321289738f7a76d9261e8ce401cdaa157ae7ccf3baa2a99394cf0da87c4f9",
++        "description": "Independent conditional float-locale acknowledgment; no custom standard printf handlers or printf interposition."
+       }
+     ]
+   },
+@@ -606,7 +620,7 @@
+       "src/grapheme_data.h": "e749d79dc5b784cac074945d41b417715e56167f05678bcb9043dd91303a54c5",
+       "src/render.c": "d91014df5799180a0a7dccd127eaa6d90b834e32e3d0c573417682e111ab9880",
+       "src/render.h": "c250c1deb0e06355208b47223be5a7d0587c79165c9bc745cd3f230e78a5b861",
+-      "src/zmdown.c": "9b8a3bd988bd1dff455a858c3ec449072683598b54adb02f9e50a25a210a42f0",
++      "src/zmdown.c": "bc9ec6cd7e9f189a016dc07d2b17ac2a1c069e42ba62b8e0dada3d87658b32f3",
+       "src/zmdown.mdd": "d4cbda18a703c39918293a7fe8ddcc63387ac459f524015763419fd50d48b5c7",
+       "tests/benchmark.c": "f3660bbadc1f5c1864f3a1bafecc60b9e9fab7b777611b1cea460544b99c4915",
+       "tests/conformance.py": "7b9e01ba0c2af6b6484ece5f0af338a45c7fcf6e7a84ab1b0c0d7612adcf7cd3",
+@@ -643,6 +657,13 @@
+         "upstream_sha256": "f8ecee112cb12612830709139e0f55021cd3874400df1f37cbd48a8d048e7565",
+         "patched_sha256": "9b8a3bd988bd1dff455a858c3ec449072683598b54adb02f9e50a25a210a42f0",
+         "description": "Conditional psh scope-tracking acknowledgment; module makes no direct parameter-level promotions."
++      },
++      {
++        "name": "float-locale-awareness",
++        "file": "src/zmdown.c",
++        "upstream_sha256": "9b8a3bd988bd1dff455a858c3ec449072683598b54adb02f9e50a25a210a42f0",
++        "patched_sha256": "bc9ec6cd7e9f189a016dc07d2b17ac2a1c069e42ba62b8e0dada3d87658b32f3",
++        "description": "Independent conditional float-locale acknowledgment; no custom standard printf handlers or printf interposition."
+       }
+     ]
+   },
+diff --git a/Vendor/zcurl/src/zcurl.c b/Vendor/zcurl/src/zcurl.c
+index d10425b..92d0073 100644
+--- a/Vendor/zcurl/src/zcurl.c
++++ b/Vendor/zcurl/src/zcurl.c
+@@ -1090,6 +1090,9 @@ int setup_(UNUSED(Module m))
+ {
+ #ifdef PSH_SCOPE_INDEX_VERSION
+     psh_scope_module_ack(m);
++#endif
++#ifdef PSH_FLOAT_LOCALE_VERSION
++    psh_float_module_ack(m);
+ #endif
+     size_t i;
+     const curl_version_info_data *curl_info;
+diff --git a/Vendor/zdraw/Src/Modules/zdraw.c b/Vendor/zdraw/Src/Modules/zdraw.c
+index 8b82deb..b7ad39a 100644
+--- a/Vendor/zdraw/Src/Modules/zdraw.c
++++ b/Vendor/zdraw/Src/Modules/zdraw.c
+@@ -6421,6 +6421,9 @@ setup_(UNUSED(Module m))
+ {
+ #ifdef PSH_SCOPE_INDEX_VERSION
+     psh_scope_module_ack(m);
++#endif
++#ifdef PSH_FLOAT_LOCALE_VERSION
++    psh_float_module_ack(m);
+ #endif
+     return 0;
+ }
+diff --git a/Vendor/zmdown/src/zmdown.c b/Vendor/zmdown/src/zmdown.c
+index 78134a2..361fe0e 100644
+--- a/Vendor/zmdown/src/zmdown.c
++++ b/Vendor/zmdown/src/zmdown.c
+@@ -267,6 +267,9 @@ int
+ setup_(UNUSED(Module m)) {
+ #ifdef PSH_SCOPE_INDEX_VERSION
+     psh_scope_module_ack(m);
++#endif
++#ifdef PSH_FLOAT_LOCALE_VERSION
++    psh_float_module_ack(m);
+ #endif
+     return 0;
+ }

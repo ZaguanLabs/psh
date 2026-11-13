@@ -17,6 +17,8 @@ def main():
     parser.add_argument("archive", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--jobs", type=int, default=4)
+    parser.add_argument("--optimization", choices=["standard", "lto", "pgo", "pgo-lto"],
+                        default="standard", help="release package compiler profile to validate outside Git")
     args = parser.parse_args()
     args.archive = args.archive.resolve(strict=True)
     args.output = args.output.resolve()
@@ -45,8 +47,11 @@ def main():
             start = time.monotonic()
             log = args.output.with_name(args.output.stem + "-" + name + ".log")
             with log.open("wb") as out:
+                # Both package profiles must stage safe completion directories
+                # even when invoked from a group-writable development umask.
                 result = subprocess.run(command, cwd=root, env=selected_env,
-                                        stdout=out, stderr=subprocess.STDOUT, timeout=1800)
+                                        stdout=out, stderr=subprocess.STDOUT, timeout=1800,
+                                        umask=0o002 if "package-stage" in name else -1)
             rows.append({"name": name, "command": command, "status": result.returncode,
                          "seconds": round(time.monotonic() - start, 3), "log": str(log)})
             print(name, result.returncode, flush=True)
@@ -82,12 +87,14 @@ def main():
                                       "module_path": result.stdout.strip()})
         assert len({row["module_path"] for row in core_profiles}) == 4
         assert (root / "psh").read_bytes() == (root / ".work/release-candidate/Src/zsh").read_bytes()
-        run("package-stage", ["python3", "Packaging/build.py", "--jobs", str(args.jobs)], build_env)
+        run("package-stage", ["python3", "Packaging/build.py", "--jobs", str(args.jobs),
+                              "--optimization", args.optimization], build_env)
         staged = json.loads((root / ".work/package/latest.json").read_text())
         assert staged["project_version"] == metadata["project_version"]
         assert staged["zsh_version"] == metadata["zsh_version"]
         assert staged["settings"]["profile"] == "release"
         assert staged["settings"]["debug_assertions"] is False
+        assert staged["settings"]["optimization"] == args.optimization
         assert "#define DEBUG 1" not in (Path(staged["core"]) / "config.h").read_text().splitlines()
         assert subprocess.check_output([str(Path(staged["payload"]) / "bin/psh"), "--version"], env=env) == expected
         # Exercise the opt-in debug package in this disposable tree so its
@@ -98,6 +105,10 @@ def main():
         assert debug["settings"]["profile"] == "debug"
         assert debug["settings"]["debug_assertions"] is True
         assert debug["release"] != staged["release"]
+        for package in (staged, debug):
+            payload = Path(package["payload"])
+            for directory in [payload, *(p for p in payload.rglob("*") if p.is_dir() and not p.is_symlink())]:
+                assert not directory.stat().st_mode & 0o022, directory
         assert "#define DEBUG 1" in (Path(debug["core"]) / "config.h").read_text().splitlines()
         assert subprocess.check_output([str(Path(debug["payload"]) / "bin/psh"), "--version"], env=env) == expected
         debugger_checks = {}
@@ -120,9 +131,11 @@ def main():
         report["core_profiles"] = core_profiles
         report["core_profile_module_paths_isolated"] = True
         report["core_trial_release_published"] = True
+        report["package_directories_safe_under_0002_umask"] = True
         report.update(release_profile=staged["settings"], debug_profile=debug["settings"],
                       distinct_profile_build_ids=True, debug_package_staged_without_installing=True,
                       debugger_checks=debugger_checks)
+        report["release_compiler_training"] = staged.get("compiler_training")
         args.output.write_text(json.dumps(report, indent=2) + "\n")
     print("Extracted source RC builds and stages without Git", flush=True)
 

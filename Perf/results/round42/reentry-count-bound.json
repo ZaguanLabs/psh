@@ -1,0 +1,41 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/hash-reentry-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-count-bound/psh_hash_reentry.so"
+  ],
+  "memcheck": true,
+  "runs": [
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "binary_sha256": "da524b82bde3155ca57d6f69a020e9220dae1ae564988a56677df5717e2c7fd7",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_hash_reentry || exit 2; psh-hash-reentry-check || exit 3; zmodload -u psh_hash_reentry || exit 4",
+        "native-hash-reentry",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/reentry-count-bound"
+      ],
+      "status": 0,
+      "stdout": "count=2 calls=1 ok=1\npattern-ok=1\nmatrix-checks=12 ok=1\nboundary-checks=2 ok=1\n",
+      "stderr": ""
+    }
+  ],
+  "driver_sha256": "37576ab7f83de914c78877925075d3bb4888acdec7e6e365db6636e9afc5fe77",
+  "source_sha256": "ec6bd23bf67761285264c7ae5c4c445da80ab161a60488044c633f09e5ae0b87",
+  "module_sha256": "6b9cc08d90214410a129371fb02bf54949ef2e4479cce5b43e7b83e0a07e1191",
+  "passed": true
+}

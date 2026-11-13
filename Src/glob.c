@@ -3945,7 +3945,7 @@ qualsheval(char *name, UNUSED(struct stat *buf), UNUSED(off_t days), char *str)
 {
     Eprog prog;
 
-    if ((prog = parse_string(str, 0))) {
+    if ((prog = parse_string_zalloc(str, 0))) {
 	int ef = errflag, lv = lastval, ret;
 	int cshglob = badcshglob;
 
@@ -3955,6 +3955,7 @@ qualsheval(char *name, UNUSED(struct stat *buf), UNUSED(off_t days), char *str)
 	badcshglob = 0;
 
 	execode(prog, 1, 0, "globqual");
+	freeeprog(prog);
 
 	if ((ret = lastval))
 	    badcshglob |= cshglob;

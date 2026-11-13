@@ -1,0 +1,23 @@
+{
+  "commands": [
+    [
+      "./configure",
+      "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/diagnostic/runtime",
+      "--enable-dynamic",
+      "--enable-multibyte",
+      "--disable-zsh-debug",
+      "--enable-pcre",
+      "--enable-site-fndir=no"
+    ],
+    [
+      "make",
+      "-j3"
+    ],
+    [
+      "make",
+      "install.modules"
+    ]
+  ],
+  "CFLAGS": "-O2 -g -DPSH_TEST_FLOAT_ALLOW_PRELOAD",
+  "LDFLAGS": "-g -Wl,--wrap=newlocale,--wrap=uselocale /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/diagnostic/fault.o"
+}

@@ -1,0 +1,37 @@
+diff --git a/Src/subst.c b/Src/subst.c
+index c7d4c85..1ff2238 100644
+--- a/Src/subst.c
++++ b/Src/subst.c
+@@ -1671,6 +1671,11 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
+      * take account of ^ and ^^.
+      */
+     int plan9 = isset(RCEXPANDPARAM);
++    /* A plain identifier cannot introduce parameter flags. Keep the ordinary
++     * fetch/getter path below; only its unused modifier pipeline is skipped. */
++    int plain_scalar = !(pf_flags & ~(PREFORK_SINGLE|PREFORK_NOSHWORDSPLIT)) &&
++	((aptr[1] >= 'a' && aptr[1] <= 'z') ||
++	 (aptr[1] >= 'A' && aptr[1] <= 'Z') || aptr[1] == '_');
+     /*
+      * Likwise, but with ~ and ~~.  Also, we turn it off later
+      * on if qt is passed down. The value can go to 2 if we
+@@ -2738,6 +2743,20 @@ paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags,
+ 		 */
+ 		v->flags |= VALFLAG_SUBST;
+ 		val = getstrvalue(v);
++		if (plain_scalar && !errflag && !plan9 && !globsubst &&
++		    !spbreak && v->pm->gsu.s == &stdscalar_gsu &&
++		    !(v->pm->node.flags &
++		      ~(PM_DECLARED|PM_LOCAL|PM_READONLY|PM_EXPORTED)) &&
++		    (!*s || (*s == Dnull && !s[1]))) {
++		    char *result;
++		    /* Same scalar concatenation and empty-quote handling as below.
++		     * No binding/value is cached, and native lookups ran normally. */
++		    *str = strcatsub(&result, ostr, aptr, val, strlen(val), s, 0, 0);
++		    if (qt && !*result)
++			result = dupstring(nulstring);
++		    setdata(n, result);
++		    return n;
++		}
+ 	    }
+ 	}
+ 	/* See if this is a reference to the positional parameters. */

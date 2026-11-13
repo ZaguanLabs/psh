@@ -99,7 +99,7 @@ class Terminal:
                 self.pump()
             except RuntimeError:
                 pass
-        raise RuntimeError("interactive shell did not exit")
+        raise RuntimeError("interactive shell did not exit: " + repr(bytes(self.transcript[-2000:])))
 
     def close(self):
         if self.status is None:
@@ -143,6 +143,11 @@ def run_session(shell, home, repository, omz, theme, plugins, highlight, login, 
         env["PSH_OMZ_" + name] = str(home / name.lower())
     if inherited_fpath is not None:
         env["FPATH"] = inherited_fpath
+    # Read the fixture entry through HISTFILE, after any previous session's
+    # exit command. Retain the existing file for cold/warm/interpreter handoff.
+    # Seeding in .zshrc precedes Zsh's history import on older OMZ checkouts.
+    with (home / ".history").open("ab") as history_file:
+        history_file.write(b"\necho psh-omz-history\n")
     terminal = Terminal(shell, home, repository, env, login)
     try:
         terminal.until(lambda: (home / "ready").exists())
@@ -200,6 +205,8 @@ def run_session(shell, home, repository, omz, theme, plugins, highlight, login, 
         assert (home / ".zcompdump").is_file() and (home / ".zcompdump.zwc").is_file()
         terminal.finish()
         return {"state": state, "buffers": results, "async_input_and_callback": True,
+                "async_driver": "omz" if "async-driver=omz\n" in state else "zle-fd (OMZ API unavailable)",
+                "compiled_dump_driver": "fixture" if "compiled-dump-driver=fixture\n" in state else "framework",
                 "git_prompt_after_async": git_prompt,
                 "interrupt_recovery": True, "completion_dump": True, "compiled_dump": True,
                 "status": terminal.status}
@@ -252,8 +259,17 @@ def main():
     binary_hashes = {k: sha(p) for k, p in shells.items()}
     profiles = [("configured", plugins, False, None), ("configured-login", plugins, True, None),
                 ("extended", list(dict.fromkeys(plugins + ["git", "gitfast", "z", "extract", "sudo", "history-substring-search"])), False, None)]
-    if "FPATH" in os.environ:
-        profiles.append(("configured-inherited-fpath", plugins, False, os.environ["FPATH"]))
+    inherited_fpath = os.environ.get("FPATH")
+    if inherited_fpath is None:
+        # Coverage must not depend on whether the test launcher happens to be
+        # an interactive Zsh exporting FPATH (Bash normally does not).
+        probe = subprocess.run([str(shells["reference"]), "-dfc", 'print -r -- "${(j.:.)fpath}"'],
+                               env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"},
+                               capture_output=True, text=True, timeout=30)
+        if probe.returncode or probe.stderr or not probe.stdout.strip():
+            raise RuntimeError("could not obtain reference fpath for the inherited-path gate")
+        inherited_fpath = probe.stdout.strip()
+    profiles.append(("configured-inherited-fpath", plugins, False, inherited_fpath))
     rows = []
     with tempfile.TemporaryDirectory(prefix="psh-omz-") as temporary:
         scratch = Path(temporary)

@@ -1908,11 +1908,20 @@ exalias(void)
 	    return 0;
 	return checkalias();
     } else {
-	VARARR(char, copy, (strlen(tokstr) + 1));
+#ifdef USE_STACK_ALLOCATION
+	VARARR(char, copybuf, (strlen(tokstr) + 1));
+	char *copy = copybuf;
+#else
+	char *copy = NULL;
+#endif
 
 	if (has_token(tokstr)) {
 	    char *p, *t;
 
+#ifndef USE_STACK_ALLOCATION
+	    /* Plain words need no scratch buffer in the surrounding heap. */
+	    copy = (char *)zhalloc(strlen(tokstr) + 1);
+#endif
 	    zshlextext = p = copy;
 	    for (t = tokstr;
 		 (*p++ = itok(*t) ? ztokens[*t++ - Pound] : *t++););
@@ -1924,7 +1933,7 @@ exalias(void)
 
 	    gotword();
 	    if ((zp & LEXFLAGS_ZLE) && !lexflags) {
-		if (zshlextext == copy)
+		if (copy && zshlextext == copy)
 		    zshlextext = tokstr;
 		return 0;
 	    }
@@ -1932,8 +1941,8 @@ exalias(void)
 
 	if (tok == STRING) {
 	    /* Check for an alias */
-	    if ((zshlextext != copy || !isset(POSIXALIASES)) && checkalias()) {
-		if (zshlextext == copy)
+	    if ((!copy || zshlextext != copy || !isset(POSIXALIASES)) && checkalias()) {
+		if (copy && zshlextext == copy)
 		    zshlextext = tokstr;
 		return 1;
 	    }
@@ -1954,7 +1963,7 @@ exalias(void)
 		tok = BANG;
 	}
 	inalmore = 0;
-	if (zshlextext == copy)
+	if (copy && zshlextext == copy)
 	    zshlextext = tokstr;
     }
     return 0;

@@ -1,0 +1,25 @@
+{
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-5982ba7e218f/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh"
+  ],
+  "removed": [],
+  "added": [
+    "parse_list_alloc",
+    "parse_string_zalloc"
+  ],
+  "counts": [
+    1068,
+    1070
+  ],
+  "legacy_prototypes": {
+    "baseline": [
+      "extern mod_import_function Eprog parse_list(void);",
+      "extern mod_import_function Eprog parse_string(char*s,int reset_lineno);"
+    ],
+    "candidate": [
+      "extern mod_import_function Eprog parse_list(void);",
+      "extern mod_import_function Eprog parse_string(char*s,int reset_lineno);"
+    ]
+  }
+}

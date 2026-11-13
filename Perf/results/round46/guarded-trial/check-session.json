@@ -1,0 +1,28 @@
+[
+  {
+    "name": "snapshot",
+    "command": [
+      "python3",
+      "Packaging/verify.py",
+      "snapshot",
+      "--build",
+      ".work/package/1.0.0-rc1-884cfe71d8a3/build.json"
+    ],
+    "status": 0,
+    "seconds": 0.3139967918395996
+  },
+  {
+    "name": "install",
+    "command": [
+      "sudo",
+      "-n",
+      "python3",
+      "Packaging/install.py",
+      "candidate",
+      "--build",
+      ".work/package/1.0.0-rc1-884cfe71d8a3/build.json"
+    ],
+    "status": 0,
+    "seconds": 0.26400256156921387
+  }
+]

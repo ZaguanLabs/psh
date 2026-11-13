@@ -1,0 +1,148 @@
+{
+  "shells": [
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-72c68479281a/bin/psh"
+  ],
+  "binary_sha256": [
+    "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+    "4997a6a60a89e23cb0fa443fea5f0f113dd151dbe9fe0a8600bb9eb64692b7f1"
+  ],
+  "cpu_affinity": [
+    13
+  ],
+  "samples": 9,
+  "cases": [
+    {
+      "expression": "i++",
+      "source": "emulate -R zsh\ninteger i=0\nrepeat 1000 { ((i++)); }\ni=0\nfloat -F 9 SECONDS=0\nrepeat 60000 { ((i++)); }\nfloat elapsed=$SECONDS\n((i==60000)) || exit 1\nprintf \"%.9f\\n\" $elapsed\nprint -r -- i=$i\n",
+      "samples_ms": [
+        [
+          5.56,
+          5.572,
+          5.569,
+          5.543,
+          5.594,
+          5.555,
+          5.574,
+          5.6129999999999995,
+          5.713
+        ],
+        [
+          3.628,
+          3.682,
+          3.714,
+          3.673,
+          3.733,
+          3.658,
+          3.7030000000000003,
+          3.669,
+          3.6740000000000004
+        ]
+      ],
+      "median_ms": [
+        5.572,
+        3.6740000000000004
+      ],
+      "state_sha256": "57bbd9008cd388c64bc50f03743c00edfaf1d45b8e325bdece145cd3f747706e"
+    },
+    {
+      "expression": "i++ ",
+      "source": "emulate -R zsh\ninteger i=0\nrepeat 1000 { ((i++ )); }\ni=0\nfloat -F 9 SECONDS=0\nrepeat 60000 { ((i++ )); }\nfloat elapsed=$SECONDS\n((i==60000)) || exit 1\nprintf \"%.9f\\n\" $elapsed\nprint -r -- i=$i\n",
+      "samples_ms": [
+        [
+          5.263,
+          5.385,
+          5.397,
+          5.343,
+          5.359,
+          5.3740000000000006,
+          5.438,
+          5.479,
+          5.341
+        ],
+        [
+          5.642,
+          5.645,
+          5.588,
+          6.047000000000001,
+          5.590999999999999,
+          5.769,
+          5.642,
+          5.628,
+          5.754
+        ]
+      ],
+      "median_ms": [
+        5.3740000000000006,
+        5.642
+      ],
+      "state_sha256": "57bbd9008cd388c64bc50f03743c00edfaf1d45b8e325bdece145cd3f747706e"
+    },
+    {
+      "expression": "++i",
+      "source": "emulate -R zsh\ninteger i=0\nrepeat 1000 { ((++i)); }\ni=0\nfloat -F 9 SECONDS=0\nrepeat 60000 { ((++i)); }\nfloat elapsed=$SECONDS\n((i==60000)) || exit 1\nprintf \"%.9f\\n\" $elapsed\nprint -r -- i=$i\n",
+      "samples_ms": [
+        [
+          5.737,
+          5.867,
+          5.752,
+          5.795,
+          5.856,
+          5.793,
+          5.797,
+          5.747000000000001,
+          5.715
+        ],
+        [
+          6.0169999999999995,
+          5.697,
+          5.671,
+          5.6160000000000005,
+          5.64,
+          5.637,
+          5.590999999999999,
+          5.732,
+          5.61
+        ]
+      ],
+      "median_ms": [
+        5.793,
+        5.64
+      ],
+      "state_sha256": "57bbd9008cd388c64bc50f03743c00edfaf1d45b8e325bdece145cd3f747706e"
+    },
+    {
+      "expression": "i+=1",
+      "source": "emulate -R zsh\ninteger i=0\nrepeat 1000 { ((i+=1)); }\ni=0\nfloat -F 9 SECONDS=0\nrepeat 60000 { ((i+=1)); }\nfloat elapsed=$SECONDS\n((i==60000)) || exit 1\nprintf \"%.9f\\n\" $elapsed\nprint -r -- i=$i\n",
+      "samples_ms": [
+        [
+          5.878,
+          5.87,
+          5.875,
+          5.795,
+          5.842,
+          5.894,
+          5.836,
+          5.852,
+          5.876
+        ],
+        [
+          6.164000000000001,
+          6.337,
+          6.33,
+          6.266,
+          6.306,
+          6.272,
+          6.2940000000000005,
+          6.2909999999999995,
+          6.328
+        ]
+      ],
+      "median_ms": [
+        5.87,
+        6.2940000000000005
+      ],
+      "state_sha256": "57bbd9008cd388c64bc50f03743c00edfaf1d45b8e325bdece145cd3f747706e"
+    }
+  ]
+}

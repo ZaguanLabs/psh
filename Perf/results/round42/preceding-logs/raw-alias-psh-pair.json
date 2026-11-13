@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-df",
+        "Perf/array-cache-raw-alias.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/preceding-logs/array-native-psh-pair-native"
+      ],
+      "locale": "C",
+      "status": 0,
+      "stdout": "raw:present=1:value=item\ngetter:present=0:value=\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-df",
+        "Perf/array-cache-raw-alias.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/preceding-logs/array-native-psh-pair-native"
+      ],
+      "locale": "C.UTF-8",
+      "status": 0,
+      "stdout": "raw:present=1:value=item\ngetter:present=0:value=\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+        "-df",
+        "Perf/array-cache-raw-alias.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/preceding-logs/array-native-psh-pair-native"
+      ],
+      "locale": "C",
+      "status": 0,
+      "stdout": "raw:present=1:value=item\ngetter:present=0:value=\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+        "-df",
+        "Perf/array-cache-raw-alias.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/preceding-logs/array-native-psh-pair-native"
+      ],
+      "locale": "C.UTF-8",
+      "status": 0,
+      "stdout": "raw:present=1:value=item\ngetter:present=0:value=\n",
+      "stderr": ""
+    }
+  ]
+}

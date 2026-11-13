@@ -17,16 +17,19 @@ limited differences; it is not a test-pass quota or an established measurement.
   highlighter, and test genuine ZLE/completion/history/prompt/async behavior.
   Startup success alone does not establish this requirement.
 - Run `Packaging/verify.py verify` before activation. It includes the required
-  OMZ terminal gate. `Packaging/verify.py ohmyzsh --build PATH` can refresh that
+  OMZ terminal gate and native-library compatibility gate. Native evidence can
+  be refreshed with `Packaging/verify.py native-loaders --build PATH`.
+  `Packaging/verify.py ohmyzsh --build PATH` can refresh OMZ
   evidence for an existing release, including rollback candidates. The
   privileged installer consumes matching evidence; framework code runs only
   under the normal user.
 - Keep the stable Zsh installation, personal startup files and account login
   shell untouched. Install psh only through its isolated packaging workflow.
-- Keep the project version `1.0.0-rc0` until public release. Distinguish private
-  iterations using commits, build digests and binary hashes. Retain historical
-  artifacts and the existing tag/draft checkpoint. Do not publish or change
-  repository visibility without an explicit instruction.
+- Prepare `1.0.0-rc1` on the development branch. Published rc0 tags and source
+  archives are immutable. Distinguish development iterations using commits,
+  build digests and binary hashes. Retain historical artifacts and the archived
+  private tag/draft checkpoint. Do not publish or change repository visibility
+  without an explicit instruction.
 
 ## Performance and compatibility work
 

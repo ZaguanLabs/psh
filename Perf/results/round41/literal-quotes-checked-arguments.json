@@ -1,0 +1,3696 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-5a66afc94be0/bin/psh"
+  ],
+  "cases": [
+    {
+      "case": "zsh//''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh//x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/command /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh//x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'x'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"x\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /a''b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /a\"\"b",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'' ''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'~'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'='",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'$'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /' '",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /';'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'{'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'}'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'?'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'['",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'!'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'foo'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'foo bar'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'\\*'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /$'\\0'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'\u00e9'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"\"x",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"$value\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /${array[@]}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"${array[@]}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /$(print -r -- x)",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /x{a,b}",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /x$((++calls))",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "shfileexpansion",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "noshfileexpansion",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "magicequalsubst",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "nomagicequalsubst",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "kshtypeset",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "noksharrays",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksharrays",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "function-roundtrip",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh//''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh//x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/noglob /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/command /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/builtin /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh//x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/noglob /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/command /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/builtin /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh//x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/noglob /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/command /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'x'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"x\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /a''b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /a\"\"b",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'' ''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'~'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'='",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'$'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /' '",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /';'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'{'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'}'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'?'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'['",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'!'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'foo'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'foo bar'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'\\*'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /$'\\0'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /'\u00e9'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"\"x",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"$value\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /${array[@]}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /\"${array[@]}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /$(print -r -- x)",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /x{a,b}",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/builtin /x$((++calls))",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "shfileexpansion",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "noshfileexpansion",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "magicequalsubst",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "nomagicequalsubst",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "kshtypeset",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "noksharrays",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksharrays",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "function-roundtrip",
+      "locale": "C.UTF-8",
+      "passed": true
+    }
+  ],
+  "driver_sha256": "c63c34b35d173be9c831bcf8e63355e9fba48c7982c9b4662677b117c7615ed1",
+  "binary_sha256": [
+    "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+    "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+    "5a73f08d6a344afcbfe4a41da42941be3d3ba745a63580a427c5c71b74dc7719"
+  ],
+  "passed": true
+}

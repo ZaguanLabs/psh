@@ -207,3 +207,84 @@ tests pass; a detected pristine DEBUG module-path collision is fixed in the
 builder. Seven package suites and 24 OMZ sessions pass before the maintenance
 iteration activates. The optimization count stays 27; timing fluctuations and
 all slower controls are retained without a speedup claim.
+
+[Round thirty-eight](round38.md) adds optional compiler profiles, full scene
+benchmarks and stateful comparisons. PGO+LTO improves all six held-out customer
+scenes; it adds no new interpreter algorithm. An insecure parent-directory mode
+under umask 0002 is repaired without weakening compaudit. The unchanged OMZ gate
+now always runs its inherited-FPATH profile, including from Bash. Published rc0
+and the active daily-driver shell remain intact while rc1 is developed.
+
+[Round thirty-nine](round39.md) follows global locale machinery in floating
+output on the optimized release. A thread-locale prototype is rejected because
+standard printf extensions can observe its changed context. An independent
+native acknowledgment and constructor barrier permit queued string conversions
+only when that context is private; unknown modules, preloads, FILE callbacks,
+private thread locales and API failures preserve the legacy sequence. The
+native oracle compares output and FP/errno/locale/queue/callback state, with
+separate diagnostic fault injection and fast-path memory coverage. The optional
+exports preserve public Module layouts and ordinary-header source builds.
+Package, upstream, broader differential and 24 unchanged OMZ sessions pass;
+customer measurements and the same-executable fallback control are retained.
+rc1 publication remains on hold.
+
+[Round forty](round40.md) follows native loading outside `zmodload`. A private
+Latin-1 gconv plugin and explicit ELF preloading reproduce changed standard
+printf callback context in the round-39 candidate, including after clearing a
+loader marker. The thread-locale shortcut is withdrawn and the original converter
+restored. Five optional SDK symbols remain inert for binary compatibility;
+scope indexing and compiler profiles are unchanged. A mandatory unprivileged
+native-library gate binds activation evidence to the candidate and test sources.
+The optimization count returns to 27. Earlier measurements and receipts are
+retained as historical records; the faulty candidate's local activation receipt
+is revoked. Public rc1 publication remains on hold.
+
+[Round forty-three](round43.md) backports upstream workers 55250/55251 after
+reproducing stale heap use in failed PATH-based sourcing and malformed-history
+loading. A 124-case differential matrix adds Zsh's allocator-aware Valgrind
+builds, keeping affected pristine and preceding-release controls. Full package,
+24 unchanged OMZ sessions and 14 native-library observations pass. A separate
+glob-program memory screen identifies a possible next target; its exported
+parser signature change is not adopted. Native interfaces and the optimization
+count remain unchanged.
+
+[Round forty-four](round44.md) adopts a lifetime improvement for temporary
+shell-code glob programs, adapted from upstream workers 55203. Both original
+parser prototypes and arena-backed ownership remain intact for native callers;
+core-only allocation-choice helpers let qualifiers release each program after
+execution. Retained functions/traps, aliases, nested globs, errors and legacy
+parser calls pass 148-case release/allocator-aware matrices. The isolated core
+suite, bundled suites and OMZ/native gates pass; the concurrent file-lock timing
+failure is retained. Matched release measurements show lower RSS and elapsed
+time for large qualifier scans, with ordinary-glob/sort and customer controls.
+The optimization count becomes 28; publication and activation remain held.
+
+[Round forty-five](round45.md) follows `arrdup_max()` in the actual zjson object
+parser. Its full remaining-array count accounts for 9.8% of complete-process
+instructions. Counting only to the requested limit preserves allocation,
+duplication order and ownership, with oversized native limits on the original
+path. Native/slice matrices, upstream and bundled suites, OMZ and native-loader
+gates pass. Repeated application comparisons improve JSON object parsing and
+ASCII layout; full-copy costs and roughly 2% slower URL/drawing controls are
+retained. The optimization count becomes 29. Lexer scratch allocation remains
+a separate, unimplemented lead.
+
+
+## Round 46: unused lexer scratch
+
+The actual release uses heap-backed VARARR storage. `exalias()` allocated it
+for every word but used it only for internal token markers. Lazy allocation
+preserves token-copy contents, lifetime, lookup order and pointer restoration.
+This becomes the 30th accepted core optimization: repeated large qualifiers
+use less memory/time, with small slower controls and 4 KiB binary growth retained.
+Strict optional-stack compile checks, three-host Memcheck, upstream/bundled,
+unchanged OMZ and native-library checks pass. The investigation also separates
+existing bytecode caches from private source-only customer loading and guards
+both source and cache metadata. See [round 46](round46.md); no activation occurs.
+
+Round forty-seven reviews stock `zccmd_querychar()`'s wide-character destination
+capacity while integrating zdraw 0.1.4. A full-cell allocation corrects an
+inherited overflow without changing the first-character interface. PTY
+attribute/color/Unicode cases, a seeded stock-versus-zdraw oracle and native
+lifecycle checks are described in [round 47](round47.md). This does not certify
+other curses helpers or runtime behavior on older ncurses installations.

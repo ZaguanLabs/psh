@@ -1,0 +1,29 @@
+patching file configure.ac
+patching file Doc/Makefile.in
+Running: autoconf
+Running: autoheader
+Running: ./configure --prefix=/usr/local/psh/releases/1.0.0-rc1-cfc6db0ba09b --program-transform-name=s/zsh/psh/ --enable-dynamic --enable-multibyte --disable-zsh-debug --enable-pcre --enable-etcdir=/usr/local/psh/etc --enable-site-fndir=no --enable-additional-fpath=/usr/local/psh/site-functions
+Running: make -j4 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/profiles
+Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/profiles
+Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/core/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/training.json
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/build.py", line 238, in <module>
+    main()
+    ~~~~^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/build.py", line 122, in main
+    cflags, ldflags, training = compile_core(ROOT, core, work, configure, args.jobs, args.optimization)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/compiler.py", line 62, in compile_core
+    run("training", command, generate, generate_link)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/compiler.py", line 41, in run
+    subprocess.run(list(map(str, command)), cwd=core,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   env=dict(env, CFLAGS=cflags, LDFLAGS=ldflags),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   stdout=out, stderr=subprocess.STDOUT, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.13/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py', '--shell', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/core/Src/zsh', '--modules', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/training-modules', '--output', '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-cfc6db0ba09b/training.json']' returned non-zero exit status 1.

@@ -1,0 +1,42 @@
+[
+  {
+    "scope": "page allocations, including mmap-backed Zsh arenas",
+    "host": "baseline",
+    "shell": "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+    "command": [
+      "valgrind",
+      "--tool=massif",
+      "--pages-as-heap=yes",
+      "--massif-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round46/baseline-pages.massif",
+      "--time-unit=B",
+      "--detailed-freq=1",
+      "--max-snapshots=30",
+      "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+      "-dfc",
+      "emulate -R zsh; a=(*(Ne^': xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'^)); printf '%s\\0' \"${a[@]}\""
+    ],
+    "peak_allocated_bytes": 144953344,
+    "output_sha256": "481d327542a8e6ddf05f84f6e87618fecb907e6dc578f5d05ff8d6215d5c9416",
+    "binary_sha256": "46603868a3b9576e4ecc1cd79d35fb1aa49954fe66a61ab6f0234bdde524c0f4"
+  },
+  {
+    "scope": "page allocations, including mmap-backed Zsh arenas",
+    "host": "candidate",
+    "shell": "/usr/local/psh/releases/1.0.0-rc1-126770ba80d2/bin/psh",
+    "command": [
+      "valgrind",
+      "--tool=massif",
+      "--pages-as-heap=yes",
+      "--massif-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round46/candidate-pages.massif",
+      "--time-unit=B",
+      "--detailed-freq=1",
+      "--max-snapshots=30",
+      "/usr/local/psh/releases/1.0.0-rc1-126770ba80d2/bin/psh",
+      "-dfc",
+      "emulate -R zsh; a=(*(Ne^': xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'^)); printf '%s\\0' \"${a[@]}\""
+    ],
+    "peak_allocated_bytes": 136683520,
+    "output_sha256": "481d327542a8e6ddf05f84f6e87618fecb907e6dc578f5d05ff8d6215d5c9416",
+    "binary_sha256": "41feca1e89521329ca50993bc0a1e801f38fe74364fd02327a77fae16cb05571"
+  }
+]

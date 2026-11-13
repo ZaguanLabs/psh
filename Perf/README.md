@@ -1,5 +1,235 @@
 # Local performance workflow
 
+## Round 46: unused lexer scratch storage
+
+[Round 46](round46.md) allocates the lexer's heap scratch only for tokenized
+words. Repeated 10,000-file long qualifiers take 14–16% less time and use about
+16% less peak RSS; retained-function qualifiers take 24–27% less time and use
+about 35% less RSS. The 30th core optimization preserves token-copy lifetime,
+alias ordering and native interfaces. Slower customer controls and the 4 KiB
+binary increase remain documented; this is not a general application speedup.
+
+```sh
+python3 Perf/check-lexer-copy.py PRISTINE PREVIOUS CANDIDATE \
+  --memcheck --output .work/logs/lexer-copy.json
+python3 Perf/customer-process-benchmark.py PREVIOUS_RELEASE CANDIDATE_RELEASE \
+  --labs /path/to/labs --challenge /path/to/challenge --cpu 13 --samples 9 \
+  --output .work/logs/customer-process.json
+# Repeat with --source-only to use private text copies without altering caches.
+```
+
+The process timer records source and `.zwc` cache metadata. A fresh process can
+load compiled code instead of lexing source text; both loading modes compare
+complete results. Private text copies must match the current loaded workload.
+Keep warm-operation and whole-process timing scopes distinct, and run timings
+only after all builds, tests and profilers finish.
+
+## Round 45: bounded array-copy scans
+
+[Round 45](round45.md) stops `arrdup_max()`'s count at the requested limit.
+The real zjson object parser and zcoder/zchat ASCII layout improve in repeated
+release comparisons. Full-copy and application costs remain documented,
+including about 2% more time in the focused URL/drawing controls. The core
+optimization count is now 29; native signatures and ownership are unchanged.
+
+```sh
+python3 Perf/check-array-copy.py PRISTINE PREVIOUS CANDIDATE \
+  --headers-build PRISTINE_BUILD --headers-source PRISTINE_SOURCE \
+  --memcheck --output .work/logs/array-copy.json
+python3 Perf/array-copy-benchmark.py PREVIOUS_RELEASE CANDIDATE_RELEASE \
+  --samples 9 --cpu 13 --output .work/logs/array-copy-timing.json
+```
+
+The native fixture checks deep-copy ownership, interior pointers, exact-length
+vectors, empty strings and INT_MAX/UINT_MAX limits. The shell matrix retains
+negative, zero and out-of-range indices across emulations and array types.
+Run timers only after builds, tests and profilers finish; use the existing
+customer/application drivers alongside the focused copy timer.
+
+## Round 44: temporary glob programs
+
+[Round 44](round44.md) adopts the upstream glob-program lifetime improvement
+while preserving `parse_list(void)` and `parse_string()` ownership for native
+callers. Large qualifier scans use less memory; the source retains per-file
+parsing and side effects. The core optimization count is now 28.
+
+```sh
+python3 Perf/check-glob-programs.py PRISTINE PREVIOUS CANDIDATE \
+  --headers-build PRISTINE_BUILD --headers-source PRISTINE_SOURCE \
+  --memcheck --output .work/logs/glob-programs.json
+python3 Perf/glob-memory-benchmark.py PREVIOUS_RELEASE CANDIDATE_RELEASE \
+  --samples 9 --cpu 13 --output .work/logs/glob-memory.json
+```
+
+Run the 148-case checker separately on builds configured with
+`--enable-zsh-valgrind` to expose more internal arena lifetimes. The native
+fixture always uses legacy headers. Benchmark only ordinary release builds
+after tests/profilers finish; the driver compares full filename output and
+retains plain/sort controls, small cases and every sample.
+
+## Round 43: history/source lifetimes
+
+[Round 43](round43.md) backports two existing upstream lifetime fixes and adds
+arena-aware checks against repaired upstream, pristine Zsh and preceding psh.
+Run as an ordinary user: the source cases deliberately create unreadable files.
+
+```sh
+python3 Perf/check-heap-lifetimes.py --reference UPSTREAM_FIXED \
+  --candidate CANDIDATE_RELEASE --baseline PREVIOUS_RELEASE \
+  --heap-reference PRISTINE_VALGRIND_BUILD \
+  --heap-candidate CANDIDATE_VALGRIND_BUILD \
+  --output .work/logs/heap-lifetimes.json
+```
+
+Both diagnostic builds require `--enable-zsh-valgrind`. The driver expects
+affected pristine negative controls, records raw output bytes and checks both
+C and C.UTF-8. It does not benchmark the instrumented binaries. Temporary glob
+program memory is screened separately; that upstream interface change is not
+adopted.
+
+## Round 42: nested associative getters
+
+[Round 42](round42.md) fixes a native-getter reentrancy defect also reproduced
+on pristine Zsh 5.9.2: expanding one hash from another hash element's getter
+can replace the outer result. The legacy-header regression covers nested
+values and patterns, differing table sizes, unset nodes and generated scans.
+The separate bounded-count performance experiment and its controls are retained.
+
+```sh
+python3 Perf/check-hash-reentry-module.py CANDIDATE \
+  --headers-build PRISTINE_BUILD --headers-source PRISTINE_SOURCE \
+  --memcheck --output .work/logs/hash-reentry.json
+python3 Perf/applications.py BASELINE CANDIDATE --zjson /path/to/zjson \
+  --arrays --objects --samples 9 --cpu 13 --output .work/logs/objects.json
+```
+
+The first command intentionally fails on the affected pristine/preceding
+binaries; the [bug report](bugs/hash-getter-reentry.md) describes the output.
+
+## Round 41: deeper evaluation trials, not adopted
+
+[Round 41](round41.md) profiles the accepted PGO+LTO release and tests scalar
+finishing, two arithmetic storage layouts, scalar append reallocation, literal
+argument handling and complete integer-counter specialization. All proposals
+remain unapplied: isolated wins do not establish useful customer gains. A native
+table-mutation reproducer rejects the first quote shortcut despite its passing
+ordinary differential tests.
+
+New focused drivers compare complete operations against both pristine Zsh and
+the preceding accepted release. Every native fixture is built with legacy
+headers; it does not acknowledge a psh-specific optimization protocol:
+
+```sh
+python3 Perf/math-storage-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/math-storage.json --memcheck
+python3 Perf/scalar-append-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/scalar-append.json
+python3 Perf/literal-arguments-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/literal-arguments.json
+python3 Perf/math-counter-compare.py REFERENCE PREVIOUS TRIAL \
+  --output .work/logs/math-counter.json
+python3 Perf/check-literal-arguments-module.py REFERENCE PREVIOUS TRIAL \
+  --headers-build LEGACY_BUILD --headers-source LEGACY_SOURCE --memcheck \
+  --output .work/logs/native-literal-arguments.json
+```
+
+`check-scalar-append-module.py` and `check-math-counter-module.py` accept the
+same native-driver arguments. They check scalar ownership/custom setters and
+direct arithmetic returns/custom callbacks/queued signals, respectively.
+These manual screening fixtures do not replace the full package and unchanged
+OMZ gates required before activating any future candidate.
+
+## Round 40: native loaders and formatter withdrawal
+
+[Round 40](round40.md) withdraws the round-39 shortcut after libc plugins and
+explicit ELF preloading bypassed its module guard. The current converter uses
+the original locale sequence. The core optimization count is again 27;
+compiler-profile improvements remain. The five optional SDK exports are inert,
+and `psh_float_locale_tracking()` always returns zero.
+
+```sh
+python3 Perf/check-convfloat-loaders.py --candidate /path/to/psh \
+  --reference /path/to/pristine/zsh --output .work/logs/native-loaders.json
+```
+
+The fixture is compiled and run as the normal user, without changing system
+configuration. On the tested GNU/Linux host it covers seven cases, comparing
+reference/candidate outputs and proving whether the plugin actually loaded.
+Non-GNU libc is explicitly classified as unsupported; absent locales produce
+recorded skips. ELF preload cases require a GNU loader with `--preload` support.
+`Packaging/verify.py verify` includes this gate, and activation consumes matching
+binary/runner/fixture evidence. `Packaging/verify.py native-loaders --build PATH`
+refreshes it for an existing release or rollback candidate.
+
+## Round 39: native float output and conservative fallback
+
+[Round 39](round39.md) is a withdrawn historical experiment. It investigates
+`convfloat()` on the optimized release,
+including a rejected custom-printf callback regression and the independent
+native formatting acknowledgment. `check-convfloat.py` compiles an oracle module
+for each host's SDK and compares the pristine converter's complete output and
+FP/errno/locale/callback/queue state. For matching packaged builds:
+
+```sh
+python3 Perf/check-convfloat.py /path/to/old/psh /path/to/new/psh \
+  --headers-build /path/to/old/core --headers-source .work/pristine \
+  --candidate-headers-build /path/to/new/core --candidate-headers-source . \
+  --output .work/logs/float-output.json
+python3 Perf/check-convfloat-policy.py /path/to/new/psh \
+  --headers-build /path/to/new/core --retired --output .work/logs/float-policy.json
+```
+
+The full oracle covers five global locales and three thread-locale contexts.
+`--quick`, repeated `--locale`, and `--memcheck` permit smaller checks. Production
+builds now always use the original converter, including under Memcheck.
+The round-39 diagnostic recipe and positive API-failure counters describe only
+that historical experiment. Its preload bypass and thread-locale fast path
+have been removed from the current core. Omit `--retired` only when testing
+the historical round-39 native policy.
+
+`convfloat-printf-module.c` reproduces a genuine standard-printf extension using
+an older SDK; it deliberately does not acknowledge formatting safety.
+`convfloat-opaque-preload.c` has no hooks or constructors. Compiling it as a shared
+object and supplying `scene-benchmark.py --baseline-preload PATH` selects a
+recorded legacy-converter control with the same executable. Optional preload
+paths and hashes are included in benchmark reports; normal measurements set none.
+
+## rc1: scene coverage and compiler experiments
+
+`scene-benchmark.py` measures full fresh construction through the customer's
+actual z3dfx.drawing sources. It invokes the selected binaries directly, uses no
+scene cache, alternates host order, excludes one warmup per host, and compares
+the complete palette and material/depth pixel output. Construction and whole
+process times are separate. Native module directories can be selected explicitly:
+
+```sh
+python3 Perf/scene-benchmark.py /path/to/rc0/psh /path/to/candidate/psh \
+  --project /path/to/z3dfx.drawing --samples 5 --cpu 13 \
+  --output .work/logs/scenes.json
+```
+
+The six cases are Alpine Vigil, Moonlit Vigil, Faerie Pool, Profile Study,
+Per Arne and Emerald Rings. Source, worker, driver, executable and selected native
+module fingerprints are retained. These are scene construction results, not
+cached-launch, frame-rate or network measurements. `scene-workload.zsh` also
+accepts `zprof` as its third argument for a separate function-profile run.
+
+`stateful-compare.py REFERENCE CANDIDATE --output PATH` generates and retains
+eight reproducible 1,000-step mutation sequences, comparing each under C and
+C.UTF-8. It checks complete array/scalar/associative state, dynamic scope,
+redeclare/unset operations, namespace growth and arithmetic-error recovery,
+including exact diagnostics and exit status. `--seed`, `--steps`, `--locale`
+and `--memcheck` allow focused reproduction. This adds stateful coverage to the
+existing targeted/native suites; it is not a general Zsh grammar fuzzer or a
+proof of compatibility. The report remains `passed: false` until all cases pass.
+
+Complete compiler candidates are built using `Packaging/build.py
+--optimization standard|lto|pgo|pgo-lto`; see the packaging guide. Bundled training
+leaves scene and simulation workloads held out. Keep builds, tests and profilers
+finished before timing; retain slower cases and repeat the selected candidate.
+
+## Core development builds
+
 `build.py` builds an immutable-source baseline and the working-tree candidate
 with identical `-O2 -g`, multibyte support and Zsh debug assertions. Compiler
 and configure output is retained under `.work/logs/`. The candidate is published
@@ -1180,3 +1410,20 @@ caller locals and name reuse under Memcheck. `scope-load-signal-module.c`
 supports the signal-unload lifecycle test; these are isolated test modules,
 not additions to the installed shell's builtins. The SDK cooperation contract
 and fallback are documented in [COMPATIBILITY.md](../COMPATIBILITY.md).
+
+[Round forty-seven](round47.md) integrates zdraw 0.1.4 and fixes an inherited
+stock-curses readback buffer overflow. Reproduce the focused PTY regression:
+
+```sh
+python3 Perf/check-curses-querychar.py --shell /path/to/release/bin/psh \
+  --modules /path/to/release/lib/psh/5.9.2 --memcheck \
+  --output .work/logs/querychar.json
+python3 Perf/zdraw-components-benchmark.py /path/to/old/release /path/to/new/release \
+  --samples 9 --frames 30 --cpu 13 --output .work/logs/zdraw-components.json
+```
+
+Use matching installed modules and libraries. The benchmark compares complete
+cell snapshots, terminal output and resource state across all 28 cases; it
+records component work separately from staging and presentation. Do not run
+builds, tests or profilers alongside timing. The earlier release intentionally
+fails the querychar attribute oracle; retain that result when checking the fix.

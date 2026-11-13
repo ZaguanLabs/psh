@@ -1,0 +1,350 @@
+{
+  "passed": true,
+  "retired": true,
+  "inputs": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c": "aeef93ebd3ddec00f3df7f8ff54653bb598104af11657d77d32d6d51b9da48d8",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-convfloat-policy.py": "f0f0a64b42478f8453c291b7f1d441ce7a8cabfbb9c17664e62462e775e4454d",
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421"
+  },
+  "cases": [
+    {
+      "case": "both",
+      "locale": "C",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-DFIXTURE_FLOAT",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/both/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "96b880cd311bed7d6389b5d51fe7e4ba53e27a7b9617bb5b9c44092800513321"
+    },
+    {
+      "case": "both",
+      "locale": "C.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-DFIXTURE_FLOAT",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/both/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "96b880cd311bed7d6389b5d51fe7e4ba53e27a7b9617bb5b9c44092800513321"
+    },
+    {
+      "case": "both",
+      "locale": "fr_FR.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-DFIXTURE_FLOAT",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/both/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "96b880cd311bed7d6389b5d51fe7e4ba53e27a7b9617bb5b9c44092800513321"
+    },
+    {
+      "case": "scope-only",
+      "locale": "C",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/scope-only/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "4ec634355be72c92c857f0e99b073a53f464f72be7c4ad772980f8d08efb6245"
+    },
+    {
+      "case": "scope-only",
+      "locale": "C.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/scope-only/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "4ec634355be72c92c857f0e99b073a53f464f72be7c4ad772980f8d08efb6245"
+    },
+    {
+      "case": "scope-only",
+      "locale": "fr_FR.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/scope-only/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "4ec634355be72c92c857f0e99b073a53f464f72be7c4ad772980f8d08efb6245"
+    },
+    {
+      "case": "float-only",
+      "locale": "C",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_FLOAT",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/float-only/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "db2eb1a7e5a1a03bc4844ae8bed987b58afc3ec50b0bb8f184bd4ba9bf40f74f"
+    },
+    {
+      "case": "float-only",
+      "locale": "C.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_FLOAT",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/float-only/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "db2eb1a7e5a1a03bc4844ae8bed987b58afc3ec50b0bb8f184bd4ba9bf40f74f"
+    },
+    {
+      "case": "float-only",
+      "locale": "fr_FR.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_FLOAT",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/float-only/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "db2eb1a7e5a1a03bc4844ae8bed987b58afc3ec50b0bb8f184bd4ba9bf40f74f"
+    },
+    {
+      "case": "opaque",
+      "locale": "C",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/opaque/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "3f765e33993418c2355a1e782eddcff954080a8f738df4b4d989c83ed300ff97"
+    },
+    {
+      "case": "opaque",
+      "locale": "C.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/opaque/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "3f765e33993418c2355a1e782eddcff954080a8f738df4b4d989c83ed300ff97"
+    },
+    {
+      "case": "opaque",
+      "locale": "fr_FR.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/opaque/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "3f765e33993418c2355a1e782eddcff954080a8f738df4b4d989c83ed300ff97"
+    },
+    {
+      "case": "failed",
+      "locale": "C",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-DFIXTURE_FLOAT",
+        "-DFIXTURE_FAIL",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/failed/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "eb44929bce8b07dba9f2a3feaeec4575e90989a3990b95e5125528cae0ce8c48"
+    },
+    {
+      "case": "failed",
+      "locale": "C.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-DFIXTURE_FLOAT",
+        "-DFIXTURE_FAIL",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/failed/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "eb44929bce8b07dba9f2a3feaeec4575e90989a3990b95e5125528cae0ce8c48"
+    },
+    {
+      "case": "failed",
+      "locale": "fr_FR.UTF-8",
+      "passed": true,
+      "compile_command": [
+        "cc",
+        "-O2",
+        "-g",
+        "-shared",
+        "-fPIC",
+        "-DMODULE",
+        "-DHAVE_CONFIG_H",
+        "-DFIXTURE_SCOPE",
+        "-DFIXTURE_FLOAT",
+        "-DFIXTURE_FAIL",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-519928894f02/core/Src",
+        "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Src",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-policy-module.c",
+        "-o",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy/failed/psh_float_policy_fixture.so"
+      ],
+      "module_sha256": "eb44929bce8b07dba9f2a3feaeec4575e90989a3990b95e5125528cae0ce8c48"
+    },
+    {
+      "case": "LD_PRELOAD-unset-before-load",
+      "passed": true,
+      "preload_sha256": "4e24e47627b6ec6a1634f514849c097172848863763612b0aeff3981f74dc0b1",
+      "source_sha256": "340fa22a7fbe6fd9aa53043acbf9747687ae192d23f9c3740a10b6397fbd4806"
+    },
+    {
+      "case": "LD_AUDIT-unset-before-load",
+      "passed": true,
+      "preload_sha256": "4e24e47627b6ec6a1634f514849c097172848863763612b0aeff3981f74dc0b1",
+      "source_sha256": "340fa22a7fbe6fd9aa53043acbf9747687ae192d23f9c3740a10b6397fbd4806"
+    },
+    {
+      "case": "DYLD_INSERT_LIBRARIES-unset-before-load",
+      "passed": true,
+      "preload_sha256": "4e24e47627b6ec6a1634f514849c097172848863763612b0aeff3981f74dc0b1",
+      "source_sha256": "340fa22a7fbe6fd9aa53043acbf9747687ae192d23f9c3740a10b6397fbd4806"
+    }
+  ]
+}

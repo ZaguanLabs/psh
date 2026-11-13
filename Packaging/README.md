@@ -5,8 +5,8 @@ It retains `ZSH_VERSION=5.9.2`, `zsh/*` module identities, native package names,
 and the usual personal startup filenames. It does not replace the system Zsh,
 alter personal startup files, or change the account's login shell.
 
-The current project version is **1.0.0-rc0**. `psh --version` reports
-`psh 1.0.0-rc0 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
+This development branch prepares **1.0.0-rc1**. `psh --version` reports
+`psh 1.0.0-rc1 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
 The [current maintenance iteration](../Perf/round37.md) records the validated
@@ -27,7 +27,7 @@ subsequent repair and its installed-package regression tests.
 | `/usr/local/bin/psh` | Public executable, through `current` |
 | `/usr/local/bin/psh-config` | Discover this release's package and SDK paths |
 | `/usr/local/psh/current` | Active release symlink |
-| `/usr/local/psh/releases/1.0.0-rc0-<digest>/bin/psh` | Versioned executable |
+| `/usr/local/psh/releases/1.0.0-rc1-<digest>/bin/psh` | Versioned executable |
 | `<release>/lib/psh/5.9.2/` | `zdraw.so`, `zcurl.so`, `zmdown.so`, and stock `zsh/*.so` |
 | `<release>/share/psh/5.9.2/functions/` | Stock functions, completions, and package autoloads |
 | `<release>/share/psh/5.9.2/scripts/` | Package libraries, data, documentation, and licences |
@@ -58,6 +58,9 @@ ncurses and PCRE2 development files (`pcre2-config`), and libcurl development
 files >= 8.16.0 with `pkg-config`. Project tests also use Python, OpenSSL, `tic`, and standard Unix
 utilities. No downloaded dependency or system package change is performed by
 these scripts. Builds target the current machine and its installed libraries.
+When system Zsh ships `zsh/db/gdbm`, psh enables the matching module and requires
+the GDBM development headers and library. This selection is part of the build
+digest, and verification still checks the full system module inventory.
 The split-symbol default additionally uses GNU `objcopy` and `strip` and checks
 ELF64 little-endian runtime sections and dynamic exports before/after. Use
 `--symbols embedded` to retain symbols in the executable. The default
@@ -68,6 +71,42 @@ to prevent configure from stripping symbols before the separate debugger file
 is created. Native modules retain the exact bytes exercised by their suites.
 The separate debug file is installed too, so this reduces executable size rather
 than promising an equivalent reduction in total installation space.
+
+### Compiler optimization profiles
+
+The ordinary build retains `--optimization standard`. GCC users can build a
+separate profile-guided candidate with:
+
+```sh
+python3 Packaging/build.py --optimization pgo
+```
+
+This performs an instrumented build, executes checked offline core and bundled
+JSON workloads, then cleans and rebuilds with the resulting profile. It does
+not source personal startup files, access services or use the customer's scene
+projects for training. Training modules, gcov data, input hashes, compiler
+identity and logs remain in the candidate's private work directory. Existing
+work directories and profiles are never silently reused. Training/configuration
+failures stop the build; they do not silently produce an untrained release.
+
+PGO currently requires GCC with `-fprofile-partial-training` support. Unexecuted
+functions and optional modules retain ordinary compiler heuristics; missing
+optional-module profiles are recorded in `training.json`. Core training data is
+required for execution, parameters, arithmetic, strings, patterns and allocation.
+Configure probes use ordinary flags so unrelated `conftest` programs cannot
+contaminate profile data. The final executable has no profiling instrumentation.
+
+`--optimization lto` and `--optimization pgo-lto` are also available for measured
+compiler experiments. They are separate choices, not automatic promises of
+better performance. The build digest records the compiler, profile and flags.
+Every choice still needs the same package and unchanged-OMZ verification before
+activation. Standalone zcurl builds use a private source copy instead of
+overwriting the shared Vendor build cache.
+
+Staged distribution directories have group/other write permissions removed,
+including parents of `functions/`, regardless of the invoking umask. This keeps
+completion security auditing effective under both `0022` and `0002`; it never
+changes permissions on personal files, source directories or the stable Zsh.
 
 Use the private installer below for installation. The retained upstream
 `make install` target follows configure's Zsh defaults and can target a Zsh
@@ -100,6 +139,25 @@ are published only after successful validation. Activation appends exactly
 `/usr/local/bin/psh` to `/etc/shells`, preserving the existing entries and saving
 a backup. It refuses unrelated existing public entries.
 
+Verification also runs the native-library compatibility gate as the normal
+user. It compares libc codec loading and explicit ELF preloading against system
+Zsh using a compiled fixture in the build's private directory. No system loader,
+NSS, locale or startup configuration is edited. Activation requires a passing
+report matching the candidate binary and current test sources. The tested host
+supports all seven cases; unavailable locale/interface coverage is recorded
+explicitly. See [round 40](../Perf/round40.md).
+
+Existing safe releases, including rollback candidates, can refresh this evidence:
+
+```sh
+python3 Packaging/verify.py native-loaders --build /path/to/build.json
+```
+
+The round-39 thread-locale formatter candidate is withdrawn after confirmed
+native callback regressions. Its earlier successful tests remain historical
+evidence; it is not an activation or release candidate. Compiler-profile gains
+and all 27 preceding core optimizations remain in development.
+
 Oh My Zsh is now a required compatibility gate for private development and
 activation. The normal-user verifier tests the checkout at `~/.oh-my-zsh`, with
 the literal theme/plugin choices and numeric history limits from `.zshrc`, plus its configured syntax
@@ -108,6 +166,11 @@ unrelated startup programs are not sourced. All framework/theme/plugin files
 remain unchanged; update checks are disabled only in those test sessions and
 completion security auditing stays enabled. Use `--ohmyzsh-root PATH` with the
 verifier to select another checkout.
+
+The inherited-`FPATH` profile runs even when the launcher does not export
+`FPATH`: the gate obtains the reference shell's default function path in that
+case. Switching the test launcher from Zsh to Bash cannot silently remove this
+coverage.
 
 Activation refuses missing, failed, stale or different-executable OMZ evidence.
 Only the unprivileged verifier executes framework code. Refresh the gate for an
@@ -121,6 +184,14 @@ The standalone test supports explicit `--theme`, repeated `--plugin` and
 `--syntax-highlighting` inputs when configuration cannot be read as literal
 values. The [coverage report](../Perf/round21.md) records the tested revisions,
 interactive operations and limitations.
+
+Legacy OMZ checkouts without the async prompt API retain their own prompt
+implementation. The gate records that limitation and exercises actual ZLE
+descriptor callbacks with a test worker instead. For checkouts that do not
+compile completion dumps, only the disposable test cache is compiled by the
+fixture; compiled-cache handoff checks still run. History recall uses an entry
+loaded from the fixture's history file, including warm and interpreter-handoff
+sessions. Framework, theme, plugin and personal startup files remain unchanged.
 
 Build inputs determine the release digest. An existing build directory is
 retained rather than overwritten. Each command accepts `--build PATH` to select

@@ -44,3 +44,16 @@ Before publishing under `v1.0.0-rc0`:
 The [earlier private notes](1.0.0-rc0-private-checkpoint.md), original tag/asset
 receipt and local historical source archive provide independent recovery points.
 The release-preparation work itself leaves the original remote checkpoint intact.
+
+## Subsequent rc1 preparation
+
+Public rc0 has since been published and its earlier draft archived. rc1 uses a
+new `v1.0.0-rc1` tag at the exact commit in its own prepared `release.json`.
+Neither the public rc0 tag/assets nor its archival checkpoint is retargeted.
+Prepare and validate the source archive and compiler-profile receipts first,
+then obtain explicit publication approval. Upload to a draft, compare all server
+digests and downloaded bytes, and publish the verified release. The user prefers
+a regular public release, retaining the rc suffix in its version.
+
+Activating an installed candidate is separate from source preparation and
+publication; it always requires matching package and unchanged-OMZ evidence.

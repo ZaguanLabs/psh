@@ -690,9 +690,11 @@ par_event(int endtok)
     return 1;
 }
 
+/* Internal allocation choice; keep parse_list()'s native ABI and ownership. */
+
 /**/
-mod_export Eprog
-parse_list(void)
+Eprog
+parse_list_alloc(int heap)
 {
     int c = 0;
 
@@ -706,7 +708,14 @@ parse_list(void)
 	yyerror(0);
 	return NULL;
     }
-    return bld_eprog(1);
+    return bld_eprog(heap);
+}
+
+/**/
+mod_export Eprog
+parse_list(void)
+{
+    return parse_list_alloc(1);
 }
 
 /*

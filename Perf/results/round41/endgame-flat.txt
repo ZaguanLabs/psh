@@ -1,0 +1,97 @@
+--------------------------------------------------------------------------------
+Profile data file '.work/round41/logs/endgame.callgrind' (creator: callgrind-3.24.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 250596603
+Trigger: Program termination
+Profiled target:  /usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh -df /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh endgame-world /home/stig/dev/challenge/endgame 2 (PID 3675321, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       95
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                     
+--------------------------------------------------------------------------------
+1,068,100,535 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+142,294,138 (13.32%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:mathparse'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+134,678,686 (12.61%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:op.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+115,856,299 (10.85%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:zzlex [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 55,926,784 ( 5.24%)  .work/package/1.0.0-rc1-519928894f02/core/Src/utils.c:itype_end [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 49,477,878 ( 4.63%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:mathparse.cold'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 44,103,511 ( 4.13%)  .work/package/1.0.0-rc1-519928894f02/core/Src/utils.c:zstrtol_underscore [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 35,814,684 ( 3.35%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:lexconstant [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 34,174,997 ( 3.20%)  .work/package/1.0.0-rc1-519928894f02/core/Src/mem.c:zhalloc [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 34,047,535 ( 3.19%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:fetchvalue [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 25,881,651 ( 2.42%)  .work/package/1.0.0-rc1-519928894f02/core/Src/hashtable.c:gethashnode2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 24,399,317 ( 2.28%)  .work/package/1.0.0-rc1-519928894f02/core/Src/exec.c:execlist'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 17,014,568 ( 1.59%)  .work/package/1.0.0-rc1-519928894f02/core/Src/string.c:zzlex
+ 16,417,888 ( 1.54%)  ???:__strcmp_avx2 [/usr/lib64/libc.so.6]
+ 15,458,980 ( 1.45%)  .work/package/1.0.0-rc1-519928894f02/core/Src/input.c:ingetc [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 14,221,203 ( 1.33%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:paramsubst.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 12,746,726 ( 1.19%)  ???:__strcpy_avx2 [/usr/lib64/libc.so.6]
+ 11,392,197 ( 1.07%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:mathparse [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 10,894,303 ( 1.02%)  .work/package/1.0.0-rc1-519928894f02/core/Src/lex.c:dquote_parse.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 10,524,288 ( 0.99%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:getmathparam.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 10,496,016 ( 0.98%)  .work/package/1.0.0-rc1-519928894f02/core/Src/exec.c:execsimple.lto_priv.0'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+ 10,381,230 ( 0.97%)  ???:free [/usr/lib64/libc.so.6]
+ 10,329,558 ( 0.97%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:getparamnode [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  9,592,961 ( 0.90%)  ???:malloc [/usr/lib64/libc.so.6]
+  9,006,375 ( 0.84%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:mathevall.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  8,222,184 ( 0.77%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:getnumvalue [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  7,946,282 ( 0.74%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:getarg [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  7,832,671 ( 0.73%)  ???:__strlen_avx2 [/usr/lib64/libc.so.6]
+  7,727,017 ( 0.72%)  ???:_int_malloc [/usr/lib64/libc.so.6]
+  6,609,831 ( 0.62%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:stringsubst.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  6,071,824 ( 0.57%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:paramsubst.lto_priv.0'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  5,497,580 ( 0.51%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:prefork [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  5,420,243 ( 0.51%)  .work/package/1.0.0-rc1-519928894f02/core/Src/parse.c:ecgetstr [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  4,818,032 ( 0.45%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:mathparse.cold [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  4,479,104 ( 0.42%)  ???:__strcspn_sse42 [/usr/lib64/libc.so.6]
+  4,321,644 ( 0.40%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:getstrvalue [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  4,086,356 ( 0.38%)  .work/package/1.0.0-rc1-519928894f02/core/Src/mem.c:zalloc [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,975,892 ( 0.37%)  .work/package/1.0.0-rc1-519928894f02/core/Src/loop.c:execif [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,872,662 ( 0.36%)  .work/package/1.0.0-rc1-519928894f02/core/Src/exec.c:addvars.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,867,573 ( 0.36%)  .work/package/1.0.0-rc1-519928894f02/core/Src/glob.c:remnulargs [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,718,000 ( 0.35%)  .work/package/1.0.0-rc1-519928894f02/core/Src/exec.c:untokenize [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,697,326 ( 0.35%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:getindex [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,689,404 ( 0.35%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:fetchvalue'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,458,151 ( 0.32%)  .work/package/1.0.0-rc1-519928894f02/core/Src/exec.c:untokenize_tail [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,407,561 ( 0.32%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:strcatsub [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  3,084,163 ( 0.29%)  .work/package/1.0.0-rc1-519928894f02/core/Src/lex.c:add [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,967,948 ( 0.28%)  .work/package/1.0.0-rc1-519928894f02/core/Src/hist.c:hist_context_save [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,924,958 ( 0.27%)  .work/package/1.0.0-rc1-519928894f02/core/Src/exec.c:execarith.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,858,024 ( 0.27%)  .work/package/1.0.0-rc1-519928894f02/core/Src/hist.c:hist_context_restore [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,832,102 ( 0.27%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:assignstrvalue.part.0.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,716,196 ( 0.25%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:convbase_ptr [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,482,404 ( 0.23%)  .work/package/1.0.0-rc1-519928894f02/core/Src/hashtable.c:addhashnode2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,394,056 ( 0.22%)  .work/package/1.0.0-rc1-519928894f02/core/Src/params.c:assignsparam [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,317,660 ( 0.22%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:stringsubst.lto_priv.0'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,308,404 ( 0.22%)  .work/package/1.0.0-rc1-519928894f02/core/Src/parse.c:parse_context_restore [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,253,452 ( 0.21%)  .work/package/1.0.0-rc1-519928894f02/core/Src/input.c:inpush [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,211,764 ( 0.21%)  .work/package/1.0.0-rc1-519928894f02/core/Src/input.c:inungetc [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,164,072 ( 0.20%)  ???:malloc_consolidate [/usr/lib64/libc.so.6]
+  2,103,552 ( 0.20%)  .work/package/1.0.0-rc1-519928894f02/core/Src/subst.c:prefork'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,047,458 ( 0.19%)  .work/package/1.0.0-rc1-519928894f02/core/Src/math.c:execarith.lto_priv.0
+  2,045,084 ( 0.19%)  .work/package/1.0.0-rc1-519928894f02/core/Src/lex.c:parse_subscript [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  2,033,594 ( 0.19%)  .work/package/1.0.0-rc1-519928894f02/core/Src/parse.c:zcontext_save_partial
+  2,033,257 ( 0.19%)  ???:__strchr_avx2 [/usr/lib64/libc.so.6]
+  1,923,670 ( 0.18%)  .work/package/1.0.0-rc1-519928894f02/core/Src/context.c:zcontext_restore_partial [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  1,880,220 ( 0.18%)  .work/package/1.0.0-rc1-519928894f02/core/Src/hashtable.c:addhashnode2'2 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  1,869,430 ( 0.18%)  .work/package/1.0.0-rc1-519928894f02/core/Src/hist.c:hbegin [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  1,813,746 ( 0.17%)  .work/package/1.0.0-rc1-519928894f02/core/Src/lex.c:zcontext_save_partial
+  1,758,784 ( 0.16%)  .work/package/1.0.0-rc1-519928894f02/core/Src/context.c:zcontext_save_partial [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  1,747,798 ( 0.16%)  .work/package/1.0.0-rc1-519928894f02/core/Src/input.c:inpoptop.lto_priv.0 [/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh]
+  1,717,451 ( 0.16%)  ???:__gconv_transform_utf8_internal [/usr/lib64/libc.so.6]
+  1,708,254 ( 0.16%)  ???:_int_free_chunk [/usr/lib64/libc.so.6]
+
+--------------------------------------------------------------------------------

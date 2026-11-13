@@ -1,0 +1,64 @@
+[
+  {
+    "name": "copies",
+    "command": [
+      "python3",
+      "Perf/array-copy-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round45/copies.json"
+    ],
+    "started_unix": 1794575034.6776114,
+    "elapsed_seconds": 7.823885202407837,
+    "status": 0
+  },
+  {
+    "name": "customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round45/customer.json"
+    ],
+    "started_unix": 1794575042.5016904,
+    "elapsed_seconds": 21.84421157836914,
+    "status": 0
+  },
+  {
+    "name": "applications",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--arrays",
+      "--objects",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round45/applications.json"
+    ],
+    "started_unix": 1794575064.3468404,
+    "elapsed_seconds": 30.456308364868164,
+    "status": 0
+  }
+]

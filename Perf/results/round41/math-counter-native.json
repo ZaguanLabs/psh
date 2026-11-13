@@ -1,0 +1,77 @@
+{
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/math-counter-module.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/math-counter-native/psh_math_counter_fixture.so"
+  ],
+  "memcheck": true,
+  "runs": [
+    {
+      "shell": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_math_counter_fixture || exit 2\nTRAPUSR1() { typeset -g psh_counter_signal_value=$i; }\npsh-math-counter-check || exit 3\nprint -r -- signal-value=$psh_counter_signal_value\n[[ $psh_counter_signal_value == 42 ]] || exit 4\nzmodload -u psh_math_counter_fixture || exit 5\n",
+        "math-counter-native",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/math-counter-native"
+      ],
+      "binary_sha256": "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+      "status": 0,
+      "stdout": "mode=0 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=1 type=1 result=46 value=47 error=0 queue=0 gets=1 sets=1 callbacks=0 failed=0\nmode=2 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=1 failed=0\nmode=3 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=1 failed=0\nmode=4 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=5 type=1 result=0 value=41 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=6 type=1 result=9223372036854775807 value=-9223372036854775808 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=7 type=1 result=41 value=42 error=0 queue=1 gets=0 sets=0 callbacks=0 failed=0\nsignal-value=42\n",
+      "stderr": ""
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_math_counter_fixture || exit 2\nTRAPUSR1() { typeset -g psh_counter_signal_value=$i; }\npsh-math-counter-check || exit 3\nprint -r -- signal-value=$psh_counter_signal_value\n[[ $psh_counter_signal_value == 42 ]] || exit 4\nzmodload -u psh_math_counter_fixture || exit 5\n",
+        "math-counter-native",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/math-counter-native"
+      ],
+      "binary_sha256": "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+      "status": 0,
+      "stdout": "mode=0 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=1 type=1 result=46 value=47 error=0 queue=0 gets=1 sets=1 callbacks=0 failed=0\nmode=2 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=1 failed=0\nmode=3 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=1 failed=0\nmode=4 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=5 type=1 result=0 value=41 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=6 type=1 result=9223372036854775807 value=-9223372036854775808 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=7 type=1 result=41 value=42 error=0 queue=1 gets=0 sets=0 callbacks=0 failed=0\nsignal-value=42\n",
+      "stderr": ""
+    },
+    {
+      "shell": "/usr/local/psh/releases/1.0.0-rc1-72c68479281a/bin/psh",
+      "command": [
+        "valgrind",
+        "--quiet",
+        "--track-origins=yes",
+        "--error-exitcode=97",
+        "/usr/local/psh/releases/1.0.0-rc1-72c68479281a/bin/psh",
+        "-dfc",
+        "module_path=(\"$1\"); zmodload psh_math_counter_fixture || exit 2\nTRAPUSR1() { typeset -g psh_counter_signal_value=$i; }\npsh-math-counter-check || exit 3\nprint -r -- signal-value=$psh_counter_signal_value\n[[ $psh_counter_signal_value == 42 ]] || exit 4\nzmodload -u psh_math_counter_fixture || exit 5\n",
+        "math-counter-native",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round41/logs/math-counter-native"
+      ],
+      "binary_sha256": "4997a6a60a89e23cb0fa443fea5f0f113dd151dbe9fe0a8600bb9eb64692b7f1",
+      "status": 0,
+      "stdout": "mode=0 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=1 type=1 result=46 value=47 error=0 queue=0 gets=1 sets=1 callbacks=0 failed=0\nmode=2 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=1 failed=0\nmode=3 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=1 failed=0\nmode=4 type=1 result=41 value=42 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=5 type=1 result=0 value=41 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=6 type=1 result=9223372036854775807 value=-9223372036854775808 error=0 queue=0 gets=0 sets=0 callbacks=0 failed=0\nmode=7 type=1 result=41 value=42 error=0 queue=1 gets=0 sets=0 callbacks=0 failed=0\nsignal-value=42\n",
+      "stderr": ""
+    }
+  ],
+  "driver_sha256": "daa47f9c35ea683be3a380703828fdc82d2e66f6e3388510fb5b056d0f5b73fc",
+  "source_sha256": "f5593602b7380469691ba872cc4c850db571b51b0dff554ea9c7d84e9ad558d8",
+  "module_sha256": "6538b5f233692091de6169430050a860f9272ab4c1d5843c241aa60135995ead",
+  "passed": true
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "name": "fixed-customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/fixed-customer.json"
+    ],
+    "started_unix": 1794516007.2899356,
+    "elapsed_seconds": 21.690224170684814,
+    "status": 0
+  },
+  {
+    "name": "fixed-objects",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--arrays",
+      "--objects",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/fixed-objects.json"
+    ],
+    "started_unix": 1794516028.9803362,
+    "elapsed_seconds": 30.803038120269775,
+    "status": 0
+  },
+  {
+    "name": "fixed-hash",
+    "command": [
+      "python3",
+      "Perf/hash-expansion-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/fixed-hash.json"
+    ],
+    "started_unix": 1794516059.7836154,
+    "elapsed_seconds": 27.199405908584595,
+    "status": 0
+  },
+  {
+    "name": "fixed-moonlit",
+    "command": [
+      "python3",
+      "Perf/scene-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "--project",
+      "/home/stig/dev/challenge/z3dfx.drawing",
+      "--scene",
+      "moonlit",
+      "--samples",
+      "3",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/fixed-moonlit.json"
+    ],
+    "started_unix": 1794516086.9832342,
+    "elapsed_seconds": 45.475247383117676,
+    "status": 0
+  },
+  {
+    "name": "count-bound-customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/count-bound-customer.json"
+    ],
+    "started_unix": 1794516132.458734,
+    "elapsed_seconds": 20.190553665161133,
+    "status": 0
+  },
+  {
+    "name": "count-bound-objects",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--arrays",
+      "--objects",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/count-bound-objects.json"
+    ],
+    "started_unix": 1794516152.649514,
+    "elapsed_seconds": 31.007502555847168,
+    "status": 0
+  },
+  {
+    "name": "count-bound-hash",
+    "command": [
+      "python3",
+      "Perf/hash-expansion-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/count-bound-hash.json"
+    ],
+    "started_unix": 1794516183.6572568,
+    "elapsed_seconds": 27.45092463493347,
+    "status": 0
+  },
+  {
+    "name": "count-bound-moonlit",
+    "command": [
+      "python3",
+      "Perf/scene-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-cde7f840ec94/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-33125fdb23fe/bin/psh",
+      "--project",
+      "/home/stig/dev/challenge/z3dfx.drawing",
+      "--scene",
+      "moonlit",
+      "--samples",
+      "3",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round42/count-bound-moonlit.json"
+    ],
+    "started_unix": 1794516211.10843,
+    "elapsed_seconds": 44.92462682723999,
+    "status": 0
+  }
+]

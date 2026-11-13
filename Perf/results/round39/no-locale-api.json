@@ -1,0 +1,181 @@
+{
+  "passed": true,
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/no-locale-api/core/Src/zsh"
+  ],
+  "shell_sha256": [
+    "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+    "8eed39fe94060d743ba1835d567eb697c17f0206acb2b825513f40ea9e62b8f2"
+  ],
+  "source_sha256": {
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/check-convfloat.py": "12eaa085af7a7db1bd1d2fe98c962a9923cba5ffb53f49536ae1df1a43794fdd",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c": "705b3d163ed1b39de91510f36d5c912045ff8b913f4060d8cfb59dbadcfa86e5",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-reference.h": "fc434eeab9e9f7e7dca86ff21fb2a87df5926323a2c76a7c7fd687df81d0d769",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-fault.c": "340fa22a7fbe6fd9aa53043acbf9747687ae192d23f9c3740a10b6397fbd4806"
+  },
+  "compile_commands": [
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/pristine/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/no-locale-api/0/psh_float_output_fixture.so",
+      "-lm",
+      "-ldl"
+    ],
+    [
+      "cc",
+      "-O2",
+      "-g",
+      "-shared",
+      "-fPIC",
+      "-DMODULE",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/no-locale-api/core/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/no-locale-api/core/Src",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/convfloat-module.c",
+      "-o",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/no-locale-api/1/psh_float_output_fixture.so",
+      "-lm",
+      "-ldl"
+    ]
+  ],
+  "module_sha256": [
+    "fba2596b2d800df7de19d90e8de6cb53696d09e977c5ff9a0d4bb786cd67f27b",
+    "1ef7c28f0b2e617bc17c433b0490198a8a3e116905e626c2e1fa26b9923114d8"
+  ],
+  "fault": "none",
+  "memcheck": false,
+  "quick": true,
+  "linked_faults_candidate": false,
+  "runs": [
+    {
+      "host": 0,
+      "locale": "C",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "fr_FR.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "nb_NO.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 0,
+      "locale": "tr_TR.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "C.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "fr_FR.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "nb_NO.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    },
+    {
+      "host": 1,
+      "locale": "tr_TR.UTF-8",
+      "status": 0,
+      "checks": 14400,
+      "faults": [
+        0,
+        0,
+        0
+      ],
+      "stdout": "checks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=3051134599421717492 faults=0\nchecks=4800 digest=9391533040596704776 faults=0\n"
+    }
+  ]
+}

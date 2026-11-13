@@ -1,0 +1,46 @@
+[
+  {
+    "name": "customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-5982ba7e218f/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round43/customer.json"
+    ],
+    "started_unix": 1794569417.3018088,
+    "elapsed_seconds": 22.14241647720337,
+    "status": 0
+  },
+  {
+    "name": "objects",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-5982ba7e218f/bin/psh",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--arrays",
+      "--objects",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round43/objects.json"
+    ],
+    "started_unix": 1794569439.4444067,
+    "elapsed_seconds": 30.651930332183838,
+    "status": 0
+  }
+]

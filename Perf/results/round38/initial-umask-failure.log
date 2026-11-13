@@ -1,0 +1,31 @@
+mkdir -p "build"
+mkdir -p "build"
+cc  -O2 -g  -std=c99 -Wall -Wextra -fPIC -shared \
+    -I"/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-3d542b94143f/core/Src" -I"/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-3d542b94143f/core"  src/zcurl.c \
+     -lcurl -o build/zcurl.so.tmp
+mv -f build/zcurl.so.tmp build/zcurl.so
+timeout --verbose --kill-after=5s "240s" python3 -u tests/integration.py
+Testing module: /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zcurl/build/zcurl.so
+PASS: HTTP, TLS trust and hostname checks, option reset, errors, bounds, fork guard, unload/reload
+PASS: all 256 byte values and trailing newlines round-trip exactly
+PASS: 11 verified HTTPS requests use one server-observed connection
+PASS: WS/WSS forced first-frame AGAIN with zero bytes sent, OFFSET retry and following frame
+PASS: methods, caller-owned results, scopes/options, limits, partial/chunked responses, HTTP errors and reset
+PASS: server-observed POST, JSON/auth/duplicate headers, request reset, binary upload
+PASS: invalid API inputs rejected without parameter evaluation
+PASS: invalid result targets, headers, methods and options cause no HTTP requests
+PASS: request header boundaries, duplicate ordering, independent ownership and partial-list cleanup
+PASS: project loader is idempotent and preserves module_path and aliases
+PASS: project example runs outside the checkout and preserves response bytes
+Traceback (most recent call last):
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zcurl/tests/integration.py", line 667, in <module>
+    completion.test(env, plain, temp)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zcurl/tests/completion.py", line 89, in test
+    wait_for(b'COMPLETION_READY\r\n')
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zcurl/tests/completion.py", line 70, in wait_for
+    assert remaining > 0, f"completion PTY timed out: {bytes(output)!r}"
+           ^^^^^^^^^^^^^
+AssertionError: completion PTY timed out: b'source "$ZCURL_COMPLETION_WORK/setup.zsh"\r\n\x1b[1m\x1b[7m%\x1b[27m\x1b[1m\x1b[0m                                                                               \r \r\r\x1b[0m\x1b[27m\x1b[24m\x1b[Jcompletion> \x1b[K\x1b[?2004hs\x08source "$ZCURL_COMPLETION_WORK/setup.zsh"\x1b[?2004l\r\r\nzsh compinit: insecure directories, run compaudit for list.\r\nIgnore insecure directories and continue [y] or abort compinit [n]? '
+make: *** [Makefile:52: test] Error 1

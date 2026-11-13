@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "case": "native-full",
+      "command": [
+        "python3",
+        "Perf/check-convfloat.py",
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "--headers-build",
+        ".work/package/1.0.0-rc1-b0850020f4a1/core",
+        "--headers-source",
+        ".work/pristine",
+        "--candidate-headers-build",
+        ".work/package/1.0.0-rc1-519928894f02/core",
+        "--candidate-headers-source",
+        ".",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-full.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "native-memory",
+      "command": [
+        "python3",
+        "Perf/check-convfloat.py",
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "--headers-build",
+        ".work/package/1.0.0-rc1-b0850020f4a1/core",
+        "--headers-source",
+        ".work/pristine",
+        "--candidate-headers-build",
+        ".work/package/1.0.0-rc1-519928894f02/core",
+        "--candidate-headers-source",
+        ".",
+        "--quick",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-memory.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "native-policy",
+      "command": [
+        "python3",
+        "Perf/check-convfloat-policy.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "--headers-build",
+        ".work/package/1.0.0-rc1-519928894f02/core",
+        "--retired",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/native-policy.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "printf-extension",
+      "command": [
+        "python3",
+        "Perf/check-convfloat-printf.py",
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "--headers-build",
+        ".work/package/1.0.0-rc1-b0850020f4a1/core",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/printf-extension.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "loader-pristine",
+      "command": [
+        "python3",
+        "Perf/check-convfloat-loaders.py",
+        "--candidate",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "--reference",
+        ".work/public-rc0/reference/Src/zsh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round40/logs/loader-pristine.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "old-round39-sdk-binary",
+      "status": 0,
+      "module": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/final-policy/both/psh_float_policy_fixture.so"
+    }
+  ]
+}

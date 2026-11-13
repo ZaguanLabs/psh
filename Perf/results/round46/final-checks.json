@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "snapshot",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "snapshot",
+        "--build",
+        ".work/package/1.0.0-rc1-126770ba80d2/build.json"
+      ],
+      "status": 0,
+      "seconds": 0.32561206817626953
+    },
+    {
+      "name": "install",
+      "command": [
+        "sudo",
+        "-n",
+        "python3",
+        "Packaging/install.py",
+        "candidate",
+        "--build",
+        ".work/package/1.0.0-rc1-126770ba80d2/build.json"
+      ],
+      "status": 0,
+      "seconds": 0.26404666900634766
+    },
+    {
+      "name": "lexer",
+      "command": [
+        "python3",
+        "Perf/check-lexer-copy.py",
+        ".work/public-rc0/reference/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-126770ba80d2/bin/psh",
+        "--memcheck",
+        "--output",
+        ".work/round46/lexer-release.json"
+      ],
+      "status": 0,
+      "seconds": 182.50103902816772
+    },
+    {
+      "name": "glob",
+      "command": [
+        "python3",
+        "Perf/check-glob-programs.py",
+        ".work/public-rc0/reference/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-126770ba80d2/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--headers-source",
+        ".work/pristine",
+        "--memcheck",
+        "--output",
+        ".work/round46/glob.json"
+      ],
+      "status": 0,
+      "seconds": 100.67031502723694
+    },
+    {
+      "name": "profile",
+      "command": [
+        "python3",
+        ".work/round46/profile.py"
+      ],
+      "status": 0,
+      "seconds": 4.069210767745972
+    },
+    {
+      "name": "package-test",
+      "command": [
+        "python3",
+        "Packaging/test.py",
+        "--build",
+        ".work/package/1.0.0-rc1-126770ba80d2/build.json",
+        "--jobs",
+        "1"
+      ],
+      "status": 0,
+      "seconds": 585.4198682308197
+    },
+    {
+      "name": "stage",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "stage-modules",
+        "--build",
+        ".work/package/1.0.0-rc1-126770ba80d2/build.json"
+      ],
+      "status": 0,
+      "seconds": 0.06384825706481934
+    },
+    {
+      "name": "refresh",
+      "command": [
+        "sudo",
+        "-n",
+        "python3",
+        "Packaging/install.py",
+        "refresh-modules",
+        "--build",
+        ".work/package/1.0.0-rc1-126770ba80d2/build.json"
+      ],
+      "status": 0,
+      "seconds": 0.2641878128051758
+    },
+    {
+      "name": "verify",
+      "command": [
+        "python3",
+        "Packaging/verify.py",
+        "verify",
+        "--build",
+        ".work/package/1.0.0-rc1-126770ba80d2/build.json"
+      ],
+      "status": 0,
+      "seconds": 9.327494621276855
+    }
+  ]
+}

@@ -1,10 +1,15 @@
 # psh — Performance SHell
 
-For the public rc0 introduction and quick start, see the
-[project overview](.github/README.md) and [release notes](Releases/1.0.0-rc0.md).
+psh **1.0.0-rc1** adds optional compiler profiles, three further core optimizations,
+bundled zdraw 0.1.4 and stronger compatibility and memory-safety checks. The unsafe
+float-formatting experiment was withdrawn; its historical measurements do not
+apply to this release. Published rc0 is retained unchanged.
+
+For the public introduction and quick start, see the
+[project overview](.github/README.md) and [rc1 release notes](Releases/1.0.0-rc1.md).
 This file retains the detailed development history.
 
-psh 1.0.0-rc0 pursues meaningful performance gains on Zsh 5.9.2 while preserving
+psh 1.0.0-rc1 pursues meaningful performance gains on Zsh 5.9.2 while preserving
 existing behavior by default. Limited, deliberate differences need substantial
 measured benefit, understood consequences and a documented migration or fallback.
 **Oh My Zsh must work unchanged**, including
@@ -101,7 +106,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The executable now includes twenty-seven accepted optimizations.
+The development source now includes thirty accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -131,7 +136,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-executable includes all twenty-seven changes; the fourth experiment compares against
+development source includes all thirty changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -358,3 +363,40 @@ modules from psh's modules. The new private rc0 iteration is active after seven
 package suites and 24 unchanged OMZ sessions. Core machine code and all 40 native
 module text sections remain identical; this adds no new speedup to the count of
 27 optimizations.
+
+The [thirty-ninth investigation](Perf/round39.md) measured an additional
+thread-locale float-formatting optimization. The [fortieth investigation](Perf/round40.md)
+withdraws it after reproducing changed native callback behavior through libc
+conversion plugins and explicit ELF preloading. The original output converter is
+restored; five optional SDK exports remain inert for binary compatibility.
+That withdrawal returns the core optimization count to 27. A mandatory native-library gate
+now complements the unchanged OMZ gate. Publication and activation remain held.
+
+The [twenty-eighth accepted change](Perf/round44.md) releases temporary shell-code
+glob programs after each evaluation, adapting an upstream lifetime improvement.
+Legacy native parsers retain their signatures and arena-backed ownership.
+Repeated 10,000-file long-qualifier measurements use about 19% less peak resident
+memory and take 17–19% less time; customer kernels remain effectively flat.
+Escaping functions/traps and old-header native callers pass focused checks,
+alongside the package, OMZ and native-library gates. The candidate is inactive.
+
+The [twenty-ninth accepted change](Perf/round45.md) bounds the scan preceding an
+array slice copy by the number of elements requested. Repeated release tests
+show 7–8% less time in the real zjson object parser and 4–5% less in zcoder/zchat
+ASCII layout. The native API and deep-copy ownership are unchanged. Full-copy
+costs and about 2% slower URL/drawing controls remain documented. The candidate
+passes the package, OMZ and native-library gates and remains inactive.
+
+The [thirtieth accepted change](Perf/round46.md) removes unused lexer scratch
+allocations for plain words. Repeated 10,000-file long qualifiers take 14–16%
+less time and use about 16% less peak RSS; retained-function qualifiers take
+24–27% less time and use about 35% less RSS. Customer controls remain mixed,
+including small slowdowns, and the binary grows by 4 KiB. Cached and text-only
+customer loading now have separate measurement evidence. All package, OMZ and
+native-library gates pass; the candidate remains inactive.
+
+[Round 47](Perf/round47.md) updates bundled zdraw to 0.1.4 and corrects an
+inherited stock-curses readback buffer overflow. The upstream style-resolution
+improvements and ncurses safety probe are retained; psh's existing conditional
+scope-cooperation hook is the only local zdraw patch. The core optimization
+count stays at 30. This development candidate remains inactive.

@@ -1,0 +1,212 @@
+{
+  "passed": true,
+  "release": "1.0.0-rc1-6db51a2527d4",
+  "shell": "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+  "runs": [
+    {
+      "name": "array",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--appends",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-array.json"
+      ],
+      "status": 0,
+      "seconds": 8.628
+    },
+    {
+      "name": "scalar",
+      "command": [
+        "python3",
+        "Perf/scalar-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--assignments",
+        "--prefixes",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-scalar.json"
+      ],
+      "status": 0,
+      "seconds": 34.718
+    },
+    {
+      "name": "search",
+      "command": [
+        "python3",
+        "Perf/search-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--scalars",
+        "--large",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-search.json"
+      ],
+      "status": 0,
+      "seconds": 3.92
+    },
+    {
+      "name": "pattern",
+      "command": [
+        "python3",
+        "Perf/pattern-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--extended",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-pattern.json"
+      ],
+      "status": 0,
+      "seconds": 1.816
+    },
+    {
+      "name": "substitution",
+      "command": [
+        "python3",
+        "Perf/substitution-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-substitution.json"
+      ],
+      "status": 0,
+      "seconds": 5.121
+    },
+    {
+      "name": "emulation",
+      "command": [
+        "python3",
+        "Perf/emulation-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-emulation.json"
+      ],
+      "status": 0,
+      "seconds": 1.065
+    },
+    {
+      "name": "math",
+      "command": [
+        "python3",
+        "Perf/math-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--operators",
+        "--syntax",
+        "--descriptors",
+        "--state-frames",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-math.json"
+      ],
+      "status": 0,
+      "seconds": 123.696
+    },
+    {
+      "name": "stateful",
+      "command": [
+        "python3",
+        "Perf/stateful-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--steps",
+        "1000",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-stateful.json"
+      ],
+      "status": 0,
+      "seconds": 2.517
+    },
+    {
+      "name": "stateful-memcheck",
+      "command": [
+        "python3",
+        "Perf/stateful-compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--steps",
+        "150",
+        "--seed",
+        "11",
+        "--seed",
+        "29",
+        "--memcheck",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-stateful-memcheck.json"
+      ],
+      "status": 0,
+      "seconds": 9.428
+    },
+    {
+      "name": "array-native",
+      "command": [
+        "python3",
+        "Perf/check-array-cache.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--headers-source",
+        ".work/pristine",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-array-native.json"
+      ],
+      "status": 0,
+      "seconds": 24.951
+    },
+    {
+      "name": "scope-native",
+      "command": [
+        "python3",
+        "Perf/check-scope-cleanup-module.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--headers-source",
+        ".work/pristine",
+        "--candidate-headers-build",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/core",
+        "--candidate-headers-source",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/core",
+        "--aware",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-scope-native.json"
+      ],
+      "status": 0,
+      "seconds": 3.869
+    },
+    {
+      "name": "math-native",
+      "command": [
+        "python3",
+        "Perf/check-math-locale-module.py",
+        "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--memcheck",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round42/final-preceding/selected-math-native.json"
+      ],
+      "status": 0,
+      "seconds": 7.224
+    }
+  ]
+}

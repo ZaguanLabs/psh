@@ -1,0 +1,2435 @@
+{
+  "shells": [
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/public-rc0/reference/Src/zsh",
+    "/usr/local/psh/releases/1.0.0-rc1-519928894f02/bin/psh",
+    "/usr/local/psh/releases/1.0.0-rc1-39e3d991802f/bin/psh"
+  ],
+  "binary_sha256": [
+    "bae3487d063913b5cf63e749d15be35bbb87452e813a57f065c363ede4279cd8",
+    "c2dbffe4df42f9adfc77a5946685804ba2c14f4e1cd731ae66a8567c12245421",
+    "af4dd03c23809171a91c278a579b3df853cd01598428ece27740ea68a5491c5b"
+  ],
+  "cases": [
+    {
+      "case": "zsh/multibyte/typeset/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/''",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/'a'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "autonamedirs",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "noautonamedirs",
+      "locale": "C",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/multibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "zsh/nomultibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/multibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "sh/nomultibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/multibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -x/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -l/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -u/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -L12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -R12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -Z12/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/''",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/'a'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/'\u00e9\u754c\ud83d\ude00'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/$'a\\0b\\203\\377'",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "ksh/nomultibyte/typeset -t/\"${(l:4097::x:)}\"",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "autonamedirs",
+      "locale": "C.UTF-8",
+      "passed": true
+    },
+    {
+      "case": "noautonamedirs",
+      "locale": "C.UTF-8",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

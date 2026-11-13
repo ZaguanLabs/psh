@@ -1,0 +1,1278 @@
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+gawk -f ./signames1.awk  /usr/include/bits/signum-arch.h /usr/include/bits/signum-generic.h >sigtmp.c
+case "`gcc -E --version </dev/null 2>&1`" in \
+*"Free Software Foundation"*) \
+gcc -E -P sigtmp.c >sigtmp.out;; \
+*) \
+gcc -E sigtmp.c >sigtmp.out;; \
+esac
+gawk -f ./signames2.awk sigtmp.out > signames.c
+rm -f sigtmp.c sigtmp.out
+grep 'define.*SIGCOUNT' signames.c > sigcount.h
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+Updated `zsh.mdh'.
+echo 'timestamp for zsh.mdh against zsh.mdd' > zsh.mdhs
+gawk -f ../Src/makepro.awk builtin.c Src > builtin.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < builtin.syms) \
+	> builtin.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < builtin.syms) \
+	> `echo builtin.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk compat.c Src > compat.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compat.syms) \
+	> compat.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compat.syms) \
+	> `echo compat.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk cond.c Src > cond.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < cond.syms) \
+	> cond.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < cond.syms) \
+	> `echo cond.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk context.c Src > context.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < context.syms) \
+	> context.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < context.syms) \
+	> `echo context.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk exec.c Src > exec.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < exec.syms) \
+	> exec.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < exec.syms) \
+	> `echo exec.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk glob.c Src > glob.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < glob.syms) \
+	> glob.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < glob.syms) \
+	> `echo glob.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk hashtable.c Src > hashtable.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < hashtable.syms) \
+	> hashtable.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < hashtable.syms) \
+	> `echo hashtable.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk hashnameddir.c Src > hashnameddir.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < hashnameddir.syms) \
+	> hashnameddir.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < hashnameddir.syms) \
+	> `echo hashnameddir.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk hist.c Src > hist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < hist.syms) \
+	> hist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < hist.syms) \
+	> `echo hist.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk init.c Src > init.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < init.syms) \
+	> init.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < init.syms) \
+	> `echo init.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk input.c Src > input.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < input.syms) \
+	> input.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < input.syms) \
+	> `echo input.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk jobs.c Src > jobs.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < jobs.syms) \
+	> jobs.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < jobs.syms) \
+	> `echo jobs.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk lex.c Src > lex.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < lex.syms) \
+	> lex.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < lex.syms) \
+	> `echo lex.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk linklist.c Src > linklist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < linklist.syms) \
+	> linklist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < linklist.syms) \
+	> `echo linklist.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk loop.c Src > loop.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < loop.syms) \
+	> loop.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < loop.syms) \
+	> `echo loop.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk math.c Src > math.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < math.syms) \
+	> math.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < math.syms) \
+	> `echo math.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk mem.c Src > mem.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < mem.syms) \
+	> mem.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < mem.syms) \
+	> `echo mem.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk module.c Src > module.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < module.syms) \
+	> module.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < module.syms) \
+	> `echo module.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk options.c Src > options.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < options.syms) \
+	> options.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < options.syms) \
+	> `echo options.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk params.c Src > params.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < params.syms) \
+	> params.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < params.syms) \
+	> `echo params.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk parse.c Src > parse.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < parse.syms) \
+	> parse.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < parse.syms) \
+	> `echo parse.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk pattern.c Src > pattern.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < pattern.syms) \
+	> pattern.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < pattern.syms) \
+	> `echo pattern.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk prompt.c Src > prompt.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < prompt.syms) \
+	> prompt.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < prompt.syms) \
+	> `echo prompt.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk signals.c Src > signals.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < signals.syms) \
+	> signals.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < signals.syms) \
+	> `echo signals.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk signames.c Src > signames.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < signames.syms) \
+	> signames.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < signames.syms) \
+	> `echo signames.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk sort.c Src > sort.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < sort.syms) \
+	> sort.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < sort.syms) \
+	> `echo sort.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk string.c Src > string.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < string.syms) \
+	> string.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < string.syms) \
+	> `echo string.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk subst.c Src > subst.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < subst.syms) \
+	> subst.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < subst.syms) \
+	> `echo subst.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk text.c Src > text.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < text.syms) \
+	> text.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < text.syms) \
+	> `echo text.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk utils.c Src > utils.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < utils.syms) \
+	> utils.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < utils.syms) \
+	> `echo utils.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../Src/makepro.awk openssh_bsd_setres_id.c Src > openssh_bsd_setres_id.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < openssh_bsd_setres_id.syms) \
+	> openssh_bsd_setres_id.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < openssh_bsd_setres_id.syms) \
+	> `echo openssh_bsd_setres_id.epro | sed 's/\.epro$/.pro/'`
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+Updated `zsh.mdh'.
+make -f Makemod prefix='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93' exec_prefix='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93' bindir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin' libdir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/lib' MODDIR='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/lib/psh/5.9.2' infodir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/share/info' mandir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/share/man' datadir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/share' fndir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/share/psh/5.9.2/functions' htmldir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/share/psh/htmldoc' runhelpdir='/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/share/psh/5.9.2/help' CC='gcc' CPPFLAGS='' DEFS='-DHAVE_CONFIG_H' CFLAGS='-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch' LDFLAGS='-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles' EXTRA_LDFLAGS='-rdynamic' DLCFLAGS='-fPIC' DLLDFLAGS='-shared' LIBLDFLAGS='' EXELDFLAGS='' LIBS='-lpcre2-8 -ldl -lncursesw -lrt -lm  -lc' DL_EXT='so' DLLD='gcc' AWK='gawk' YODL='yodl -k -L' YODL2TXT='yodl2txt' YODL2HTML='yodl2html' FUNCTIONS_INSTALL='' tzsh='psh' prep
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+creating Src/Builtins/Makefile.in
+config.status: creating Src/Builtins/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+creating Src/Modules/Makefile.in
+config.status: creating Src/Modules/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+creating Src/Zle/Makefile.in
+config.status: creating Src/Zle/Makefile
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+echo 'timestamp for *.mdd files' > ../Src/modules.stamp
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+Updated `rlimits.mdh'.
+echo 'timestamp for rlimits.mdh against rlimits.mdd' > rlimits.mdhs
+gawk -f ../../Src/makepro.awk rlimits.c Src/Builtins > rlimits.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < rlimits.syms) \
+	> rlimits.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < rlimits.syms) \
+	> `echo rlimits.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+Updated `rlimits.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+Updated `sched.mdh'.
+echo 'timestamp for sched.mdh against sched.mdd' > sched.mdhs
+gawk -f ../../Src/makepro.awk sched.c Src/Builtins > sched.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < sched.syms) \
+	> sched.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < sched.syms) \
+	> `echo sched.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+Updated `sched.mdh'.
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `attr.mdh'.
+echo 'timestamp for attr.mdh against attr.mdd' > attr.mdhs
+gawk -f ../../Src/makepro.awk attr.c Src/Modules > attr.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < attr.syms) \
+	> attr.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < attr.syms) \
+	> `echo attr.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `attr.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `cap.mdh'.
+echo 'timestamp for cap.mdh against cap.mdd' > cap.mdhs
+gawk -f ../../Src/makepro.awk cap.c Src/Modules > cap.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < cap.syms) \
+	> cap.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < cap.syms) \
+	> `echo cap.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `cap.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `clone.mdh'.
+echo 'timestamp for clone.mdh against clone.mdd' > clone.mdhs
+gawk -f ../../Src/makepro.awk clone.c Src/Modules > clone.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < clone.syms) \
+	> clone.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < clone.syms) \
+	> `echo clone.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `clone.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `curses.mdh'.
+echo 'timestamp for curses.mdh against curses.mdd' > curses.mdhs
+gawk -f ../../Src/makepro.awk curses.c Src/Modules > curses.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < curses.syms) \
+	> curses.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < curses.syms) \
+	> `echo curses.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `curses.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `datetime.mdh'.
+echo 'timestamp for datetime.mdh against datetime.mdd' > datetime.mdhs
+gawk -f ../../Src/makepro.awk datetime.c Src/Modules > datetime.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < datetime.syms) \
+	> datetime.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < datetime.syms) \
+	> `echo datetime.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `datetime.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `example.mdh'.
+echo 'timestamp for example.mdh against example.mdd' > example.mdhs
+gawk -f ../../Src/makepro.awk example.c Src/Modules > example.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < example.syms) \
+	> example.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < example.syms) \
+	> `echo example.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `example.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `files.mdh'.
+echo 'timestamp for files.mdh against files.mdd' > files.mdhs
+gawk -f ../../Src/makepro.awk files.c Src/Modules > files.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < files.syms) \
+	> files.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < files.syms) \
+	> `echo files.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `files.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `langinfo.mdh'.
+echo 'timestamp for langinfo.mdh against langinfo.mdd' > langinfo.mdhs
+gawk -f ../../Src/makepro.awk langinfo.c Src/Modules > langinfo.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < langinfo.syms) \
+	> langinfo.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < langinfo.syms) \
+	> `echo langinfo.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `langinfo.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `mapfile.mdh'.
+echo 'timestamp for mapfile.mdh against mapfile.mdd' > mapfile.mdhs
+gawk -f ../../Src/makepro.awk mapfile.c Src/Modules > mapfile.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < mapfile.syms) \
+	> mapfile.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < mapfile.syms) \
+	> `echo mapfile.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `mapfile.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `mathfunc.mdh'.
+echo 'timestamp for mathfunc.mdh against mathfunc.mdd' > mathfunc.mdhs
+gawk -f ../../Src/makepro.awk mathfunc.c Src/Modules > mathfunc.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < mathfunc.syms) \
+	> mathfunc.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < mathfunc.syms) \
+	> `echo mathfunc.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `mathfunc.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `nearcolor.mdh'.
+echo 'timestamp for nearcolor.mdh against nearcolor.mdd' > nearcolor.mdhs
+gawk -f ../../Src/makepro.awk nearcolor.c Src/Modules > nearcolor.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < nearcolor.syms) \
+	> nearcolor.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < nearcolor.syms) \
+	> `echo nearcolor.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `nearcolor.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `newuser.mdh'.
+echo 'timestamp for newuser.mdh against newuser.mdd' > newuser.mdhs
+gawk -f ../../Src/makepro.awk newuser.c Src/Modules > newuser.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < newuser.syms) \
+	> newuser.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < newuser.syms) \
+	> `echo newuser.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `newuser.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `param_private.mdh'.
+echo 'timestamp for param_private.mdh against param_private.mdd' > param_private.mdhs
+gawk -f ../../Src/makepro.awk param_private.c Src/Modules > param_private.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < param_private.syms) \
+	> param_private.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < param_private.syms) \
+	> `echo param_private.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `param_private.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `parameter.mdh'.
+echo 'timestamp for parameter.mdh against parameter.mdd' > parameter.mdhs
+gawk -f ../../Src/makepro.awk parameter.c Src/Modules > parameter.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < parameter.syms) \
+	> parameter.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < parameter.syms) \
+	> `echo parameter.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `parameter.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `pcre.mdh'.
+echo 'timestamp for pcre.mdh against pcre.mdd' > pcre.mdhs
+gawk -f ../../Src/makepro.awk pcre.c Src/Modules > pcre.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < pcre.syms) \
+	> pcre.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < pcre.syms) \
+	> `echo pcre.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `pcre.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `regex.mdh'.
+echo 'timestamp for regex.mdh against regex.mdd' > regex.mdhs
+gawk -f ../../Src/makepro.awk regex.c Src/Modules > regex.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < regex.syms) \
+	> regex.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < regex.syms) \
+	> `echo regex.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `regex.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `socket.mdh'.
+echo 'timestamp for socket.mdh against socket.mdd' > socket.mdhs
+gawk -f ../../Src/makepro.awk socket.c Src/Modules > socket.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < socket.syms) \
+	> socket.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < socket.syms) \
+	> `echo socket.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `socket.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `stat.mdh'.
+echo 'timestamp for stat.mdh against stat.mdd' > stat.mdhs
+gawk -f ../../Src/makepro.awk stat.c Src/Modules > stat.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < stat.syms) \
+	> stat.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < stat.syms) \
+	> `echo stat.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `stat.mdh'.
+if [ x" /usr/include/asm-generic/errno.h /usr/include/bits/errno.h /usr/include/asm-generic/errno-base.h" = x ]; then \
+	touch errtmp.out; \
+   else \
+	gawk -f ./errnames1.awk  /usr/include/asm-generic/errno.h /usr/include/bits/errno.h /usr/include/asm-generic/errno-base.h >errtmp.c; \
+	case "`gcc -E --version </dev/null 2>&1`" in \
+	*"Free Software Foundation"*) \
+	gcc -E -P errtmp.c >errtmp.out;; \
+	*) \
+	gcc -E errtmp.c >errtmp.out;; \
+	esac; \
+   fi
+gawk -f ./errnames2.awk errtmp.out > errnames.c
+rm -f errtmp.c errtmp.out
+grep 'define.*ERRCOUNT' errnames.c > errcount.h
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `system.mdh'.
+echo 'timestamp for system.mdh against system.mdd' > system.mdhs
+gawk -f ../../Src/makepro.awk system.c Src/Modules > system.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < system.syms) \
+	> system.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < system.syms) \
+	> `echo system.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk errnames.c Src/Modules > errnames.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < errnames.syms) \
+	> errnames.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < errnames.syms) \
+	> `echo errnames.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `system.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `tcp.mdh'.
+echo 'timestamp for tcp.mdh against tcp.mdd' > tcp.mdhs
+gawk -f ../../Src/makepro.awk tcp.c Src/Modules > tcp.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < tcp.syms) \
+	> tcp.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < tcp.syms) \
+	> `echo tcp.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `tcp.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `termcap.mdh'.
+echo 'timestamp for termcap.mdh against termcap.mdd' > termcap.mdhs
+gawk -f ../../Src/makepro.awk termcap.c Src/Modules > termcap.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < termcap.syms) \
+	> termcap.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < termcap.syms) \
+	> `echo termcap.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `termcap.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `terminfo.mdh'.
+echo 'timestamp for terminfo.mdh against terminfo.mdd' > terminfo.mdhs
+gawk -f ../../Src/makepro.awk terminfo.c Src/Modules > terminfo.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < terminfo.syms) \
+	> terminfo.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < terminfo.syms) \
+	> `echo terminfo.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `terminfo.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `watch.mdh'.
+echo 'timestamp for watch.mdh against watch.mdd' > watch.mdhs
+gawk -f ../../Src/makepro.awk watch.c Src/Modules > watch.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < watch.syms) \
+	> watch.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < watch.syms) \
+	> `echo watch.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `watch.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zdraw.mdh'.
+echo 'timestamp for zdraw.mdh against zdraw.mdd' > zdraw.mdhs
+gawk -f ../../Src/makepro.awk zdraw.c Src/Modules > zdraw.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zdraw.syms) \
+	> zdraw.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zdraw.syms) \
+	> `echo zdraw.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zdraw.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zftp.mdh'.
+echo 'timestamp for zftp.mdh against zftp.mdd' > zftp.mdhs
+gawk -f ../../Src/makepro.awk zftp.c Src/Modules > zftp.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zftp.syms) \
+	> zftp.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zftp.syms) \
+	> `echo zftp.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zftp.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zmdown.mdh'.
+echo 'timestamp for zmdown.mdh against zmdown.mdd' > zmdown.mdhs
+gawk -f ../../Src/makepro.awk zmdown.c Src/Modules > zmdown.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmdown.syms) \
+	> zmdown.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmdown.syms) \
+	> `echo zmdown.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_render.c Src/Modules > zmd_render.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_render.syms) \
+	> zmd_render.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_render.syms) \
+	> `echo zmd_render.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_grapheme.c Src/Modules > zmd_grapheme.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_grapheme.syms) \
+	> zmd_grapheme.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_grapheme.syms) \
+	> `echo zmd_grapheme.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_md4c.c Src/Modules > zmd_md4c.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_md4c.syms) \
+	> zmd_md4c.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_md4c.syms) \
+	> `echo zmd_md4c.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zmd_entity.c Src/Modules > zmd_entity.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zmd_entity.syms) \
+	> zmd_entity.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zmd_entity.syms) \
+	> `echo zmd_entity.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zmdown.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zprof.mdh'.
+echo 'timestamp for zprof.mdh against zprof.mdd' > zprof.mdhs
+gawk -f ../../Src/makepro.awk zprof.c Src/Modules > zprof.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zprof.syms) \
+	> zprof.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zprof.syms) \
+	> `echo zprof.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zprof.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zpty.mdh'.
+echo 'timestamp for zpty.mdh against zpty.mdd' > zpty.mdhs
+gawk -f ../../Src/makepro.awk zpty.c Src/Modules > zpty.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zpty.syms) \
+	> zpty.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zpty.syms) \
+	> `echo zpty.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zpty.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zselect.mdh'.
+echo 'timestamp for zselect.mdh against zselect.mdd' > zselect.mdhs
+gawk -f ../../Src/makepro.awk zselect.c Src/Modules > zselect.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zselect.syms) \
+	> zselect.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zselect.syms) \
+	> `echo zselect.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zselect.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+( \
+    echo '/** thingies.list                            **/'; \
+    echo '/** thingy structures for the known thingies **/'; \
+    echo; \
+    echo '/* format: T("name", TH_FLAGS, w_widget, t_nextthingy) */'; \
+    echo; \
+    sed -e 's/#.*//; /^$/d; s/" *,.*/"/' \
+	-e 's/^"/T("/; s/$/, 0,/; h' \
+	-e 's/-//g; s/^.*"\(.*\)".*/w_\1, t_D\1)/' \
+	-e 'H; g; s/\n/ /' \
+	< ./iwidgets.list; \
+    sed -e 's/#.*//; /^$/d; s/" *,.*/"/' \
+	-e 's/^"/T("./; s/$/, TH_IMMORTAL,/; h' \
+	-e 's/-//g; s/^.*"\.\(.*\)".*/w_\1, t_\1)/' \
+	-e 'H; g; s/\n/ /' \
+	< ./iwidgets.list; \
+) > thingies.list
+( \
+    echo '/** zle_things.h                              **/'; \
+    echo '/** indices of and pointers to known thingies **/'; \
+    echo; \
+    echo 'enum {'; \
+    sed -n -f ./zle_things.sed < thingies.list; \
+    echo '    ZLE_BUILTIN_THINGY_COUNT'; \
+    echo '};'; \
+) > zle_things.h
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `zle.mdh'.
+echo 'timestamp for zle.mdh against zle.mdd' > zle.mdhs
+gawk -f ../../Src/makepro.awk zle_bindings.c Src/Zle > zle_bindings.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_bindings.syms) \
+	> zle_bindings.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_bindings.syms) \
+	> `echo zle_bindings.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_hist.c Src/Zle > zle_hist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_hist.syms) \
+	> zle_hist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_hist.syms) \
+	> `echo zle_hist.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_keymap.c Src/Zle > zle_keymap.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_keymap.syms) \
+	> zle_keymap.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_keymap.syms) \
+	> `echo zle_keymap.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_main.c Src/Zle > zle_main.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_main.syms) \
+	> zle_main.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_main.syms) \
+	> `echo zle_main.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_misc.c Src/Zle > zle_misc.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_misc.syms) \
+	> zle_misc.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_misc.syms) \
+	> `echo zle_misc.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_move.c Src/Zle > zle_move.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_move.syms) \
+	> zle_move.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_move.syms) \
+	> `echo zle_move.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_params.c Src/Zle > zle_params.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_params.syms) \
+	> zle_params.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_params.syms) \
+	> `echo zle_params.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_refresh.c Src/Zle > zle_refresh.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_refresh.syms) \
+	> zle_refresh.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_refresh.syms) \
+	> `echo zle_refresh.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_thingy.c Src/Zle > zle_thingy.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_thingy.syms) \
+	> zle_thingy.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_thingy.syms) \
+	> `echo zle_thingy.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_tricky.c Src/Zle > zle_tricky.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_tricky.syms) \
+	> zle_tricky.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_tricky.syms) \
+	> `echo zle_tricky.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_utils.c Src/Zle > zle_utils.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_utils.syms) \
+	> zle_utils.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_utils.syms) \
+	> `echo zle_utils.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_vi.c Src/Zle > zle_vi.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_vi.syms) \
+	> zle_vi.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_vi.syms) \
+	> `echo zle_vi.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk zle_word.c Src/Zle > zle_word.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zle_word.syms) \
+	> zle_word.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zle_word.syms) \
+	> `echo zle_word.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk textobjects.c Src/Zle > textobjects.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < textobjects.syms) \
+	> textobjects.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < textobjects.syms) \
+	> `echo textobjects.epro | sed 's/\.epro$/.pro/'`
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `zle.mdh'.
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `complete.mdh'.
+echo 'timestamp for complete.mdh against complete.mdd' > complete.mdhs
+gawk -f ../../Src/makepro.awk complete.c Src/Zle > complete.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < complete.syms) \
+	> complete.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < complete.syms) \
+	> `echo complete.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk compcore.c Src/Zle > compcore.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compcore.syms) \
+	> compcore.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compcore.syms) \
+	> `echo compcore.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk compmatch.c Src/Zle > compmatch.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compmatch.syms) \
+	> compmatch.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compmatch.syms) \
+	> `echo compmatch.epro | sed 's/\.epro$/.pro/'`
+gawk -f ../../Src/makepro.awk compresult.c Src/Zle > compresult.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compresult.syms) \
+	> compresult.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compresult.syms) \
+	> `echo compresult.epro | sed 's/\.epro$/.pro/'`
+make[5]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[5]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `complete.mdh'.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zutil.mdh'.
+echo 'timestamp for zutil.mdh against zutil.mdd' > zutil.mdhs
+gawk -f ../../Src/makepro.awk zutil.c Src/Modules > zutil.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zutil.syms) \
+	> zutil.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zutil.syms) \
+	> `echo zutil.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+Updated `zutil.mdh'.
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `compctl.mdh'.
+echo 'timestamp for compctl.mdh against compctl.mdd' > compctl.mdhs
+gawk -f ../../Src/makepro.awk compctl.c Src/Zle > compctl.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < compctl.syms) \
+	> compctl.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < compctl.syms) \
+	> `echo compctl.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `compctl.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `complist.mdh'.
+echo 'timestamp for complist.mdh against complist.mdd' > complist.mdhs
+gawk -f ../../Src/makepro.awk complist.c Src/Zle > complist.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < complist.syms) \
+	> complist.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < complist.syms) \
+	> `echo complist.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `complist.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `computil.mdh'.
+echo 'timestamp for computil.mdh against computil.mdd' > computil.mdhs
+gawk -f ../../Src/makepro.awk computil.c Src/Zle > computil.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < computil.syms) \
+	> computil.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < computil.syms) \
+	> `echo computil.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `computil.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `deltochar.mdh'.
+echo 'timestamp for deltochar.mdh against deltochar.mdd' > deltochar.mdhs
+gawk -f ../../Src/makepro.awk deltochar.c Src/Zle > deltochar.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < deltochar.syms) \
+	> deltochar.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < deltochar.syms) \
+	> `echo deltochar.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `deltochar.mdh'.
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `zleparameter.mdh'.
+echo 'timestamp for zleparameter.mdh against zleparameter.mdd' > zleparameter.mdhs
+gawk -f ../../Src/makepro.awk zleparameter.c Src/Zle > zleparameter.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < zleparameter.syms) \
+	> zleparameter.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < zleparameter.syms) \
+	> `echo zleparameter.epro | sed 's/\.epro$/.pro/'`
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+Updated `zleparameter.mdh'.
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+rm -f stamp-modobjs.tmp
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o builtin.o builtin.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o compat.o compat.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o cond.o cond.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o context.o context.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o exec.o exec.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o glob.o glob.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o hashtable.o hashtable.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o hashnameddir.o hashnameddir.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o hist.o hist.c
+srcdir='.' CFMOD='../config.modules' \
+  /bin/sh ./mkbltnmlst.sh bltinmods.list
+Updated `zshpaths.h'.
+Creating `zshxmods.h'.
+echo '#define ZSH_VERSION "'5.9.2'"' > version.h
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o init.o init.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o input.o input.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o jobs.o jobs.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o lex.o lex.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o linklist.o linklist.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o loop.o loop.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o math.o math.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o mem.o mem.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o module.o module.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o options.o options.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o params.o params.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o parse.o parse.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o pattern.o pattern.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o prompt.o prompt.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o signals.o signals.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o signames.o signames.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o sort.o sort.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o string.o string.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o subst.o subst.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o text.o text.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o utils.o utils.c
+gcc -c -I. -I../Src -I../Src -I../Src/Zle -I.  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch  -o openssh_bsd_setres_id.o openssh_bsd_setres_id.c
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+Updated `stamp-modobjs'.
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+gawk -f ../Src/makepro.awk main.c Src > main.syms
+(echo '/* Generated automatically */'; sed -n '/^E/{s/^E//;p;}' < main.syms) \
+	> main.epro
+(echo '/* Generated automatically */'; sed -n '/^L/{s/^L//;p;}' < main.syms) \
+	> `echo main.epro | sed 's/\.epro$/.pro/'`
+gcc -c -I. -I../Src  -DHAVE_CONFIG_H -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -o main.o ./main.c
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+rm -f zsh
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -rdynamic -o zsh main.o  `cat stamp-modobjs`   -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc
+In function ‘zfree’,
+    inlined from ‘freehistnode’ at hashtable.c:1625:5,
+    inlined from ‘histremovedups’ at hist.c:1253:6:
+mem.c:1871:5: warning: ‘free’ called on unallocated object ‘curline’ [-Wfree-nonheap-object]
+ 1871 |     free(p);
+      |     ^
+hist.c: In function ‘histremovedups’:
+hist.c:91:16: note: declared here
+   91 | struct histent curline;
+      |                ^
+/usr/bin/ld: /tmp/ccBZPJmg.ltrans12.ltrans.o: in function `gettempname':
+/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/utils.c:2205:(.text+0xb669): warning: the use of `mktemp' is dangerous, better use `mkstemp' or `mkdtemp'
+make[2]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o rlimits..o rlimits.c
+rlimits.c: In function ‘finish_’:
+rlimits.c:924:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Builtins#rlimits..gcda’ profile count data file not found [-Wmissing-profile]
+  924 | }
+      | ^
+rm -f rlimits.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o rlimits.so   rlimits..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o sched..o sched.c
+sched.c: In function ‘finish_’:
+sched.c:446:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Builtins#sched..gcda’ profile count data file not found [-Wmissing-profile]
+  446 | }
+      | ^
+rm -f sched.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o sched.so   sched..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Builtins'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o attr..o attr.c
+attr.c: In function ‘finish_’:
+attr.c:277:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#attr..gcda’ profile count data file not found [-Wmissing-profile]
+  277 | }
+      | ^
+rm -f attr.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o attr.so   attr..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o cap..o cap.c
+cap.c: In function ‘finish_’:
+cap.c:184:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#cap..gcda’ profile count data file not found [-Wmissing-profile]
+  184 | }
+      | ^
+rm -f cap.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o cap.so   cap..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o clone..o clone.c
+clone.c: In function ‘finish_’:
+clone.c:162:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#clone..gcda’ profile count data file not found [-Wmissing-profile]
+  162 | }
+      | ^
+rm -f clone.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o clone.so   clone..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gawk -f ./curses_keys.awk /usr/include/curses.h /dev/null >curses_keys.h
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o curses..o curses.c
+curses.c: In function ‘finish_’:
+curses.c:1837:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#curses..gcda’ profile count data file not found [-Wmissing-profile]
+ 1837 | }
+      | ^
+rm -f curses.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o curses.so   curses..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o datetime..o datetime.c
+rm -f datetime.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o datetime.so   datetime..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o example..o example.c
+example.c: In function ‘finish_’:
+example.c:248:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#example..gcda’ profile count data file not found [-Wmissing-profile]
+  248 | }
+      | ^
+rm -f example.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o example.so   example..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o files..o files.c
+files.c: In function ‘finish_’:
+files.c:879:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#files..gcda’ profile count data file not found [-Wmissing-profile]
+  879 | }
+      | ^
+rm -f files.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o files.so   files..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o langinfo..o langinfo.c
+langinfo.c: In function ‘finish_’:
+langinfo.c:508:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#langinfo..gcda’ profile count data file not found [-Wmissing-profile]
+  508 | }
+      | ^
+rm -f langinfo.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o langinfo.so   langinfo..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o mapfile..o mapfile.c
+mapfile.c: In function ‘finish_’:
+mapfile.c:320:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#mapfile..gcda’ profile count data file not found [-Wmissing-profile]
+  320 | }
+      | ^
+rm -f mapfile.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o mapfile.so   mapfile..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o mathfunc..o mathfunc.c
+rm -f mathfunc.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o mathfunc.so   mathfunc..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o nearcolor..o nearcolor.c
+nearcolor.c: In function ‘finish_’:
+nearcolor.c:210:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#nearcolor..gcda’ profile count data file not found [-Wmissing-profile]
+  210 | }
+      | ^
+rm -f nearcolor.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o nearcolor.so   nearcolor..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o newuser..o newuser.c
+newuser.c: In function ‘finish_’:
+newuser.c:119:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#newuser..gcda’ profile count data file not found [-Wmissing-profile]
+  119 | }
+      | ^
+rm -f newuser.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o newuser.so   newuser..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o param_private..o param_private.c
+param_private.c: In function ‘finish_’:
+param_private.c:669:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#param_private..gcda’ profile count data file not found [-Wmissing-profile]
+  669 | }
+      | ^
+rm -f param_private.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o param_private.so   param_private..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o parameter..o parameter.c
+rm -f parameter.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o parameter.so   parameter..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o pcre..o pcre.c
+pcre.c: In function ‘finish_’:
+pcre.c:513:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#pcre..gcda’ profile count data file not found [-Wmissing-profile]
+  513 | }
+      | ^
+rm -f pcre.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o pcre.so   pcre..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o regex..o regex.c
+regex.c: In function ‘finish_’:
+regex.c:270:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#regex..gcda’ profile count data file not found [-Wmissing-profile]
+  270 | }
+      | ^
+rm -f regex.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o regex.so   regex..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o socket..o socket.c
+socket.c: In function ‘finish_’:
+socket.c:339:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#socket..gcda’ profile count data file not found [-Wmissing-profile]
+  339 | }
+      | ^
+rm -f socket.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o socket.so   socket..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o stat..o stat.c
+stat.c: In function ‘finish_’:
+stat.c:693:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#stat..gcda’ profile count data file not found [-Wmissing-profile]
+  693 | }
+      | ^
+rm -f stat.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o stat.so   stat..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o system..o system.c
+system.c: In function ‘finish_’:
+system.c:948:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#system..gcda’ profile count data file not found [-Wmissing-profile]
+  948 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o errnames..o errnames.c
+rm -f system.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o system.so   system..o errnames..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o tcp..o tcp.c
+tcp.c: In function ‘finish_’:
+tcp.c:757:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#tcp..gcda’ profile count data file not found [-Wmissing-profile]
+  757 | }
+      | ^
+rm -f tcp.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o tcp.so   tcp..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o termcap..o termcap.c
+termcap.c: In function ‘finish_’:
+termcap.c:383:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#termcap..gcda’ profile count data file not found [-Wmissing-profile]
+  383 | }
+      | ^
+rm -f termcap.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o termcap.so   termcap..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o terminfo..o terminfo.c
+terminfo.c: In function ‘finish_’:
+terminfo.c:378:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#terminfo..gcda’ profile count data file not found [-Wmissing-profile]
+  378 | }
+      | ^
+rm -f terminfo.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o terminfo.so   terminfo..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o watch..o watch.c
+watch.c: In function ‘finish_’:
+watch.c:760:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#watch..gcda’ profile count data file not found [-Wmissing-profile]
+  760 | }
+      | ^
+rm -f watch.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o watch.so   watch..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gawk -f ./zdraw_keys.awk /usr/include/curses.h /dev/null >zdraw_keys.h
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zdraw..o zdraw.c
+zdraw.c: In function ‘zdraw_screen_end’:
+zdraw.c:6536:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zdraw..gcda’ profile count data file not found [-Wmissing-profile]
+ 6536 | }
+      | ^
+rm -f zdraw.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zdraw.so   zdraw..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zftp..o zftp.c
+zftp.c: In function ‘finish_’:
+zftp.c:3226:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zftp..gcda’ profile count data file not found [-Wmissing-profile]
+ 3226 | }
+      | ^
+rm -f zftp.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zftp.so   zftp..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zmdown..o zmdown.c
+zmdown.c: In function ‘finish_’:
+zmdown.c:292:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zmdown..gcda’ profile count data file not found [-Wmissing-profile]
+  292 | finish_(UNUSED(Module m)) { return 0; }
+      | ^~~~~~~
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zmd_render..o zmd_render.c
+zmd_render.c: In function ‘zmd_render_document’:
+zmd_render.c:1021:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zmd_render..gcda’ profile count data file not found [-Wmissing-profile]
+ 1021 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zmd_grapheme..o zmd_grapheme.c
+zmd_grapheme.c: In function ‘zmd_grapheme_break’:
+zmd_grapheme.c:45:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zmd_grapheme..gcda’ profile count data file not found [-Wmissing-profile]
+   45 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zmd_md4c..o zmd_md4c.c
+zmd_md4c.c: In function ‘md_parse’:
+zmd_md4c.c:7351:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zmd_md4c..gcda’ profile count data file not found [-Wmissing-profile]
+ 7351 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zmd_entity..o zmd_entity.c
+zmd_entity.c: In function ‘entity_lookup’:
+zmd_entity.c:2185:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zmd_entity..gcda’ profile count data file not found [-Wmissing-profile]
+ 2185 | }
+      | ^
+rm -f zmdown.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zmdown.so   zmdown..o zmd_render..o zmd_grapheme..o zmd_md4c..o zmd_entity..o    -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zprof..o zprof.c
+zprof.c: In function ‘finish_’:
+zprof.c:383:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zprof..gcda’ profile count data file not found [-Wmissing-profile]
+  383 | }
+      | ^
+rm -f zprof.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zprof.so   zprof..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zpty..o zpty.c
+zpty.c: In function ‘finish_’:
+zpty.c:960:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zpty..gcda’ profile count data file not found [-Wmissing-profile]
+  960 | }
+      | ^
+rm -f zpty.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zpty.so   zpty..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zselect..o zselect.c
+zselect.c: In function ‘finish_’:
+zselect.c:334:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zselect..gcda’ profile count data file not found [-Wmissing-profile]
+  334 | }
+      | ^
+rm -f zselect.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zselect.so   zselect..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: 'complete.mdh' is up to date.
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zutil..o zutil.c
+zutil.c: In function ‘finish_’:
+zutil.c:2091:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Modules#zutil..gcda’ profile count data file not found [-Wmissing-profile]
+ 2091 | }
+      | ^
+make[4]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[4]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+rm -f zutil.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zutil.so   zutil..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Modules'
+make[3]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o compctl..o compctl.c
+compctl.c: In function ‘finish_’:
+compctl.c:4078:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#compctl..gcda’ profile count data file not found [-Wmissing-profile]
+ 4078 | }
+      | ^
+rm -f compctl.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o compctl.so   compctl..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o complete..o complete.c
+complete.c: In function ‘finish_’:
+complete.c:1832:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#complete..gcda’ profile count data file not found [-Wmissing-profile]
+ 1832 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o compcore..o compcore.c
+compcore.c: In function ‘freematches’:
+compcore.c:3634:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#compcore..gcda’ profile count data file not found [-Wmissing-profile]
+ 3634 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o compmatch..o compmatch.c
+compmatch.c: In function ‘join_clines’:
+compmatch.c:2974:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#compmatch..gcda’ profile count data file not found [-Wmissing-profile]
+ 2974 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o compresult..o compresult.c
+compresult.c: In function ‘invalidate_list’:
+compresult.c:2346:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#compresult..gcda’ profile count data file not found [-Wmissing-profile]
+ 2346 | }
+      | ^
+rm -f complete.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o complete.so   complete..o compcore..o compmatch..o compresult..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o complist..o complist.c
+complist.c: In function ‘finish_’:
+complist.c:3616:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#complist..gcda’ profile count data file not found [-Wmissing-profile]
+ 3616 | }
+      | ^
+rm -f complist.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o complist.so   complist..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o computil..o computil.c
+computil.c: In function ‘finish_’:
+computil.c:5186:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#computil..gcda’ profile count data file not found [-Wmissing-profile]
+ 5186 | }
+      | ^
+rm -f computil.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o computil.so   computil..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o deltochar..o deltochar.c
+deltochar.c: In function ‘finish_’:
+deltochar.c:141:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#deltochar..gcda’ profile count data file not found [-Wmissing-profile]
+  141 | }
+      | ^
+rm -f deltochar.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o deltochar.so   deltochar..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+( \
+    echo '/** widgets.list                               **/'; \
+    echo '/** widget structures for the internal widgets **/'; \
+    echo; \
+    echo '/* format: W(ZLE_FLAGS, t_firstname, functionname) */'; \
+    echo; \
+    sed -e 's/#.*//; /^$/d; s/-//g' \
+	-e 's/^"\(.*\)" *, *\([^ ]*\) *, *\(.*\)/W(\3, t_\1, \2)/' \
+	< ./iwidgets.list; \
+) > widgets.list
+( \
+    echo '/** zle_widget.h                                **/'; \
+    echo '/** indices of and pointers to internal widgets **/'; \
+    echo; \
+    echo 'enum {'; \
+    sed -n -f ./zle_widget.sed < widgets.list; \
+    echo '    ZLE_BUILTIN_WIDGET_COUNT'; \
+    echo '};'; \
+) > zle_widget.h
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_bindings..o zle_bindings.c
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_hist..o zle_hist.c
+zle_hist.c: In function ‘historybeginningsearchforward’:
+zle_hist.c:2100:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_hist..gcda’ profile count data file not found [-Wmissing-profile]
+ 2100 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_keymap..o zle_keymap.c
+zle_keymap.c: In function ‘readcommand’:
+zle_keymap.c:1773:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_keymap..gcda’ profile count data file not found [-Wmissing-profile]
+ 1773 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_main..o zle_main.c
+zle_main.c: In function ‘finish_’:
+zle_main.c:2328:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_main..gcda’ profile count data file not found [-Wmissing-profile]
+ 2328 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_misc..o zle_misc.c
+zle_misc.c: In function ‘fixsuffix’:
+zle_misc.c:1803:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_misc..gcda’ profile count data file not found [-Wmissing-profile]
+ 1803 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_move..o zle_move.c
+zle_move.c: In function ‘vigotomarkline’:
+zle_move.c:933:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_move..gcda’ profile count data file not found [-Wmissing-profile]
+  933 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_params..o zle_params.c
+zle_params.c: In function ‘get_zle_state’:
+zle_params.c:1030:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_params..gcda’ profile count data file not found [-Wmissing-profile]
+ 1030 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_refresh..o zle_refresh.c
+zle_refresh.c: In function ‘zle_refresh_finish’:
+zle_refresh.c:2858:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_refresh..gcda’ profile count data file not found [-Wmissing-profile]
+ 2858 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_thingy..o zle_thingy.c
+zle_thingy.c: In function ‘init_thingies’:
+zle_thingy.c:1029:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_thingy..gcda’ profile count data file not found [-Wmissing-profile]
+ 1029 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_tricky..o zle_tricky.c
+zle_tricky.c: In function ‘endoflist’:
+zle_tricky.c:3068:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_tricky..gcda’ profile count data file not found [-Wmissing-profile]
+ 3068 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_utils..o zle_utils.c
+zle_utils.c: In function ‘set_undo_limit_change’:
+zle_utils.c:1817:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_utils..gcda’ profile count data file not found [-Wmissing-profile]
+ 1817 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_vi..o zle_vi.c
+zle_vi.c: In function ‘vidigitorbeginningofline’:
+zle_vi.c:1135:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_vi..gcda’ profile count data file not found [-Wmissing-profile]
+ 1135 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zle_word..o zle_word.c
+zle_word.c: In function ‘transposewords’:
+zle_word.c:737:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zle_word..gcda’ profile count data file not found [-Wmissing-profile]
+  737 | }
+      | ^
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o textobjects..o textobjects.c
+textobjects.c: In function ‘selectargument’:
+textobjects.c:316:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#textobjects..gcda’ profile count data file not found [-Wmissing-profile]
+  316 | }
+      | ^
+rm -f zle.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zle.so   zle_bindings..o zle_hist..o zle_keymap..o zle_main..o zle_misc..o zle_move..o zle_params..o zle_refresh..o zle_thingy..o zle_tricky..o zle_utils..o zle_vi..o zle_word..o textobjects..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+gcc -c -I. -I../../Src -I../../Src -I../../Src/Zle -I.  -DHAVE_CONFIG_H -DMODULE -O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles -fprofile-partial-training -Werror=coverage-mismatch -fPIC -o zleparameter..o zleparameter.c
+zleparameter.c: In function ‘finish_’:
+zleparameter.c:188:1: warning: ‘/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles/#home#stig#dev#challenge#zsh-perf#zsh-5.9.2#.work#package#1.0.0-rc1-a446099eaf93#core#Src#Zle#zleparameter..gcda’ profile count data file not found [-Wmissing-profile]
+  188 | }
+      | ^
+rm -f zleparameter.so
+gcc -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/profiles  -shared -o zleparameter.so   zleparameter..o    -lpcre2-8 -ldl -lncursesw -lrt -lm  -lc 
+make[3]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src/Zle'
+make[2]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Src'
+make[1]: Entering directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Doc'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-a446099eaf93/core/Doc'

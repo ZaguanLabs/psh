@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "identities": {
+    "/usr/local/psh/releases/1.0.0-rc1-1d2a092078fb/bin/psh": "e01e768aad1ebe37eba242136dbeb36aebf8e8da4ca23a0985322f2a40db130b",
+    "/usr/local/psh/releases/1.0.0-rc1-1d2a092078fb/lib/psh/5.9.2/zdraw.so": "73ea296a6a092f7d0797ff629422545b5a339bbd8832de0d56302a1ebd0d1815",
+    "/usr/local/psh/releases/1.0.0-rc1-1d2a092078fb/lib/psh/5.9.2/zsh/curses.so": "a554b0898fd76935e3c8f337747b5f807fbfb1ea824b2d1f1c44c5f88420085a",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/components.py": "87fb4224d38083eafd4c46499ecc484cd346cb2584db14e33bff2858b094d5c6",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/components.zsh": "cc26231e24b9828874502f54181637f8e4c752ca70e32418279c1f41bcc3fbc0",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/curses-differential.py": "4689b34b01d1758b47316aee73741ab3608852c7e1748f61867b9cc934966d62",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/lifecycle.py": "1366bba78588b4d706b4a8410bd4fc1c4bba8a2acac803e055ba0b30db8cb279",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/native.py": "d1805292197da13a3dc0dff549bdc22a4a576670ec535fe298e29101fd6841e2",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/style-differential.py": "3f92529a30b50b1b26b9993157a258a904f5a9589d0d9914d9131ff9392f604c",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/tests/lifecycle-stress.zsh": "06c0cf44d8e5b328e1b3546cbffb92266fba2a08a53d49892ad8ba2c7efcded9"
+  },
+  "runs": [
+    {
+      "name": "styles-C",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/style-differential.py",
+        "--baseline-root",
+        "/usr/local/psh/releases/1.0.0-rc1-126770ba80d2/share/psh/5.9.2/scripts/zdraw",
+        "--cases",
+        "2000"
+      ],
+      "status": 0,
+      "locale": "C"
+    },
+    {
+      "name": "styles-UTF8",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/style-differential.py",
+        "--baseline-root",
+        "/usr/local/psh/releases/1.0.0-rc1-126770ba80d2/share/psh/5.9.2/scripts/zdraw",
+        "--cases",
+        "2000"
+      ],
+      "status": 0,
+      "locale": "C.UTF-8"
+    },
+    {
+      "name": "stock-curses",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/curses-differential.py",
+        "--operations",
+        "600"
+      ],
+      "status": 0,
+      "locale": "C.UTF-8"
+    },
+    {
+      "name": "lifecycle-standalone",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/lifecycle.py",
+        "--cycles",
+        "100",
+        "--mode",
+        "standalone",
+        "--valgrind-log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/standalone-memcheck.log",
+        "--timeout",
+        "300"
+      ],
+      "status": 0,
+      "locale": "C.UTF-8"
+    },
+    {
+      "name": "lifecycle-stock",
+      "command": [
+        "python3",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/checks-zdraw/benchmarks/lifecycle.py",
+        "--cycles",
+        "100",
+        "--mode",
+        "stock",
+        "--valgrind-log",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round47/stock-memcheck.log",
+        "--timeout",
+        "300"
+      ],
+      "status": 0,
+      "locale": "C.UTF-8"
+    }
+  ]
+}

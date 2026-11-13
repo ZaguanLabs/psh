@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "case": "final-scenes",
+      "command": [
+        "python3",
+        "Perf/scene-benchmark.py",
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+        "--project",
+        "/home/stig/dev/challenge/z3dfx.drawing",
+        "--samples",
+        "5",
+        "--cpu",
+        "13",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/final-scenes.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "final-customer",
+      "command": [
+        "python3",
+        "Perf/customer-benchmark.py",
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+        "--labs",
+        "/home/stig/dev/ai/zaguan/labs",
+        "--challenge",
+        "/home/stig/dev/challenge",
+        "--samples",
+        "9",
+        "--cpu",
+        "13",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/final-customer.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "same-binary-fallback",
+      "command": [
+        "python3",
+        "Perf/scene-benchmark.py",
+        "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+        "--project",
+        "/home/stig/dev/challenge/z3dfx.drawing",
+        "--samples",
+        "5",
+        "--cpu",
+        "13",
+        "--scene",
+        "moonlit",
+        "--baseline-preload",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/opaque-preload.so",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/same-binary-fallback.json"
+      ],
+      "status": 0
+    },
+    {
+      "case": "final-scene-repeat",
+      "command": [
+        "python3",
+        "Perf/scene-benchmark.py",
+        "/usr/local/psh/releases/1.0.0-rc1-b0850020f4a1/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-a446099eaf93/bin/psh",
+        "--project",
+        "/home/stig/dev/challenge/z3dfx.drawing",
+        "--samples",
+        "5",
+        "--cpu",
+        "13",
+        "--scene",
+        "moonlit",
+        "--output",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round39/logs/final-scene-repeat.json"
+      ],
+      "status": 0
+    }
+  ]
+}

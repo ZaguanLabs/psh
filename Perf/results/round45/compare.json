@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "arrays-pristine",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        ".work/public-rc0/reference/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+        "--appends",
+        "--output",
+        ".work/round45/arrays-pristine.json"
+      ],
+      "status": 0
+    },
+    {
+      "name": "arrays-previous",
+      "command": [
+        "python3",
+        "Perf/compare.py",
+        "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+        "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+        "--appends",
+        "--output",
+        ".work/round45/arrays-previous.json"
+      ],
+      "status": 0
+    },
+    {
+      "name": "native-array-cache",
+      "command": [
+        "python3",
+        "Perf/check-array-cache.py",
+        ".work/public-rc0/reference/Src/zsh",
+        "/usr/local/psh/releases/1.0.0-rc1-345edd03d312/bin/psh",
+        "--headers-build",
+        ".work/public-rc0/reference",
+        "--headers-source",
+        ".work/pristine",
+        "--memcheck",
+        "--raw-contract",
+        "--locale",
+        "C",
+        "--locale",
+        "C.UTF-8",
+        "--output",
+        ".work/round45/native-array-cache.json"
+      ],
+      "status": 0
+    }
+  ]
+}

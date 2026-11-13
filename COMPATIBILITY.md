@@ -1,4 +1,4 @@
-# Compatibility policy for psh 1.0.0-rc0
+# Compatibility policy for psh 1.0.0-rc1 development
 
 psh aims for meaningful performance gains on **Zsh 5.9.2** while preserving
 existing behavior by default. Existing scripts working unchanged is the normal
@@ -20,6 +20,37 @@ Passing tests establishes coverage, not universal proof for every plugin,
 future update or platform. Undocumented or accidental behavioral differences
 remain bugs, including those found outside the author's projects. Memory
 corruption and unsafe ownership are never accepted as compatibility tradeoffs.
+
+## rc1 build and test changes
+
+rc1 retains rc0's core-language and native ownership contracts. Its optional
+compiler profiles change code generation, not those contracts. PGO trains on
+checked bundled offline workloads; LTO is a separate experiment. The ordinary
+compiler profile remains available, and all profiles require the existing
+native-module and unchanged-OMZ gates. New stateful differential sequences
+exercise mutation, scope and post-error recovery across long-lived processes.
+
+Package staging now removes group/other write permissions from distribution
+directories even under a `0002` umask. This prevents insecure completion parents;
+the security checks, personal startup files and system Zsh permissions remain
+unchanged. Published rc0 source and release assets are retained intact.
+
+## Bundled zdraw 0.1.4 screen safety
+
+The bundled module probes whether the linked curses library can delete one
+screen without freeing another screen's windows. Fixed or backported libraries
+retain screen coexistence. If that probe fails, `zdraw init` returns failure
+while another curses screen is retained, before allocating a new screen; it
+preserves the other owner's state and emits a diagnostic. For example, a
+`zcurses init; zcurses end; zdraw init` sequence can reach this guard because
+ending curses mode does not delete the retained stock screen.
+
+Use a separate process or a library with the fix when coexistence is required
+on an affected host. This is the upstream module's safety fix, not a core Zsh
+language change or a version-number-based ban. This host passes the probe;
+the package suite also tests a forced guard variant. An older ncurses runtime
+has not been substituted locally. See [round 47](Perf/round47.md) and the
+[zdraw build guide](Vendor/zdraw/docs/building.md).
 
 ## Parameter-scope index and native opt-in
 
@@ -67,6 +98,28 @@ remain in `Vendor/sources.json`.
 
 This change introduces no intended Zsh language divergence. Coverage, limits
 and the unchanged-framework evidence are recorded in [round 35](Perf/round35.md).
+
+## Withdrawn thread-locale float formatting
+
+Round 40 withdraws the round-39 output optimization. The complete original
+`convfloat()` sequence is restored, including the temporary global LC_NUMERIC
+change and restoration. Native printf handlers keep their original thread and
+global locale observations, including handlers introduced by libc plugins.
+The module-only acknowledgment policy could not establish process-wide safety.
+
+The five optional `psh_float_*` exports introduced during private development
+remain available so already-built SDK clients still load. `PSH_FLOAT_LOCALE_VERSION`
+remains defined as API availability; `psh_float_locale_tracking()` always returns
+zero. Acknowledgment, disable and loader begin/end functions are inert. No
+thread-locale fast path can be enabled through them. Scope indexing retains its
+separate active protocol and original behavior. Public Module layouts are unchanged.
+The three bundled native modules no longer acknowledge formatting safety; their
+recorded patch history retains both the experiment and its withdrawal.
+
+[Round 40](Perf/round40.md) records the native gconv and explicit ELF-preload
+reproducers, the withdrawal and new mandatory native-library compatibility gate.
+[Round 39](Perf/round39.md) remains a historical experiment with its measured gains
+and earlier tests; those gains are withdrawn from the current development build.
 
 ## Required Oh My Zsh gate
 
@@ -137,7 +190,7 @@ controls introduce no installed language, module or ownership difference.
 
 | Surface | Difference and practical consequence |
 | --- | --- |
-| Program identity | Version/help text identifies psh; `psh --version` reports `psh 1.0.0-rc0 (zsh 5.9.2)`. Invocation names naturally affect `$0`, `$ZSH_NAME` and some diagnostic prefixes. Tools parsing the old `zsh --version` format need to use `$ZSH_VERSION` or `psh-config --zsh-version`. |
+| Program identity | Version/help text identifies psh; this branch's `psh --version` reports `psh 1.0.0-rc1 (zsh 5.9.2)`. Invocation names naturally affect `$0`, `$ZSH_NAME` and some diagnostic prefixes. Tools parsing the old `zsh --version` format need to use `$ZSH_VERSION` or `psh-config --zsh-version`. |
 | Language identity | `$ZSH_VERSION` remains `5.9.2`. There is no new reserved `PSH_VERSION` shell parameter. Project versioning does not replace the upstream version used by scripts and module paths. |
 | Global startup | Global startup files live under `/usr/local/psh/etc`, separately from the system Zsh configuration. Personal `.zshenv`, `.zshrc`, `.zprofile`, `.zlogin` and `.zlogout` names retain their meaning. A setup depending on system global startup content may need equivalent psh configuration. |
 | Functions and modules | Default paths are private, versioned psh paths. Bundled stock modules keep their `zsh/*` names and base version. The six added packages provide additional autoload names. Inherited `FPATH`, and user assignments to `fpath` or `module_path`, retain their usual effects. |
@@ -191,6 +244,26 @@ unsupported bypass and its migration; it is not a supported mutation pattern.
 Cache metadata is used only inside already queued signal regions; unqueued
 queries retain scanning and the caller's signal-delivery boundaries.
 
+## Nested associative getters
+
+Pristine Zsh 5.9.2 and earlier psh builds can return an inner hash's values
+when an outer hash element's native getter calls `gethparam()` for that inner
+hash. psh now preserves the outer expansion's working state and pattern across
+nested getters. This is a corrected wrong-result bug, not a deliberate loss of
+Zsh functionality. Public native layouts and the existing function interface
+remain unchanged. The [reproducer and scope](Perf/bugs/hash-getter-reentry.md)
+include the observed before/after results and limitations; arbitrary table
+destruction or growth during callbacks is not certified by this fix.
+
+## Stock curses character readback
+
+The wide-character `zcurses querychar` implementation inherited from Zsh 5.9.2
+passed a single `wchar_t` to an API that writes a terminated string. psh now
+allocates the complete cell buffer while continuing to return its first
+character. This corrects memory corruption and observed attribute loss in an
+earlier psh build; it is not a deliberate incompatibility or native ABI change.
+See the [reproducer and evidence limits](Perf/bugs/curses-querychar.md).
+
 ## What has and has not been checked
 
 The [source-review map](Perf/audit.md) describes focused coverage. Twenty-seven
@@ -233,11 +306,11 @@ that fails under psh deserves investigation even when every existing test passes
 
 ## RC and promotion policy
 
-The project version remains `1.0.0-rc0` through preparation of the first public
-candidate. Source commit, build digest and binary hashes distinguish development
-iterations. The initial private tag/draft, earlier source artifacts and installed
-builds are historical checkpoints and must be retained when the public tag is
-prepared. The public tag, `SOURCE-INFO.json` and attached archive must identify
+Public rc0 is released; this branch prepares `1.0.0-rc1`. Source commit, build
+digest and binary hashes distinguish development iterations. The initial private
+tag/draft is retained at `archive/private-v1.0.0-rc0`, and the public rc0 tag and
+assets remain immutable. Earlier source artifacts and installed builds are
+historical checkpoints. Each public tag, `SOURCE-INFO.json` and attached archive must identify
 the same source commit. Public release tags and source archives are immutable;
 fixes after public release get a new candidate/version. Wider
 testing and reported regressions inform promotion to 1.0.0. The RC label is not

@@ -3776,3 +3776,10 @@ autofeatures(const char *cmdnam, const char *module, char **features,
 
     return ret;
 }
+
+/* Retain the optional SDK symbol; thread-locale float formatting is retired. */
+/**/
+mod_export void
+psh_float_module_ack(UNUSED(Module m))
+{
+}
