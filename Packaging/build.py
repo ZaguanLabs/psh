@@ -66,9 +66,16 @@ def main():
                  "Perf/application-workload.zsh"]:
         fingerprints[name] = sha(ROOT / name)
     debug_assertions = args.profile == "debug"
+    # Upstream disables GDBM by default. Retain it when the host's stable Zsh
+    # ships the module; the final inventory gate still checks every module.
+    stock_paths = subprocess.check_output(
+        ["/usr/bin/zsh", "-dfc", "print -rl -- $module_path"],
+        env={"PATH": "/usr/bin:/bin", "LC_ALL": "C.UTF-8"}, text=True).splitlines()
+    enable_gdbm = any((Path(folder) / "zsh/db/gdbm.so").is_file() for folder in stock_paths)
     configured_cflags, configured_ldflags = compiler_flags(args.optimization)
     settings = {"symbols": args.symbols, "cflags": configured_cflags, "ldflags": configured_ldflags, "profile": args.profile,
                 "debug_assertions": debug_assertions, "optimization": args.optimization,
+                "gdbm": enable_gdbm,
                 "compiler": compiler_identity()}
     digest = hashlib.sha256(json.dumps({"sources": fingerprints, "settings": settings},
                                       sort_keys=True).encode()).hexdigest()[:12]
@@ -108,6 +115,8 @@ def main():
                  "--enable-zsh-debug" if debug_assertions else "--disable-zsh-debug", "--enable-pcre",
                  "--enable-etcdir=/usr/local/psh/etc", "--enable-site-fndir=no",
                  "--enable-additional-fpath=/usr/local/psh/site-functions"]
+    if enable_gdbm:
+        configure.append("--enable-gdbm")
     # Otherwise release configure defaults add -s at link time, before the
     # separate debugger file can be created. Symbols do not require DEBUG.
     cflags, ldflags, training = compile_core(ROOT, core, work, configure, args.jobs, args.optimization)

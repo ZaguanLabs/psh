@@ -58,6 +58,9 @@ ncurses and PCRE2 development files (`pcre2-config`), and libcurl development
 files >= 8.16.0 with `pkg-config`. Project tests also use Python, OpenSSL, `tic`, and standard Unix
 utilities. No downloaded dependency or system package change is performed by
 these scripts. Builds target the current machine and its installed libraries.
+When system Zsh ships `zsh/db/gdbm`, psh enables the matching module and requires
+the GDBM development headers and library. This selection is part of the build
+digest, and verification still checks the full system module inventory.
 The split-symbol default additionally uses GNU `objcopy` and `strip` and checks
 ELF64 little-endian runtime sections and dynamic exports before/after. Use
 `--symbols embedded` to retain symbols in the executable. The default
@@ -181,6 +184,14 @@ The standalone test supports explicit `--theme`, repeated `--plugin` and
 `--syntax-highlighting` inputs when configuration cannot be read as literal
 values. The [coverage report](../Perf/round21.md) records the tested revisions,
 interactive operations and limitations.
+
+Legacy OMZ checkouts without the async prompt API retain their own prompt
+implementation. The gate records that limitation and exercises actual ZLE
+descriptor callbacks with a test worker instead. For checkouts that do not
+compile completion dumps, only the disposable test cache is compiled by the
+fixture; compiled-cache handoff checks still run. History recall uses an entry
+loaded from the fixture's history file, including warm and interpreter-handoff
+sessions. Framework, theme, plugin and personal startup files remain unchanged.
 
 Build inputs determine the release digest. An existing build directory is
 retained rather than overwritten. Each command accepts `--build PATH` to select

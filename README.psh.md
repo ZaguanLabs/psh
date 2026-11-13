@@ -1,17 +1,15 @@
 # psh — Performance SHell
 
-The `rc1` development branch adds compiler optimization experiments, full scene
-construction benchmarks, stateful differential coverage and safe completion
-directory permissions under a group-writable umask. The latest [native-library audit](Perf/round40.md) withdraws a float-formatting
-experiment whose module guard missed libc plugins. **rc1 publication remains on hold.** Published rc0 is
-retained unchanged. See [the packaging guide](Packaging/README.md) for optional
-PGO builds and [the performance workflow](Perf/README.md) for the new checks.
+psh **1.0.0-rc1** adds optional compiler profiles, three further core optimizations,
+bundled zdraw 0.1.4 and stronger compatibility and memory-safety checks. The unsafe
+float-formatting experiment was withdrawn; its historical measurements do not
+apply to this release. Published rc0 is retained unchanged.
 
-For the public rc0 introduction and quick start, see the
-[project overview](.github/README.md) and [release notes](Releases/1.0.0-rc0.md).
+For the public introduction and quick start, see the
+[project overview](.github/README.md) and [rc1 release notes](Releases/1.0.0-rc1.md).
 This file retains the detailed development history.
 
-psh 1.0.0-rc0 pursues meaningful performance gains on Zsh 5.9.2 while preserving
+psh 1.0.0-rc1 pursues meaningful performance gains on Zsh 5.9.2 while preserving
 existing behavior by default. Limited, deliberate differences need substantial
 measured benefit, understood consequences and a documented migration or fallback.
 **Oh My Zsh must work unchanged**, including

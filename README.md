@@ -1,6 +1,6 @@
 # psh — Performance SHell
 
-**psh 1.0.0-rc0**, based on Zsh 5.9.2, is an experimental performance fork.
+**psh 1.0.0-rc1**, based on Zsh 5.9.2, is an experimental performance fork.
 Performance takes priority, with broad Zsh compatibility and documented breaking
 changes allowed where their benefits justify them. **Oh My Zsh must work
 unchanged.** Universal drop-in compatibility is not promised; undocumented or
@@ -15,16 +15,16 @@ The author's Zsh projects are the primary customer workloads. Their profiles
 guide optimization priorities; project kernels and controls accompany focused
 shell benchmarks.
 
-The `rc1` development branch remains unpublished while further investigation
-continues. Its latest [native-library audit](Perf/round40.md) withdraws an unsafe float-formatting
-experiment and adds compatibility checks for libc plugins and ELF preloading.
+[rc1](Releases/1.0.0-rc1.md) adds optional PGO/LTO builds, three further core
+optimizations, bundled zdraw 0.1.4 and stronger memory-safety and compatibility
+checks. Published rc0 remains available unchanged.
 
 ```sh
 git clone git@github.com:ZaguanLabs/psh.git
 cd psh
 python3 Perf/build.py
 ./psh --version
-# psh 1.0.0-rc0 (zsh 5.9.2)
+# psh 1.0.0-rc1 (zsh 5.9.2)
 ./psh -dfc 'print -r -- "$ZSH_VERSION"'
 # 5.9.2
 ```
