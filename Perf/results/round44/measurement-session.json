@@ -1,0 +1,64 @@
+[
+  {
+    "name": "glob",
+    "command": [
+      "python3",
+      "Perf/glob-memory-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-5982ba7e218f/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round44/glob.json"
+    ],
+    "started_unix": 1794571804.9440773,
+    "elapsed_seconds": 18.738943099975586,
+    "status": 0
+  },
+  {
+    "name": "customer",
+    "command": [
+      "python3",
+      "Perf/customer-benchmark.py",
+      "/usr/local/psh/releases/1.0.0-rc1-5982ba7e218f/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+      "--labs",
+      "/home/stig/dev/ai/zaguan/labs",
+      "--challenge",
+      "/home/stig/dev/challenge",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round44/customer.json"
+    ],
+    "started_unix": 1794571823.6832006,
+    "elapsed_seconds": 21.44260263442993,
+    "status": 0
+  },
+  {
+    "name": "objects",
+    "command": [
+      "python3",
+      "Perf/applications.py",
+      "/usr/local/psh/releases/1.0.0-rc1-5982ba7e218f/bin/psh",
+      "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+      "--zjson",
+      "/home/stig/dev/ai/zaguan/labs/zjson",
+      "--arrays",
+      "--objects",
+      "--samples",
+      "9",
+      "--cpu",
+      "13",
+      "--output",
+      ".work/round44/objects.json"
+    ],
+    "started_unix": 1794571845.1260426,
+    "elapsed_seconds": 30.4563250541687,
+    "status": 0
+  }
+]

@@ -108,7 +108,7 @@ The [nineteenth investigation](Perf/round19.md) examines arithmetic evaluation,
 locale conversion, array walks, allocation and scope scanning. Its accepted
 [patch](Perf/0019-numeric-locale-conversion.patch) avoids process-locale changes
 for ordinary floating literals when the complete locale-object API is available.
-The development executable now includes twenty-seven accepted optimizations.
+The development source now includes twenty-eight accepted optimizations.
 
 The [twentieth investigation](Perf/round20.md) follows per-token arithmetic
 validation. Its accepted [patch](Perf/0020-arithmetic-token-check-inline.patch)
@@ -138,7 +138,7 @@ experiment compares against the preserved second psh executable.
 The fourth change removes a redundant length scan within ordinary whole-array
 list append. It introduces no persistent cache and leaves special/custom/tied
 arrays on the original path. Repeated append remains quadratic. The current
-development executable includes all twenty-seven changes; the fourth experiment compares against
+development source includes all twenty-eight changes; the fourth experiment compares against
 the preserved third executable. Its application controls include small measured
 slowdowns as well as the targeted append gains; see the complete report.
 
@@ -371,5 +371,13 @@ thread-locale float-formatting optimization. The [fortieth investigation](Perf/r
 withdraws it after reproducing changed native callback behavior through libc
 conversion plugins and explicit ELF preloading. The original output converter is
 restored; five optional SDK exports remain inert for binary compatibility.
-The current core optimization count stays 27. A mandatory native-library gate
+That withdrawal returns the core optimization count to 27. A mandatory native-library gate
 now complements the unchanged OMZ gate. Publication and activation remain held.
+
+The [twenty-eighth accepted change](Perf/round44.md) releases temporary shell-code
+glob programs after each evaluation, adapting an upstream lifetime improvement.
+Legacy native parsers retain their signatures and arena-backed ownership.
+Repeated 10,000-file long-qualifier measurements use about 19% less peak resident
+memory and take 17–19% less time; customer kernels remain effectively flat.
+Escaping functions/traps and old-header native callers pass focused checks,
+alongside the package, OMZ and native-library gates. The candidate is inactive.

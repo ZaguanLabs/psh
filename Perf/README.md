@@ -1,5 +1,26 @@
 # Local performance workflow
 
+## Round 44: temporary glob programs
+
+[Round 44](round44.md) adopts the upstream glob-program lifetime improvement
+while preserving `parse_list(void)` and `parse_string()` ownership for native
+callers. Large qualifier scans use less memory; the source retains per-file
+parsing and side effects. The core optimization count is now 28.
+
+```sh
+python3 Perf/check-glob-programs.py PRISTINE PREVIOUS CANDIDATE \
+  --headers-build PRISTINE_BUILD --headers-source PRISTINE_SOURCE \
+  --memcheck --output .work/logs/glob-programs.json
+python3 Perf/glob-memory-benchmark.py PREVIOUS_RELEASE CANDIDATE_RELEASE \
+  --samples 9 --cpu 13 --output .work/logs/glob-memory.json
+```
+
+Run the 148-case checker separately on builds configured with
+`--enable-zsh-valgrind` to expose more internal arena lifetimes. The native
+fixture always uses legacy headers. Benchmark only ordinary release builds
+after tests/profilers finish; the driver compares full filename output and
+retains plain/sort controls, small cases and every sample.
+
 ## Round 43: history/source lifetimes
 
 [Round 43](round43.md) backports two existing upstream lifetime fixes and adds

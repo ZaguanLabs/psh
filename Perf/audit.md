@@ -247,3 +247,14 @@ builds, keeping affected pristine and preceding-release controls. Full package,
 glob-program memory screen identifies a possible next target; its exported
 parser signature change is not adopted. Native interfaces and the optimization
 count remain unchanged.
+
+[Round forty-four](round44.md) adopts a lifetime improvement for temporary
+shell-code glob programs, adapted from upstream workers 55203. Both original
+parser prototypes and arena-backed ownership remain intact for native callers;
+core-only allocation-choice helpers let qualifiers release each program after
+execution. Retained functions/traps, aliases, nested globs, errors and legacy
+parser calls pass 148-case release/allocator-aware matrices. The isolated core
+suite, bundled suites and OMZ/native gates pass; the concurrent file-lock timing
+failure is retained. Matched release measurements show lower RSS and elapsed
+time for large qualifier scans, with ordinary-glob/sort and customer controls.
+The optimization count becomes 28; publication and activation remain held.

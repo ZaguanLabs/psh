@@ -1,0 +1,359 @@
+{
+  "passed": true,
+  "release": "1.0.0-rc1-fcff3fb31d43",
+  "settings": {
+    "symbols": "split",
+    "cflags": "-O2 -g -flto -fprofile-use=@PROFILE_DIR@ -fprofile-partial-training -Werror=coverage-mismatch",
+    "ldflags": "-g -flto -fprofile-use=@PROFILE_DIR@",
+    "profile": "release",
+    "debug_assertions": false,
+    "optimization": "pgo-lto",
+    "gdbm": false,
+    "compiler": {
+      "command": [
+        "cc"
+      ],
+      "version": "cc (Mageia 15.2.0-1.mga10) 15.2.0"
+    }
+  },
+  "shells": {
+    "installed": "/usr/local/psh/releases/1.0.0-rc1-fcff3fb31d43/bin/psh",
+    "system": "/usr/bin/zsh"
+  },
+  "binary_sha256": {
+    "installed": "95998d2dd8b1ee105777fc942d5bdfdb3239b64dd60e57f0b974f3569c6f4e77",
+    "system": "9407c2fcae8dd1f769c546723d9232c68697aeda7f617728d12cab72df870026"
+  },
+  "scripts": {
+    "termcap-first": "zmodload zsh/termcap; zmodload zsh/terminfo",
+    "terminfo-first": "zmodload zsh/terminfo; zmodload zsh/termcap",
+    "unload-reload": "for attempt in 1 2 3; do zmodload zsh/termcap zsh/terminfo || exit; zmodload -u zsh/terminfo zsh/termcap || exit; done",
+    "change-terminal": "zmodload zsh/termcap zsh/terminfo; TERM=xterm; zmodload -u zsh/terminfo zsh/termcap"
+  },
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8"
+  },
+  "runs": [
+    {
+      "host": "installed",
+      "TERM": null,
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": null,
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": null,
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": null,
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": null,
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": null,
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": null,
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": null,
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "psh-no-such-terminal",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "psh-no-such-terminal",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "psh-no-such-terminal",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "psh-no-such-terminal",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "psh-no-such-terminal",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "psh-no-such-terminal",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "psh-no-such-terminal",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "psh-no-such-terminal",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "xterm",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "xterm",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "xterm",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "xterm",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "xterm",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "xterm",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "xterm",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "xterm",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "dumb",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "dumb",
+      "case": "termcap-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "dumb",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "dumb",
+      "case": "terminfo-first",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "dumb",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "dumb",
+      "case": "unload-reload",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "installed",
+      "TERM": "dumb",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "host": "system",
+      "TERM": "dumb",
+      "case": "change-terminal",
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}
