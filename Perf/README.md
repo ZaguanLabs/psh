@@ -1461,3 +1461,7 @@ parsing, output selection and error behavior across differential controls.
 [Round fifty-five](round55.md) removes quadratic list searches from zselect
 associative readiness construction while preserving key/flag order. Release
 profiling, alternating timings, pristine comparisons and OMZ evidence are retained.
+
+[Round fifty-six](round56.md) fixes zpty readiness outside select's fixed
+descriptor set, using poll where available and validating the select fallback.
+Pristine sanitizer failures and byte/status/OMZ controls are retained.

@@ -18,6 +18,20 @@
 0:zpty with a process that does not set up the terminal: internal write
 >a line of text
 
+  zpty poll 'read -r line; print -r -- "$line"; read -r line'
+  zpty -rt poll var
+  print -r -- "empty:$?"
+  zpty -w poll ready
+  zpty -r poll var $'*\r\n'
+  print -r -- "data:$?:${var%%$'\r\n'}"
+  zpty -rt poll var
+  print -r -- "drained:$?"
+  zpty -d poll
+0:zpty readiness before input and after draining a live child
+>empty:1
+>data:0:ready
+>drained:1
+
   zpty cat cat
   print a line of text | zpty -w cat
   var=

@@ -30,6 +30,13 @@
 #include "zpty.mdh"
 #include "zpty.pro"
 
+#ifdef HAVE_POLL_H
+# include <poll.h>
+#endif
+#if defined(HAVE_POLL) && !defined(POLLIN) && !defined(POLLNORM)
+# undef HAVE_POLL
+#endif
+
 #ifdef __CYGWIN__
 #include <cygwin/version.h>
 #if defined(CYGWIN_VERSION_DLL_MAJOR) && CYGWIN_VERSION_DLL_MAJOR<3002
@@ -555,6 +562,14 @@ ptyread(char *nam, Ptycmd cmd, char **args, int noblock, int mustmatch)
     char *buf;
     Patprog prog = NULL;
 
+#if !defined(HAVE_POLL) && defined(HAVE_SELECT)
+    /* Validate before FD_SET, and before consuming buffered output. */
+    if (noblock && cmd->fd >= FD_SETSIZE) {
+	zwarnnam(nam, "file descriptor out of range for select: %d", cmd->fd);
+	return 1;
+    }
+#endif
+
     if (*args && args[1]) {
 	char *p;
 
@@ -599,9 +614,20 @@ ptyread(char *nam, Ptycmd cmd, char **args, int noblock, int mustmatch)
 	if (noblock && cmd->read == -1) {
 	    int pollret = -1;
 	    /*
-	     * Check there is data available.  Borrowed from
-	     * poll_read() in utils.c and simplified.
+	     * Check there is data available.  Prefer poll so that a valid
+	     * pty descriptor is not limited by select's fixed-size set.
 	     */
+#ifdef HAVE_POLL
+	    struct pollfd pfd;
+	    pfd.fd = cmd->fd;
+# ifdef POLLIN
+	    pfd.events = POLLIN;
+# else
+	    pfd.events = POLLNORM;
+# endif
+	    pfd.revents = 0;
+	    pollret = poll(&pfd, 1, 0);
+#else
 #ifdef HAVE_SELECT
 	    fd_set foofd;
 	    struct timeval expire_tv;
@@ -616,6 +642,7 @@ ptyread(char *nam, Ptycmd cmd, char **args, int noblock, int mustmatch)
 	    int val;
 	    if (ioctl(cmd->fd, FIONREAD, (char *) &val) == 0)
 		pollret = (val > 0);
+#endif
 #endif
 #endif
 

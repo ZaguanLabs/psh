@@ -325,3 +325,8 @@ Round 55 builds associative zselect readiness directly from the returned sets,
 preserving first-occurrence key order and rwe values. The repeated-selection
 workload improves substantially at larger ready sets; slower ordinary-array
 controls and application-level limits are explicit in [round 55](round55.md).
+
+Round 56 confirms an inherited out-of-bounds FD_SET in zpty nonblocking reads
+with high descriptors. A poll path supports those descriptors; the select-only
+fallback rejects them before consuming state. Independent PTY matrices,
+sanitizers and OMZ validation are recorded in [round 56](round56.md).

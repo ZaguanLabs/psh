@@ -78,6 +78,15 @@ of relying on wraparound, and handle status 1 before reading readiness results.
 See [round 54](Perf/round54.md). This can change success/error branches and stop
 later option processing for previously accepted oversized arguments.
 
+`zpty -rt` now uses `poll` when available, allowing valid PTY descriptors at
+or above `FD_SETSIZE` without writing beyond a fixed-size descriptor set.
+On select-only builds, these reads instead return status 1 with a range
+diagnostic before pattern processing, consuming buffered output or assigning
+the destination parameter. Use a poll-capable build, keep fewer descriptors
+open, or use a blocking read when appropriate. Reads without `-t` retain
+support for high descriptors. Ordinary readiness, data and pattern behavior
+are unchanged in the tested controls; see [round 56](Perf/round56.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh
