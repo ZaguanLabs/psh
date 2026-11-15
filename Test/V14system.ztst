@@ -13,6 +13,23 @@
 %test
 
   (
+    print -rn -- ABC > $tst_dir/zselect-input
+    exec 0< $tst_dir/zselect-input
+    reply=(sentinel)
+    zselect -t 0 -r 4294967296 2>/dev/null
+    print -r -- "$?:$reply"
+    typeset -A readiness=(sentinel keep)
+    zselect -t 0 -A readiness -r 0 -w 4294967296 2>/dev/null
+    print -r -- "$?:${readiness[sentinel]}:${#readiness}"
+    zselect -t 0 -r 0
+    print -r -- "$?:$reply"
+  )
+0:zselect checks full descriptor range before changing readiness arrays
+>1:sentinel
+>1:keep:1
+>0:-r 0
+
+  (
     print -rn -- ABC > $tst_dir/timeout-input
     exec 3< $tst_dir/timeout-input
     for timeout in 4294967296 1e300 -Inf Inf NaN; do

@@ -68,6 +68,16 @@ but scripts depending on the following accidents will behave differently:
   as -1 instead of reproducing accidental wraparound or round 52's rejection.
   NaN and infinities remain parameter errors; select keeps its existing policy.
 
+`zselect` now validates the full parsed descriptor against its existing
+`FD_SETSIZE` bound before converting to int. An oversized number can no longer
+alias a valid descriptor and report readiness for it. Range errors return
+status 1 and leave the default/named arrays and associative results untouched;
+the diagnostic prints the full parsed value instead of a wrapped int. Ordinary
+lexical checks and their order remain in place. Pass actual descriptors instead
+of relying on wraparound, and handle status 1 before reading readiness results.
+See [round 54](Perf/round54.md). This can change success/error branches and stop
+later option processing for previously accepted oversized arguments.
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

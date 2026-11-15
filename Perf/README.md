@@ -1453,3 +1453,7 @@ fractions while rejecting overflow, NaN and infinities explicitly.
 [Round fifty-three](round53.md) handles finite negative poll waits before numeric
 conversion. Large negative values select an indefinite-wait sentinel safely;
 small negative fractions retain their original millisecond truncation.
+
+[Round fifty-four](round54.md) checks zselect descriptors before narrowing,
+preventing false readiness from oversized aliases and preserving ordinary
+parsing, output selection and error behavior across differential controls.

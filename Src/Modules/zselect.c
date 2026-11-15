@@ -40,15 +40,17 @@ static int
 handle_digits(char *nam, char *argptr, fd_set *fdset, int *fdmax)
 {
     int fd;
+    zlong parsed_fd;
     char *endptr;
 
     if (!idigit(*argptr)) {
 	zwarnnam(nam, "expecting file descriptor: %s", argptr);
 	return 1;
     }
-    fd = (int)zstrtol(argptr, &endptr, 10);
-    if (fd < 0 || fd >= FD_SETSIZE) {
-	zwarnnam(nam, "file descriptor out of range [0-%d]: %d", FD_SETSIZE-1, fd);
+    parsed_fd = zstrtol(argptr, &endptr, 10);
+    /* Check the full value before it can alias a representable descriptor. */
+    if (parsed_fd < 0 || parsed_fd >= FD_SETSIZE) {
+	zwarnnam(nam, "file descriptor out of range [0-%d]: %z", FD_SETSIZE-1, parsed_fd);
 	return 1;
     }
     if (*endptr) {
@@ -56,6 +58,7 @@ handle_digits(char *nam, char *argptr, fd_set *fdset, int *fdmax)
 	return 1;
     }
 
+    fd = (int)parsed_fd;
     FD_SET(fd, fdset);
     if (fd+1 > *fdmax)
 	*fdmax = fd+1;

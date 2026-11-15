@@ -316,3 +316,7 @@ Round 53 removes poll's unnecessary negative lower bound: finite negative
 seconds can select the indefinite-wait sentinel before any unsafe conversion.
 Positive limits and select policy remain explicit; fractional and delayed-input
 controls are recorded in [round 53](round53.md).
+
+Round 54 validates zselect's parsed descriptor before int conversion. Its
+existing range check previously allowed wide values to alias live descriptors.
+Readiness arrays, diagnostics and option forms are covered in [round 54](round54.md).
