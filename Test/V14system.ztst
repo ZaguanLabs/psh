@@ -13,6 +13,20 @@
 %test
 
   (
+    print -rn -- ABC > $tst_dir/readiness-input
+    exec 0< $tst_dir/readiness-input
+    exec 3<> $tst_dir/readiness-input
+    typeset -A readiness=(sentinel keep)
+    zselect -t 0 -A readiness -w 3 -r 3 0
+    print -r -- "$?:${readiness[0]}:${readiness[3]}:${#readiness}"
+    zselect -t 0 -A readiness -e 0
+    print -r -- "$?:${readiness[0]}:${readiness[3]}:${#readiness}"
+  )
+0:zselect combines readiness flags and preserves associative results on timeout
+>0:r:rw:2
+>1:r:rw:2
+
+  (
     print -rn -- ABC > $tst_dir/zselect-input
     exec 0< $tst_dir/zselect-input
     reply=(sentinel)

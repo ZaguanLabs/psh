@@ -1457,3 +1457,7 @@ small negative fractions retain their original millisecond truncation.
 [Round fifty-four](round54.md) checks zselect descriptors before narrowing,
 preventing false readiness from oversized aliases and preserving ordinary
 parsing, output selection and error behavior across differential controls.
+
+[Round fifty-five](round55.md) removes quadratic list searches from zselect
+associative readiness construction while preserving key/flag order. Release
+profiling, alternating timings, pristine comparisons and OMZ evidence are retained.

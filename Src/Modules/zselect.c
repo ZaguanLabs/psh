@@ -207,36 +207,24 @@ bin_zselect(char *nam, char **args, UNUSED(Options ops), UNUSED(int func))
 		     * Key/value pairs; keys are fd's (as strings),
 		     * value is a (possibly improper) subset of "rwe".
 		     */
-		    LinkNode nptr;
-		    int found = 0;
+		    char ready[4], *ptr = ready;
+		    int j;
 
-		    convbase(buf, fd, 10);
-		    for (nptr = firstnode(fdlist); nptr; 
-			 nptr = nextnode(nextnode(nptr))) {
-			if (!strcmp((char *)getdata(nptr), buf)) {
-			    /* Already there, add new character. */
-			    void **dataptr = getaddrdata(nextnode(nptr));
-			    char *data = (char *)*dataptr, *ptr;
-			    found = 1;
-			    if (!strchr(data, fdchar[i])) {
-				strcpy(buf, data);
-				for (ptr = buf; *ptr; ptr++)
-				    ;
-				*ptr++ = fdchar[i];
-				*ptr = '\0';
-				zsfree(data);
-				*dataptr = ztrdup(buf);
-			    }
+		    /* Emit each key at its first occurrence, preserving the old
+		     * read/write/exception insertion order.  The returned sets
+		     * already contain all flags, so no list search is needed. */
+		    for (j = 0; j < i; j++)
+			if (FD_ISSET(fd, fdset+j))
 			    break;
-			}
-		    }
-		    if (!found) {
-			/* Add new key/value pair. */
-			zaddlinknode(fdlist, ztrdup(buf));
-			buf[0] = fdchar[i];
-			buf[1] = '\0';
-			zaddlinknode(fdlist, ztrdup(buf));
-		    }
+		    if (j < i)
+			continue;
+		    for (j = i; j < 3; j++)
+			if (FD_ISSET(fd, fdset+j))
+			    *ptr++ = fdchar[j];
+		    *ptr = '\0';
+		    convbase(buf, fd, 10);
+		    zaddlinknode(fdlist, ztrdup(buf));
+		    zaddlinknode(fdlist, ztrdup(ready));
 		} else {
 		    /* List of fd's preceded by -r, -w, -e. */
 		    if (!doneit) {

@@ -320,3 +320,8 @@ controls are recorded in [round 53](round53.md).
 Round 54 validates zselect's parsed descriptor before int conversion. Its
 existing range check previously allowed wide values to alias live descriptors.
 Readiness arrays, diagnostics and option forms are covered in [round 54](round54.md).
+
+Round 55 builds associative zselect readiness directly from the returned sets,
+preserving first-occurrence key order and rwe values. The repeated-selection
+workload improves substantially at larger ready sets; slower ordinary-array
+controls and application-level limits are explicit in [round 55](round55.md).
