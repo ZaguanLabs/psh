@@ -1437,3 +1437,7 @@ separate investigation targets.
 [Round forty-nine](round49.md) checks system-module integer options before
 narrowing. Oversized descriptors and buffer sizes are rejected without I/O;
 independent file/offset checks retain failing pristine, rc2 and round-48 controls.
+
+[Round fifty](round50.md) validates `systell()` integer and floating descriptors
+before conversion, preserves fractional truncation, and adds module-level
+sanitizer evidence. Timeout overflow observations are retained separately.

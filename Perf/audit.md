@@ -297,3 +297,8 @@ Round 49 fixes the `getposint()` narrowing identified in round 48. All five
 callers reject the tested out-of-range values before I/O; ordinary parsing and
 error controls match the references. See [round 49](round49.md) for evidence
 and the remaining conversion-audit limits. No installation or speedup is claimed.
+
+Round 50 extends the conversion audit to `systell()`: pre-conversion range
+checks prevent descriptor aliases and undefined float conversions, while
+ordinary and fractional controls match the references. Module-level UBSan
+evidence and separate timeout leads are recorded in [round 50](round50.md).

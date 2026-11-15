@@ -13,6 +13,34 @@
 %test
 
   (
+    print -rn -- ABC > $tst_dir/systell-input
+    exec 0< $tst_dir/systell-input
+    sysseek 2
+    for value in 0 0.0 -0.9; do
+      print -r -- $(( systell(value) ))
+    done
+    n=0
+    print -r -- $(( systell(n++) )) $n
+    for value in 4294967296 -4294967296 2147483648.0 1e300 Inf NaN; do
+      (print -r -- $(( systell(value) ))) 2>/dev/null
+      print -r -- "status=$?"
+    done
+    print -r -- $(( systell(0) ))
+  )
+0:systell validates before narrowing and preserves fractional truncation
+>2
+>2
+>2
+>2 1
+>status=1
+>status=1
+>status=1
+>status=1
+>status=1
+>status=1
+>2
+
+  (
     print -rn -- ABC > $tst_dir/integer-input
     print -rn -- KEEP > $tst_dir/integer-output
     exec 3< $tst_dir/integer-input

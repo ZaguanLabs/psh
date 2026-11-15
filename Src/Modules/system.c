@@ -452,15 +452,21 @@ bin_sysseek(char *nam, char **args, Options ops, UNUSED(int func))
 static mnumber
 math_systell(UNUSED(char *name), UNUSED(int argc), mnumber *argv, UNUSED(int id))
 {
-    int fd = (argv->type == MN_INTEGER) ? argv->u.l : (int)argv->u.d;
+    int fd;
     mnumber ret;
     ret.type = MN_INTEGER;
     ret.u.l = 0;
 
-    if (fd < 0) {
+    /* Validate before conversion.  Floats truncate towards zero, so values
+     * between -1 and 0 still denote fd 0.  Ordered tests also reject NaN. */
+    if ((argv->type == MN_INTEGER &&
+	 (argv->u.l < 0 || argv->u.l > INT_MAX)) ||
+	(argv->type != MN_INTEGER &&
+	 !(argv->u.d > -1.0 && argv->u.d < (double)INT_MAX + 1.0))) {
 	zerr("file descriptor out of range");
 	return ret;
     }
+    fd = (argv->type == MN_INTEGER) ? (int)argv->u.l : (int)argv->u.d;
     ret.u.l = lseek(fd, 0, SEEK_CUR);
     return ret;
 }
