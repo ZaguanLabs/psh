@@ -15,6 +15,8 @@ import subprocess
 import tempfile
 import time
 
+from startup import snapshot
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -39,7 +41,7 @@ class Terminal:
         self.pid, self.fd = pty.fork()
         if self.pid == 0:
             os.chdir(repository)
-            os.execve(shell, [str(shell), "-dil" if login else "-di"], env)
+            os.execve(shell, [str(shell), "-il" if login else "-i"], env)
         self.home = home
         self.transcript = bytearray()
         self.status = None
@@ -225,6 +227,7 @@ def main():
     parser.add_argument("--syntax-highlighting", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    startup_before = snapshot()
     # A failed rerun must never leave an older passing certificate usable.
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.unlink(missing_ok=True)
@@ -309,7 +312,9 @@ def main():
     assert sources == source_identity(args.omz, (args.omz / "custom").glob("*.zsh"))
     assert highlighter_sources == (source_identity(highlight.parent) if highlight else None)
     assert binary_hashes == {k: sha(p) for k, p in shells.items()}
-    report = {"passed": True, "omz": sources, "omz_root": str(args.omz), "syntax_highlighting": highlighter_sources,
+    assert startup_before == snapshot(), "global startup inputs changed during OMZ verification"
+    report = {"passed": True, "global_startup_enabled": True, "startup_snapshot": startup_before,
+              "omz": sources, "omz_root": str(args.omz), "syntax_highlighting": highlighter_sources,
               "theme": theme, "configured_plugins": plugins, "history_limits": history,
               "shells": {k: str(p) for k, p in shells.items()},
               "binary_sha256": binary_hashes, "driver_sha256": sha(Path(__file__)),

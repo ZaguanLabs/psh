@@ -1,6 +1,6 @@
 # psh — Performance SHell
 
-**psh 1.0.0-rc1**, based on Zsh 5.9.2, is an experimental performance fork.
+**psh 1.0.0-rc2**, based on Zsh 5.9.2, is an experimental performance fork.
 Performance takes priority, with broad Zsh compatibility and documented breaking
 changes allowed where their benefits justify them. **Oh My Zsh must work
 unchanged.** Universal drop-in compatibility is not promised; undocumented or
@@ -15,16 +15,18 @@ The author's Zsh projects are the primary customer workloads. Their profiles
 guide optimization priorities; project kernels and controls accompany focused
 shell benchmarks.
 
-[rc1](Releases/1.0.0-rc1.md) adds optional PGO/LTO builds, three further core
-optimizations, bundled zdraw 0.1.4 and stronger memory-safety and compatibility
-checks. Published rc0 remains available unchanged.
+[rc2](Releases/1.0.0-rc2.md) fixes missing locale and `~/bin` initialization in
+isolated installations on Mageia and AlmaLinux. Installation preserves existing
+configuration, and activation now checks the real global startup environment.
+The rc1 core optimizations and bundled projects are unchanged. Published rc0 and
+rc1 remain available unchanged.
 
 ```sh
 git clone git@github.com:ZaguanLabs/psh.git
 cd psh
 python3 Perf/build.py
 ./psh --version
-# psh 1.0.0-rc1 (zsh 5.9.2)
+# psh 1.0.0-rc2 (zsh 5.9.2)
 ./psh -dfc 'print -r -- "$ZSH_VERSION"'
 # 5.9.2
 ```

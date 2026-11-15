@@ -27,7 +27,7 @@ subsequent repair and its installed-package regression tests.
 | `/usr/local/bin/psh` | Public executable, through `current` |
 | `/usr/local/bin/psh-config` | Discover this release's package and SDK paths |
 | `/usr/local/psh/current` | Active release symlink |
-| `/usr/local/psh/releases/1.0.0-rc1-<digest>/bin/psh` | Versioned executable |
+| `/usr/local/psh/releases/1.0.0-rc2-<digest>/bin/psh` | Versioned executable |
 | `<release>/lib/psh/5.9.2/` | `zdraw.so`, `zcurl.so`, `zmdown.so`, and stock `zsh/*.so` |
 | `<release>/share/psh/5.9.2/functions/` | Stock functions, completions, and package autoloads |
 | `<release>/share/psh/5.9.2/scripts/` | Package libraries, data, documentation, and licences |
@@ -50,6 +50,51 @@ directories while any process still uses them. The development `./psh` produced
 by `Perf/build.py` remains a separate executable with development paths.
 After upgrading, start a new psh process. Recreate any application trial that
 cached a versioned package path, using the current `psh-config --script-dir`.
+
+## Host startup environment (rc2)
+
+The private global directory does not inherit `/etc/zshrc` or `/etc/zprofile`.
+On a fresh installation this can leave `LANG` unset or omit `~/bin` from PATH,
+even though the same account works in system Zsh. rc2 adds an explicit startup
+configuration step to the workflow below. Merely rebuilding the executable does
+not repair an empty configuration directory.
+
+`Packaging/install.py startup` previews the exact files to create.
+`sudo python3 Packaging/install.py startup --apply` creates missing files only,
+root-owned and mode 0644. Existing files, even empty files and symlinks, are
+preserved; review and merge needed changes yourself if they implement a different
+policy. This step changes shared psh configuration for subsequently started psh
+processes, including older installed releases. Running shells retain their
+environment. There is no account-shell or personal-startup modification.
+
+The characterized defaults are:
+
+- **Mageia:** append `~/bin` and source `/etc/profile.d/lang.sh` with the same sh
+  emulation as system Zsh, in interactive `zshrc` (login and non-login).
+- **AlmaLinux:** append `~/bin` and initialize locale in login `zprofile`; also
+  initialize locale in non-login interactive `zshrc`, under localized ksh emulation.
+- **Other distributions:** no guessed defaults. Review that host's system Zsh
+  startup policy and configure the private files before verification.
+
+The distribution helper chooses the locale, including its rules for inherited
+variables, `/etc/locale.conf`, `~/.i18n` and LC overrides. psh does not force a
+particular UTF-8 locale. Other distribution aliases, prompts, key bindings and
+profile scripts are outside these defaults; this is scoped environment
+integration, not a complete copy of system Zsh configuration.
+
+Verification compares locale values, the external process character map and
+`~/bin` command execution with system Zsh across 63 cases, including disabled
+startup, noninteractive, login and interactive modes. A mismatch blocks
+activation. The OMZ gate now enables actual global startup files. Activation
+requires matching binary, test-source and startup-input evidence; after editing
+startup files, rerun verification. Do not run the framework gate as root.
+
+For an existing rc0/rc1 installation, the startup preview/apply commands can
+repair host configuration before building rc2. Preserve customized files and
+review the proposed missing-file contents first. Previously repaired installations
+need no duplicate hook. For rollback of newly generated files, remove only those
+files after checking that they have not subsequently been customized. Switching
+release binaries does not roll back this shared host configuration.
 
 ## Build, test, and activate
 
@@ -125,6 +170,9 @@ require Oh My Zsh.
 python3 Packaging/build.py
 python3 Packaging/verify.py snapshot
 sudo python3 Packaging/install.py candidate
+# Review missing global startup defaults; existing files are preserved.
+python3 Packaging/install.py startup
+sudo python3 Packaging/install.py startup --apply
 python3 Packaging/test.py
 python3 Packaging/verify.py stage-modules
 sudo python3 Packaging/install.py refresh-modules

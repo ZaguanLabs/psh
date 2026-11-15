@@ -5,22 +5,22 @@ A Zsh 5.9.2 performance fork for people who do substantial work inside the shell
 psh grew out of Zsh applications: editors, chat clients, terminal interfaces and
 graphics experiments. It targets repeated interpreter work in those programs
 while preserving existing Zsh behavior by default. The current public candidate
-is **1.0.0-rc1**, with 30 accepted core optimizations and six bundled companion projects.
+is **1.0.0-rc2**, with 30 accepted core optimizations and six bundled companion projects.
 
-[Release notes](../Releases/1.0.0-rc1.md) ·
+[Release notes](../Releases/1.0.0-rc2.md) ·
 [Compatibility](../COMPATIBILITY.md) ·
 [Installation](../Packaging/README.md) ·
 [Performance evidence](../Perf/README.md)
 
 ## Try the source release
 
-Download the attached `psh-1.0.0-rc1.tar.xz` from
+Download the attached `psh-1.0.0-rc2.tar.xz` from
 [Releases](https://github.com/ZaguanLabs/psh/releases). It includes the verified
 upstream sources needed by the build tools, so no Git checkout is required.
 
 ```sh
-tar -xf psh-1.0.0-rc1.tar.xz
-cd psh-1.0.0-rc1
+tar -xf psh-1.0.0-rc2.tar.xz
+cd psh-1.0.0-rc2
 python3 Perf/build.py --which candidate --profile release
 ./psh --version
 ./psh -f
@@ -33,16 +33,18 @@ file. The six bundled projects are installed through that full workflow.
 
 The complete [installation guide](../Packaging/README.md) covers dependencies,
 native modules, verification, isolated paths and rollback. The packaged release
-is currently validated on Mageia Linux x86-64. Other platforms are experimental.
+is currently validated on Mageia Linux x86-64, with startup integration also tested on
+AlmaLinux. Other platforms are experimental.
 
-## New in rc1
+## New in rc2
 
-Optional GCC PGO/LTO builds, lower glob memory use, faster bounded array copies
-and reduced lexer allocation join the core. Bundled zdraw 0.1.4 improves widget
-workloads and guards unsafe screen coexistence on affected ncurses libraries.
-Memory-safety fixes and stronger native-library and unchanged-Oh-My-Zsh checks
-accompany the performance work. [Release notes](../Releases/1.0.0-rc1.md) separate
-measured gains from controls and explain the tested limits.
+Fresh psh sessions could miss their UTF-8 locale or fail to find commands in
+`~/bin`, because psh's isolated global startup directory lacked distribution
+environment setup. rc2 supplies conservative Mageia and AlmaLinux defaults,
+preserves existing customizations, and tests real global startup during
+verification and Oh My Zsh checks. See the [release notes](../Releases/1.0.0-rc2.md)
+for the required upgrade step and coverage limits. Core optimizations and bundled
+projects are unchanged from rc1.
 
 ## What changes
 
@@ -80,7 +82,7 @@ Read [the compatibility policy](../COMPATIBILITY.md) before adopting psh,
 especially for native modules. **Universal drop-in compatibility is not claimed.**
 Unexpected script failures and memory-safety problems are bugs.
 
-## Help test rc1
+## Help test rc2
 
 Try your real scripts and interactive setup. Report differences from Zsh at the
 [issue tracker](https://github.com/ZaguanLabs/psh/issues), with a minimal example,

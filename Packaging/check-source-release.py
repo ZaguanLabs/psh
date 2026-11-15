@@ -58,6 +58,7 @@ def main():
             if result.returncode:
                 raise RuntimeError(name + ": see " + str(log))
 
+        run("startup-policy", ["python3", "Packaging/test-startup.py"], build_env)
         run("core-build", ["python3", "Perf/build.py", "--jobs", str(args.jobs)], build_env)
         expected = f"psh {metadata['project_version']} (zsh {metadata['zsh_version']})\n".encode()
         assert subprocess.check_output([str(root / "psh"), "--version"], env=env) == expected

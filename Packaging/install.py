@@ -10,6 +10,8 @@ import stat
 import tempfile
 import time
 
+import startup
+
 ROOT = Path(__file__).resolve().parent.parent
 BASE = Path("/usr/local/psh")
 
@@ -77,9 +79,23 @@ def link(path, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["candidate", "refresh-modules", "activate"])
+    parser.add_argument("action", choices=["candidate", "refresh-modules", "startup", "activate"])
+    parser.add_argument("--apply", action="store_true", help="create missing host startup defaults after preview (startup only)")
     parser.add_argument("--build", type=Path, default=ROOT / ".work/package/latest.json")
     args = parser.parse_args()
+    if args.apply and args.action != "startup":
+        parser.error("--apply is only valid with startup")
+    if args.action == "startup":
+        identity = startup.distribution()
+        proposal = startup.plan(identity)
+        print(json.dumps({"distribution": identity, "directory": str(startup.ETC), "files": proposal}, indent=2))
+        if not proposal:
+            print("No automatic defaults for this distribution. Configure private startup files for this host; verification compares with system Zsh.")
+        if args.apply:
+            if os.geteuid() != 0:
+                parser.error("run startup --apply with sudo")
+            startup.apply(proposal)
+        return
     if os.geteuid() != 0:
         parser.error("run this installation step with sudo")
     b = json.loads(args.build.read_text())
@@ -125,6 +141,17 @@ def main():
         if manifest(prefix) != expected or receipt["payload_manifest"] != expected:
             raise RuntimeError("release differs from the tested payload")
         validated_native_loaders(work, prefix / "bin/psh")
+        startup_file = work / "startup-environment.json"
+        if not startup_file.is_file():
+            raise RuntimeError("missing global startup evidence; run Packaging/verify.py verify")
+        environment = json.loads(startup_file.read_text())
+        if (not environment.get("passed")
+                or environment.get("binary_sha256", {}).get("candidate") != sha(prefix / "bin/psh")
+                or environment.get("shells", {}).get("candidate") != str((prefix / "bin/psh").resolve())
+                or environment.get("driver_sha256") != sha(ROOT / "Packaging/check-startup.py")
+                or environment.get("policy_sha256") != sha(ROOT / "Packaging/startup.py")
+                or environment.get("startup_snapshot") != startup.snapshot()):
+            raise RuntimeError("global startup evidence is failed or stale; rerun Packaging/verify.py verify")
         # Run framework code only in the unprivileged verifier. Activation
         # consumes its evidence and binds it to this exact installed shell.
         omz_file = work / "ohmyzsh.json"
@@ -137,6 +164,8 @@ def main():
                 or omz.get("driver_sha256") != sha(ROOT / "Packaging/check-ohmyzsh.py")
                 or omz.get("session_sha256") != sha(ROOT / "Perf/ohmyzsh-session.zsh")):
             raise RuntimeError("Oh My Zsh evidence is failed, stale or selects a different shell; rerun Packaging/verify.py ohmyzsh")
+        if not omz.get("global_startup_enabled") or omz.get("startup_snapshot") != startup.snapshot():
+            raise RuntimeError("Oh My Zsh global startup evidence is stale; rerun Packaging/verify.py ohmyzsh")
         links = [(BASE / "current", Path("releases") / b["release"]),
                  (Path("/usr/local/bin/psh"), BASE / "current/bin/psh"),
                  (Path("/usr/local/bin/psh-config"), BASE / "current/bin/psh-config")]

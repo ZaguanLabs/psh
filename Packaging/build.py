@@ -58,6 +58,7 @@ def main():
     fingerprints["Vendor/sources.json"] = sha(ROOT / "Vendor/sources.json")
     fingerprints["LICENSE"] = sha(ROOT / "LICENSE")
     for name in ["Packaging/verify.py", "Packaging/install.py",
+                 "Packaging/startup.py", "Packaging/check-startup.py", "Packaging/check-ohmyzsh.py",
                  "Perf/check-convfloat-loaders.py", "Perf/convfloat-loader-library.c"]:
         fingerprints[name] = sha(ROOT / name)
     for name in ["Src/psh_version.h", "Packaging/elf.py", "Packaging/version.py"]:

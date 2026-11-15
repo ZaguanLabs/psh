@@ -64,6 +64,22 @@ def check_native_loaders(build):
             "skips": evidence["skips"]}
 
 
+def check_startup_environment(build):
+    work = Path(build["work"])
+    report = work / "startup-environment.json"
+    log = work / "logs/startup-environment.log"
+    with log.open("wb") as out:
+        result = subprocess.run(["python3", str(ROOT / "Packaging/check-startup.py"),
+                                 "--candidate", str(Path(build["prefix"]) / "bin/psh"),
+                                 "--output", str(report)], stdout=out, stderr=subprocess.STDOUT, timeout=600)
+    if result.returncode:
+        raise RuntimeError(f"global startup environment gate failed; see {log}")
+    evidence = json.loads(report.read_text())
+    assert evidence["passed"]
+    return {"passed": True, "report": str(report), "report_sha256": sha(report),
+            "comparisons": len(evidence["runs"])}
+
+
 def startup(shell):
     with tempfile.TemporaryDirectory(prefix="psh-startup-") as directory:
         home = Path(directory)
@@ -269,6 +285,7 @@ done < /proc/$$/maps
     if components.returncode != 0:
         raise RuntimeError(f"installed component tests failed; see {component_log}")
     startup_result = startup(shell)
+    environment_result = check_startup_environment(b)
     native_loaders = check_native_loaders(b)
     omz_result = check_ohmyzsh(b, args.ohmyzsh_root)
     receipt = {"passed": True, "release": b["release"], "payload_manifest": expected,
@@ -277,6 +294,7 @@ done < /proc/$$/maps
                "login_shell_unchanged": True, "mapped_modules": mapped, "startup": startup_result,
                "stock_modules_preserved": sorted(stable_modules),
                "ohmyzsh": omz_result,
+               "startup_environment": environment_result,
                "native_loaders": native_loaders,
                "installed_component_tests": "file hashes, relative dependencies and change-gutter PTY rendering passed"}
     if b.get("project_version"):
