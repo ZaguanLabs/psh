@@ -2141,7 +2141,7 @@ zclose(int fd)
 mod_export int
 zcloselockfd(int fd)
 {
-    if (fd > max_zsh_fd)
+    if (fd < 0 || fd > max_zsh_fd)
 	return -1;
     if (fdtable[fd] != FDT_FLOCK && fdtable[fd] != FDT_FLOCK_EXEC)
 	return -1;

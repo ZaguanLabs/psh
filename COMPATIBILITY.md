@@ -96,6 +96,14 @@ values to one microsecond and the upper bound are retained. The expression's
 side effects still occur once; later options are skipped after rejection.
 Timeout (`-t`) behavior is unchanged. See [round 57](Perf/round57.md).
 
+The exported `zcloselockfd(int)` now rejects negative descriptors before
+indexing the descriptor table. `zsystem flock -u -- -1` retains status 1 and
+its existing not-in-use diagnostic, without reading outside the table.
+Native callers retain the same signature, -1 error return and unchanged errno.
+Ordinary fractional truncation is preserved. This does not fix the separate
+narrowing of wide arithmetic results in the system-module caller; see
+[round 58](Perf/round58.md) for the tested scope.
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

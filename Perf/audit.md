@@ -335,3 +335,8 @@ Round 57 replaces unordered rejection tests in flock retry-interval validation
 with ordered acceptance tests. NaN no longer reaches an undefined integer
 conversion; 216 existing controls and 60 new rejection checks use independent
 lock/descriptor observations. See [round 57](round57.md) for evidence.
+
+Round 58 fixes a missing lower bound before lock-descriptor table access.
+Pristine and preceding psh report an ordinary unlock error while still reading
+before the table. Shell/native memory checks and unchanged controls are
+recorded in [round 58](round58.md); wider arithmetic conversion is a separate lead.

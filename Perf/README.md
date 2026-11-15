@@ -1469,3 +1469,7 @@ Pristine sanitizer failures and byte/status/OMZ controls are retained.
 [Round fifty-seven](round57.md) rejects NaN flock retry intervals before an
 integer conversion. Independent live-lock checks preserve finite interval
 rounding, boundary behavior and expression side effects.
+
+[Round fifty-eight](round58.md) adds the missing negative-descriptor check in
+the exported lock-close helper. Independent lock-state, direct native and memory
+checks preserve ordinary results while confirming the inherited invalid read.
