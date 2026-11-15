@@ -156,6 +156,11 @@ bin_sysread(char *nam, char **args, Options ops, UNUSED(int func))
 	mnumber to_mn;
 	int ret;
 
+	/* select's fixed-size descriptor set cannot represent larger fds. */
+	if (infd >= FD_SETSIZE) {
+	    zwarnnam(nam, "file descriptor out of range for select: %d", infd);
+	    return 1;
+	}
 	FD_ZERO(&fds);
 	FD_SET(infd, &fds);
 	to_mn = matheval(OPT_ARG(ops, 't'));

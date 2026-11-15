@@ -21,6 +21,63 @@ future update or platform. Undocumented or accidental behavioral differences
 remain bugs, including those found outside the author's projects. Memory
 corruption and unsafe ownership are never accepted as compatibility tradeoffs.
 
+## Unreleased post-rc2 system-module corrections
+
+The research branch includes corrections which are **not present in installed
+or published rc2**. Ordinary valid descriptors keep their existing behavior,
+but scripts depending on the following accidents will behave differently:
+
+- `sysopen` now decodes Zsh's internal filename representation before calling
+  the OS. Affected byte/UTF-8 names select the requested file instead of an
+  encoded spelling. Scripts which compensated for the bug must remove that
+  compensation; files created with the wrong spelling may need an explicit,
+  reviewed rename. No automatic file migration is performed. See [round 48](Perf/round48.md).
+- `sysread` descriptor and size options, `syswrite -o`, and `sysseek -u` now
+  reject parsed integers outside `[0, INT_MAX]` before narrowing them. On the
+  tested platform, values such as `4294967296` previously aliased descriptor
+  zero. Pass the actual descriptor or a supported buffer size instead. See
+  [round 49](Perf/round49.md).
+- `systell()` checks the original integer or floating-point argument before
+  converting to a descriptor. Oversized integers, infinities, and NaN are
+  rejected. Representable fractions still truncate toward zero, including
+  `systell(-0.9)` selecting descriptor zero. See [round 50](Perf/round50.md).
+- On builds using the `select` fallback, `sysread -t` now rejects input
+  descriptors at or above `FD_SETSIZE` with parameter error status 1. Previously
+  constructing the descriptor set accessed memory out of bounds. Use a lower
+  descriptor or a build with `poll`; untimed reads retain high-descriptor
+  support. Rejection precedes evaluation of the timeout expression. The normal
+  Linux `poll` build is unaffected. See [round 51](Perf/round51.md).
+
+Earlier rejection has observable consequences. For example:
+
+```zsh
+x=0
+sysseek -u 4294967296 '++x'
+```
+
+On tested pristine Zsh, the descriptor aliases zero and `x` becomes 1 before
+the seek. The candidate reports parameter error status 1 without evaluating
+`++x`. A wrapped but closed descriptor can likewise change an OS error status
+2 into parameter error status 1. Result/count variables can remain untouched
+where a legacy I/O attempt modified them. Ordinary command expansions still
+occur before builtin validation; this does not promise that invalid commands
+have no side effects whatsoever.
+
+New failures also affect conditionals, ZERR traps, ERR_EXIT, ERR_RETURN, and
+subsequent arithmetic execution. A `systell()` range error uses the existing
+arithmetic-error path, which can abort the containing expansion or execution
+context. Argument side effects evaluated before reaching `systell()` remain.
+Use real descriptors and handle the command's status; do not depend on numeric
+wraparound, on an invalid arithmetic call returning a usable value, or on
+`ERRNO` after parameter errors. Diagnostics can themselves affect `ERRNO`;
+the module documents it for OS-error statuses, not parameter error status 1.
+
+The error-context matrix in [round 51](Perf/round51.md) compares new rejections
+with established negative-descriptor failures, and retains valid/ordinary-error
+controls against pristine Zsh and rc2. This is focused Linux x86-64 coverage,
+not a guarantee for every trap combination or architecture. These corrections
+do not change the native ABI, and no performance gain is claimed.
+
 ## rc1 build and test changes
 
 rc1 retains rc0's core-language and native ownership contracts. Its optional

@@ -1441,3 +1441,7 @@ independent file/offset checks retain failing pristine, rc2 and round-48 control
 [Round fifty](round50.md) validates `systell()` integer and floating descriptors
 before conversion, preserves fractional truncation, and adds module-level
 sanitizer evidence. Timeout overflow observations are retained separately.
+
+[Round fifty-one](round51.md) documents and tests error-path consequences of
+the system-module fixes, characterizes both timeout backends, and guards the
+select fallback against descriptors outside its fixed-size set.

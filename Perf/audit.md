@@ -302,3 +302,8 @@ Round 50 extends the conversion audit to `systell()`: pre-conversion range
 checks prevent descriptor aliases and undefined float conversions, while
 ordinary and fractional controls match the references. Module-level UBSan
 evidence and separate timeout leads are recorded in [round 50](round50.md).
+
+Round 51 expands compatibility coverage to traps, early exit/return, cleanup
+and skipped arithmetic. Timeout probes retain backend-specific negative waits
+and unresolved overflow evidence. A separate guard fixes out-of-bounds FD_SET
+access in timed sysread's select fallback. See [round 51](round51.md).
