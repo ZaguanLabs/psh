@@ -1427,3 +1427,9 @@ cell snapshots, terminal output and resource state across all 28 cases; it
 records component work separately from staging and presentation. Do not run
 builds, tests or profilers alongside timing. The earlier release intentionally
 fails the querychar attribute oracle; retain that result when checking the fix.
+
+[Round forty-eight](round48.md) investigates OS-facing pathname and integer
+boundaries. A private sysopen candidate corrects wrong-file operations on
+internally escaped filenames. Independent byte-path tests retain the failing
+pristine/rc2 controls; empty mapfile writes and narrowing of FD arguments remain
+separate investigation targets.

@@ -288,3 +288,7 @@ inherited overflow without changing the first-character interface. PTY
 attribute/color/Unicode cases, a seeded stock-versus-zdraw oracle and native
 lifecycle checks are described in [round 47](round47.md). This does not certify
 other curses helpers or runtime behavior on older ncurses installations.
+
+Round 48 begins targeted OS-boundary review in `Src/Modules/system.c` and
+`mapfile.c`: wrong-file sysopen behavior has a tested private candidate; zero-length
+mapfile writes and wide FD narrowing have retained reproducers. See [round 48](round48.md).

@@ -13,6 +13,35 @@
 %test
 
   (
+    target=$tst_dir/$'name-\x83'
+    decoy=$tst_dir/$'name-\x83\xa3'
+    print -rn -- RIGHT > "$target"
+    print -rn -- DECOY > "$decoy"
+    sysopen -r -u fd -- "$target" || exit
+    sysread -i $fd || exit
+    print -r -- "$REPLY"
+    exec {fd}<&-
+    sysopen -a -u fd -- "$target" || exit
+    syswrite -o $fd APPEND || exit
+    exec {fd}>&-
+    print -r -- "$(< "$target")/$(< "$decoy")"
+    sysopen -w -o trunc -u fd -- "$target" || exit
+    exec {fd}>&-
+    print -r -- "$(< "$target")/$(< "$decoy")"
+    rm -- "$target"
+    sysopen -w -o creat,excl -u fd -- "$target" || exit
+    syswrite -o $fd CREATED || exit
+    exec {fd}>&-
+    print -r -- "$(< "$target")/$(< "$decoy")"
+  )
+0:sysopen decodes filenames for reading, appending, truncating and creating
+>RIGHT
+>RIGHTAPPEND/DECOY
+>/DECOY
+>CREATED/DECOY
+
+
+  (
     zsystem flock -t 0 -i 0.000001 $tst_dir/file    &&
     zsystem flock -t 0.1 -i 0.000001 $tst_dir/file  &&
     zsystem flock -t 0.1 -i 0.0000001 $tst_dir/file &&

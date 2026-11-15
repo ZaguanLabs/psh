@@ -368,9 +368,9 @@ bin_sysopen(char *nam, char **args, Options ops, UNUSED(int func))
     }
 
     if (flags & O_CREAT)
-	fd = open(*args, flags, perms);
+	fd = open(unmeta(*args), flags, perms);
     else
-	fd = open(*args, flags);
+	fd = open(unmeta(*args), flags);
 
     if (fd == -1) {
 	zwarnnam(nam, "can't open file %s: %e", *args, errno);
