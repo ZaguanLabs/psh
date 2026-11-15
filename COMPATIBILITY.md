@@ -47,6 +47,18 @@ but scripts depending on the following accidents will behave differently:
   descriptor or a build with `poll`; untimed reads retain high-descriptor
   support. Rejection precedes evaluation of the timeout expression. The normal
   Linux `poll` build is unaffected. See [round 51](Perf/round51.md).
+- `sysread -t` now rejects NaN, infinities, and numbers outside the backend's
+  representable conversion range with status 1 and `timeout out of range`.
+  The expression still executes once before this check, while I/O and
+  result/count assignments are skipped. On typical 32-bit-int platforms,
+  poll accepts integer seconds from -2147483 through 2147483 (about 24.9 days
+  in the positive direction); fractional seconds can reach the millisecond
+  conversion boundary. Select retains its int-second boundary. This fixes
+  silent wraparound and undefined conversion; it does not introduce a cap
+  or chunk long waits. Use representable waits in an application-controlled
+  loop for longer durations. Supported negative waits remain backend-specific,
+  including poll's indefinite-wait convention. Newly rejected inputs can
+  trigger the same error-control effects described below. See [round 52](Perf/round52.md).
 
 Earlier rejection has observable consequences. For example:
 

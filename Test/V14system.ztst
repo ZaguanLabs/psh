@@ -13,6 +13,25 @@
 %test
 
   (
+    print -rn -- ABC > $tst_dir/timeout-input
+    exec 3< $tst_dir/timeout-input
+    for timeout in 4294967296 1e300 -1e300 Inf NaN; do
+      result=unchanged count=unchanged side=0
+      sysread -i 3 -s 1 -t "(++side, $timeout)" -c count result 2>/dev/null
+      print -r -- "$?:$result:$count:$side"
+    done
+    sysread -i 3 -s 1 -t 0.5 result
+    print -r -- "$?:$result"
+  )
+0:sysread rejects unrepresentable timeouts after evaluating them once, before I/O
+>1:unchanged:unchanged:1
+>1:unchanged:unchanged:1
+>1:unchanged:unchanged:1
+>1:unchanged:unchanged:1
+>1:unchanged:unchanged:1
+>0:A
+
+  (
     print -rn -- ABC > $tst_dir/systell-input
     exec 0< $tst_dir/systell-input
     sysseek 2

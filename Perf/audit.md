@@ -307,3 +307,7 @@ Round 51 expands compatibility coverage to traps, early exit/return, cleanup
 and skipped arithmetic. Timeout probes retain backend-specific negative waits
 and unresolved overflow evidence. A separate guard fixes out-of-bounds FD_SET
 access in timed sysread's select fallback. See [round 51](round51.md).
+
+Round 52 fixes timeout conversion overflow with explicit backend range checks.
+It preserves defined fractional/negative behavior and leaves wait/retry loops
+intact. Instrumented boundary and delayed-input evidence is in [round 52](round52.md).

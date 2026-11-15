@@ -1445,3 +1445,7 @@ sanitizer evidence. Timeout overflow observations are retained separately.
 [Round fifty-one](round51.md) documents and tests error-path consequences of
 the system-module fixes, characterizes both timeout backends, and guards the
 select fallback against descriptors outside its fixed-size set.
+
+[Round fifty-two](round52.md) checks timeout ranges before narrowing or
+multiplying. Both backend oracles retain representable negative waits and
+fractions while rejecting overflow, NaN and infinities explicitly.

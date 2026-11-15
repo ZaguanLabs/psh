@@ -136,10 +136,30 @@ bin_sysread(char *nam, char **args, Options ops, UNUSED(int func))
 	to_mn = matheval(OPT_ARG(ops, 't'));
 	if (errflag)
 	    return 1;
-	if (to_mn.type == MN_FLOAT)
-	    to_int = (int) (1000 * to_mn.u.d);
-	else
+	if (to_mn.type == MN_FLOAT) {
+	    double milliseconds;
+
+	    /* Ordered comparisons reject NaN as well as infinities.  Check
+	     * before multiplying, then check the rounded product before casting. */
+	    if (!(to_mn.u.d > ((double)INT_MIN - 1.0) / 1000.0 &&
+		  to_mn.u.d < ((double)INT_MAX + 1.0) / 1000.0)) {
+		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
+		return 1;
+	    }
+	    milliseconds = 1000 * to_mn.u.d;
+	    if (!(milliseconds > (double)INT_MIN - 1.0 &&
+		  milliseconds < (double)INT_MAX + 1.0)) {
+		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
+		return 1;
+	    }
+	    to_int = (int)milliseconds;
+	} else {
+	    if (to_mn.u.l < INT_MIN / 1000 || to_mn.u.l > INT_MAX / 1000) {
+		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
+		return 1;
+	    }
 	    to_int = 1000 * (int)to_mn.u.l;
+	}
 
 	while ((ret = poll(&poll_fd, 1, to_int)) < 0) {
 	    if (errno != EINTR || errflag || retflag || breaks || contflag)
@@ -168,10 +188,19 @@ bin_sysread(char *nam, char **args, Options ops, UNUSED(int func))
 	    return 1;
 
 	if (to_mn.type == MN_FLOAT) {
+	    if (!(to_mn.u.d > (double)INT_MIN - 1.0 &&
+		  to_mn.u.d < (double)INT_MAX + 1.0)) {
+		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
+		return 1;
+	    }
 	    select_tv.tv_sec = (int) to_mn.u.d;
 	    select_tv.tv_usec =
 		(int) ((to_mn.u.d - select_tv.tv_sec) * 1e6);
 	} else {
+	    if (to_mn.u.l < INT_MIN || to_mn.u.l > INT_MAX) {
+		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
+		return 1;
+	    }
 	    select_tv.tv_sec = (int) to_mn.u.l;
 	    select_tv.tv_usec = 0;
 	}
