@@ -15,7 +15,7 @@
   (
     print -rn -- ABC > $tst_dir/timeout-input
     exec 3< $tst_dir/timeout-input
-    for timeout in 4294967296 1e300 -1e300 Inf NaN; do
+    for timeout in 4294967296 1e300 -Inf Inf NaN; do
       result=unchanged count=unchanged side=0
       sysread -i 3 -s 1 -t "(++side, $timeout)" -c count result 2>/dev/null
       print -r -- "$?:$result:$count:$side"

@@ -51,14 +51,22 @@ but scripts depending on the following accidents will behave differently:
   representable conversion range with status 1 and `timeout out of range`.
   The expression still executes once before this check, while I/O and
   result/count assignments are skipped. On typical 32-bit-int platforms,
-  poll accepts integer seconds from -2147483 through 2147483 (about 24.9 days
-  in the positive direction); fractional seconds can reach the millisecond
+  poll accepts nonnegative integer seconds through 2147483 (about 24.9 days);
+  fractional seconds can reach the millisecond
   conversion boundary. Select retains its int-second boundary. This fixes
   silent wraparound and undefined conversion; it does not introduce a cap
   or chunk long waits. Use representable waits in an application-controlled
   loop for longer durations. Supported negative waits remain backend-specific,
   including poll's indefinite-wait convention. Newly rejected inputs can
   trigger the same error-control effects described below. See [round 52](Perf/round52.md).
+  [Round 53](Perf/round53.md) removes the unnecessary lower range restriction
+  for poll: all finite negative integer seconds and floating values at or
+  below -1 second select its indefinite-wait sentinel without narrowing or
+  multiplying their magnitude. Fractions between -1 and zero retain their
+  existing millisecond truncation (so -0.0001 still polls immediately).
+  This deliberately gives very large finite negative inputs the same meaning
+  as -1 instead of reproducing accidental wraparound or round 52's rejection.
+  NaN and infinities remain parameter errors; select keeps its existing policy.
 
 Earlier rejection has observable consequences. For example:
 

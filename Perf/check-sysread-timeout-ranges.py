@@ -49,6 +49,11 @@ def main():
     cases += [(('NaN' if math.isnan(n) else 'Inf' if n == math.inf else
                 '-Inf' if n == -math.inf else repr(n)), n, True) for n in floats]
     cases += [('(++side, 0)', 0, False), ('(++side, 4294967296)', 4294967296, False)]
+    cases += [('(-9223372036854775807 - 1)', -9223372036854775808, False)]
+    for n in [-float.fromhex('0x1.fffffffffffffp+1023'),
+              math.nextafter(-0.001, -math.inf), math.nextafter(-0.001, math.inf),
+              math.nextafter(0.0, -math.inf)]:
+        cases.append((repr(n), n, True))
     rows = []
     with tempfile.TemporaryFile() as source:
         source.write(b'ABC'); source.flush()
@@ -58,13 +63,15 @@ def main():
                     floating = floating or force_float
                     numeric = float(value) if floating else value
                     converted = numeric*1000 if args.backend == 'poll' else numeric
+                    if args.backend == 'poll' and math.isfinite(numeric) and numeric <= -1:
+                        converted = -1
                     reject = (not math.isfinite(converted) or
                               not lo <= math.trunc(converted) <= hi)
                     # Existing select behavior for negative timeval fields.
                     select_error = (not reject and args.backend == 'select' and
                                     (math.trunc(numeric) < 0 or
                                      (floating and math.trunc((numeric-math.trunc(numeric))*1e6) < 0)))
-                    side = 1 if expression.startswith('(') else 0
+                    side = 1 if expression.startswith('(++side') else 0
                     side = '1.' if side and force_float else str(side)
                     expected = (f'1|unchanged|unchanged|{side}\n' if reject else
                                 f'2|unchanged|unchanged|{side}\n' if select_error else
@@ -92,7 +99,8 @@ def main():
                   failures=sum(not r['passed'] for r in rows), runs=rows)
     if args.reference:
         previous = [r for r in json.loads(args.reference.read_text())['runs'] if not r['reject']]
-        current = [r for r in rows if not r['reject']]
+        control_keys = {(r['locale'], r['force_float'], r['expression']) for r in previous}
+        current = [r for r in rows if (r['locale'], r['force_float'], r['expression']) in control_keys]
         # Controls must match raw observed outcomes, including stderr.
         keys = ('locale', 'force_float', 'expression', 'status', 'stdout', 'stderr', 'offset')
         diff = sum(any(a[k] != b[k] for k in keys) for a,b in zip(previous,current))

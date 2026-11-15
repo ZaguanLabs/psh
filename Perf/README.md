@@ -1449,3 +1449,7 @@ select fallback against descriptors outside its fixed-size set.
 [Round fifty-two](round52.md) checks timeout ranges before narrowing or
 multiplying. Both backend oracles retain representable negative waits and
 fractions while rejecting overflow, NaN and infinities explicitly.
+
+[Round fifty-three](round53.md) handles finite negative poll waits before numeric
+conversion. Large negative values select an indefinite-wait sentinel safely;
+small negative fractions retain their original millisecond truncation.

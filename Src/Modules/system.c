@@ -30,6 +30,7 @@
 #include "system.mdh"
 #include "system.pro"
 #include <math.h>
+#include <float.h>
 
 #ifdef HAVE_POLL_H
 # include <poll.h>
@@ -141,12 +142,14 @@ bin_sysread(char *nam, char **args, Options ops, UNUSED(int func))
 
 	    /* Ordered comparisons reject NaN as well as infinities.  Check
 	     * before multiplying, then check the rounded product before casting. */
-	    if (!(to_mn.u.d > ((double)INT_MIN - 1.0) / 1000.0 &&
+	    if (!(to_mn.u.d >= -DBL_MAX &&
 		  to_mn.u.d < ((double)INT_MAX + 1.0) / 1000.0)) {
 		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
 		return 1;
 	    }
-	    milliseconds = 1000 * to_mn.u.d;
+	    /* Any negative poll timeout means an indefinite wait.  Avoid
+	     * converting its magnitude; retain truncation for small fractions. */
+	    milliseconds = to_mn.u.d <= -1.0 ? -1.0 : 1000 * to_mn.u.d;
 	    if (!(milliseconds > (double)INT_MIN - 1.0 &&
 		  milliseconds < (double)INT_MAX + 1.0)) {
 		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
@@ -154,11 +157,11 @@ bin_sysread(char *nam, char **args, Options ops, UNUSED(int func))
 	    }
 	    to_int = (int)milliseconds;
 	} else {
-	    if (to_mn.u.l < INT_MIN / 1000 || to_mn.u.l > INT_MAX / 1000) {
+	    if (to_mn.u.l > INT_MAX / 1000) {
 		zwarnnam(nam, "timeout out of range: %s", OPT_ARG(ops, 't'));
 		return 1;
 	    }
-	    to_int = 1000 * (int)to_mn.u.l;
+	    to_int = to_mn.u.l < 0 ? -1 : 1000 * (int)to_mn.u.l;
 	}
 
 	while ((ret = poll(&poll_fd, 1, to_int)) < 0) {

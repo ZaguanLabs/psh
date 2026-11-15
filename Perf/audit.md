@@ -311,3 +311,8 @@ access in timed sysread's select fallback. See [round 51](round51.md).
 Round 52 fixes timeout conversion overflow with explicit backend range checks.
 It preserves defined fractional/negative behavior and leaves wait/retry loops
 intact. Instrumented boundary and delayed-input evidence is in [round 52](round52.md).
+
+Round 53 removes poll's unnecessary negative lower bound: finite negative
+seconds can select the indefinite-wait sentinel before any unsafe conversion.
+Positive limits and select policy remain explicit; fractional and delayed-input
+controls are recorded in [round 53](round53.md).
