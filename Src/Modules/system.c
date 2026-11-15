@@ -667,8 +667,9 @@ bin_zsystem_flock(char *nam, char **args, UNUSED(Options ops), UNUSED(int func))
 		    timeout_param.u.d = (double)timeout_param.u.l;
 		}
 		timeout_param.u.d = ceil(timeout_param.u.d * 1e6);
-		if (timeout_param.u.d < 1
-		    || timeout_param.u.d > 0.999 * LONG_MAX) {
+		/* Ordered comparisons also reject NaN before conversion. */
+		if (!(timeout_param.u.d >= 1
+		      && timeout_param.u.d <= 0.999 * LONG_MAX)) {
 		    zwarnnam(nam, "flock: invalid interval value: '%s'",
 			     optarg);
 		    return 1;

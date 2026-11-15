@@ -1465,3 +1465,7 @@ profiling, alternating timings, pristine comparisons and OMZ evidence are retain
 [Round fifty-six](round56.md) fixes zpty readiness outside select's fixed
 descriptor set, using poll where available and validating the select fallback.
 Pristine sanitizer failures and byte/status/OMZ controls are retained.
+
+[Round fifty-seven](round57.md) rejects NaN flock retry intervals before an
+integer conversion. Independent live-lock checks preserve finite interval
+rounding, boundary behavior and expression side effects.

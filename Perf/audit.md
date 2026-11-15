@@ -330,3 +330,8 @@ Round 56 confirms an inherited out-of-bounds FD_SET in zpty nonblocking reads
 with high descriptors. A poll path supports those descriptors; the select-only
 fallback rejects them before consuming state. Independent PTY matrices,
 sanitizers and OMZ validation are recorded in [round 56](round56.md).
+
+Round 57 replaces unordered rejection tests in flock retry-interval validation
+with ordered acceptance tests. NaN no longer reaches an undefined integer
+conversion; 216 existing controls and 60 new rejection checks use independent
+lock/descriptor observations. See [round 57](round57.md) for evidence.

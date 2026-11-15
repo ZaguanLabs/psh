@@ -87,6 +87,15 @@ open, or use a blocking read when appropriate. Reads without `-t` retain
 support for high descriptors. Ordinary readiness, data and pattern behavior
 are unchanged in the tested controls; see [round 56](Perf/round56.md).
 
+`zsystem flock -i` now rejects NaN retry intervals with the existing invalid
+interval diagnostic and status 1, before opening the lock file or assigning
+the `-f` variable. Previously NaN bypassed both range comparisons and reached
+an undefined integer conversion; a release build could silently acquire a lock.
+Use a positive finite interval. Existing rounding of sub-microsecond positive
+values to one microsecond and the upper bound are retained. The expression's
+side effects still occur once; later options are skipped after rejection.
+Timeout (`-t`) behavior is unchanged. See [round 57](Perf/round57.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

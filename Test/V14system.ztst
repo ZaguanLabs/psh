@@ -162,6 +162,18 @@
 0:zsystem flock valid time arguments
 
   (
+    local fd=unchanged
+    zsystem flock -t 0 -i NaN -f fd $tst_dir/file 2>/dev/null
+    print -r -- "$?:$fd"
+    zsystem flock -t 0 -i 0.0000001 -f fd $tst_dir/file
+    print -r -- "$?:$(( fd >= 10 ))"
+    zsystem flock -u $fd
+  )
+0:zsystem flock rejects NaN intervals before assigning a lock descriptor
+>1:unchanged
+>0:1
+
+  (
     zsystem flock -t 1073741824 $tst_dir/file ||
     zsystem flock -t 1e100      $tst_dir/file ||
     zsystem flock -i -1         $tst_dir/file ||
