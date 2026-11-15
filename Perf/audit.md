@@ -292,3 +292,8 @@ other curses helpers or runtime behavior on older ncurses installations.
 Round 48 begins targeted OS-boundary review in `Src/Modules/system.c` and
 `mapfile.c`: wrong-file sysopen behavior has a tested private candidate; zero-length
 mapfile writes and wide FD narrowing have retained reproducers. See [round 48](round48.md).
+
+Round 49 fixes the `getposint()` narrowing identified in round 48. All five
+callers reject the tested out-of-range values before I/O; ordinary parsing and
+error controls match the references. See [round 49](round49.md) for evidence
+and the remaining conversion-audit limits. No installation or speedup is claimed.

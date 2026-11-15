@@ -45,15 +45,16 @@ static int
 getposint(char *instr, char *nam)
 {
     char *eptr;
-    int ret;
+    zlong ret;
 
-    ret = (int)zstrtol(instr, &eptr, 10);
-    if (*eptr || ret < 0) {
+    ret = zstrtol(instr, &eptr, 10);
+    /* Check before narrowing: a large value can otherwise alias a live fd. */
+    if (*eptr || ret < 0 || ret > INT_MAX) {
 	zwarnnam(nam, "integer expected: %s", instr);
 	return -1;
     }
 
-    return ret;
+    return (int)ret;
 }
 
 

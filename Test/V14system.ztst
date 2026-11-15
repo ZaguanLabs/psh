@@ -13,6 +13,40 @@
 %test
 
   (
+    print -rn -- ABC > $tst_dir/integer-input
+    print -rn -- KEEP > $tst_dir/integer-output
+    exec 3< $tst_dir/integer-input
+    exec 4<> $tst_dir/integer-output
+    for shift in 4294967296 -4294967296; do
+      result=unchanged count=unchanged
+      sysread -i $((shift + 3)) -s 1 -c count result 2>/dev/null
+      print -r -- "$?:$result:$count"
+      sysread -i 3 -o $((shift + 4)) -s 1 -c count result 2>/dev/null
+      print -r -- "$?:$result:$count"
+      sysread -i 3 -s $((shift + 1)) -c count result 2>/dev/null
+      print -r -- "$?:$result:$count"
+      syswrite -o $((shift + 4)) -c count Z 2>/dev/null
+      print -r -- "$?:$result:$count"
+      sysseek -u $((shift + 3)) 2 2>/dev/null
+      print -r -- "$?"
+    done
+    sysread -i 3 -s 3 result
+    print -r -- "$result/$(< $tst_dir/integer-output)"
+  )
+0:system integer options reject wide values before narrowing or I/O
+>1:unchanged:unchanged
+>1:unchanged:unchanged
+>1:unchanged:unchanged
+>1:unchanged:unchanged
+>1
+>1:unchanged:unchanged
+>1:unchanged:unchanged
+>1:unchanged:unchanged
+>1:unchanged:unchanged
+>1
+>ABC/KEEP
+
+  (
     target=$tst_dir/$'name-\x83'
     decoy=$tst_dir/$'name-\x83\xa3'
     print -rn -- RIGHT > "$target"

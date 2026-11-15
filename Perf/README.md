@@ -1433,3 +1433,7 @@ boundaries. A private sysopen candidate corrects wrong-file operations on
 internally escaped filenames. Independent byte-path tests retain the failing
 pristine/rc2 controls; empty mapfile writes and narrowing of FD arguments remain
 separate investigation targets.
+
+[Round forty-nine](round49.md) checks system-module integer options before
+narrowing. Oversized descriptors and buffer sizes are rejected without I/O;
+independent file/offset checks retain failing pristine, rc2 and round-48 controls.
