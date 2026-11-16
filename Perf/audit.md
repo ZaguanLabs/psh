@@ -361,3 +361,8 @@ Round 63 resolves that select-only boundary by rejecting watchers at or above
 counts and post-rejection buffer editing verify both backends. No claim is made
 about other native mutation of private watcher state or a high terminal
 descriptor. See [round 63](round63.md).
+
+Round 64 applies pre-conversion validation to `zsocket -a` and `-d`. Its private
+parser deliberately retains numeric-prefix acceptance; select-only `-t` gets a
+capacity guard while ordinary accept still works on high descriptors. Independent
+socket payload and target-file checks are in [round 64](round64.md).

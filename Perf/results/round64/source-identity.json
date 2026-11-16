@@ -1,0 +1,28 @@
+{
+  "base_commit": "6c15f615d07f27c727604f3b6335fee193132080",
+  "binaries": {
+    ".work/release-candidate/Src/zsh": "907bc451e2e09e8ee34336da9db58225c8b357c29dbdb2839b1e09165a04384f",
+    ".work/release-runtime/lib/zsh/5.9.2/zsh/net/socket.so": "413de3dbacc5e0056c44bbdef6f696c613edcf00e10d42065f31655d030fcf2b",
+    ".work/round64/previous-build/Src/zsh": "907bc451e2e09e8ee34336da9db58225c8b357c29dbdb2839b1e09165a04384f",
+    ".work/round64/previous-runtime/lib/zsh/5.9.2/zsh/net/socket.so": "74e75bcf7eac8df6dced94220ea17c6571ce0cba39cbfe389980df343bc314e7",
+    ".work/round63/candidate-select/Src/zsh": "1da8f464d99e1d3f53fd8a913dd9abfab44910ea383c33ddaac9e453aa4e10b8",
+    ".work/round63/candidate-runtime/lib/zsh/5.9.2/zsh/net/socket.so": "130563b22a3bb7b8ca266a7345d056601b78ecb9dbdf9c157c962bccf2ceabbd",
+    ".work/round64/select-build/Src/zsh": "c862f080d1092191f07d304cc9edeb7929bcaf5b362f971d6f4033591807b617",
+    ".work/round64/select-runtime/lib/zsh/5.9.2/zsh/net/socket.so": "8e49462477d3b33b409d9c4bcea77293d441c3c7371c5586b68af53c0f6af9ab",
+    ".work/baseline/Src/zsh": "55c1efbca2052a93efdfca4713f379b6cd645e7b6ed01949d9ab195626700153",
+    ".work/baseline-runtime/lib/zsh/5.9.2/zsh/net/socket.so": "d1d9b0907c390ed6bd406111fddb363f4399872b24aabf3a35b9322ce3daf649"
+  },
+  "files": {
+    "Src/Modules/socket.c": "92d9f3aaa3d081e3622559ed06f9ab2e46e1cd7866b7ac255d51e89b8ac6b197",
+    "Test/V15socket.ztst": "7d1363d7f5e5ce6568cd1c3a26e61df5f52e5f67804cce60d3d5d890bde26b3d",
+    "COMPATIBILITY.md": "a9fce1a2af63bd56310eb0c62be268575d6a7cb8aaa3b7808a5bf2540ad2c6b3",
+    "Doc/Zsh/mod_socket.yo": "63dc5a38042b2aa086018c4206abacf86ea68e44158efb534c7301b99d5d5534",
+    "Doc/zsh.texi": "1e4759eb7da71fd77cc114da5a80ac8c0587b9724e661d098601cf2bbb851788",
+    "Perf/check-zsocket-descriptors.py": "b2b05fa90108888220284681ad6f957567ab4dc98357a63a8b0ca2ea668ee9da",
+    "Perf/bugs/zsocket-descriptor-narrowing.md": "d4265e524d814d6aa167c494bb829bf216970d82481e0ca9eedffeb420f9ad81",
+    "Perf/round64.md": "6e2b33fc1b144c6edd37a88850ae3d4113cb46b81f3d924b94a21d6df2f68e72",
+    "Perf/README.md": "c27bf991af924dd1fb57e785fda4e999b2003937820c6757a79a3e9e88decc00",
+    "Perf/audit.md": "63abefe78b56dd367006896952df0e0e03064cfd62b2a452a58c2802a5a82419"
+  },
+  "validation": "56 ordinary/range cases and Memcheck, 12 high-FD cases per backend and select Memcheck, 63 upstream scripts passed with 0 failures and 3 skips, 24 unchanged OMZ sessions; private Linux x86-64, not activated or published."
+}

@@ -1,0 +1,53 @@
+# Test zsh/net/socket module
+
+%prep
+
+  if zmodload -s zsh/net/socket; then
+    tst_dir=V15.tmp
+    mkdir -p -- $tst_dir
+  else
+    ZTST_unimplemented='the zsh/net/socket module is not available'
+  fi
+
+%test
+
+  (
+    integer listener client accepted rc
+    zsocket -l $tst_dir/listener || exit
+    listener=$REPLY
+    zsocket $tst_dir/listener || exit
+    client=$REPLY
+    REPLY=unchanged
+    zsocket -a -t $((4294967296 + listener)) 2>/dev/null
+    print -r -- "wide:$?:$REPLY"
+    zsocket -a -t $listener
+    rc=$?
+    accepted=$REPLY
+    print -r -- "accept:$rc"
+    print -u $client -r -- hello
+    read -r -u $accepted reply
+    print -r -- "data:$reply"
+    exec {client}>&- {accepted}>&- {listener}<&-
+  )
+0:zsocket rejects a wide accept descriptor without consuming the connection
+>wide:1:unchanged
+>accept:0
+>data:hello
+
+  (
+    REPLY=unchanged
+    exec 9> $tst_dir/descriptor-target
+    zsocket -l -d $((4294967296 + 9)) $tst_dir/wide-listener 2>/dev/null
+    print -r -- "duplicate:$?:$REPLY"
+    print -u 9 -rn -- intact 2>/dev/null
+    print -r -- "write:$?"
+    zsocket -l -d -1 $tst_dir/negative-listener 2>/dev/null
+    print -r -- "negative:$?:$REPLY"
+    exec 9>&-
+    print -r -- "file:$(<$tst_dir/descriptor-target)"
+  )
+0:zsocket rejects invalid targets before altering the destination
+>duplicate:1:unchanged
+>write:0
+>negative:1:unchanged
+>file:intact

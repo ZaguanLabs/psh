@@ -54,6 +54,15 @@
 #endif
 
 static int
+parse_socket_fd(const char *arg)
+{
+    zlong fd = zstrtol(arg, NULL, 10);
+
+    /* Preserve the historical acceptance of a numeric prefix. */
+    return fd < 0 || fd > INT_MAX ? -1 : (int)fd;
+}
+
+static int
 bin_zsocket(char *nam, char **args, Options ops, UNUSED(int func))
 {
     int err=1, verbose=0, test=0, targetfd=0;
@@ -68,8 +77,8 @@ bin_zsocket(char *nam, char **args, Options ops, UNUSED(int func))
 	test = 1;
 
     if (OPT_ISSET(ops,'d')) {
-	targetfd = atoi(OPT_ARG(ops,'d'));
-	if (!targetfd) {
+	targetfd = parse_socket_fd(OPT_ARG(ops,'d'));
+	if (targetfd <= 0) {
 	    zwarnnam(nam, "%s is an invalid argument to -d",
 		     OPT_ARG(ops, 'd'));
 	    return 1;
@@ -153,9 +162,9 @@ bin_zsocket(char *nam, char **args, Options ops, UNUSED(int func))
 	    return 1;
 	}
 
-	lfd = atoi(args[0]);
+	lfd = parse_socket_fd(args[0]);
 
-	if (!lfd) {
+	if (lfd <= 0) {
 	    zwarnnam(nam, "invalid numerical argument");
 	    return 1;
 	}
@@ -178,7 +187,11 @@ bin_zsocket(char *nam, char **args, Options ops, UNUSED(int func))
 	    fd_set rfds;
 	    struct timeval tv;
 	    int ret;
-	    
+
+	    if (lfd >= FD_SETSIZE) {
+		zwarnnam(nam, "file descriptor out of range for select: %d", lfd);
+		return 1;
+	    }
 	    FD_ZERO(&rfds);
 	    FD_SET(lfd, &rfds);
 	    tv.tv_sec = 0;

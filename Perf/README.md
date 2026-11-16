@@ -1494,3 +1494,8 @@ Watcher-state controls, Memcheck and genuine OMZ async callbacks are retained.
 boundary. PTY probes cover descriptors 1023, 1024 and 2056, callback delivery,
 safe rejection and continuing ZLE input. Poll and ordinary-select controls are
 unchanged.
+
+[Round sixty-four](round64.md) validates `zsocket` accept and target
+descriptors before conversion. Real pending connections and independent target
+files retain wrong-descriptor controls; legacy numeric-prefix parsing and poll
+support are preserved. Select-only readiness gets an explicit capacity guard.

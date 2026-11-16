@@ -150,6 +150,19 @@ ordinary callback behavior. Poll-enabled builds continue to support them.
 Native layouts and callback interfaces are unchanged. See
 [round 63](Perf/round63.md).
 
+`zsocket` now validates accept and `-d` descriptors before narrowing.
+`4294967296 + fd` no longer accepts a connection from, or moves a listener onto,
+the different descriptor `fd`. Negative values no longer index before the shell's
+descriptor table. The existing invalid-argument diagnostics and status 1 are
+used without creating a socket. Historical numeric-prefix parsing is retained:
+an argument such as `3x` still selects descriptor 3, with no promise that this
+is a recommended spelling. Ordinary zero/nonnumeric errors and closed-fd errors
+are unchanged. In select-only builds, `zsocket -a -t` also rejects descriptors
+at or above `FD_SETSIZE` with a select-range diagnostic before consuming a
+connection; use `poll`, fewer descriptors, or blocking acceptance instead.
+Ordinary high-descriptor acceptance remains supported. No native interface is
+modified. See [round 64](Perf/round64.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh
