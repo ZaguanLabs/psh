@@ -1509,3 +1509,8 @@ numeric prefixes and existing error controls are retained.
 before endpoint I/O. Independent loopback clients/servers confirm that wide
 arguments no longer truncate to live ports; service lookup and descriptor
 controls remain unchanged.
+
+[Round sixty-seven](round67.md) refreshes actual installed-release project
+profiles and retains a rejected one-byte separator trial. All split states match,
+but focused timings are consistently slower and the complete coder-layout
+instruction reduction is only 0.24%. No production change is adopted.

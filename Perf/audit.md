@@ -377,3 +377,10 @@ Round 66 closes the separate TCP port-narrowing lead. Numeric ports are checked
 before `htons()` and endpoint creation, retaining service lookup and legacy
 numeric prefixes. Independent loopback connection state distinguishes the
 correct port from the old truncated aliases. See [round 66](round66.md).
+
+Round 67 returns to measured performance after the network corrections. Fresh
+installed rc2 profiles retain arithmetic hot spots and identify `findsep()` in
+coder layout. The resulting raw-byte helper trial reduces its self instructions
+but slows both long and ordinary separator cases, so it is not adopted. See
+[round 67](round67.md) for provenance, input caches, negative timings and the
+restored source evidence.
