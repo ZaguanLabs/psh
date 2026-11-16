@@ -1489,3 +1489,8 @@ live output descriptor and that ordinary parsing and writes are unchanged.
 [Round sixty-two](round62.md) validates ZLE watcher descriptors before
 narrowing, preventing wide values from modifying another descriptor's handler.
 Watcher-state controls, Memcheck and genuine OMZ async callbacks are retained.
+
+[Round sixty-three](round63.md) concludes the deferred select-only watcher
+boundary. PTY probes cover descriptors 1023, 1024 and 2056, callback delivery,
+safe rejection and continuing ZLE input. Poll and ordinary-select controls are
+unchanged.

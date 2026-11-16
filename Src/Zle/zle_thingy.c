@@ -30,6 +30,13 @@
 #include "zle.mdh"
 #include "zle_thingy.pro"
 
+#ifdef HAVE_POLL_H
+# include <poll.h>
+#endif
+#if defined(HAVE_POLL) && !defined(POLLIN) && !defined(POLLNORM)
+# undef HAVE_POLL
+#endif
+
 /*
  * Thingies:
  *
@@ -867,6 +874,12 @@ bin_zle_fd(char *name, char **args, Options ops, UNUSED(char func))
 	    return 1;
 	}
 	fd = (int)parsed_fd;
+#if !defined(HAVE_POLL) && defined(HAVE_SELECT)
+	if (fd >= FD_SETSIZE) {
+	    zwarnnam(name, "file descriptor out of range for select: %d", fd);
+	    return 1;
+	}
+#endif
     }
 
     if (OPT_ISSET(ops,'L') || !*args) {

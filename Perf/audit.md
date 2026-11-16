@@ -355,3 +355,9 @@ plugins. Wide descriptors can no longer alias another descriptor's handler;
 the existing range diagnostic and ordinary watcher lifecycle are retained.
 Select-only high-descriptor handling remains a separate audit boundary. See
 [round 62](round62.md).
+
+Round 63 resolves that select-only boundary by rejecting watchers at or above
+`FD_SETSIZE` before registration. Real PTY callbacks, independent descriptor
+counts and post-rejection buffer editing verify both backends. No claim is made
+about other native mutation of private watcher state or a high terminal
+descriptor. See [round 63](round63.md).

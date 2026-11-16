@@ -140,6 +140,16 @@ nonnegative descriptor. Ordinary parsing, `-w`, listing, replacement, callback
 dispatch and removal are unchanged. No native interface is modified. See
 [round 62](Perf/round62.md).
 
+On select-only builds, `zle -F` now rejects descriptors at or above
+`FD_SETSIZE` with `file descriptor out of range for select`, status 1 and no
+watcher-state change. Previously it indexed outside select's fixed-size sets;
+the tested high-descriptor callback was not delivered. Use a build with `poll`
+for such descriptors, keep fewer descriptors open, or perform the I/O through
+another supported mechanism. Descriptors below the bound retain select's
+ordinary callback behavior. Poll-enabled builds continue to support them.
+Native layouts and callback interfaces are unchanged. See
+[round 63](Perf/round63.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh
