@@ -131,6 +131,15 @@ ordinary descriptors, closed but representable descriptors, coprocess output,
 and the undocumented `-up` spelling remain unchanged. No native interface is
 changed. See [round 61](Perf/round61.md).
 
+`zle -F` now validates its descriptor before narrowing to int. On the tested
+platform, `4294967296 + fd` previously added, replaced, listed or removed the
+handler belonging to `fd`. Values outside `[0, INT_MAX]` now return status 1
+with the existing `Bad file descriptor number for -F` diagnostic without
+changing watcher state. Install or remove the watcher using its actual
+nonnegative descriptor. Ordinary parsing, `-w`, listing, replacement, callback
+dispatch and removal are unchanged. No native interface is modified. See
+[round 62](Perf/round62.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

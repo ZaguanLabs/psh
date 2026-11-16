@@ -558,6 +558,9 @@ Installs var(handler) (the name of a shell function) to handle input from
 file descriptor var(fd).  Installing a handler for an var(fd) which is
 already handled causes the existing handler to be replaced.  Any number of
 handlers for any number of readable file descriptors may be installed.
+The var(fd) must be an integer in the range 0 to the platform's maximum
+representable file descriptor; a value outside that range is a parameter error
+and is not narrowed to another descriptor.
 Note that zle makes no attempt to check whether this var(fd) is actually
 readable when installing the handler.  The user must make their own
 arrangements for handling the file descriptor when zle is not active.

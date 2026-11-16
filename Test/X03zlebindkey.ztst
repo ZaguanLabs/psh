@@ -13,6 +13,30 @@
 
 %test
 
+  fd_handler() { :; }
+  fd_replacement() { :; }
+  zle -F 11 fd_handler
+  print -r -- "add:$?"
+  zle -F $((4294967296 + 11)) fd_replacement
+  print -r -- "replace:$?"
+  zle -F -L $((4294967296 + 11))
+  print -r -- "list:$?"
+  zle -F $((4294967296 + 11))
+  print -r -- "remove:$?"
+  zle -F -L 11
+  zle -F 11
+  print -r -- "cleanup:$?"
+0:zle -F validates descriptors before narrowing
+>add:0
+>replace:1
+>list:1
+>remove:1
+>zle -F 11 fd_handler
+>cleanup:0
+?(eval):zle:5: Bad file descriptor number for -F: 4294967307
+?(eval):zle:7: Bad file descriptor number for -F: 4294967307
+?(eval):zle:9: Bad file descriptor number for -F: 4294967307
+
   zpty_run 'bindkey -s "\C-xy" foo'
   zletest $'\C-xy'
   zpty_run 'bindkey -r "\C-xy"'

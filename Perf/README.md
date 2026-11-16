@@ -1485,3 +1485,7 @@ controls, high-descriptor behavior and the unchanged OMZ gate are retained.
 [Round sixty-one](round61.md) closes the corresponding `print -u` narrowing
 hole. Independent output checks confirm that wide descriptors cannot alias a
 live output descriptor and that ordinary parsing and writes are unchanged.
+
+[Round sixty-two](round62.md) validates ZLE watcher descriptors before
+narrowing, preventing wide values from modifying another descriptor's handler.
+Watcher-state controls, Memcheck and genuine OMZ async callbacks are retained.

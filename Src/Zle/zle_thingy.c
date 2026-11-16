@@ -860,12 +860,13 @@ bin_zle_fd(char *name, char **args, Options ops, UNUSED(char func))
     char *endptr;
 
     if (*args) {
-	fd = (int)zstrtol(*args, &endptr, 10);
+	zlong parsed_fd = zstrtol(*args, &endptr, 10);
 
-	if (*endptr || fd < 0) {
+	if (*endptr || parsed_fd < 0 || parsed_fd > INT_MAX) {
 	    zwarnnam(name, "Bad file descriptor number for -F: %s", *args);
 	    return 1;
 	}
+	fd = (int)parsed_fd;
     }
 
     if (OPT_ISSET(ops,'L') || !*args) {

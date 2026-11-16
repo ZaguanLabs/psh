@@ -349,3 +349,9 @@ Round 60 validates the `read -u` caller before int narrowing and fixes timed
 high-descriptor readiness with poll where available. Round 61 extends the same
 pre-conversion validation to `print -u`. Both retain ordinary descriptor and
 diagnostic controls; see [round 60](round60.md) and [round 61](round61.md).
+
+Round 62 fixes the same narrowing in `zle -F`, used by asynchronous interactive
+plugins. Wide descriptors can no longer alias another descriptor's handler;
+the existing range diagnostic and ordinary watcher lifecycle are retained.
+Select-only high-descriptor handling remains a separate audit boundary. See
+[round 62](round62.md).
