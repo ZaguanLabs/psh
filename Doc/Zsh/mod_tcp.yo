@@ -18,6 +18,10 @@ Descriptor arguments must be positive integers representable by the platform's
 tt(int) type; out-of-range values are rejected instead of being narrowed to
 another descriptor.
 
+A numeric var(port) must be in the range 1 to 65535.  Other numeric values are
+rejected before a socket is opened.  Service names continue to use the system's
+service database.
+
 If it is run with only the option tt(-L), it will output the contents of
 the session table in a format suitable for automatic parsing.  The option
 is ignored if given with a command to open or close a session.  The output

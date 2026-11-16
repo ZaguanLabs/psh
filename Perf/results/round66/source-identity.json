@@ -1,0 +1,23 @@
+{
+  "base_commit": "ee84603a996384633ad7677485e02706dc9024bd",
+  "binaries": {
+    ".work/release-candidate/Src/zsh": "907bc451e2e09e8ee34336da9db58225c8b357c29dbdb2839b1e09165a04384f",
+    ".work/release-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "78c85e6559de56c1c2ce63ac7427a45b995f36deaa15daa1d783659af200d27c",
+    ".work/round66/previous-build/Src/zsh": "907bc451e2e09e8ee34336da9db58225c8b357c29dbdb2839b1e09165a04384f",
+    ".work/round66/previous-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "122be7b136236fb465ff3490a61c0390928ba1300ba42fae399933ab851fa84b",
+    ".work/baseline/Src/zsh": "55c1efbca2052a93efdfca4713f379b6cd645e7b6ed01949d9ab195626700153",
+    ".work/baseline-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "b99dffb4ed8c30be6b988eead07bbeb0d9ae37f00972c0d47552f0d84dfca2d9"
+  },
+  "files": {
+    "Src/Modules/tcp.c": "f42b644f9452ac71bc49fcd81ad9543076092a5045f3c0a4f5b6d04d9605606c",
+    "COMPATIBILITY.md": "42fd35e42bf33f18427b580f275369323917cd240f36ef784612a485d7bd00bb",
+    "Doc/Zsh/mod_tcp.yo": "19e3382e9da2bfb15da860770dfda1ab1d50044a79cbf243ca88585a66058708",
+    "Doc/zsh.texi": "dd300b7b8ffd1c708005bafeba029468d915b7a1466fbfc73f45c2540d421025",
+    "Perf/check-ztcp-ports.py": "f4b8d897d7ed7bef22b8fea1aed78f94eb9e7c67319c23aacae2cef66156ba27",
+    "Perf/bugs/ztcp-port-narrowing.md": "b0111eed000e01ce181b143500741f5f56b0eabe270e3037367e4c2da025fd2f",
+    "Perf/round66.md": "ae48133670a355cddf45bfea3d59cd7b7b7a63fea972f63743ae461a16f32b57",
+    "Perf/README.md": "29429d47d477f28c9a5e5641d72eae309d6c4a3bc23cee123a9cfa36aa3a2973",
+    "Perf/audit.md": "f96cde290f46d9960f5548aa7fce930fa211b1f06045e5682ae5dff3345a9751"
+  },
+  "validation": "32 endpoint cases and Memcheck against pristine and round 65, 30 prior descriptor controls, 63 upstream scripts passed with 0 failures and 3 skips, 24 unchanged OMZ sessions after documented reference-fixture transient; private Linux x86-64 IPv4 loopback, not activated or published."
+}

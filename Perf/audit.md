@@ -372,3 +372,8 @@ Round 65 extends that coverage to close, accept and target descriptors in
 functional. Select-only readiness is capacity-guarded; ordinary accept remains
 supported on high descriptors. Port conversions are a separate scope and are
 not changed. See [round 65](round65.md).
+
+Round 66 closes the separate TCP port-narrowing lead. Numeric ports are checked
+before `htons()` and endpoint creation, retaining service lookup and legacy
+numeric prefixes. Independent loopback connection state distinguishes the
+correct port from the old truncated aliases. See [round 66](round66.md).

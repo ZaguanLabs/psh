@@ -1504,3 +1504,8 @@ support are preserved. Select-only readiness gets an explicit capacity guard.
 `ztcp -c`, `-a` and `-d`. Real loopback connections verify both wrong-close
 controls and successful peer I/O after rejection. High-FD poll/select behavior,
 numeric prefixes and existing error controls are retained.
+
+[Round sixty-six](round66.md) rejects numeric TCP ports outside `1..65535`
+before endpoint I/O. Independent loopback clients/servers confirm that wide
+arguments no longer truncate to live ports; service lookup and descriptor
+controls remain unchanged.

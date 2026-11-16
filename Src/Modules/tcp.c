@@ -58,6 +58,16 @@ parse_tcp_fd(const char *arg)
     return fd < 0 || fd > INT_MAX ? -1 : (int)fd;
 }
 
+static int
+parse_tcp_port(const char *arg)
+{
+    zlong port = zstrtol(arg, NULL, 10);
+
+    if (port < 0 || port > 65535)
+	return -1;
+    return (int)htons((unsigned short)port);
+}
+
 #ifdef USE_LOCAL_H_ERRNO
 int h_errno;
 #endif
@@ -417,8 +427,8 @@ bin_ztcp(char *nam, char **args, Options ops, UNUSED(int func))
 	if (srv)
 	    lport = srv->s_port;
 	else
-	    lport = htons(atoi(args[0]));
-	if (!lport) { zwarnnam(nam, "bad service name or port number");
+	    lport = parse_tcp_port(args[0]);
+	if (lport <= 0) { zwarnnam(nam, "bad service name or port number");
 	return 1;
 	}
 	sess = tcp_socket(PF_INET, SOCK_STREAM, 0, ZTCP_LISTEN);
@@ -637,7 +647,13 @@ bin_ztcp(char *nam, char **args, Options ops, UNUSED(int func))
 	    if (srv)
 		destport = srv->s_port;
 	    else
-		destport = htons(atoi(args[1]));
+	    {
+		destport = parse_tcp_port(args[1]);
+		if (destport < 0) {
+		    zwarnnam(nam, "bad service name or port number");
+		    return 1;
+		}
+	    }
 	}
 	
 	desthost = ztrdup(args[0]);

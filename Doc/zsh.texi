@@ -30959,9 +30959,14 @@ command line editing, file I/O, and job control mechanisms.
 If @t{ztcp} is run with no options, it will output
 the contents of its session table.
 
+@noindent
 Descriptor arguments must be positive integers representable by the platform's
 @t{int} type; out-of-range values are rejected instead of being narrowed to
 another descriptor.
+
+A numeric @var{port} must be in the range 1 to 65535.  Other numeric values are
+rejected before a socket is opened.  Service names continue to use the system's
+service database.
 
 @noindent
 If it is run with only the option @t{-L}, it will output the contents of

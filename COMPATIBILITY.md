@@ -175,6 +175,16 @@ or ordinary blocking acceptance instead. Ordinary high-descriptor acceptance,
 session ownership and native interfaces are unchanged. Port-number parsing is
 separate, legacy behavior and is not altered. See [round 65](Perf/round65.md).
 
+The round-66 follow-up validates numeric TCP ports before `htons()`. A value
+such as `65536 + port` previously listened on or connected to the truncated
+`port`; a negative argument was likewise used as an unsigned port. Numeric
+ports outside `1..65535` now return status 1 with `bad service name or port
+number`, before socket creation. Use the actual port. Standard service-name
+lookup and legacy numeric prefixes such as `2323x` remain supported. Existing
+zero/nonnumeric outbound error behavior is unchanged; listener zero was already
+rejected. Native interfaces and descriptor handling are unaffected. See
+[round 66](Perf/round66.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh
