@@ -123,6 +123,14 @@ fixed descriptor set. `read -t 0 -k 1 -u 2147483647` previously crashed; it now
 returns status 1. `print -u` has the same narrowing and is not part of this
 correction. See [round 60](Perf/round60.md).
 
+The round-61 follow-up applies the same pre-narrowing range check to `print -u`.
+For example, `4294967296 + fd` previously wrote to `fd`; it now returns status 1
+with `file descriptor out of range` before duplicating a descriptor or writing.
+Pass the actual nonnegative descriptor instead. Existing lexical diagnostics,
+ordinary descriptors, closed but representable descriptors, coprocess output,
+and the undocumented `-up` spelling remain unchanged. No native interface is
+changed. See [round 61](Perf/round61.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

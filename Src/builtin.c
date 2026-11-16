@@ -4692,11 +4692,16 @@ bin_print(char *name, char **args, Options ops, int func)
 		    return 1;
 		}
 	    } else {
-		fdarg = (int)zstrtol(argptr, &eptr, 10);
+		zlong parsed_fd = zstrtol(argptr, &eptr, 10);
 		if (*eptr) {
 		    zwarnnam(name, "number expected after -u: %s", argptr);
 		    return 1;
 		}
+		if (parsed_fd < 0 || parsed_fd > INT_MAX) {
+		    zwarnnam(name, "file descriptor out of range: %s", argptr);
+		    return 1;
+		}
+		fdarg = (int)parsed_fd;
 	    }
 	}
 

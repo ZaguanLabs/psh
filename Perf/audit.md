@@ -344,3 +344,8 @@ recorded in [round 58](round58.md); wider arithmetic conversion is a separate le
 Round 59 closes the caller-side narrowing gap left explicit in round 58.
 Wide and nonfinite unlock values are rejected before conversion; pristine
 wrong-lock behavior and candidate validation are in [round 59](round59.md).
+
+Round 60 validates the `read -u` caller before int narrowing and fixes timed
+high-descriptor readiness with poll where available. Round 61 extends the same
+pre-conversion validation to `print -u`. Both retain ordinary descriptor and
+diagnostic controls; see [round 60](round60.md) and [round 61](round61.md).

@@ -14314,7 +14314,10 @@ similar to reading the line from a history file with the
 @t{HIST_LEX_WORDS} option active.
 
 @item @t{-u} @var{n}
-Print the arguments to file descriptor @var{n}.
+Print the arguments to file descriptor @var{n}.  @var{n} must be an integer in
+the range 0 to the platform's maximum representable file descriptor.
+A value outside that range is a parameter error; it is not narrowed to
+another descriptor.
 
 @item @t{-v} @var{name}
 Store the printed arguments as the value of the parameter @var{name}.

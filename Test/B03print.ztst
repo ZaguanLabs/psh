@@ -21,6 +21,29 @@
 0:output to file-descriptor
 ?error message
 
+  (
+    exec 3> print-fd-output
+    print -u $((4294967296 + 3)) -rn -- WRONG
+    print -r -- "wide:$?"
+    print -u -1 -rn -- WRONG
+    print -r -- "negative:$?"
+    print -u 3 -rn -- ok
+    print -r -- "valid:$?"
+    print -u 3x -rn -- WRONG
+    print -r -- "lexical:$?"
+    exec 3>&-
+    print -r -- "output:$(<print-fd-output)"
+  )
+0:print -u rejects out-of-range descriptors before writing
+>wide:1
+>negative:1
+>valid:0
+>lexical:1
+>output:ok
+?(eval):print:3: file descriptor out of range: 4294967299
+?(eval):print:5: file descriptor out of range: -1
+?(eval):print:9: number expected after -u: 3x
+
  print -o foo bar Baz
 0:argument sorting
 >Baz bar foo

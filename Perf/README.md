@@ -1477,3 +1477,11 @@ checks preserve ordinary results while confirming the inherited invalid read.
 [Round fifty-nine](round59.md) validates flock unlock arithmetic before
 conversion, preventing wide values from closing a live lock through wraparound.
 Fractional and ordinary controls, independent locks and sanitizer checks are retained.
+
+[Round sixty](round60.md) validates `read -u` before narrowing and uses poll
+for timed reads that select's fixed descriptor set cannot represent. Ordinary
+controls, high-descriptor behavior and the unchanged OMZ gate are retained.
+
+[Round sixty-one](round61.md) closes the corresponding `print -u` narrowing
+hole. Independent output checks confirm that wide descriptors cannot alias a
+live output descriptor and that ordinary parsing and writes are unchanged.
