@@ -49,6 +49,15 @@
 # undef HAVE_POLL
 #endif
 
+static int
+parse_tcp_fd(const char *arg)
+{
+    zlong fd = zstrtol(arg, NULL, 10);
+
+    /* Preserve the historical acceptance of a numeric prefix. */
+    return fd < 0 || fd > INT_MAX ? -1 : (int)fd;
+}
+
 #ifdef USE_LOCAL_H_ERRNO
 int h_errno;
 #endif
@@ -359,8 +368,8 @@ bin_ztcp(char *nam, char **args, Options ops, UNUSED(int func))
         test = 1;
 
     if (OPT_ISSET(ops,'d')) {
-	targetfd = atoi(OPT_ARG(ops,'d'));
-	if (!targetfd) {
+	targetfd = parse_tcp_fd(OPT_ARG(ops,'d'));
+	if (targetfd <= 0) {
 	    zwarnnam(nam, "%s is an invalid argument to -d", OPT_ARG(ops,'d'));
 	    return 1;
 	}
@@ -372,12 +381,12 @@ bin_ztcp(char *nam, char **args, Options ops, UNUSED(int func))
 	    tcp_cleanup();
 	}
 	else {
-	    targetfd = atoi(args[0]);
-	    sess = zts_byfd(targetfd);
-	    if(!targetfd) {
+	    targetfd = parse_tcp_fd(args[0]);
+	    if(targetfd <= 0) {
 		zwarnnam(nam, "%s is an invalid argument to -c", args[0]);
 		return 1;
 	    }
+	    sess = zts_byfd(targetfd);
 
 	    if (sess)
 	    {
@@ -479,9 +488,9 @@ bin_ztcp(char *nam, char **args, Options ops, UNUSED(int func))
 	    return 1;
 	}
 
-	lfd = atoi(args[0]);
+	lfd = parse_tcp_fd(args[0]);
 
-	if (!lfd) {
+	if (lfd <= 0) {
 	    zwarnnam(nam, "invalid numerical argument");
 	    return 1;
 	}
@@ -516,7 +525,11 @@ bin_ztcp(char *nam, char **args, Options ops, UNUSED(int func))
 	    fd_set rfds;
 	    struct timeval tv;
 	    int ret;
-	    
+
+	    if (lfd >= FD_SETSIZE) {
+		zwarnnam(nam, "file descriptor out of range for select: %d", lfd);
+		return 1;
+	    }
 	    FD_ZERO(&rfds);
 	    FD_SET(lfd, &rfds);
 	    tv.tv_sec = 0;

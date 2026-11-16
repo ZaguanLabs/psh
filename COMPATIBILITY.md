@@ -163,6 +163,18 @@ connection; use `poll`, fewer descriptors, or blocking acceptance instead.
 Ordinary high-descriptor acceptance remains supported. No native interface is
 modified. See [round 64](Perf/round64.md).
 
+`ztcp -c`, `-a` and `-d` now validate descriptors before narrowing to int.
+Previously `4294967296 + fd` could close or accept on session `fd`, or redirect
+a new listener onto descriptor `fd`. Wider and negative values now return the
+existing invalid-argument diagnostics and status 1 before operating on these
+descriptors. Use the real descriptor. Numeric prefixes such as `3x` retain their
+legacy behavior; ordinary zero/nonnumeric errors and closed/unknown descriptor
+errors are unchanged. Select-only `ztcp -a -t` also rejects descriptors at or
+above `FD_SETSIZE` before consuming a connection. Use poll, fewer descriptors,
+or ordinary blocking acceptance instead. Ordinary high-descriptor acceptance,
+session ownership and native interfaces are unchanged. Port-number parsing is
+separate, legacy behavior and is not altered. See [round 65](Perf/round65.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

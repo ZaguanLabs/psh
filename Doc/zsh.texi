@@ -30959,6 +30959,10 @@ command line editing, file I/O, and job control mechanisms.
 If @t{ztcp} is run with no options, it will output
 the contents of its session table.
 
+Descriptor arguments must be positive integers representable by the platform's
+@t{int} type; out-of-range values are rejected instead of being narrowed to
+another descriptor.
+
 @noindent
 If it is run with only the option @t{-L}, it will output the contents of
 the session table in a format suitable for automatic parsing.  The option
@@ -31076,6 +31080,9 @@ connection.
 If @t{-t} is specified, @t{ztcp} will return
 if no incoming connection is pending.  Otherwise
 it will wait for one.
+When only @t{select} is available, @t{-t} additionally requires
+@var{listenfd} to be smaller than @t{FD_SETSIZE}.  Larger descriptors are
+rejected without consuming a connection.
 
 @noindent
 In order to elicit more verbose output, use @t{-v}.

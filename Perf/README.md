@@ -1499,3 +1499,8 @@ unchanged.
 descriptors before conversion. Real pending connections and independent target
 files retain wrong-descriptor controls; legacy numeric-prefix parsing and poll
 support are preserved. Select-only readiness gets an explicit capacity guard.
+
+[Round sixty-five](round65.md) applies the same descriptor validation to
+`ztcp -c`, `-a` and `-d`. Real loopback connections verify both wrong-close
+controls and successful peer I/O after rejection. High-FD poll/select behavior,
+numeric prefixes and existing error controls are retained.

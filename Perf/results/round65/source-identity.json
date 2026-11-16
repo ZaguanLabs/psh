@@ -1,0 +1,27 @@
+{
+  "base_commit": "716b960c92b5f9433fcf99cb8e6a7947b7f82b43",
+  "binaries": {
+    ".work/release-candidate/Src/zsh": "907bc451e2e09e8ee34336da9db58225c8b357c29dbdb2839b1e09165a04384f",
+    ".work/release-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "122be7b136236fb465ff3490a61c0390928ba1300ba42fae399933ab851fa84b",
+    ".work/round65/previous-build/Src/zsh": "907bc451e2e09e8ee34336da9db58225c8b357c29dbdb2839b1e09165a04384f",
+    ".work/round65/previous-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "a15c1fa567ba1a528db3d0a26eaa6ba07b68504a2ffc6c0c741c64d4dcf045ff",
+    ".work/round65/select-build/Src/zsh": "9c9dfad727ffae4d851c9cfae4dbe2df7401ae6b8b5ca0f580d72a2dd2b6e00b",
+    ".work/round65/select-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "7cc930546af17404fba127a90e278657a15a8bce906b03c2c1fd1be094ad233d",
+    ".work/round64/select-build/Src/zsh": "c862f080d1092191f07d304cc9edeb7929bcaf5b362f971d6f4033591807b617",
+    ".work/round64/select-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "7b3aa726a27052d01e79dc24114bc40b256ef6d4ad04c4beef2beca6ccb4932c",
+    ".work/baseline/Src/zsh": "55c1efbca2052a93efdfca4713f379b6cd645e7b6ed01949d9ab195626700153",
+    ".work/baseline-runtime/lib/zsh/5.9.2/zsh/net/tcp.so": "b99dffb4ed8c30be6b988eead07bbeb0d9ae37f00972c0d47552f0d84dfca2d9"
+  },
+  "files": {
+    "Src/Modules/tcp.c": "414c41250ac8bb56d30b102fc6630e49d5c64fa5cf2c37be9a4dc84858a8f80e",
+    "COMPATIBILITY.md": "27829a25002a9047e069873b3e48dc561b6f136d501e486d3623e06c93f8697d",
+    "Doc/Zsh/mod_tcp.yo": "0b7132bbc29f9dd8f0fbcf342dc82e962830471656659bf8ccc4cdc24877b571",
+    "Doc/zsh.texi": "c2856cf32b09bd7bf4ea2f840d63b47e31be4856b4f559c75127fe244dcaf954",
+    "Perf/check-ztcp-descriptors.py": "8c66e557782e9f4a5f9f83eded384b8398277d03be2347261bf655107c2a4499",
+    "Perf/bugs/ztcp-descriptor-narrowing.md": "0bb67edb4b2423135303e1ce8303ae7b2d29fb174696a7b25b90b790ffc69639",
+    "Perf/round65.md": "afbf774c5a76e73481a44c7025fadbe3ba4ed635fa26eb8c5563d3a684e92dc6",
+    "Perf/README.md": "78e025e49fcdd12725aabed758c3b3753bdfb0259a5fbe76dee94d57f910bdc1",
+    "Perf/audit.md": "574b4c25a0e23184ea2fae7ee16dcce3024d03e74c9e323d60bb744924b33e95"
+  },
+  "validation": "30 close/target cases and Memcheck, 12 high-FD cases per backend and select Memcheck, 63 upstream scripts passed with 0 failures and 3 skips, 24 unchanged OMZ sessions; private Linux x86-64 IPv4 loopback, not activated or published."
+}

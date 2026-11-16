@@ -366,3 +366,9 @@ Round 64 applies pre-conversion validation to `zsocket -a` and `-d`. Its private
 parser deliberately retains numeric-prefix acceptance; select-only `-t` gets a
 capacity guard while ordinary accept still works on high descriptors. Independent
 socket payload and target-file checks are in [round 64](round64.md).
+
+Round 65 extends that coverage to close, accept and target descriptors in
+`zsh/net/tcp`. Rejected wide closes leave independently observed peer I/O
+functional. Select-only readiness is capacity-guarded; ordinary accept remains
+supported on high descriptors. Port conversions are a separate scope and are
+not changed. See [round 65](round65.md).
