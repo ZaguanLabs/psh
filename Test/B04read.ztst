@@ -110,3 +110,24 @@
 >five
 >six
 >
+
+  (
+    print -rn -- XYZ > read-fd-input
+    exec 3< read-fd-input
+    REPLY=unchanged
+    read -u $((4294967296 + 3)) -t 0 -k 1
+    print -r -- "$?:$REPLY"
+    read -u 2147483647 -t 0 -k 1
+    print -r -- "$?:${REPLY-<unset>}"
+    read -u 3 -t 0 -k 1
+    print -r -- "$?:$REPLY"
+    read -u 3x -t 0 -k 1
+    print -r -- "final:$?:$REPLY"
+  )
+0:read -u rejects values outside the descriptor range before reading
+>1:unchanged
+>1:
+>0:X
+>final:1:X
+?(eval):read:5: file descriptor out of range: 4294967299
+?(eval):read:11: number expected after -u: 3x

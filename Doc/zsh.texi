@@ -14524,7 +14524,10 @@ and that when the cursor is at the end of the line, its character
 index is the length of the line plus one.
 
 @item @t{-u} @var{n}
-Input is read from file descriptor @var{n}.
+Input is read from file descriptor @var{n}.  @var{n} must be an integer in
+the range 0 to the platform's maximum representable file descriptor.
+A value outside that range is a parameter error; it is not narrowed to
+another descriptor.
 
 @item @t{-p}
 Input is read from the coprocess.

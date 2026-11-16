@@ -30,6 +30,13 @@
 #include "zsh.mdh"
 #include "utils.pro"
 
+#ifdef HAVE_POLL_H
+# include <poll.h>
+#endif
+#if defined(HAVE_POLL) && !defined(POLLIN) && !defined(POLLNORM)
+# undef HAVE_POLL
+#endif
+
 /* name of script being sourced */
 
 /**/
@@ -2732,8 +2739,28 @@ read_poll(int fd, int *readchar, int polltty, zlong microseconds)
     expire_tv.tv_usec = microseconds % (zlong)1000000;
     FD_ZERO(&foofd);
     if (fd > -1) {
+#if defined(HAVE_POLL) && defined(HAVE_POLL_H)
+	if (fd >= FD_SETSIZE) {
+	    /* select's fixed set cannot represent this descriptor.  Zero and
+	     * negative waits stay immediate; longer waits use milliseconds. */
+	    struct pollfd pfd;
+	    int wait_ms = microseconds <= 0 ? 0 : (int)(microseconds / 1000);
+	    if (microseconds / 1000 > INT_MAX)
+		wait_ms = INT_MAX;
+	    pfd.fd = fd;
+	    pfd.events = POLLIN;
+	    pfd.revents = 0;
+	    ret = poll(&pfd, 1, wait_ms);
+	} else
+#endif
+	{
+	if (fd >= FD_SETSIZE) {
+	    errno = EINVAL;
+	    return -1;
+	}
 	FD_SET(fd, &foofd);
 	ret = select(fd+1, (SELECT_ARG_2_T) &foofd, NULL, NULL, &expire_tv);
+	}
     } else
 	ret = select(0, NULL, NULL, NULL, &expire_tv);
 #else

@@ -6363,11 +6363,18 @@ bin_read(char *name, char **args, Options ops, UNUSED(int func))
 		return 1;
 	    }
 	} else {
-	    readfd = (int)zstrtol(argptr, &eptr, 10);
+	    zlong parsed_fd = zstrtol(argptr, &eptr, 10);
 	    if (*eptr) {
 		zwarnnam(name, "number expected after -%c: %s", 'u', argptr);
 		return 1;
 	    }
+	    /* Check before narrowing.  A wide value can alias a live
+	     * descriptor, and an unrepresentable int can fault in read(). */
+	    if (parsed_fd < 0 || parsed_fd > INT_MAX) {
+		zwarnnam(name, "file descriptor out of range: %s", argptr);
+		return 1;
+	    }
+	    readfd = (int)parsed_fd;
 	}
 #if 0
 	/* This code is left as a warning to future generations --- pws. */

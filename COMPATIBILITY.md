@@ -113,6 +113,16 @@ actual descriptor instead. Fractional truncation remains supported, including
 remain; evaluation errors stop before descriptor access. Native interfaces and
 valid negative-descriptor diagnostics are unchanged. See [round 59](Perf/round59.md).
 
+`read -u` now checks the parsed integer before narrowing it to a descriptor.
+On the tested platform, `4294967296 + fd` previously read `fd`. Values outside
+`[0, INT_MAX]` now return status 1 with `file descriptor out of range` and do
+not read. `read -t` on a descriptor at or above `FD_SETSIZE` uses `poll` where
+available, so a valid high descriptor still times out or returns data. A
+select-only build reports an invalid descriptor instead of indexing past the
+fixed descriptor set. `read -t 0 -k 1 -u 2147483647` previously crashed; it now
+returns status 1. `print -u` has the same narrowing and is not part of this
+correction. See [round 60](Perf/round60.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh
