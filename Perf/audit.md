@@ -340,3 +340,7 @@ Round 58 fixes a missing lower bound before lock-descriptor table access.
 Pristine and preceding psh report an ordinary unlock error while still reading
 before the table. Shell/native memory checks and unchanged controls are
 recorded in [round 58](round58.md); wider arithmetic conversion is a separate lead.
+
+Round 59 closes the caller-side narrowing gap left explicit in round 58.
+Wide and nonfinite unlock values are rejected before conversion; pristine
+wrong-lock behavior and candidate validation are in [round 59](round59.md).

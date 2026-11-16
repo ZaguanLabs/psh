@@ -104,6 +104,15 @@ Ordinary fractional truncation is preserved. This does not fix the separate
 narrowing of wide arithmetic results in the system-module caller; see
 [round 58](Perf/round58.md) for the tested scope.
 
+The round-59 follow-up validates `zsystem flock -u` arithmetic before narrowing
+to int. Wide integers, out-of-range floats, NaN and infinities now return status
+1 with a range diagnostic, leaving locks intact. For example, `fd + 4294967296`
+previously unlocked `fd` on the tested platform; it is now rejected. Pass the
+actual descriptor instead. Fractional truncation remains supported, including
+`fd + 0.9` and `-0.9`. Arithmetic is evaluated once and its existing side effects
+remain; evaluation errors stop before descriptor access. Native interfaces and
+valid negative-descriptor diagnostics are unchanged. See [round 59](Perf/round59.md).
+
 Earlier rejection has observable consequences. For example:
 
 ```zsh

@@ -702,7 +702,19 @@ bin_zsystem_flock(char *nam, char **args, UNUSED(Options ops), UNUSED(int func))
 
 #ifdef HAVE_FCNTL_H
     if (unlock) {
-	flock_fd = (int)mathevali(args[0]);
+	mnumber fdnum = matheval(args[0]);
+	if (errflag)
+	    return 1;
+	/* Retain truncation of fractions, but validate before narrowing. */
+	if (((fdnum.type & MN_FLOAT) &&
+	     !(fdnum.u.d > (double)INT_MIN - 1.0 &&
+	       fdnum.u.d < (double)INT_MAX + 1.0)) ||
+	    (!(fdnum.type & MN_FLOAT) &&
+	     (fdnum.u.l < INT_MIN || fdnum.u.l > INT_MAX))) {
+	    zwarnnam(nam, "flock: file descriptor out of range: %s", args[0]);
+	    return 1;
+	}
+	flock_fd = (fdnum.type & MN_FLOAT) ? (int)fdnum.u.d : (int)fdnum.u.l;
 	if (zcloselockfd(flock_fd) < 0) {
 	    zwarnnam(nam, "flock: file descriptor %d not in use for locking",
 		     flock_fd);

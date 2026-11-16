@@ -1473,3 +1473,7 @@ rounding, boundary behavior and expression side effects.
 [Round fifty-eight](round58.md) adds the missing negative-descriptor check in
 the exported lock-close helper. Independent lock-state, direct native and memory
 checks preserve ordinary results while confirming the inherited invalid read.
+
+[Round fifty-nine](round59.md) validates flock unlock arithmetic before
+conversion, preventing wide values from closing a live lock through wraparound.
+Fractional and ordinary controls, independent locks and sanitizer checks are retained.

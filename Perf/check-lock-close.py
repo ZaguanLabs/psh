@@ -22,10 +22,14 @@ def main():
     p.add_argument('--modules', type=Path, required=True)
     p.add_argument('--native', type=Path)
     p.add_argument('--controls-only', action='store_true')
+    p.add_argument('--wide', action='store_true')
+    p.add_argument('--aliases-only', action='store_true')
     p.add_argument('--memcheck', action='store_true')
     p.add_argument('--reference', type=Path)
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
+    if a.native and (a.wide or a.aliases_only):
+        p.error('Wide arithmetic belongs to the shell caller, not the int native interface')
     shell, modules = a.shell.resolve(), a.modules.resolve()
     env = dict(PATH='/usr/bin:/bin')
     setup = 'module_path=("$1"); shift; zmodload zsh/system || exit 90; '
@@ -47,12 +51,21 @@ def main():
         negative += ['-1.9', '-2147483648.9', '(side++, -1)']
         controls += ['-0.9', '(side++, locka)', 'locka + 0.9']
     rows = []
+    aliases = ['locka + 4294967296', 'lockb + 4294967296',
+               'locka - 4294967296', '(side++, locka + 4294967296)']
+    wide = aliases + ['2147483648', '-2147483649', '2147483648.0',
+                      '-2147483649.0', '9223372036854775807',
+                      '1e300', '-1e300', 'NaN', 'Inf', '-Inf']
+    expressions = aliases if a.aliases_only else controls + ([] if a.controls_only else negative)
+    if a.wide:
+        expressions += wide
     with tempfile.NamedTemporaryFile() as first, tempfile.NamedTemporaryFile() as second, tempfile.NamedTemporaryFile() as ordinary:
         for locale in ['C', 'C.UTF-8']:
             for options in ['', 'setopt forcefloat; ', 'setopt cprecedences; ']:
                 for keep_exec in ['', '-e']:
-                    for expr in controls + ([] if a.controls_only else negative):
+                    for expr in expressions:
                         is_negative = expr in negative
+                        is_wide = expr in wide
                         release_a = expr in ['locka', '(side++, locka)', 'locka + 0.9']
                         release_b = expr == 'lockb'
                         operation = ('integer native_fd; (( native_fd = EXPR )); psh-test-lockclose "$native_fd"' if a.native else
@@ -102,6 +115,8 @@ read -r gate
                             side = ('1.' if 'forcefloat' in options else '1') if 'side++' in expr else '0'
                             expected_line = f'{0 if success else 1}:{side}\n'
                         errors_ok = not stderr if success or a.native else b'not in use for locking' in stderr and b'Invalid read' not in stderr
+                        if is_wide:
+                            errors_ok = b'file descriptor out of range:' in stderr
                         passed = (proc.returncode == 0 and line == expected_line.encode() and not tail
                                   and held == [not release_a, not release_b] and ordinary_open and errors_ok)
                         # Descriptor numbers embedded in warnings are incidental, not semantic.
@@ -109,7 +124,7 @@ read -r gate
                         if not is_negative and not a.native and not success:
                             warning = re.sub(r'file descriptor -?\d+', 'file descriptor <fd>', warning)
                         rows.append(dict(locale=locale, options=options, keep_exec=keep_exec,
-                                         expression=expr, negative=is_negative, passed=passed,
+                                         expression=expr, negative=is_negative, wide=is_wide, passed=passed,
                                          status=proc.returncode, stdout=line.decode(errors='backslashreplace'),
                                          stderr=warning, held=held, ordinary_open=ordinary_open))
     differences = []
@@ -117,7 +132,7 @@ read -r gate
         previous = {(r['locale'], r['options'], r['keep_exec'], r['expression']): r
                     for r in json.loads(a.reference.read_text())['runs']}
         for row in rows:
-            if row['negative']:
+            if row['negative'] or row['wide']:
                 continue
             old = previous[(row['locale'], row['options'], row['keep_exec'], row['expression'])]
             if any(row[key] != old[key] for key in ['status','stdout','stderr','held','ordinary_open']):

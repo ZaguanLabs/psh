@@ -189,6 +189,23 @@
 >closed:1
 
   (
+    local fd value
+    zsystem flock -t 0 -f fd $tst_dir/file
+    for value in 'fd + 4294967296' 1e300 Inf NaN; do
+      zsystem flock -u -- "$value" 2>/dev/null
+      print -r -- "rejected:$?"
+    done
+    zsystem flock -u -- 'fd + 0.9'
+    print -r -- "fraction:$?"
+  )
+0:zsystem flock validates unlock arithmetic before narrowing
+>rejected:1
+>rejected:1
+>rejected:1
+>rejected:1
+>fraction:0
+
+  (
     zsystem flock -t 1073741824 $tst_dir/file ||
     zsystem flock -t 1e100      $tst_dir/file ||
     zsystem flock -i -1         $tst_dir/file ||
