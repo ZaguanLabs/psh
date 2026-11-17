@@ -1,4 +1,4 @@
-# Compatibility policy for psh 1.0.0-rc1 development
+# Compatibility policy for psh 1.0.0-rc2 development
 
 psh aims for meaningful performance gains on **Zsh 5.9.2** while preserving
 existing behavior by default. Existing scripts working unchanged is the normal
@@ -510,3 +510,20 @@ fixes after public release get a new candidate/version. Wider
 testing and reported regressions inform promotion to 1.0.0. The RC label is not
 a claim that compatibility review is complete. Existing private releases remain
 available for rollback without changing the account login shell or stable Zsh.
+
+## Unreleased interactive memory reclamation
+
+On glibc 2.33 or later, when using the system allocator, psh checks allocator
+statistics after pre-prompt hooks. If the reported free arena space is at least
+8 MiB and at least as large as allocated arena space, it asks `malloc_trim()`
+to release unused pages, with a 1 MiB top-of-heap padding request. Other libc
+builds and Zsh's optional internal allocator retain their existing behavior.
+This does not run between commands in noninteractive scripts or change shell
+values, history limits, completion features or native layouts. No user or OMZ
+configuration is required. The call preserves errno and queues signals.
+
+This trades some allocation reuse for a smaller resident footprint after large,
+fragmenting workloads. Repeated large bursts can take longer; smaller commands
+and fully live allocations generally do not qualify. See [round 74](Perf/round74.md)
+for measured savings, latency costs and platform coverage. A verified package
+is still required before activation.

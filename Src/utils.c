@@ -30,6 +30,13 @@
 #include "zsh.mdh"
 #include "utils.pro"
 
+#if defined(__GLIBC__) && !defined(ZSH_MEM)
+# if __GLIBC_PREREQ(2, 33)
+#  include <malloc.h>
+#  define PSH_PROMPT_TRIM 1
+# endif
+#endif
+
 #ifdef HAVE_POLL_H
 # include <poll.h>
 #endif
@@ -1621,6 +1628,20 @@ preprompt(void)
 	    ppnode->func();
 	}
     }
+#ifdef PSH_PROMPT_TRIM
+    /* Reclaim only at a prompt with a large free reserve. */
+    {
+        int saved_errno = errno;
+        struct mallinfo2 info;
+        queue_signals();
+        info = mallinfo2();
+        if (info.fordblks >= 8 * 1024 * 1024 &&
+            info.fordblks >= info.uordblks)
+            (void)malloc_trim(1024 * 1024);
+        errno = saved_errno;
+        unqueue_signals();
+    }
+#endif
 }
 
 /**/
