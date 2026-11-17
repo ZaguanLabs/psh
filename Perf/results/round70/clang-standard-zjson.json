@@ -1,0 +1,45 @@
+{
+  "release": "1.0.0-rc2-8f0d81052393",
+  "shell": "/usr/local/psh/releases/1.0.0-rc2-8f0d81052393/bin/psh",
+  "shell_sha256": "08a9dc8864114726563b90be3486b2a2d7c87d42ab34ec674a61dd6b13a58462",
+  "FPATH_unset": true,
+  "environment": {
+    "PATH": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc2-8f0d81052393/test-bin:/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8",
+    "ZSH_TEST_SHELL": "/usr/local/psh/releases/1.0.0-rc2-8f0d81052393/bin/psh",
+    "ZSH_BIN": "/usr/local/psh/releases/1.0.0-rc2-8f0d81052393/bin/psh",
+    "ZSH_BUILD_ROOT": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc2-8f0d81052393/core",
+    "ZHTML2MD_TEST_ZSH": "/usr/local/psh/releases/1.0.0-rc2-8f0d81052393/bin/psh"
+  },
+  "runs": [
+    {
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc2-8f0d81052393/bin/psh",
+        "-df",
+        "tests/run.zsh"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson",
+      "overrides": {
+        "LC_ALL": "C"
+      },
+      "status": 0,
+      "seconds": 0.665,
+      "log": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc2-8f0d81052393/logs/test-zjson-0.log"
+    },
+    {
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc2-8f0d81052393/bin/psh",
+        "-df",
+        "tests/run.zsh"
+      ],
+      "cwd": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Vendor/zjson",
+      "overrides": {
+        "LC_ALL": "C.UTF-8"
+      },
+      "status": 1,
+      "seconds": 0.615,
+      "log": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc2-8f0d81052393/logs/test-zjson-1.log"
+    }
+  ],
+  "passed": false
+}

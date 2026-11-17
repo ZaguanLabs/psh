@@ -399,3 +399,9 @@ complete GCC LTO package passes the private validation gates, while Clang retain
 a serialized zjson malformed-UTF-8 failure. Earlier shared-build-area contention
 is diagnosed, preserved and not blamed on the compiler. No candidate is adopted,
 activated or used for an elapsed-time claim. See [round 69](round69.md).
+
+Round 70 isolates the consequent Clang malformed-input failure independently of
+LTO. Valid Unicode reaches an incorrect native invalid/incomplete match only
+with the preceding quote/parser sequence, while direct pattern controls pass.
+The available shift-state reset does not remove the discrepancy. Exact reproducers
+are retained locally; no customer test was changed and activation remains closed.

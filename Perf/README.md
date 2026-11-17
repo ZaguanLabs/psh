@@ -1524,3 +1524,8 @@ rejected and production source restored; no interpreter optimization is adopted.
 isolated workflow. GCC passes full verification without activation; serialized
 Clang testing reproduces a malformed-UTF-8 zjson failure, blocking adoption.
 No customer timing or language change is claimed from the compiler trial.
+
+[Round seventy](round70.md) narrows the Clang zjson failure to a reproducible
+quote/parser sequence around native invalid-character matching. The failure also
+reproduces without LTO. All private reductions and traces are retained; no source
+change or adoption follows without a native-state diagnosis.

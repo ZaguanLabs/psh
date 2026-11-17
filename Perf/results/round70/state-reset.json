@@ -1,0 +1,30 @@
+[
+  {
+    "host": "gcc",
+    "mode": "before",
+    "status": 0,
+    "stdout": "0:$'\ufffdA\u00e9':\n",
+    "stderr": ""
+  },
+  {
+    "host": "gcc",
+    "mode": "pattern-reset",
+    "status": 0,
+    "stdout": "0:$'\ufffdA\u00e9':\n",
+    "stderr": ""
+  },
+  {
+    "host": "clang",
+    "mode": "before",
+    "status": 0,
+    "stdout": "1:$'':invalid_utf8\n",
+    "stderr": ""
+  },
+  {
+    "host": "clang",
+    "mode": "pattern-reset",
+    "status": 0,
+    "stdout": "1:$'':invalid_utf8\n",
+    "stderr": ""
+  }
+]
