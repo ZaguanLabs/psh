@@ -6207,14 +6207,19 @@ doshfunc(Shfunc shfunc, LinkList doshargs, int noreturnval)
 mod_export void
 runshfunc(Eprog prog, FuncWrap wrap, char *name)
 {
-    int cont, ouu;
-    char *ou;
+    int cont;
+    char small[32], *saved;
+    size_t savedused, savedlen;
 
     queue_signals();
 
-    ou = zalloc(ouu = underscoreused);
-    if (ou)
-	memcpy(ou, zunderscore, underscoreused);
+    /* A short last argument fits in the frame. For a longer value, save a
+     * buffer that we can install directly when the function returns. */
+    savedlen = underscorelen;
+    /* The cached byte count is an int. */
+    savedused = savedlen > INT_MAX ? strlen(zunderscore) + 1 : (size_t)underscoreused;
+    saved = savedused <= sizeof(small) ? small : zalloc(savedlen);
+    memcpy(saved, zunderscore, savedused);
 
     while (wrap) {
 	wrap->module->wrapper++;
@@ -6226,8 +6231,8 @@ runshfunc(Eprog prog, FuncWrap wrap, char *name)
 	    unload_module(wrap->module);
 
 	if (!cont) {
-	    if (ou)
-		zfree(ou, ouu);
+	    if (saved != small)
+		zfree(saved, savedlen);
 	    unqueue_signals();
 	    return;
 	}
@@ -6235,9 +6240,13 @@ runshfunc(Eprog prog, FuncWrap wrap, char *name)
     }
     startparamscope();
     execode(prog, 1, 0, "shfunc");	/* handles signal unqueueing */
-    if (ou) {
-	setunderscore(ou);
-	zfree(ou, ouu);
+    if (saved == small) {
+	setunderscore(small);
+    } else {
+	zfree(zunderscore, underscorelen);
+	zunderscore = saved;
+	underscoreused = savedused;
+	underscorelen = savedlen;
     }
     endparamscope();
 

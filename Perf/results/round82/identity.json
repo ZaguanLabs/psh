@@ -1,0 +1,35 @@
+{
+  "parent": "7d64eeb7ef1f7649fbccda608e7b20a801594bc1",
+  "compiler": "15.2.0",
+  "binaries": {
+    "/usr/local/psh/current/bin/psh": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f",
+    ".work/baseline/Src/zsh": "55c1efbca2052a93efdfca4713f379b6cd645e7b6ed01949d9ab195626700153",
+    ".work/round81/build/Src/zsh": "ad721256ceb711bc099eeeeb3faa8b5d5155859bd6bd8ec22d392cae08735f78",
+    ".work/round82/build/Src/zsh": "ee752fbe6894215a9e78c4085c4a7b3553a0b203f6152fea7c1f805e67c76791",
+    ".work/round82/runtime/bin/zsh": "ee752fbe6894215a9e78c4085c4a7b3553a0b203f6152fea7c1f805e67c76791",
+    ".work/round82/short/build/Src/zsh": "7e1471cc87de886162789ce7d1a712f637331199abc4ddda5a2e394bccb16490",
+    ".work/round82/short/runtime/bin/zsh": "7e1471cc87de886162789ce7d1a712f637331199abc4ddda5a2e394bccb16490"
+  },
+  "probe_modules": {
+    ".work/round82/pristine-module/underscore_probe.so": "5a25cf7db17ef73a676424fe6221f75c3e438821c152891aeba8c03de35a1839",
+    ".work/round82/trial-module/underscore_probe.so": "5a25cf7db17ef73a676424fe6221f75c3e438821c152891aeba8c03de35a1839",
+    ".work/round82/base-module/underscore_probe.so": "5a25cf7db17ef73a676424fe6221f75c3e438821c152891aeba8c03de35a1839",
+    ".work/round82/short/pristine-module/underscore_probe.so": "5a25cf7db17ef73a676424fe6221f75c3e438821c152891aeba8c03de35a1839",
+    ".work/round82/short/trial-module/underscore_probe.so": "5a25cf7db17ef73a676424fe6221f75c3e438821c152891aeba8c03de35a1839",
+    ".work/round82/short/base-module/underscore_probe.so": "5a25cf7db17ef73a676424fe6221f75c3e438821c152891aeba8c03de35a1839"
+  },
+  "sources": {
+    "Src/exec.c": "09d22056cebc3b7187f39e854b286909b8b2654e136d23ad159a18fa48dbf3b4",
+    "Test/D04parameter.ztst": "ae4a015d8d16652ba9b6d89bc0a0fc36f5467c26ec962cbee3a132ffb6728c14",
+    "Perf/underscore-scope-check.zsh": "d8f006489ffe38e63c0326417e605b684c804619e13add4d883d82ca3c2145ff",
+    "Perf/underscore-wrapper-probe.c": "fed87a191eafc325160f16523dc07e56dc59aa4b52f4aec0d71f0df3b1f2edf9",
+    "Perf/named-shift-workload.zsh": "caf5893464fde13ca6883eba140c14107b8949949453c68c83e9db416a8d0824",
+    "Perf/results/round81/transcript-memory.py": "8d933c1b4d7cccf68d9d66b713948551f7a07ada728d93fbd8c8af31a7afec6f",
+    ".work/round82/source/Src/exec.c": "27b4000326c74fc07a270532dc4bc1e768f20fad81920e3dcf34526ce45c21d2",
+    ".work/round82/short/source/Src/exec.c": "09d22056cebc3b7187f39e854b286909b8b2654e136d23ad159a18fa48dbf3b4"
+  },
+  "configs": {
+    "all-heap": "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round82/build/../runtime --enable-multibyte --disable-zsh-debug --enable-pcre CC=gcc 'CFLAGS=-O2 -g -flto' 'LDFLAGS=-g -flto'",
+    "short": "--prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round82/short/build/../runtime --enable-multibyte --disable-zsh-debug --enable-pcre CC=gcc 'CFLAGS=-O2 -g -flto' 'LDFLAGS=-g -flto'"
+  }
+}

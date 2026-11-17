@@ -2935,3 +2935,13 @@ F:output ignorable as long as not an error
   }
 0:Byte lengths after long plain prefixes preserve NUL, Meta, invalid bytes and UTF-8 octets
 >4101:5:5:0
+
+  () {
+    local text
+    inner() { [[ $_ == "$text" ]] || return 1; : inner-value; return 7; }
+    for text in '' ${(l:31::x:)} ${(l:32::y:)} ${(l:4096::z:)}; do
+      inner "$text"
+      [[ $? == 7 && $_ == "$text" ]] || return 1
+    done
+  }
+0:Function return restores the last argument at small and large sizes
