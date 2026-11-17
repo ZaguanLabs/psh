@@ -18,6 +18,8 @@ def cases():
                         b'bad\xff' + separator + b'\x80end',
                         b'a' + separator + b'b' * 258):
             yield separator, subject
+        for count in (8, 16, 64):
+            yield separator, (b'a' + separator) * count
 
 
 def main():

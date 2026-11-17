@@ -384,3 +384,12 @@ coder layout. The resulting raw-byte helper trial reduces its self instructions
 but slows both long and ordinary separator cases, so it is not adopted. See
 [round 67](round67.md) for provenance, input caches, negative timings and the
 restored source evidence.
+but slows both long and ordinary separator cases, so it is not adopted. See
+[round 67](round67.md) for provenance, input caches, negative timings and the
+restored source evidence.
+
+Round 68 tests one-pass explicit-separator materialization using private dynamic
+pointer vectors. Correctness and genuine interactive checks pass after repairing
+prototype cursor initialization, but repeated coder-paste regressions reject the
+change. Native allocation evidence, complete growth cases, source restoration
+and all slower primary controls are in [round 68](round68.md).

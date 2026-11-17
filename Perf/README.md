@@ -1514,3 +1514,8 @@ controls remain unchanged.
 profiles and retains a rejected one-byte separator trial. All split states match,
 but focused timings are consistently slower and the complete coder-layout
 instruction reduction is only 0.24%. No production change is adopted.
+
+[Round sixty-eight](round68.md) evaluates one-pass explicit-separator split
+construction. Full element/native and growth checks pass, as do focused timings,
+but both customer comparisons show slower paste workloads. The prototype is
+rejected and production source restored; no interpreter optimization is adopted.

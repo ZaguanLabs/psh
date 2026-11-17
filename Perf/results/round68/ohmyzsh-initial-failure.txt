@@ -1,0 +1,13 @@
+Initial Round 68 candidate OMZ attempt
+=====================================
+
+Observed failure: configured/candidate/handoff, during terminal.capture().
+The interactive session rejected `_psh_omz_capture`'s `zle -f keepsuffix` call.
+
+This preceded the trial's missing `t = s` correction. The preceding build was
+then checked separately and passed its 24 unchanged interactive sessions. After
+the cursor correction, a complete fresh candidate gate passed those 24 sessions.
+
+This file records the observed failure summary. The original full raw log was
+subsequently overwritten by the corrected run and no such raw transcript is
+claimed here. No framework file was changed during this investigation.
