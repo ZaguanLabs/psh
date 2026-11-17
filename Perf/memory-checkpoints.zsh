@@ -36,10 +36,11 @@ if [[ $psh_memory_mode == burst ]]; then
 else
   source "$psh_memory_worker" "$psh_memory_operation" "$psh_memory_project" "$psh_memory_iterations" > "$psh_memory_output" || exit 1
   psh-memory-checkpoint initial-workload
-  integer psh_memory_cycle
-  for (( psh_memory_cycle=1; psh_memory_cycle<=20; ++psh_memory_cycle )); do
+  integer psh_memory_cycle psh_memory_cycles=${8:-20}
+  for (( psh_memory_cycle=1; psh_memory_cycle<=psh_memory_cycles; ++psh_memory_cycle )); do
     psh-reset && run-workload && check-result || exit 1
-    if (( psh_memory_cycle == 1 || psh_memory_cycle == 5 || psh_memory_cycle == 20 )); then
+    if (( psh_memory_cycle == 1 || psh_memory_cycle == 5 ||
+          psh_memory_cycle % 20 == 0 || psh_memory_cycle == psh_memory_cycles )); then
       dump-result > "$psh_memory_output"
       psh-memory-checkpoint "cycle-$psh_memory_cycle"
     fi

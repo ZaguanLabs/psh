@@ -34,12 +34,16 @@ def main():
     parser.add_argument('--case', action='append', required=True,
                         help='project/operation from customer-benchmark.py, or burst')
     parser.add_argument('--samples', type=int, default=3)
+    parser.add_argument('--cycles', type=int, default=20,
+                        help='customer workload repetitions after the initial run (default: 20)')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--trim-module', type=Path,
                         help='diagnostic only: matching-SDK memory_trim.so, one shell and burst case only')
     args = parser.parse_args()
     if args.samples < 1:
         parser.error('samples must be positive')
+    if args.cycles < 1:
+        parser.error('cycles must be positive')
     if args.trim_module and (len(args.shell) != 1 or args.case != ['burst']):
         parser.error('trim probe requires exactly one matching shell and --case burst')
     base = Path(__file__).resolve().parent
@@ -58,7 +62,7 @@ def main():
         args.trim_module = args.trim_module.resolve(strict=True)
         hashes[str(args.trim_module)] = sha(args.trim_module)
     env = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8', 'LANG': 'C.UTF-8'}
-    report = dict(identity=hashes, environment=env, samples=args.samples,
+    report = dict(identity=hashes, environment=env, samples=args.samples, customer_cycles=args.cycles,
                   units='KiB', scope='Linux /proc checkpoints; live customer state retained; no timing claim', cases=[])
     with tempfile.TemporaryDirectory(prefix='psh-memory-') as temporary:
         scratch = Path(temporary)
@@ -78,6 +82,8 @@ def main():
                     command = [str(shells[host]), '-df', str(wrapper), str(worker),
                                op, str(root), str(count), str(state_file),
                                'burst' if burst else 'customer', str(args.trim_module or '')]
+                    if not burst:
+                        command.append(str(args.cycles))
                     points = []
                     with (scratch / 'stderr').open('w+b') as errors:
                         proc = subprocess.Popen(command, env=env, stdin=subprocess.PIPE,
@@ -117,8 +123,13 @@ def main():
                             proc.stdin.close()
                             proc.stdout.close()
                     phases = [p['phase'] for p in points]
-                    wanted = (['startup', 'live-burst', 'released-burst', 'live-burst', 'released-second-burst']
-                              if burst else ['startup', 'initial-workload', 'cycle-1', 'cycle-5', 'cycle-20'])
+                    if burst:
+                        wanted = ['startup', 'live-burst', 'released-burst', 'live-burst', 'released-second-burst']
+                    else:
+                        cycles = {1, args.cycles, *range(20, args.cycles + 1, 20)}
+                        if args.cycles >= 5:
+                            cycles.add(5)
+                        wanted = ['startup', 'initial-workload'] + [f'cycle-{n}' for n in sorted(cycles)]
                     if args.trim_module:
                         wanted.insert(3, 'trimmed-burst')
                         wanted.append('trimmed-second-burst')

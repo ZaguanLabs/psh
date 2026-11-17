@@ -1,0 +1,37 @@
+{
+  "release": {
+    "path": "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+    "sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f",
+    "default": {
+      "wrapper": "#!/bin/sh\nexec /usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh \"$@\"\n",
+      "loader": [
+        "glibc.malloc.tcache_count: 0x0 (min: 0x0, max: 0xffffffffffffffff)"
+      ]
+    },
+    "uncached": {
+      "wrapper": "#!/bin/sh\nexport GLIBC_TUNABLES=glibc.malloc.tcache_count=0\nexec /usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh \"$@\"\n",
+      "loader": [
+        "glibc.malloc.tcache_count: 0x0 (min: 0x0, max: 0xffffffffffffffff)"
+      ]
+    }
+  },
+  "dev": {
+    "path": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round76/build/Src/zsh",
+    "sha256": "ac175cb55b03f56fcf7a8cd0555933a8e6e8522cd7a2abf32172250d305e73a0",
+    "default": {
+      "wrapper": "#!/bin/sh\nexec /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round76/build/Src/zsh \"$@\"\n",
+      "loader": [
+        "glibc.malloc.tcache_count: 0x0 (min: 0x0, max: 0xffffffffffffffff)"
+      ]
+    },
+    "uncached": {
+      "wrapper": "#!/bin/sh\nexport GLIBC_TUNABLES=glibc.malloc.tcache_count=0\nexec /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round76/build/Src/zsh \"$@\"\n",
+      "loader": [
+        "glibc.malloc.tcache_count: 0x0 (min: 0x0, max: 0xffffffffffffffff)"
+      ]
+    },
+    "one": {
+      "wrapper": "#!/bin/sh\nexport GLIBC_TUNABLES=glibc.malloc.tcache_count=1\nexec /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round76/build/Src/zsh \"$@\"\n"
+    }
+  }
+}
