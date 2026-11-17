@@ -1,0 +1,26 @@
+{
+  "source_commit": "ce99f0fc33067c26adbd448a2e81997ae346ecf2",
+  "accepted_source_sha256": "ddefe40d4ed78c7e5f6e205507829ed343389354acf02d387395eb6bfd138f6b",
+  "trial_source_sha256": "354142467d6d6e6950f8bff3cacf3cc507df9154a8b7f13cbf174bdda23350b3",
+  "binary_sha256": {
+    "accepted": "feea10fc9df07318f0c8d58efe845c4787779ab8184eca2e3209848ff2936a0c",
+    "trial": "f847abcb91b9217fc840683747bcc777c1c2fa875fff014b48c7570271fd7dfa",
+    "trial_runtime": "f847abcb91b9217fc840683747bcc777c1c2fa875fff014b48c7570271fd7dfa",
+    "active": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f"
+  },
+  "active_shell": "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+  "probe_sha256": {
+    "trim-call-trace-initial.so": "1c2fed15643c9a86237921e2e8961131070d8ae03d0091c3b13f0df177f9552b",
+    "trim-call-trace.so": "4ba251b85c31f56b5200674e8e7dc5eb5a70d2300f63a4cb797a05164291ad7d",
+    "trim-call-trace-warnings.so": "db0387a027a5b18f8fb975ae0356fbe524140e772900d4c58c2f46269516bbee"
+  },
+  "disposition": "rejected; production C unchanged",
+  "gates": {
+    "upstream_success": 64,
+    "upstream_failure": 0,
+    "upstream_skipped": 2,
+    "omz_sessions": 24,
+    "native_loader_observations": 14
+  },
+  "timing": "Two prompt and two customer runs, all serial and after build/test/instrumented phases; profiles collected afterward"
+}

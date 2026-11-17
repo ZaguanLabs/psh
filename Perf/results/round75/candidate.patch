@@ -1,0 +1,38 @@
+--- Src/utils.c	2026-11-17 18:32:09.120359540 +0100
++++ .work/round75/source/Src/utils.c	2026-11-17 18:46:24.981228907 +0100
+@@ -1636,8 +1636,34 @@
+         queue_signals();
+         info = mallinfo2();
+         if (info.fordblks >= 8 * 1024 * 1024 &&
+-            info.fordblks >= info.uordblks)
++            info.fordblks >= info.uordblks) {
++#if defined(HAVE_GETRUSAGE) && defined(RUSAGE_SELF)
++            static long last_minor, last_major;
++            static size_t last_free;
++            static unsigned int skipped;
++            static int known;
++            struct rusage usage;
++            int have_usage = !getrusage(RUSAGE_SELF, &usage);
++            if (known && have_usage && skipped < 15 &&
++                usage.ru_minflt == last_minor &&
++                usage.ru_majflt == last_major &&
++                (info.fordblks <= last_free ||
++                 info.fordblks - last_free < 1024 * 1024)) {
++                skipped++;
++            } else {
++                (void)malloc_trim(1024 * 1024);
++                last_free = mallinfo2().fordblks;
++                known = !getrusage(RUSAGE_SELF, &usage);
++                if (known) {
++                    last_minor = usage.ru_minflt;
++                    last_major = usage.ru_majflt;
++                }
++                skipped = 0;
++            }
++#else
+             (void)malloc_trim(1024 * 1024);
++#endif
++        }
+         errno = saved_errno;
+         unqueue_signals();
+     }

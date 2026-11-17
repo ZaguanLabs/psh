@@ -19,12 +19,13 @@ def sha(p):
 
 
 class Shell:
-    def __init__(self, shell, home):
+    def __init__(self, shell, home, env_overrides=None):
         self.pid, self.fd = pty.fork()
         if not self.pid:
-            os.execve(str(shell), [str(shell), '-dfi', '+Z'],
-                      {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8',
-                       'TERM': 'xterm', 'HOME': str(home), 'ZDOTDIR': str(home)})
+            env = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8',
+                   'TERM': 'xterm', 'HOME': str(home), 'ZDOTDIR': str(home)}
+            env.update(env_overrides or {})
+            os.execve(str(shell), [str(shell), '-dfi', '+Z'], env)
         self.buffer = b''
         self.closed = False
         self.reaped = False
