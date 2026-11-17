@@ -393,3 +393,9 @@ pointer vectors. Correctness and genuine interactive checks pass after repairing
 prototype cursor initialization, but repeated coder-paste regressions reject the
 change. Native allocation evidence, complete growth cases, source restoration
 and all slower primary controls are in [round 68](round68.md).
+
+Round 69 separates compiler generation from interpreter source changes. The
+complete GCC LTO package passes the private validation gates, while Clang retains
+a serialized zjson malformed-UTF-8 failure. Earlier shared-build-area contention
+is diagnosed, preserved and not blamed on the compiler. No candidate is adopted,
+activated or used for an elapsed-time claim. See [round 69](round69.md).

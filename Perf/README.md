@@ -1519,3 +1519,8 @@ instruction reduction is only 0.24%. No production change is adopted.
 construction. Full element/native and growth checks pass, as do focused timings,
 but both customer comparisons show slower paste workloads. The prototype is
 rejected and production source restored; no interpreter optimization is adopted.
+
+[Round sixty-nine](round69.md) compares matched GCC/Clang LTO packages using the
+isolated workflow. GCC passes full verification without activation; serialized
+Clang testing reproduces a malformed-UTF-8 zjson failure, blocking adoption.
+No customer timing or language change is claimed from the compiler trial.
