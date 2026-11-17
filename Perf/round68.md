@@ -91,7 +91,8 @@ process elapsed time.
 | Unicode text, ASCII separator | 20.639 -> 18.134 |
 | Multibyte separator | 20.409 -> 17.953 |
 
-These are all faster, with the long-subject process elapsed median improving from
+Five of six batch medians are faster; spaces are slightly slower. The
+long-subject process elapsed median improves from
 149.553 to 105.967 ms (about **29%**). This is a focused helper workload, not a
 customer application speedup.
 

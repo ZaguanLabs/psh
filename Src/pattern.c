@@ -1916,8 +1916,12 @@ charref(char *x, char *y, int *zmb_ind)
     wchar_t wc;
     size_t ret;
 
-    if (!(patglobflags & GF_MULTIBYTE) || !((unsigned char) *x & 0x80))
+    if (!(patglobflags & GF_MULTIBYTE) || !((unsigned char) *x & 0x80)) {
+	/* No conversion is needed, but callers still consume the status. */
+	if (zmb_ind)
+	    *zmb_ind = ZMB_VALID;
 	return (wchar_t) (unsigned char) *x;
+    }
 
     ret = mbrtowc(&wc, x, y-x, &shiftstate);
 

@@ -542,6 +542,18 @@ F:This is considered a bugfix in zsh
   [[ $'\xe3\x83\x9b' = ? ]] || print fail 4
 0:Testing incomplete and invalid multibyte character components
 
+  (
+  setopt extendedglob
+  for (( i=0; i<100; i++ )); do
+    [[ $'\xe2\x82A' == *[[:INVALID:][:INCOMPLETE:]]* ]] || print bad-malformed
+    [[ '"' != *[[:INVALID:][:INCOMPLETE:]]* ]] || print bad-ascii
+    [[ $'\xef\xbf\xbdA\xc3\xa9' != *[[:INVALID:][:INCOMPLETE:]]* ]] || print bad-valid
+    [[ $'\xe2\x82A' == [[:INVALID:][:INCOMPLETE:]]##A ]] || print bad-repeat
+    [[ 'ABC' == [^[:INVALID:][:INCOMPLETE:]]## ]] || print bad-ascii-repeat
+  done
+  )
+0:ASCII classification does not inherit a previous multibyte conversion error
+
   [[ é != *$'\xc3'* ]]        || print fail 1
   [[ é != *$'\xa9'* ]]        || print fail 2
   [[ Stéphane != *$'\xc3'* ]] || print fail 3

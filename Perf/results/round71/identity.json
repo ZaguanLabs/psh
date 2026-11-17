@@ -1,0 +1,38 @@
+{
+  "base_commit": "0f4084ff046d4ba1170af8e4b889030f622b1e14",
+  "platform": "Linux x86_64",
+  "active_psh": "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+  "active_sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f",
+  "sources": {
+    "Src/pattern.c": "1bb23ea54bda31860b403bd0beb1dc2a797bb0d80dfb612e56fc1d5d1efde71b",
+    "Test/D07multibyte.ztst": "ca2b779b15fbdc738e68b0d09e9af9b75874b2a1b324eeec99c34c35e2cc62e6"
+  },
+  "builds": {
+    "gcc": {
+      "compiler": "gcc (Mageia 15.2.0-1.mga10) 15.2.0",
+      "binary": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round71/gcc/Src/zsh",
+      "sha256": "812786a17da1ae868cee43ce79b0dd10885956eb5f50d11dcb8f9206f1831048",
+      "config_sha256": "4221cce502d0cd7e17a6125e134b6fb5f5627b65bf08f8e81bdaf5129f837f6a",
+      "flags": "-O2 -g -flto",
+      "upstream": {
+        "successful": 64,
+        "failures": 0,
+        "skipped": 2
+      },
+      "omz_sessions": 24
+    },
+    "clang": {
+      "compiler": "clang version 20.1.8 (Mageia 20.1.8-4.mga10)",
+      "binary": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round71/clang/Src/zsh",
+      "sha256": "303040cd61c1792bfe9ab27d4b457da7b93a432b3f6af5a6360a269bf8dfbb1c",
+      "config_sha256": "d083a4615bf3d057575bb20d177073aaf700da73449a305c208c27e413b80d32",
+      "flags": "-O2 -g -flto",
+      "upstream": {
+        "successful": 64,
+        "failures": 0,
+        "skipped": 2
+      },
+      "omz_sessions": 24
+    }
+  }
+}

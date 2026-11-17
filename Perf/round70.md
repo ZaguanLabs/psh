@@ -21,8 +21,9 @@ not just those byte strings.
 
 `pattern.c` supplies `zmb_ind` through `charref()`/`charrefinc()`, and
 `mb_patmatchrange()` reports PP_INVALID/PP_INCOMPLETE only for a conversion error.
-The caller initializes that status in ordinary use. No simple uninitialized local
-is being claimed here.
+This investigation did not identify an uninitialized local. Round 71 subsequently
+found that both character-class callers leave the status uninitialized and the
+ASCII return in `charref()` does not set it; see [the follow-up](round71.md).
 
 Calling the existing `clear_shiftstate()` diagnostic function between quote and
 parse did not change Clang's result. No source-specific compiler or locale bug is
