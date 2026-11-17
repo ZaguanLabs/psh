@@ -400,6 +400,19 @@
 >I have been loaded by explicit path.
 
   (
+    fpath=(.)
+    print -r -- 'unfunction replaced; replaced() { print -r -- "$0:${(j:|:)@}"; }' >replaced
+    print -r -- 'unfunction vanished' >vanished
+    autoload -Uk replaced vanished
+    autoload +X replaced vanished || exit 1
+    replaced one '' three || exit 1
+    vanished 2>errmsg
+    (( $? == 1 )) && [[ $(<errmsg) == *'vanished: function not defined by file' ]]
+  )
+0:Preloaded ksh functions can replace or remove themselves on first invocation
+>replaced:one||three
+
+  (
     cd extra
     fpath=(.)
     autoload -r def

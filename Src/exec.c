@@ -5868,7 +5868,6 @@ doshfunc(Shfunc shfunc, LinkList doshargs, int noreturnval)
     int ret;
     char *name = shfunc->node.nam;
     int flags = shfunc->node.flags;
-    char *fname = dupstring(name);
     Eprog prog, marked_prog;
     static int oflags;
     static int funcdepth;
@@ -5921,7 +5920,7 @@ doshfunc(Shfunc shfunc, LinkList doshargs, int noreturnval)
 	    memcpy(funcsave->pipestats, pipestats, bytes);
 	}
 
-	if (!strcmp(fname, "TRAPEXIT")) {
+	if (!strcmp(name, "TRAPEXIT")) {
 	    /*
 	     * If we are executing TRAPEXIT directly, starttrapscope()
 	     * will pull the rug out from under us to ensure the
@@ -6063,9 +6062,11 @@ doshfunc(Shfunc shfunc, LinkList doshargs, int noreturnval)
 
 	prog = shfunc->funcdef;
 	DPUTS1(!prog->nref, "function definition %s has zero reference count",
-	       (fname && *fname) ? fname : "<anon>");
+	       (name && *name) ? name : "<anon>");
 	if (prog->flags & EF_RUN) {
 	    Shfunc shf;
+	    /* The autoload file can redefine or remove the original function. */
+	    char *fname = dupstring(name);
 
 	    prog->flags &= ~EF_RUN;
 
