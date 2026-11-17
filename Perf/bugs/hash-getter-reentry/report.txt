@@ -1,0 +1,136 @@
+To: zsh-workers@zsh.org
+Subject: BUG: nested gethparam() in element getter returns wrong outer values
+
+Hello,
+
+I found a reproducible wrong-result bug in associative-array expansion in
+unmodified Zsh 5.9.2 and current upstream Git. If a native scalar getter for
+one hash element calls gethparam() for a different hash, the outer gethparam()
+can return the inner hash's values instead of its own.
+
+Tested versions
+---------------
+
+* Zsh 5.9.2, built from a separate pristine release-source tree.
+* Upstream Git b13bbf2acadb79268311f3dd0683f93992ce69ba, fetched from
+  https://git.code.sf.net/p/zsh/code on 2026-11-12.
+  Its version string is zsh 5.9.999.3-test. The tracked source tree was clean
+  after building; no interpreter patches were applied.
+
+The reproducer module was compiled separately against each tested Zsh's own
+source and generated headers. The failure occurs in both C and C.UTF-8,
+with and without Valgrind.
+
+Minimal reproducer
+------------------
+
+The attachment contains hash_reentry.c and reproduce.zsh. This requires a
+native element getter; I do not have a pure-shell reproducer.
+
+The script creates:
+
+  typeset -A reentry_outer=(a A b B) reentry_inner=(x X y Y)
+
+The module temporarily gives reentry_outer[a] a scalar GSU with this getter:
+
+  static char *nested_get(Param pm)
+  {
+      getter_calls++;
+      (void)gethparam("reentry_inner");
+      return strgetfn(pm);
+  }
+
+It then calls gethparam("reentry_outer") and restores the original GSU before
+returning. The setter and unsetter remain strsetfn and stdunsetfn. The getter
+does not resize, delete or replace any hash nodes, and does not modify either
+hash's contents. No psh-specific interfaces are used.
+
+To reproduce on Linux, first build an unmodified Zsh source tree. For a Git
+checkout, run ./Util/preconfig before configure. From its source root:
+
+  ./configure --enable-dynamic --enable-multibyte --disable-zsh-debug \
+    CFLAGS='-O2 -g'
+  make -j4
+
+No installation is needed. Extract the attachment and, from the directory
+containing hash_reentry.c and reproduce.zsh, set these to absolute paths:
+
+  ZSH_SOURCE=/path/to/zsh-source
+  ZSH_BUILD=/path/to/zsh-build
+
+For an in-tree build, both variables name the same directory. Then run:
+
+  cc -O2 -g -shared -fPIC -DMODULE -DHAVE_CONFIG_H \
+    -I"$ZSH_BUILD/Src" -I"$ZSH_SOURCE/Src" \
+    hash_reentry.c -o hash_reentry.so
+
+  LC_ALL=C.UTF-8 "$ZSH_BUILD/Src/zsh" -df reproduce.zsh "$PWD"
+
+Observed and expected results
+-----------------------------
+
+Both unmodified versions print:
+
+  before: A B
+  after: X Y
+  getter calls: 1
+  stored a: A
+  stored b: B
+  result: FAIL
+
+The script exits 1 because the module detects the wrong values. The expected
+"after" values are A and B, in either hash iteration order, with result PASS
+and exit status 0. The stored outer values remain A and B: the wrong result
+is in the expansion, not an assignment to the outer parameters.
+
+The same command under Memcheck is:
+
+  LC_ALL=C.UTF-8 valgrind --error-exitcode=97 --leak-check=no \
+    --track-origins=yes \
+    "$ZSH_BUILD/Src/zsh" -df reproduce.zsh "$PWD"
+
+For this minimal example, Memcheck reports zero errors; the script still
+exits 1 because its value check fails. I am reporting an incorrect result,
+not claiming an invalid memory access, crash or security impact from this
+reproducer.
+
+Source analysis
+---------------
+
+In Src/params.c, paramvalarr() uses static paramvals and numparamvals for its
+output vector and current count. scanparamvals() fills that vector using:
+
+  paramvals[numparamvals] = getstrvalue(&v);
+
+getstrvalue() invokes the native scalar getter. Its nested gethparam() calls
+paramvalarr() again and replaces the same static working state, without
+restoring the outer expansion's state on return. This appears to explain
+why the outer call returns the inner vector.
+
+The relevant locations are scanparamvals()/paramvalarr() around lines
+636/650 in 5.9.2, and 711/725 in the Git commit above. getvaluearr() also reads
+numparamvals after paramvalarr() returns, so simply restoring that global at
+the end of paramvalarr() would need corresponding handling of the count
+result in getvaluearr().
+
+Environment and evidence
+------------------------
+
+  OS:       Mageia 11, Linux 6.18.55-desktop-1.mga10, x86_64
+  Compiler: GCC 15.2.0 (Mageia 15.2.0-1.mga10), -O2 -g
+  Valgrind: 3.24.0
+  Options:  dynamic modules, multibyte enabled, Zsh debug disabled
+
+The release reference also enables PCRE and uses LDFLAGS=-g and an isolated
+prefix. The fresh Git build uses the configure command shown above. Exact
+configure/compiler commands, source and executable hashes, output, statuses
+and Memcheck logs are included under evidence/release and evidence/upstream.
+
+This was found while investigating psh, a Zsh-based fork, then independently
+reproduced in the two unmodified Zsh builds above. As a control, a local psh
+build that saves/restores the expansion state returns A and B and passes the
+same minimal test. That control is recorded separately under evidence/fixed;
+it is not presented as an upstream patch or an unmodified Zsh result.
+
+Kind regards,
+Stig-Ørjan Smelror

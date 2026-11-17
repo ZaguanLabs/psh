@@ -1,0 +1,97 @@
+{
+  "shell": "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+  "binary_sha256": "d10393954414ba849e7f4759acc0a2e006eb1c9961780d86e3a212d44c2b5102",
+  "configure": "--prefix=/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4 --program-transform-name=s/zsh/psh/ --enable-dynamic --enable-multibyte --disable-zsh-debug --enable-pcre --enable-etcdir=/usr/local/psh/etc --enable-site-fndir=no --enable-additional-fpath=/usr/local/psh/site-functions 'CFLAGS=-O2 -g -flto' 'LDFLAGS=-g -flto'",
+  "source_params_sha256": "f141a00702535a83e1192a27bc22fd183dcae60aec980672e9e68e31fa8d8656",
+  "build_config_sha256": "2e8aab6e451d28d640615d39acd2a132e2f473c5eacbb2d83ec71f2e6e3f920c",
+  "reproducer_sha256": {
+    "hash_reentry.c": "8095fa0e250bd5ddbe0958a051c77a3124bd18f2449ab44583d4c1b7f7fcc71b",
+    "reproduce.zsh": "748d81ada7c9d16cc1e5ebc7fe7c4b53ae25db9fd7e7d0781bccf780485b1546",
+    "reproduce.py": "34ddf5594d4d637c5f85ed330eea47d532d7d6ec623a4388567cc1b351e2257d"
+  },
+  "compile_command": [
+    "cc",
+    "-O2",
+    "-g",
+    "-shared",
+    "-fPIC",
+    "-DMODULE",
+    "-DHAVE_CONFIG_H",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/core/Src",
+    "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/package/1.0.0-rc1-6db51a2527d4/core/Src",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/hash_reentry.c",
+    "-o",
+    "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed/hash_reentry.so"
+  ],
+  "module_sha256": "8657a65fe0476cfceaf72875bf6dbc7e9e9e27198476fc904e96588dbdbd4091",
+  "compiler": "cc (Mageia 15.2.0-1.mga10) 15.2.0",
+  "uname": [
+    "Linux",
+    "spurven",
+    "6.18.55-desktop-1.mga10",
+    "#1 SMP PREEMPT_DYNAMIC Sun Oct  4 15:06:44 UTC 2026",
+    "x86_64"
+  ],
+  "runs": [
+    {
+      "locale": "C",
+      "memcheck": false,
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/reproduce.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed"
+      ],
+      "status": 0,
+      "stdout": "before: A B\nafter: A B\ngetter calls: 1\nstored a: A\nstored b: B\nresult: PASS\n",
+      "stderr": ""
+    },
+    {
+      "locale": "C",
+      "memcheck": true,
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--track-origins=yes",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/reproduce.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed"
+      ],
+      "status": 0,
+      "stdout": "before: A B\nafter: A B\ngetter calls: 1\nstored a: A\nstored b: B\nresult: PASS\n",
+      "stderr": "==2294773== Memcheck, a memory error detector\n==2294773== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.\n==2294773== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info\n==2294773== Command: /usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh -df /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/reproduce.zsh /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed\n==2294773== \n==2294773== \n==2294773== HEAP SUMMARY:\n==2294773==     in use at exit: 47,218 bytes in 764 blocks\n==2294773==   total heap usage: 850 allocs, 86 frees, 83,430 bytes allocated\n==2294773== \n==2294773== For a detailed leak analysis, rerun with: --leak-check=full\n==2294773== \n==2294773== For lists of detected and suppressed errors, rerun with: -s\n==2294773== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)\n"
+    },
+    {
+      "locale": "C.UTF-8",
+      "memcheck": false,
+      "command": [
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/reproduce.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed"
+      ],
+      "status": 0,
+      "stdout": "before: A B\nafter: A B\ngetter calls: 1\nstored a: A\nstored b: B\nresult: PASS\n",
+      "stderr": ""
+    },
+    {
+      "locale": "C.UTF-8",
+      "memcheck": true,
+      "command": [
+        "valgrind",
+        "--error-exitcode=97",
+        "--leak-check=no",
+        "--track-origins=yes",
+        "/usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/reproduce.zsh",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed"
+      ],
+      "status": 0,
+      "stdout": "before: A B\nafter: A B\ngetter calls: 1\nstored a: A\nstored b: B\nresult: PASS\n",
+      "stderr": "==2294840== Memcheck, a memory error detector\n==2294840== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.\n==2294840== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info\n==2294840== Command: /usr/local/psh/releases/1.0.0-rc1-6db51a2527d4/bin/psh -df /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/bugs/hash-getter-reentry/reproduce.zsh /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/hash-report-fixed\n==2294840== \n==2294840== \n==2294840== HEAP SUMMARY:\n==2294840==     in use at exit: 47,230 bytes in 764 blocks\n==2294840==   total heap usage: 1,051 allocs, 287 frees, 102,925 bytes allocated\n==2294840== \n==2294840== For a detailed leak analysis, rerun with: --leak-check=full\n==2294840== \n==2294840== For lists of detected and suppressed errors, rerun with: -s\n==2294840== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)\n"
+    }
+  ]
+}

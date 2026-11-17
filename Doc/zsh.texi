@@ -30735,6 +30735,21 @@ system call if available, otherwise the @t{select} system call if
 available.
 
 @noindent
+When timeout validation is reached, the expression is evaluated once.
+Values that cannot be represented
+by the backend's conversion return status 1 with a diagnostic before polling
+or reading.  With @t{poll}, nonnegative values must have a truncated
+millisecond value that fits a C @t{int}.  Finite negative values are handled
+without converting their magnitude: negative integer seconds, or floating
+values at or below -1 second, request an indefinite wait.  Floating values
+between -1 and 0 seconds retain millisecond truncation.
+With @t{select}, the truncated seconds value must fit a C @t{int}.
+NaN and infinities are rejected.  No timeout is silently capped.  Negative
+timeouts retain backend-specific behavior: a negative millisecond value means
+an indefinite wait with @t{poll}, whereas negative timeval fields normally
+cause a system error with @t{select}.  Small fractions truncate as before.
+
+@noindent
 If @var{outfd} is given, an attempt is made to write all the bytes just
 read to the file descriptor @var{outfd}.  If this fails, because of a
 system error other than @t{EINTR} or because of an internal zsh error
@@ -30964,6 +30979,7 @@ Descriptor arguments must be positive integers representable by the platform's
 @t{int} type; out-of-range values are rejected instead of being narrowed to
 another descriptor.
 
+@noindent
 A numeric @var{port} must be in the range 1 to 65535.  Other numeric values are
 rejected before a socket is opened.  Service names continue to use the system's
 service database.
