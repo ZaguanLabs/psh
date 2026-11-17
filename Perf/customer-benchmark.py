@@ -23,6 +23,7 @@ CASES = [
     ("shooter-step", "challenge", "z3dfx.grok", 60),
     ("fetch-encode", "labs", "zfetch", 3),
     ("drawing-binning", "challenge", "z3dfx.drawing", 3),
+    ("coder-skill-fold", "labs", "zcoder.zsh", 200),
 ]
 
 

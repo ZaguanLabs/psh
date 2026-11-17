@@ -5498,24 +5498,36 @@ bin_shift(char *name, char **argv, Options ops, UNUSED(int func))
 		}
                 setaparam(*argv, s);
             }
-    } else {
-        if (num > (l = arrlen(pparams))) {
+    } else if (num) {
+	if (num > (l = arrlen(pparams))) {
 	    zwarnnam(name, "shift count must be <= $#");
 	    ret = 1;
 	} else {
-	    s = zalloc((l - num + 1) * sizeof(char *));
+	    int keep = l - num, i;
+	    size_t bytes = ((size_t)keep + 1) * sizeof(*pparams);
+	    char **survivors = pparams;
+
 	    if (OPT_ISSET(ops,'p')) {
-		memcpy(s, pparams, (l - num) * sizeof(char *));
-		s[l-num] = NULL;
-		while (num--)
-		    zsfree(pparams[l-1-num]);
+		for (i = keep; i < l; i++)
+		    zsfree(pparams[i]);
+		pparams[keep] = NULL;
 	    } else {
-		memcpy(s, pparams + num, (l - num + 1) * sizeof(char *));
-		while (num--)
-		    zsfree(pparams[num]);
+		for (i = num; i > 0; i--)
+		    zsfree(pparams[i-1]);
+		survivors += num;
 	    }
-	    zfree(pparams, (l + 1) * sizeof(char *));
-	    pparams = s;
+
+	    if (num > keep) {
+		/* Release the old vector when most arguments are discarded. */
+		s = zalloc(bytes);
+		memcpy(s, survivors, bytes);
+		zfree(pparams, ((size_t)l + 1) * sizeof(*pparams));
+		pparams = s;
+	    } else {
+		if (survivors != pparams)
+		    memmove(pparams, survivors, bytes);
+		pparams = zrealloc(pparams, bytes);
+	    }
 	}
     }
     unqueue_signals();

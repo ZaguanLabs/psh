@@ -6,6 +6,24 @@ integer psh_iterations=$3
 psh-reset() { return 0; }
 
 case $psh_operation in
+  coder-skill-fold)
+    source "$psh_project/lib/skills.zsh" || exit 1
+    typeset -a psh_lines=('  first line ' '' ' second λ line ' '  last  ')
+    typeset psh_folded psh_literal
+    run-workload() {
+      repeat $psh_iterations {
+        _skills_fold_lines folded "${psh_lines[@]}" || return 1
+        psh_folded=$REPLY
+        _skills_fold_lines literal "${psh_lines[@]}" || return 1
+        psh_literal=$REPLY
+      }
+    }
+    check-result() {
+      [[ $psh_folded == $'first line\nsecond λ line last' &&
+         $psh_literal == $'first line\n\nsecond λ line\nlast' ]]
+    }
+    dump-result() { typeset -p psh_folded psh_literal; }
+    ;;
   coder-paste|chat-paste|coder-layout|chat-layout|coder-wide-layout|chat-wide-layout)
     source "$psh_project/lib/util.zsh" || exit 1
     source "$psh_project/lib/input.zsh" || exit 1
