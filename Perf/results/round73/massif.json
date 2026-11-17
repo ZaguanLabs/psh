@@ -1,0 +1,39 @@
+[
+  {
+    "mode": "malloc",
+    "command": [
+      "valgrind",
+      "--tool=massif",
+      "--time-unit=B",
+      "--massif-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round73/massif-malloc.out",
+      "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "coder-wide-layout",
+      "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "2"
+    ],
+    "status": 0,
+    "state_sha256": "94b37dc408550913157cbce866ce49b7d9a355c6a6e2dbe75458f3364d92b9ef",
+    "binary_sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f"
+  },
+  {
+    "mode": "pages",
+    "command": [
+      "valgrind",
+      "--tool=massif",
+      "--time-unit=B",
+      "--pages-as-heap=yes",
+      "--massif-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round73/massif-pages.out",
+      "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+      "-df",
+      "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+      "coder-wide-layout",
+      "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "2"
+    ],
+    "status": 0,
+    "state_sha256": "94b37dc408550913157cbce866ce49b7d9a355c6a6e2dbe75458f3364d92b9ef",
+    "binary_sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f"
+  }
+]

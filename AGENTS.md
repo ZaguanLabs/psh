@@ -37,6 +37,12 @@ Profile the actual release build and the user's projects. Keep timing separate
 from builds, tests and profilers, alternate samples, compare resulting states,
 and retain slower controls and unsuccessful experiments.
 
+Memory footprint is also a development objective. Measure peak and retained
+memory on the user's workloads, distinguishing resident/private memory from
+virtual address space and allocator reservations. Prefer reducing redundant
+allocations and unnecessary retention; report speed/memory tradeoffs explicitly.
+Do not remove user features or introduce unbounded caches to improve a score.
+
 Try behavior-preserving approaches first. For architectural changes, characterize
 the existing behavior before replacing it, make one change at a time, and compare
 against both pristine Zsh and the preceding accepted build. Preserve evaluation
