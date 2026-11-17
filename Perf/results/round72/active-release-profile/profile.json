@@ -1,0 +1,733 @@
+{
+  "shell": "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+  "binary_sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f",
+  "worker_sha256": "9dd21b483e930950834be1f463b48b5532acf8d866cdbbe21a64b6f013166caf",
+  "case_definitions_sha256": "ab677fbaac5842293a886ed7e3e054e070438721316f8cc5f808a5eace3f3f6f",
+  "driver_sha256": "7b7fad8d06c55c6008510f83b4978e7696a5a206b480c6b71d144013ac40528c",
+  "scope": "fresh profiling process, including loading, setup, operation, validation and output; not elapsed timing",
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C.UTF-8"
+  },
+  "cases": [
+    {
+      "case": "endgame/endgame-world",
+      "command": [
+        "valgrind",
+        "--tool=callgrind",
+        "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round72/active-release-profile/endgame-endgame-world.callgrind",
+        "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+        "endgame-world",
+        "/home/stig/dev/challenge/endgame",
+        "2"
+      ],
+      "profile": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round72/active-release-profile/endgame-endgame-world.callgrind",
+      "instructions": 1068345587,
+      "iterations": 2,
+      "project_root": "/home/stig/dev/challenge/endgame",
+      "source_sha256": {
+        "lib/adventure.zsh": "1a2904170518e81f618273a389a35722e62cbfb55f2ea4303be13672f1e9ede0",
+        "lib/art.zsh": "a52adc4af0bd5c946e84cda8c4817802c5071a3ddca7f7a08fd6da6840af36a2",
+        "lib/data.zsh": "f85d09ed342f6714bf2edac96969aff0048c1c3af17a93fcb715825b79d75814",
+        "lib/engine.zsh": "735ff895344d264e3025c980933d886fa9b1a96fdba969d4d8b11dbc77d29bb7",
+        "lib/expedition.zsh": "09bf2032c1239b7aed0544c95376dd4b81c3b958ea7efa2fd787f710a66fdcdb",
+        "lib/observatory.zsh": "3cb45623d579b259767d372fd1205afc895992825d7f2b3df17ee673337ad881",
+        "lib/pixels.zsh": "7cc8ed88b364492b924fc1f9286d52b15904ca9337fb117d7c2c7296ca8b2619",
+        "lib/runtime.zsh": "ed2fbc00dc164b56c32c14ab7bc7be37c07450ea8fa84caff19e1f17a15e148e",
+        "lib/save.zsh": "c7a4ef245897ca490e2918244197aaea5b8938745d7d9011c7de82818b5407eb",
+        "lib/shaders.zsh": "cfcde8882681090c2fce5fa998af2f22217b31d2ffb44a568a071e57419b05fd",
+        "lib/toolkit.zsh": "66ffca58f696dc34abc20eb86a2850e46421d3c2b7a49c80382281a35246838d",
+        "lib/ui.zsh": "8b48ac86ccfec87826278594bc992735faced344668b5bd8696d0ad1fc90da56",
+        "lib/vista.zsh": "022a90bcb0da2f72b4816b671ce9694f5becc89a1d816284e17e038c28580dc6"
+      },
+      "input_metadata": {
+        "lib/adventure.zsh": {
+          "sha256": "1a2904170518e81f618273a389a35722e62cbfb55f2ea4303be13672f1e9ede0",
+          "mtime_ns": 1790714880413726054,
+          "size": 11160
+        },
+        "lib/adventure.zsh.zwc": {
+          "sha256": "6f92d342d94b5d7e457db48d33ebc70b827e8c7ce76ec328a50064693aa9684c",
+          "mtime_ns": 1794338404006709497,
+          "size": 29312
+        },
+        "lib/art.zsh": {
+          "sha256": "a52adc4af0bd5c946e84cda8c4817802c5071a3ddca7f7a08fd6da6840af36a2",
+          "mtime_ns": 1790714442622088064,
+          "size": 12097
+        },
+        "lib/art.zsh.zwc": {
+          "sha256": "5833515ff3a406928628ba5479b2c8cd47c1379ec63c66080a7b25cd95e6ba30",
+          "mtime_ns": 1794338404006709497,
+          "size": 25328
+        },
+        "lib/data.zsh": {
+          "sha256": "f85d09ed342f6714bf2edac96969aff0048c1c3af17a93fcb715825b79d75814",
+          "mtime_ns": 1790715334485344535,
+          "size": 7681
+        },
+        "lib/data.zsh.zwc": {
+          "sha256": "8328dd6092b0f177fefde0c515767d2fb594197d34bdb57ceb5b5d7f6c05929b",
+          "mtime_ns": 1794338404008251439,
+          "size": 17400
+        },
+        "lib/engine.zsh": {
+          "sha256": "735ff895344d264e3025c980933d886fa9b1a96fdba969d4d8b11dbc77d29bb7",
+          "mtime_ns": 1790715518985235561,
+          "size": 19386
+        },
+        "lib/engine.zsh.zwc": {
+          "sha256": "8e635e6323fdb15cd84c4869e64f3fa33d611deea7c3a614f1fbfc908ea65e7e",
+          "mtime_ns": 1794338404008560042,
+          "size": 57816
+        },
+        "lib/expedition.zsh": {
+          "sha256": "09bf2032c1239b7aed0544c95376dd4b81c3b958ea7efa2fd787f710a66fdcdb",
+          "mtime_ns": 1790714975308370361,
+          "size": 7020
+        },
+        "lib/expedition.zsh.zwc": {
+          "sha256": "6326054d94001bc78d1e288268c8e9d3dfdcd477a27e3b7df8e2c821b14cd812",
+          "mtime_ns": 1794338404009664871,
+          "size": 19104
+        },
+        "lib/observatory.zsh": {
+          "sha256": "3cb45623d579b259767d372fd1205afc895992825d7f2b3df17ee673337ad881",
+          "mtime_ns": 1790714699105949056,
+          "size": 4822
+        },
+        "lib/observatory.zsh.zwc": {
+          "sha256": "e49a25ff3755964fb24b60cd962a7bef81722c794b4db010f456f0ac130d781f",
+          "mtime_ns": 1794338404009664871,
+          "size": 12728
+        },
+        "lib/pixels.zsh": {
+          "sha256": "7cc8ed88b364492b924fc1f9286d52b15904ca9337fb117d7c2c7296ca8b2619",
+          "mtime_ns": 1789418937454931901,
+          "size": 7983
+        },
+        "lib/pixels.zsh.zwc": {
+          "sha256": "d8ee3cb7518fcde22713a5c8b98bad6eed2d8d675b83759ce4e8171d7073f5ea",
+          "mtime_ns": 1794338404010654119,
+          "size": 21712
+        },
+        "lib/runtime.zsh": {
+          "sha256": "ed2fbc00dc164b56c32c14ab7bc7be37c07450ea8fa84caff19e1f17a15e148e",
+          "mtime_ns": 1790715139056797534,
+          "size": 16868
+        },
+        "lib/runtime.zsh.zwc": {
+          "sha256": "3358b1fef3f44cd78a6eb2e68a229760849462c09e523dd9fc6ffea22d688301",
+          "mtime_ns": 1794338404011585876,
+          "size": 46480
+        },
+        "lib/save.zsh": {
+          "sha256": "c7a4ef245897ca490e2918244197aaea5b8938745d7d9011c7de82818b5407eb",
+          "mtime_ns": 1790715334485796018,
+          "size": 10018
+        },
+        "lib/save.zsh.zwc": {
+          "sha256": "87da27ce699e6b2d8d906829ce069befd303be790952a7a985e579d58650a22b",
+          "mtime_ns": 1794338404012365662,
+          "size": 26144
+        },
+        "lib/shaders.zsh": {
+          "sha256": "cfcde8882681090c2fce5fa998af2f22217b31d2ffb44a568a071e57419b05fd",
+          "mtime_ns": 1790715028911317665,
+          "size": 14846
+        },
+        "lib/shaders.zsh.zwc": {
+          "sha256": "c4b4e20291239eb6092fc546da11bcc7f0f95fdfa9bb8c33f72fe521d1a9f00a",
+          "mtime_ns": 1794338404013069518,
+          "size": 39952
+        },
+        "lib/toolkit.zsh": {
+          "sha256": "66ffca58f696dc34abc20eb86a2850e46421d3c2b7a49c80382281a35246838d",
+          "mtime_ns": 1794338092255211015,
+          "size": 1100
+        },
+        "lib/toolkit.zsh.zwc": {
+          "sha256": "00bcfea8e83ec2e4325346afda1f658e5838c720844ac6405d0086816d2e8142",
+          "mtime_ns": 1794338404013069518,
+          "size": 2824
+        },
+        "lib/ui.zsh": {
+          "sha256": "8b48ac86ccfec87826278594bc992735faced344668b5bd8696d0ad1fc90da56",
+          "mtime_ns": 1790715444343828559,
+          "size": 22290
+        },
+        "lib/ui.zsh.zwc": {
+          "sha256": "99d22c9b7437deac2d57dcefd2210ff808312c1440fc8072f8e8434fb522cbc0",
+          "mtime_ns": 1794338404013069518,
+          "size": 63032
+        },
+        "lib/vista.zsh": {
+          "sha256": "022a90bcb0da2f72b4816b671ce9694f5becc89a1d816284e17e038c28580dc6",
+          "mtime_ns": 1790715139056678663,
+          "size": 7129
+        },
+        "lib/vista.zsh.zwc": {
+          "sha256": "e50d5ea14ba3a2db7a7e0784904b73a05cde28f0cd813abbe5a1eb47a6623260",
+          "mtime_ns": 1794338404013077278,
+          "size": 18216
+        }
+      },
+      "stdout_sha256": "b71452ff728e8d09a0eda0c379ab60f5a028e8805bf0cccf3158219cdfb686eb",
+      "state_sha256": "6299c35a068a34015a5c807070152d168e7d3604771a24d83d9bed2a4da3fead"
+    },
+    {
+      "case": "zcoder.zsh/coder-paste",
+      "command": [
+        "valgrind",
+        "--tool=callgrind",
+        "--callgrind-out-file=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round72/active-release-profile/zcoder-zsh-coder-paste.callgrind",
+        "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+        "-df",
+        "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Perf/customer-workload.zsh",
+        "coder-paste",
+        "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+        "1"
+      ],
+      "profile": "/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round72/active-release-profile/zcoder-zsh-coder-paste.callgrind",
+      "instructions": 1183594157,
+      "iterations": 1,
+      "project_root": "/home/stig/dev/ai/zaguan/labs/zcoder.zsh",
+      "source_sha256": {
+        "lib/acp.zsh": "00e8849428de1a5e64ed6961dac716e0d0d5cd905234a66c9e043bf2051e7f39",
+        "lib/agent.zsh": "6501bb86cced52aff53e8a6887455b216a87f0acf5a57d2787fbd0914ab71d31",
+        "lib/agent_lfm.zsh": "a237ad35834c6fd5ee3a8ba925c393760c5eaea864db8c81f78d383227925f47",
+        "lib/agent_loop.zsh": "96ff422b908f0f90e614c9c23166a9f5fd20d972b95713d9ab5117fc2a1de6f9",
+        "lib/agent_prompts.zsh": "2dc60229db8dab8c05c16781d4a4a8eb7a5e0def63709d47430cb43778dd2140",
+        "lib/command_dispatch.zsh": "987565404517ca3040ef8f6ffb5b8dc5352560d84b9c0fe814c28f7755131f97",
+        "lib/command_safety.zsh": "b4647d732c439eab2c9fdd4459c112954fd261138dec8a0ca7fff78c49ae1475",
+        "lib/commands.zsh": "858b68ff45f1ac0f87a986e2c7b18daaf4797e14c6917a3469fb82a653ff784c",
+        "lib/compact.zsh": "803b0645fc3ecc277436abbfee3574b3b33fb26d5bfa8c23e4313ddd5d5aacb1",
+        "lib/curses.zsh": "cda85cde43fbe94fdca8f9b3a1a093f4da4a3916762f8aa4c965055f9375294b",
+        "lib/delegate.zsh": "c33d397cf012709eb77596494e8cf43a84bf73689ce524809bdbd85fe64ec495",
+        "lib/diff.zsh": "ad3c0b18e98d19d4e3ef3c96c971decb6252a7290ef993bb91eac08e6daa56a9",
+        "lib/document_context.zsh": "27140e727b12226b1060c40a64586dd631cdc571bfddbacc3514366b40a3049c",
+        "lib/document_files.zsh": "64e2b07e02a4060006987321ade9468112f8967f4a1bf379de5bfa6c1b677ab3",
+        "lib/document_tabs.zsh": "e55efd42d4683655fef9324f7ba62a8c004dbf0aace99683674f8c9879be123d",
+        "lib/document_view.zsh": "0e077bccb213d9611d43a04f7fe3cc87eb5c9674ba93e56bdc388445096ffaed",
+        "lib/drawing.zsh": "343572193aaf3726bf14bdd3bb20de2e53f68b13002476b2540a0d1f3851b1f2",
+        "lib/goal.zsh": "35b95ad2611152d234a6bac35e24fe22d44896382e864040639bf9cc4e655aca",
+        "lib/harnesses.zsh": "e1959df7612bd64f3b29669cf0ac115368b62c0a68140b890ff62ce509b2bfbc",
+        "lib/http.zsh": "ec719de8de15fbbacec66acfa5a7fedcd8ebd6378da9e8124a93e2a0d96802bd",
+        "lib/input.zsh": "b0398a5d303ff1944dd350e770754a305061f5482a5b552714b4860147289879",
+        "lib/input_queue.zsh": "680c6aa921c0a0b88a89e13450a546f74c05c172437db19afd18e89b03570d8c",
+        "lib/instructions.zsh": "4bb7bf1d5e15e543115ce34d0e1020e843841ecdb487b3d94db9e240576bf71d",
+        "lib/json.zsh": "85cb47b5397de9aff0714122e7f87fd067631497af61c7c0f9f07b7244603e62",
+        "lib/markdown.zsh": "5169dd713e40fc2ce06b523ebbc5705768ef5b6d64947bf86b18574712e90872",
+        "lib/markdown_native.zsh": "3efe8eee8a1060480736bac043f3b08c6e18c944b48838552f75583a4d3b466d",
+        "lib/mcp.zsh": "a518f89091bcf8f9176ab75406a5b7b8399cb742fa94d4ca01076f7f7372b6a4",
+        "lib/overlays.zsh": "6fa8b8fa42ef275ceaab3028c2eda950d3e356c1a2ab3c9498653b53abe068ed",
+        "lib/process.zsh": "a6f79fff6cfe42e60a768b5ecaf865b537299780d81568b4d09c3f363a59c6aa",
+        "lib/relay.zsh": "2c1e78a1857aef088b2189fcfca9884162838cb31e061d4cbf1aed8b14b5c462",
+        "lib/remote.zsh": "30872e1f5ff5db096746832fbfebe97ad7f07b0cec1e1236a8686fa20380f4ff",
+        "lib/remote_client.zsh": "a6a75a92640dc959405bffd326dfa780452c8b723be017a50ec65b8ce68d3a8c",
+        "lib/remote_server.zsh": "c143c499bb7d8baec621c69bb81ce380523440cd7e7802c1ac9f27b10f18d21d",
+        "lib/remote_server_agent.zsh": "1f9d1eebbc44a6a00b2233abe477b5494ef39d1fcde315ee94ba570a8fa3acc0",
+        "lib/runtime.zsh": "8eebc234158998756f01a0c479ff7726c9c30ce53d459ac52bac9a022e75948a",
+        "lib/search.zsh": "711aa27797c1f2e84ca50b3fe04c221f78118598e48f1c2f7e9b2a7ad0cfc68f",
+        "lib/selection.zsh": "26903b1106de89b57ba4e4010e67b30270d66d2a00fb7196f6ef8fe9defc013a",
+        "lib/skills.zsh": "cfee75b3f1817a180d50d7a6b17cbfd1c86808bc3ff387638928341531bd4786",
+        "lib/state.zsh": "c4d02c2db8c39cf18011406ede6960932c44a14259087b9239a743181c96f819",
+        "lib/stream.zsh": "6529134ae4631e9c3450b207faa134fc7bf755f460bc0b4415e980e13306290e",
+        "lib/tasks.zsh": "7b24ce4f2780b702879bcd0b11e4446b8006b7e3520bcb51e883fcb2cc1ae3cc",
+        "lib/terminal.zsh": "9730807372507698c0784cd5b614abd94dc84248d161f9b6f386298c14f92e67",
+        "lib/tools.zsh": "9550e0e1c70fbb1825612de140950929dd27c14997783181345797e68655aa6a",
+        "lib/transcript.zsh": "70858f0931331727aa56cdd64a5a9f78895d98b2dc742a1c14fa1c1e5ae739f7",
+        "lib/tui.zsh": "8300fe98f58ebba21962e153f1083c9f063cde94c18b2a283934d67fa7b3c140",
+        "lib/ui.zsh": "e215a1cde05ff10db867ce9bc95d8ef3a0690a204e03f21b9ceed24b793f4c8b",
+        "lib/ui_preferences.zsh": "d22a49ba92fd2000e3fcb3197b881d29270d30d0dd108caa346ef2a5ae430625",
+        "lib/util.zsh": "48252a050a00bff3f48dbecfe7c0ab372cb7f9bdbfd9a8b4bcd64334f8ce96c4"
+      },
+      "input_metadata": {
+        "lib/acp.zsh": {
+          "sha256": "00e8849428de1a5e64ed6961dac716e0d0d5cd905234a66c9e043bf2051e7f39",
+          "mtime_ns": 1791113221268933067,
+          "size": 33283
+        },
+        "lib/acp.zsh.zwc": {
+          "sha256": "5ab6095ff92119b3ab64e3d1b992fe4ee4ca59c1851fe698dfd08fb748ce08c4",
+          "mtime_ns": 1794662453546072863,
+          "size": 87392
+        },
+        "lib/agent.zsh": {
+          "sha256": "6501bb86cced52aff53e8a6887455b216a87f0acf5a57d2787fbd0914ab71d31",
+          "mtime_ns": 1792761187713786891,
+          "size": 29052
+        },
+        "lib/agent.zsh.zwc": {
+          "sha256": "68dc24d106390eea7c11792cf17ab4921c9b0bac0aad14078f5ded96aca97b34",
+          "mtime_ns": 1794662453546072863,
+          "size": 70384
+        },
+        "lib/agent_lfm.zsh": {
+          "sha256": "a237ad35834c6fd5ee3a8ba925c393760c5eaea864db8c81f78d383227925f47",
+          "mtime_ns": 1789848254998062119,
+          "size": 9436
+        },
+        "lib/agent_lfm.zsh.zwc": {
+          "sha256": "3b8e93eff3f9fb05277f8ce8d5e3fa2b03fad7f7c5137b20eaa0791df18754dc",
+          "mtime_ns": 1794662453546072863,
+          "size": 21480
+        },
+        "lib/agent_loop.zsh": {
+          "sha256": "96ff422b908f0f90e614c9c23166a9f5fd20d972b95713d9ab5117fc2a1de6f9",
+          "mtime_ns": 1791873640699530171,
+          "size": 41097
+        },
+        "lib/agent_loop.zsh.zwc": {
+          "sha256": "2f23be8fef078bc260319bed66f5f147491911ec391daaf1e9974d43ee630bc8",
+          "mtime_ns": 1794662453548072879,
+          "size": 86992
+        },
+        "lib/agent_prompts.zsh": {
+          "sha256": "2dc60229db8dab8c05c16781d4a4a8eb7a5e0def63709d47430cb43778dd2140",
+          "mtime_ns": 1791873728014201698,
+          "size": 17457
+        },
+        "lib/agent_prompts.zsh.zwc": {
+          "sha256": "e7084939d963c02ff647f10e56ffb1606372023f8c3b6dc3b317c023574dc99e",
+          "mtime_ns": 1794662453548072879,
+          "size": 37744
+        },
+        "lib/command_dispatch.zsh": {
+          "sha256": "987565404517ca3040ef8f6ffb5b8dc5352560d84b9c0fe814c28f7755131f97",
+          "mtime_ns": 1792762137976166595,
+          "size": 18210
+        },
+        "lib/command_dispatch.zsh.zwc": {
+          "sha256": "b7a49c1bd25fec2bae14cbe8086b6fac539013125e4e42b4446d6df012e39794",
+          "mtime_ns": 1794662453548072879,
+          "size": 41176
+        },
+        "lib/command_safety.zsh": {
+          "sha256": "b4647d732c439eab2c9fdd4459c112954fd261138dec8a0ca7fff78c49ae1475",
+          "mtime_ns": 1792761827412648762,
+          "size": 6002
+        },
+        "lib/command_safety.zsh.zwc": {
+          "sha256": "58899878b1827ad0dc25a2a7f37f39757cf454a9aaaae135a1b09f886f5f64e5",
+          "mtime_ns": 1794662453548072879,
+          "size": 13328
+        },
+        "lib/commands.zsh": {
+          "sha256": "858b68ff45f1ac0f87a986e2c7b18daaf4797e14c6917a3469fb82a653ff784c",
+          "mtime_ns": 1792761467480803546,
+          "size": 26563
+        },
+        "lib/commands.zsh.zwc": {
+          "sha256": "8e27d70d5af958aee927b94dc5961692959e3edabe397ea97a6ca58897efee09",
+          "mtime_ns": 1794662453550072895,
+          "size": 65288
+        },
+        "lib/compact.zsh": {
+          "sha256": "803b0645fc3ecc277436abbfee3574b3b33fb26d5bfa8c23e4313ddd5d5aacb1",
+          "mtime_ns": 1791467832290746410,
+          "size": 39844
+        },
+        "lib/compact.zsh.zwc": {
+          "sha256": "00ef7f8c08f5810f12e6e869c95caf0d4654c72d24b31cac289c653f5cce3d38",
+          "mtime_ns": 1794662453552171346,
+          "size": 92072
+        },
+        "lib/curses.zsh": {
+          "sha256": "cda85cde43fbe94fdca8f9b3a1a093f4da4a3916762f8aa4c965055f9375294b",
+          "mtime_ns": 1789151274441291858,
+          "size": 2383
+        },
+        "lib/curses.zsh.zwc": {
+          "sha256": "1e7f33e8a01001c5742658e5991a2703c4517edf83447b7ac4ded74c70169b54",
+          "mtime_ns": 1794662453552171346,
+          "size": 5400
+        },
+        "lib/delegate.zsh": {
+          "sha256": "c33d397cf012709eb77596494e8cf43a84bf73689ce524809bdbd85fe64ec495",
+          "mtime_ns": 1789650921791271275,
+          "size": 22083
+        },
+        "lib/delegate.zsh.zwc": {
+          "sha256": "a99ce796bd7d931fc0b3ed40ef528a6a37402dc555869265ba87e97e6d08f4b7",
+          "mtime_ns": 1794662453552171346,
+          "size": 56160
+        },
+        "lib/diff.zsh": {
+          "sha256": "ad3c0b18e98d19d4e3ef3c96c971decb6252a7290ef993bb91eac08e6daa56a9",
+          "mtime_ns": 1789666628362222099,
+          "size": 5022
+        },
+        "lib/diff.zsh.zwc": {
+          "sha256": "f2fbbbd6e13ac15a3ddec15d956354b8ad329ffb0e2f4cbe55b2277b8662597f",
+          "mtime_ns": 1794662453552171346,
+          "size": 13632
+        },
+        "lib/document_context.zsh": {
+          "sha256": "27140e727b12226b1060c40a64586dd631cdc571bfddbacc3514366b40a3049c",
+          "mtime_ns": 1790954762343196420,
+          "size": 2684
+        },
+        "lib/document_context.zsh.zwc": {
+          "sha256": "8a9da5bf255b6cb1ad46b895cd92f31ab389a4c542a57cdca274522de802dd46",
+          "mtime_ns": 1794662453552171346,
+          "size": 6600
+        },
+        "lib/document_files.zsh": {
+          "sha256": "64e2b07e02a4060006987321ade9468112f8967f4a1bf379de5bfa6c1b677ab3",
+          "mtime_ns": 1790952120536291292,
+          "size": 2146
+        },
+        "lib/document_files.zsh.zwc": {
+          "sha256": "13e44e090f5a5d79a8020fa99b6ed2218045bea77a45d1dc000c336ccd168476",
+          "mtime_ns": 1794662453552171346,
+          "size": 5872
+        },
+        "lib/document_tabs.zsh": {
+          "sha256": "e55efd42d4683655fef9324f7ba62a8c004dbf0aace99683674f8c9879be123d",
+          "mtime_ns": 1790953697851252795,
+          "size": 7767
+        },
+        "lib/document_tabs.zsh.zwc": {
+          "sha256": "38f3084475e41c868946bb41dd6604d64e71bba63633de9dfaeb5419d45b6ecc",
+          "mtime_ns": 1794662453552171346,
+          "size": 21464
+        },
+        "lib/document_view.zsh": {
+          "sha256": "0e077bccb213d9611d43a04f7fe3cc87eb5c9674ba93e56bdc388445096ffaed",
+          "mtime_ns": 1792331611222447132,
+          "size": 10071
+        },
+        "lib/document_view.zsh.zwc": {
+          "sha256": "fe0dbbd22a502dde11dada846c8637b74b16eb390188266dbbe6819095f0c5bc",
+          "mtime_ns": 1794662453552171346,
+          "size": 25536
+        },
+        "lib/drawing.zsh": {
+          "sha256": "343572193aaf3726bf14bdd3bb20de2e53f68b13002476b2540a0d1f3851b1f2",
+          "mtime_ns": 1789294596390575190,
+          "size": 9243
+        },
+        "lib/drawing.zsh.zwc": {
+          "sha256": "367750b51dbb63def81dbe3475619e8354e61ea27b122963e183c886c616b845",
+          "mtime_ns": 1794662453552171346,
+          "size": 23200
+        },
+        "lib/goal.zsh": {
+          "sha256": "35b95ad2611152d234a6bac35e24fe22d44896382e864040639bf9cc4e655aca",
+          "mtime_ns": 1789583749412757309,
+          "size": 15796
+        },
+        "lib/goal.zsh.zwc": {
+          "sha256": "4f1655d89fd01b9ec086a37af2c769f8a5d20b544e26a85b29e4ebb4b43914c7",
+          "mtime_ns": 1794662453552171346,
+          "size": 42024
+        },
+        "lib/harnesses.zsh": {
+          "sha256": "e1959df7612bd64f3b29669cf0ac115368b62c0a68140b890ff62ce509b2bfbc",
+          "mtime_ns": 1788702981431488694,
+          "size": 3528
+        },
+        "lib/harnesses.zsh.zwc": {
+          "sha256": "19435b326d3b772b1e962b1c46c775876c3c07d9329266e95f12e727a7a69e5b",
+          "mtime_ns": 1794662453552171346,
+          "size": 10080
+        },
+        "lib/http.zsh": {
+          "sha256": "ec719de8de15fbbacec66acfa5a7fedcd8ebd6378da9e8124a93e2a0d96802bd",
+          "mtime_ns": 1792096481601096600,
+          "size": 15935
+        },
+        "lib/http.zsh.zwc": {
+          "sha256": "650e53e61caf3eac827b66c9c65f9c7200b3dd424f56ae1831938bd3dd81eea9",
+          "mtime_ns": 1794662453554072926,
+          "size": 41384
+        },
+        "lib/input.zsh": {
+          "sha256": "b0398a5d303ff1944dd350e770754a305061f5482a5b552714b4860147289879",
+          "mtime_ns": 1790952120421258148,
+          "size": 14258
+        },
+        "lib/input.zsh.zwc": {
+          "sha256": "f4c0176b2bfd8a59962c2fc63cfa01ecf739174c415f517338791903c3924a2a",
+          "mtime_ns": 1794662453554072926,
+          "size": 35712
+        },
+        "lib/input_queue.zsh": {
+          "sha256": "680c6aa921c0a0b88a89e13450a546f74c05c172437db19afd18e89b03570d8c",
+          "mtime_ns": 1790954931513968760,
+          "size": 15296
+        },
+        "lib/input_queue.zsh.zwc": {
+          "sha256": "59f02c0fbf6425cf57ca67a7daab868b2953a730fa4b93037e209eb26fa2acdf",
+          "mtime_ns": 1794662453554072926,
+          "size": 40328
+        },
+        "lib/instructions.zsh": {
+          "sha256": "4bb7bf1d5e15e543115ce34d0e1020e843841ecdb487b3d94db9e240576bf71d",
+          "mtime_ns": 1792761331730267472,
+          "size": 7254
+        },
+        "lib/instructions.zsh.zwc": {
+          "sha256": "b4f7ed84c3cd07a6a300eb838d049591e62feea14285291aa7dc28dfeb28d232",
+          "mtime_ns": 1794662453554072926,
+          "size": 19368
+        },
+        "lib/json.zsh": {
+          "sha256": "85cb47b5397de9aff0714122e7f87fd067631497af61c7c0f9f07b7244603e62",
+          "mtime_ns": 1791467747542097584,
+          "size": 19296
+        },
+        "lib/json.zsh.zwc": {
+          "sha256": "562d7ba46e35a1191af56e3d74146b37720be5fd1f8025d1ac65497d6815a63f",
+          "mtime_ns": 1794662453556072941,
+          "size": 47248
+        },
+        "lib/markdown.zsh": {
+          "sha256": "5169dd713e40fc2ce06b523ebbc5705768ef5b6d64947bf86b18574712e90872",
+          "mtime_ns": 1792344812833447096,
+          "size": 6655
+        },
+        "lib/markdown.zsh.zwc": {
+          "sha256": "839678248b0d654dfed76b6de29d689095501f0643cadb821b122a19ab4bab7f",
+          "mtime_ns": 1794662453556072941,
+          "size": 15784
+        },
+        "lib/markdown_native.zsh": {
+          "sha256": "3efe8eee8a1060480736bac043f3b08c6e18c944b48838552f75583a4d3b466d",
+          "mtime_ns": 1792344812833447096,
+          "size": 11414
+        },
+        "lib/markdown_native.zsh.zwc": {
+          "sha256": "b6f192132c2c6bc5b3baddf60c7eb0fa2282c6bbd0d3bd32bc86c2b2861b5295",
+          "mtime_ns": 1794662453556072941,
+          "size": 28896
+        },
+        "lib/mcp.zsh": {
+          "sha256": "a518f89091bcf8f9176ab75406a5b7b8399cb742fa94d4ca01076f7f7372b6a4",
+          "mtime_ns": 1792762148876853886,
+          "size": 55669
+        },
+        "lib/mcp.zsh.zwc": {
+          "sha256": "c9d95a446c08342dc662343835c6522a2c66fa16c6f273271917c4f38a302569",
+          "mtime_ns": 1794662453560122070,
+          "size": 147312
+        },
+        "lib/overlays.zsh": {
+          "sha256": "6fa8b8fa42ef275ceaab3028c2eda950d3e356c1a2ab3c9498653b53abe068ed",
+          "mtime_ns": 1792762137976013654,
+          "size": 16350
+        },
+        "lib/overlays.zsh.zwc": {
+          "sha256": "322c11d211aaf2b2e6ed0e59163ac40e4441bbb9caaf7f001b002e9869d5b89c",
+          "mtime_ns": 1794662453560122070,
+          "size": 43768
+        },
+        "lib/process.zsh": {
+          "sha256": "a6f79fff6cfe42e60a768b5ecaf865b537299780d81568b4d09c3f363a59c6aa",
+          "mtime_ns": 1789546865627750421,
+          "size": 8976
+        },
+        "lib/process.zsh.zwc": {
+          "sha256": "d6607fe330a7ccad317245919d519c7348ffcc26745ff69ef132524575132ca1",
+          "mtime_ns": 1794662453560122070,
+          "size": 20992
+        },
+        "lib/relay.zsh": {
+          "sha256": "2c1e78a1857aef088b2189fcfca9884162838cb31e061d4cbf1aed8b14b5c462",
+          "mtime_ns": 1792761560049660661,
+          "size": 31886
+        },
+        "lib/relay.zsh.zwc": {
+          "sha256": "c7943619efe1ae0087dbf5721d3cddd83ac11ea271bb9aae3deb8229c31bbdaf",
+          "mtime_ns": 1794662453561590882,
+          "size": 88064
+        },
+        "lib/remote.zsh": {
+          "sha256": "30872e1f5ff5db096746832fbfebe97ad7f07b0cec1e1236a8686fa20380f4ff",
+          "mtime_ns": 1790954762438286361,
+          "size": 4373
+        },
+        "lib/remote.zsh.zwc": {
+          "sha256": "bf52af0d51738cad6b8d913217eca116f6526cd29a3926dcdef4771504f4011d",
+          "mtime_ns": 1794662453561590882,
+          "size": 11704
+        },
+        "lib/remote_client.zsh": {
+          "sha256": "a6a75a92640dc959405bffd326dfa780452c8b723be017a50ec65b8ce68d3a8c",
+          "mtime_ns": 1791916860770725574,
+          "size": 31966
+        },
+        "lib/remote_client.zsh.zwc": {
+          "sha256": "f9d1860875270adffe1d441665ef3b65884af6f7de66c31bddb2b5e5675fb8c7",
+          "mtime_ns": 1794662453561590882,
+          "size": 80176
+        },
+        "lib/remote_server.zsh": {
+          "sha256": "c143c499bb7d8baec621c69bb81ce380523440cd7e7802c1ac9f27b10f18d21d",
+          "mtime_ns": 1792762137976456207,
+          "size": 35526
+        },
+        "lib/remote_server.zsh.zwc": {
+          "sha256": "48b3ff2bcedf5bbb90f695eb3aa47ca35d03dff295c6c806eb22658b190f751a",
+          "mtime_ns": 1794662453563646119,
+          "size": 82760
+        },
+        "lib/remote_server_agent.zsh": {
+          "sha256": "1f9d1eebbc44a6a00b2233abe477b5494ef39d1fcde315ee94ba570a8fa3acc0",
+          "mtime_ns": 1792761201098684856,
+          "size": 17966
+        },
+        "lib/remote_server_agent.zsh.zwc": {
+          "sha256": "3389e83c4886b26b67829dd2af6d30eaf9347dc661f8398da76cafae78be5a19",
+          "mtime_ns": 1794662453564323644,
+          "size": 47648
+        },
+        "lib/runtime.zsh": {
+          "sha256": "8eebc234158998756f01a0c479ff7726c9c30ce53d459ac52bac9a022e75948a",
+          "mtime_ns": 1789151491342887044,
+          "size": 971
+        },
+        "lib/runtime.zsh.zwc": {
+          "sha256": "f16580f1a1f6cb34f0cf0c67bbf5553ca3c44e202d478e26f908c8f08269b0f2",
+          "mtime_ns": 1794662453564323644,
+          "size": 2504
+        },
+        "lib/search.zsh": {
+          "sha256": "711aa27797c1f2e84ca50b3fe04c221f78118598e48f1c2f7e9b2a7ad0cfc68f",
+          "mtime_ns": 1789584065059623303,
+          "size": 9072
+        },
+        "lib/search.zsh.zwc": {
+          "sha256": "7c14ccadb3e80757d75cfb90fc993cbafb3c4e4ccb29cb52eadd58f93a3ae362",
+          "mtime_ns": 1794662453564323644,
+          "size": 22608
+        },
+        "lib/selection.zsh": {
+          "sha256": "26903b1106de89b57ba4e4010e67b30270d66d2a00fb7196f6ef8fe9defc013a",
+          "mtime_ns": 1790952120463721349,
+          "size": 10450
+        },
+        "lib/selection.zsh.zwc": {
+          "sha256": "59232f12c7713f8f4f39e1885183d4310edd0e9886834b7042efadf5a403cf81",
+          "mtime_ns": 1794662453564323644,
+          "size": 26584
+        },
+        "lib/skills.zsh": {
+          "sha256": "cfee75b3f1817a180d50d7a6b17cbfd1c86808bc3ff387638928341531bd4786",
+          "mtime_ns": 1792761331711546884,
+          "size": 19871
+        },
+        "lib/skills.zsh.zwc": {
+          "sha256": "4b77e24974dd4c5fb5cbf67390411c4295f10c462d4cfd5167428ea1c2c6b3e6",
+          "mtime_ns": 1794662453564323644,
+          "size": 52720
+        },
+        "lib/state.zsh": {
+          "sha256": "c4d02c2db8c39cf18011406ede6960932c44a14259087b9239a743181c96f819",
+          "mtime_ns": 1791191505164066802,
+          "size": 31791
+        },
+        "lib/state.zsh.zwc": {
+          "sha256": "2cae1fc370a9543d4819efff0b20915493db68db5d6758d5537c2d44b9d7062b",
+          "mtime_ns": 1794662453564323644,
+          "size": 78168
+        },
+        "lib/stream.zsh": {
+          "sha256": "6529134ae4631e9c3450b207faa134fc7bf755f460bc0b4415e980e13306290e",
+          "mtime_ns": 1789239162860933348,
+          "size": 13621
+        },
+        "lib/stream.zsh.zwc": {
+          "sha256": "1de059218d6533035edad7625971e2f67bc16badf880d2a203466f6ac099414a",
+          "mtime_ns": 1794662453564323644,
+          "size": 35616
+        },
+        "lib/tasks.zsh": {
+          "sha256": "7b24ce4f2780b702879bcd0b11e4446b8006b7e3520bcb51e883fcb2cc1ae3cc",
+          "mtime_ns": 1791874161009531828,
+          "size": 9586
+        },
+        "lib/tasks.zsh.zwc": {
+          "sha256": "5bc59a4c457282cbeaae825dec92cc28abbd12997ae25ab12198ff409a2bab62",
+          "mtime_ns": 1794662453566073020,
+          "size": 25320
+        },
+        "lib/terminal.zsh": {
+          "sha256": "9730807372507698c0784cd5b614abd94dc84248d161f9b6f386298c14f92e67",
+          "mtime_ns": 1791055808442886804,
+          "size": 22112
+        },
+        "lib/terminal.zsh.zwc": {
+          "sha256": "5333d6de5ea5683c79f9ff04144e80cc83211969387cd9ea440ff894f1851596",
+          "mtime_ns": 1794662453566073020,
+          "size": 48984
+        },
+        "lib/tools.zsh": {
+          "sha256": "9550e0e1c70fbb1825612de140950929dd27c14997783181345797e68655aa6a",
+          "mtime_ns": 1792761532253139166,
+          "size": 51717
+        },
+        "lib/tools.zsh.zwc": {
+          "sha256": "5a00306a43585cbbab1277603767fbb30fb646e2acae12eb7e4737fd272751b6",
+          "mtime_ns": 1794662453568073035,
+          "size": 121936
+        },
+        "lib/transcript.zsh": {
+          "sha256": "70858f0931331727aa56cdd64a5a9f78895d98b2dc742a1c14fa1c1e5ae739f7",
+          "mtime_ns": 1789546865661750686,
+          "size": 8616
+        },
+        "lib/transcript.zsh.zwc": {
+          "sha256": "a128319e6fee4e206c50ac44185a3da91e5d3d188eb003936785e1312781a72b",
+          "mtime_ns": 1794662453568073035,
+          "size": 24240
+        },
+        "lib/tui.zsh": {
+          "sha256": "8300fe98f58ebba21962e153f1083c9f063cde94c18b2a283934d67fa7b3c140",
+          "mtime_ns": 1792331800179909247,
+          "size": 8415
+        },
+        "lib/tui.zsh.zwc": {
+          "sha256": "aa91561842050d28701821ee378d9e393b7bf9bdfce84cc7a3d2c0bd4eeff2fb",
+          "mtime_ns": 1794662453568073035,
+          "size": 19568
+        },
+        "lib/ui.zsh": {
+          "sha256": "e215a1cde05ff10db867ce9bc95d8ef3a0690a204e03f21b9ceed24b793f4c8b",
+          "mtime_ns": 1792312864498912611,
+          "size": 63953
+        },
+        "lib/ui.zsh.zwc": {
+          "sha256": "6879d6a8f073d0baa0a361cd082be76527e9b2a80e67b2adf7129cc1fa5fc5a4",
+          "mtime_ns": 1794662453570073050,
+          "size": 161368
+        },
+        "lib/ui_preferences.zsh": {
+          "sha256": "d22a49ba92fd2000e3fcb3197b881d29270d30d0dd108caa346ef2a5ae430625",
+          "mtime_ns": 1789044967300795892,
+          "size": 1536
+        },
+        "lib/ui_preferences.zsh.zwc": {
+          "sha256": "e3ba0505b3799fd93b8addd4eec07aaaca45521af7fde2cc64c64e03156a98eb",
+          "mtime_ns": 1794662453570073050,
+          "size": 3832
+        },
+        "lib/util.zsh": {
+          "sha256": "48252a050a00bff3f48dbecfe7c0ab372cb7f9bdbfd9a8b4bcd64334f8ce96c4",
+          "mtime_ns": 1792761278747108472,
+          "size": 14460
+        },
+        "lib/util.zsh.zwc": {
+          "sha256": "9606fa0f1db9c9ed8b1dc20d2867aa8d74d72e5555a9abcedb0ddb3477b342d7",
+          "mtime_ns": 1794662453572073066,
+          "size": 35712
+        }
+      },
+      "stdout_sha256": "aa93f3851acb2c590d891b7d8df7b79492c6061b01bd9dcbe259c33991509e32",
+      "state_sha256": "f29df9212fefb9dda43261da27d6e3f2c44dcfdbb19c8821a793a63227553caf"
+    }
+  ]
+}

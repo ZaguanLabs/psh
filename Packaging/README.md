@@ -5,13 +5,14 @@ It retains `ZSH_VERSION=5.9.2`, `zsh/*` module identities, native package names,
 and the usual personal startup filenames. It does not replace the system Zsh,
 alter personal startup files, or change the account's login shell.
 
-This development branch prepares **1.0.0-rc1**. `psh --version` reports
-`psh 1.0.0-rc1 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
+This development branch prepares **1.0.0-rc2**. `psh --version` reports
+`psh 1.0.0-rc2 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
-The [current maintenance iteration](../Perf/round37.md) records the validated
-build; [release-profile notes](../Releases/rc0-release-profile.md) describe its
-configuration and debugger symbols. See the [public rc0 notes](../Releases/1.0.0-rc0.md)
+The [round-71 maintenance iteration](../Perf/round71.md) records development
+validation of the pattern-status fix; it is not an activation certificate.
+The [original release-profile notes](../Releases/rc0-release-profile.md) describe
+the rc0 configuration and debugger symbols. See the [public rc0 notes](../Releases/1.0.0-rc0.md)
 for source-release instructions and compatibility limits.
 
 The [first installed release's validation record](validation-2026-11-07.json)
