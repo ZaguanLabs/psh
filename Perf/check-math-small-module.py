@@ -54,7 +54,7 @@ def main():
             r = subprocess.run(prefix + [str(shell), '-dfc', script, 'comparison', str(folders[index])],
                 env={'PATH': '/usr/bin:/bin', 'LC_ALL': locale}, capture_output=True, timeout=300)
             count = re.fullmatch(rb'checks=(\d+) digest=\d+\nsmall-math-done\n', r.stdout)
-            if r.returncode or r.stderr or not count or int(count[1]) != 1677760:
+            if r.returncode or r.stderr or not count or int(count[1]) != 1693120:
                 raise RuntimeError((index, locale, r.returncode, r.stdout[-1000:], r.stderr[-1000:]))
             if expected is not None and r.stdout != expected:
                 raise RuntimeError((locale, 'different arithmetic state'))

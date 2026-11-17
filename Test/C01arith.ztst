@@ -251,6 +251,21 @@
 >5000
 >255
 
+  () {
+    emulate -L zsh
+    local underscores=${(l:4096::_:)} expression
+    local -i side=0 named_value=7
+    local -F 12 value
+    expression="1${underscores}.2${underscores}5e+0${underscores}+named_value+(side+=2)"
+    value=$(( $expression ))
+    (( value == 10.25 && side == 2 )) || return 1
+    setopt forcefloat octalzeroes
+    expression="0001${underscores}.25e-0${underscores}+(side+=1)"
+    value=$(( $expression ))
+    (( value == 4.25 && side == 3 ))
+  }
+0:Long floating underscore spans preserve following identifiers and side effects
+
   # Force floating point.
   for expr in "3/4" "0x100/0x200" "0x30/0x10"; do
     print $(( $expr ))

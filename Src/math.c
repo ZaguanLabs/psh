@@ -575,13 +575,14 @@ lexconstant(void)
 	for (ptr2 = ptr; ptr2 < nptr; ptr2++) {
 	    if (*ptr2 == '_') {
 		int len = nptr - ptr;
+		char *readp, *writep;
 		ptr = dupstring(ptr);
-		for (ptr2 = ptr; len; len--) {
-		    if (*ptr2 == '_')
-			chuck(ptr2);
-		    else
-			ptr2++;
+		/* Compact the numeric span, then move the remaining expression once. */
+		for (readp = writep = ptr; len; len--, readp++) {
+		    if (*readp != '_')
+			*writep++ = *readp;
 		}
+		memmove(writep, readp, strlen(readp) + 1);
 		break;
 	    }
 	}

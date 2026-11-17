@@ -1,0 +1,42 @@
+{
+  "base_commit": "d63c181151870c44c846b0100efb741df1012029",
+  "disposition": "accepted into development source; private build only",
+  "compiler": "GCC 15.2.0",
+  "cflags": "-O2 -g -flto",
+  "ldflags": "-g -flto",
+  "configure": [
+    "--enable-multibyte",
+    "--disable-zsh-debug",
+    "--enable-pcre"
+  ],
+  "source_sha256": {
+    "Src/math.c": "9826d97cf63ad77b125bc37a8c97db9d7676308b383b7933d224e5bc0f580214",
+    "Test/C01arith.ztst": "6a10d4f75f6b2acba337f391933cc52b0bb9061492b9bc26cc937bdbb9a2c933",
+    "Perf/check-float-underscores.py": "65cc422fde56d2d246b0f2459063398d15855a04453664f40085bfcdb19f9676",
+    "Perf/float-underscore-benchmark.py": "6f93b60f9c42cf5c9782e007ffdef7bbe6459fd5904464500701135e60e43563",
+    "Perf/float-underscore-workload.zsh": "7a26292a8052d30e2c79adc6b459d9ed5e2153452d490d7cefd4571387073382",
+    "Perf/math-small-module.c": "a894a9e68541d014a06ce034cfa1ad1ea568592a9a552a419d4109af4079c15f",
+    "Perf/check-math-small-module.py": "65cbe8d8393a89da93ff1537ad01418b395ef584eee164f0f450067004930fb5"
+  },
+  "binary_sha256": {
+    "round74": "feea10fc9df07318f0c8d58efe845c4787779ab8184eca2e3209848ff2936a0c",
+    "round76": "ac175cb55b03f56fcf7a8cd0555933a8e6e8522cd7a2abf32172250d305e73a0",
+    "round76_runtime": "ac175cb55b03f56fcf7a8cd0555933a8e6e8522cd7a2abf32172250d305e73a0",
+    "pristine": "55c1efbca2052a93efdfca4713f379b6cd645e7b6ed01949d9ab195626700153",
+    "active": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f"
+  },
+  "gates": {
+    "upstream_success": 64,
+    "upstream_failure": 0,
+    "upstream_skipped": 2,
+    "omz_sessions": 24,
+    "native_loader_observations": 14,
+    "differential_observations": 3432,
+    "differential_hosts": 3,
+    "memcheck_observations": 96,
+    "memcheck_hosts": 2,
+    "native_math_checks_per_host_locale": 1693120
+  },
+  "timing": "Two focused and two customer timing runs, nine alternating samples on CPU 13, serial and separate from own builds, tests and profiling; process peak memory has three alternating samples; retained-memory checkpoints separate from timing",
+  "memory": "All thirteen customer kernels: three alternating peak-RSS samples and three alternating retained-memory samples, with state comparisons through twenty cycles"
+}

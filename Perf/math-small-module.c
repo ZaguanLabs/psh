@@ -67,7 +67,9 @@ static int bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops
     static const char *fixed[] = {"", "0", "1", "9", "10", "99", "01", "0x1", "0b1", "16#1",
         "1#0", "1_0", "1.0", "1e0", "1e+2", "-1", "+1", "-0.0", "1,2", "1?2:3",
         "0 && 1/0", "1 || 1/0", "1+2*3", "[#8_3]1", "[##16]1", "1234567890123456789", "9007199254740993", "999999999999999999",
-        "9999999999999999999", "1 e0", "1x.25"};
+        "9999999999999999999", "1 e0", "1x.25",
+        "1_2.3_4e+2", "1_.2", "1._2", "1_2.", "1_e2", "1e_2", "1e+_2", "1e-2_",
+        "1__._2", "-0_._0", "1e3_09", "1e-3_99", "1_._2,3", "1_._2+3_._4", "1_._e+_", "1_._2__x"};
     static const int rounds[] = {FE_TONEAREST, FE_DOWNWARD, FE_UPWARD, FE_TOWARDZERO};
     short classes[256]; char saved_opts[OPT_SIZE], text[8];
     int saved_err = errflag, saved_noerrs = noerrs, saved_errno = errno;
