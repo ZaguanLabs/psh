@@ -5459,8 +5459,13 @@ bin_shift(char *name, char **argv, Options ops, UNUSED(int func))
     int num = 1, l, ret = 0;
     char **s;
 
-    /* optional argument can be either numeric or an array */
     queue_signals();
+    if (*argv && !argv[1] && shiftownedarray(*argv, OPT_ISSET(ops,'p'))) {
+	unqueue_signals();
+	return 0;
+    }
+
+    /* optional argument can be either numeric or an array */
     if (*argv && !getaparam(*argv)) {
         num = mathevali(*argv++);
 	if (errflag) {

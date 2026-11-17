@@ -3255,6 +3255,42 @@ getaparam(char *s)
     return NULL;
 }
 
+/* Shift one element from an ordinary, unexposed whole array.  The caller
+ * queues signals.  Leave all getter, setter and diagnostic cases to shift. */
+
+/**/
+int
+shiftownedarray(char *name, int back)
+{
+    Param pm;
+    char **old, **kept;
+    size_t length;
+
+    if (paramtab != realparamtab || paramtab->getnode != getparamnode ||
+	paramtab->hash != hasher || paramtab->cmpnodes != strcmp ||
+	unset(EXECOPT) || isset(WARNNESTEDVAR) || !*name ||
+	*name == '0' || idigit(*name) || strchr(name, '[') ||
+	*itype_end(name, IIDENT, 0))
+	return 0;
+    pm = (Param)gethashnode2(paramtab, name);
+    if (!pm || (pm->node.flags & ~PM_LOCAL) != PM_ARRAY ||
+	!array_length_owned(pm) || !(old = pm->u.arr) || !*old)
+	return 0;
+
+    length = arrlen(old);
+    kept = zalloc(length * sizeof(*kept));
+    if (back) {
+	memcpy(kept, old, (length - 1) * sizeof(*kept));
+	kept[length-1] = NULL;
+	old[0] = old[length-1];
+    } else
+	memcpy(kept, old + 1, length * sizeof(*kept));
+    /* The setter frees the old vector and the single discarded string. */
+    old[1] = NULL;
+    arrsetfn(pm, kept);
+    return 1;
+}
+
 /* Retrieve an assoc array parameter as an array */
 
 /**/

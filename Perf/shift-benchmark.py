@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure verified positional shifts in alternating fresh shells on Linux."""
+"""Measure verified shift workloads in alternating fresh shells on Linux."""
 import argparse
 import hashlib
 import json
@@ -25,22 +25,36 @@ def main():
     parser.add_argument('--samples', type=int, default=9)
     parser.add_argument('--cpu', type=int, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--named-project', type=Path,
+                        help='exercise named arrays and this zcoder checkout’s transcript serializer')
     args = parser.parse_args()
     if args.samples < 3:
         parser.error('at least three samples are required')
     shells = [path.resolve(strict=True) for path in (args.baseline, args.candidate)]
     os.sched_setaffinity(0, {args.cpu})
-    paths = [*shells, WORKER, Path(__file__).resolve()]
+    worker, cases, extra = WORKER, CASES, []
+    paths = [*shells, Path(__file__).resolve()]
+    if args.named_project:
+        project = args.named_project.resolve(strict=True)
+        worker = WORKER.with_name('named-shift-workload.zsh')
+        cases = [(mode, width, count) for width, count in ((8, 200), (256, 2), (4096, 1))
+                 for mode in ('front', 'back')]
+        cases += [('transcript', 16, 50), ('transcript', 4096, 20), ('transcript', 65536, 3)]
+        extra = [str(project)]
+        paths.extend((project / 'lib').glob('transcript.zsh*'))
+        paths.extend((project / 'vendor/zjson').rglob('*.zsh'))
+        paths.extend((project / 'vendor/zjson').rglob('*.zwc'))
+    paths.append(worker)
     hashes = {str(path): digest(path) for path in paths}
     rows = []
     with tempfile.TemporaryDirectory() as temp:
         rss = Path(temp) / 'peak'
-        for mode, width, count in CASES:
+        for mode, width, count in cases:
             times, peaks, states = [[], []], [[], []], set()
             for sample in range(args.samples):
                 for host in ((0, 1) if sample % 2 == 0 else (1, 0)):
                     command = ['/usr/bin/time', '-f', '%M', '-o', str(rss), str(shells[host]),
-                               '-df', str(WORKER), mode, str(width), str(count)]
+                               '-df', str(worker), mode, str(width), str(count), *extra]
                     r = subprocess.run(command, capture_output=True, timeout=120,
                                        env={'PATH': '/usr/bin:/bin', 'LC_ALL': 'C.UTF-8'})
                     if r.returncode or r.stderr:

@@ -43,3 +43,16 @@
     shift && shift -p 0 && (( $# == 0 ))
   }
 0:Positional shifts preserve empty survivors, arithmetic effects and subsequent growth
+
+  ${${ZTST_exe##[^/]*}:-$ZTST_testdir/$ZTST_exe} -fc '
+    a=( {1..140} "" same same )
+    integer calls=0
+    trap "(( ++calls ))" USR1
+    [[ $a[140] == 140 ]] && shift a && shift -p a || exit 1
+    kill -USR1 $$
+    (( calls == 1 && $#a == 141 )) || exit 1
+    [[ $a[139] == 140 && -z $a[140] && $a[141] == same ]] || exit 1
+    a+=(tail)
+    [[ $#a == 142 && $a[-1] == tail ]]
+  '
+0:Named shifts preserve trap delivery, cached bounds and surviving strings
