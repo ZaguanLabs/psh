@@ -6021,8 +6021,8 @@ doshfunc(Shfunc shfunc, LinkList doshargs, int noreturnval)
 	    LinkNode node;
 
 	    node = firstnode(doshargs);
-	    pparams = x = (char **) zshcalloc(((sizeof *x) *
-					       (1 + countlinknodes(doshargs))));
+	    /* The name node supplies the slot for the terminating NULL. */
+	    pparams = x = (char **) zshcalloc(sizeof *x * countlinknodes(doshargs));
 	    if (isset(FUNCTIONARGZERO)) {
 		funcsave->argv0 = argzero;
 		argzero = ztrdup(getdata(node));

@@ -1,0 +1,45 @@
+{
+  "base_commit": "debdc9c67889c2023bbc56d388600b1c9b7b5e32",
+  "accepted": "sized (zero initialization)",
+  "rejected": "explicit terminator",
+  "binaries": {
+    "release": {
+      "path": "/usr/local/psh/releases/1.0.0-rc2-b80aa8a9db05/bin/psh",
+      "sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f"
+    },
+    "pristine": {
+      "path": ".work/baseline/Src/zsh",
+      "sha256": "55c1efbca2052a93efdfca4713f379b6cd645e7b6ed01949d9ab195626700153"
+    },
+    "baseline": {
+      "path": ".work/round78/build/Src/zsh",
+      "sha256": "c638e77fd132797a8ac9716d9889b78fcfde3b645c9fee9e8b2d5e1293be24d7"
+    },
+    "explicit": {
+      "path": ".work/round79/build/Src/zsh",
+      "sha256": "b3dbdeedd82761f62e417d4a2f95c593215b34c13773b1f82bcc2c2b69296260"
+    },
+    "sized": {
+      "path": ".work/round79/sized/build/Src/zsh",
+      "sha256": "15cd1925efb692337517124c660f6723c754de747f25c7d73f4a28783eeab8fb"
+    },
+    "sized_runtime": {
+      "path": ".work/round79/sized/runtime/bin/zsh",
+      "sha256": "15cd1925efb692337517124c660f6723c754de747f25c7d73f4a28783eeab8fb"
+    }
+  },
+  "sources": {
+    "Src/exec.c": "9e25a410373dffb7f3389f70649128b15892b03472cd1c25e462814b6f094c27",
+    "Perf/function-argv-check.zsh": "9876b42ceb7edb4e9bd6bec4970c46345f6b2be1a0c52b56c70b8b0c77d8662a",
+    "Perf/function-argv-probe.c": "53b81dee8777011615f1c8be9d53b7ddfe7c902782742d8143913ee5db9ba60e",
+    ".work/round79/source/Src/exec.c": "b026073dc8d11013c602d6fe7d4af452aec4cd8a2cd61709a597f5b563546bb6"
+  },
+  "modules": {
+    ".work/round79/module-78/argv_probe.so": "8b04a988f1e01090d608569b3baa0b3082d1d39bd346a81fed4529a313d7bc9c",
+    ".work/round79/module-79/argv_probe.so": "50d01e6ce88f18171b6693413eb8953892645752276590e5b45a8cda9275d97c",
+    ".work/round79/sized/module/argv_probe.so": "8f22350842175c70325bb5e990eb04d5c6c26464bc059a260c4ede5978551c57"
+  },
+  "compiler": "15.2.0",
+  "CFLAGS": "-O2 -g -flto",
+  "LDFLAGS": "-g -flto"
+}
