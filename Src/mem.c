@@ -130,10 +130,12 @@ union mem_align {
 static Heap heaps;
 
 #if defined(USE_MMAP) && !defined(ZSH_VALGRIND)
-/* Keep at most one cleared, standard-size mapping from a completed scope.
+/* Reuse cleared, standard-size mappings across two levels of function calls.
  * Valgrind builds unmap it so stale accesses still fault immediately. */
 #define REUSE_HEAP 1
-static Heap spareheap;
+#define MAX_SPARE_HEAPS 2
+static Heap spareheaps[MAX_SPARE_HEAPS];
+static unsigned int nspareheaps;
 #endif
 
 /* a heap with free space, not always correct (it will be the last heap
@@ -240,10 +242,10 @@ old_heaps(Heap old)
 	}
 #endif
 #ifdef REUSE_HEAP
-	if (!spareheap && h->size == HEAP_BLOCK_SIZE) {
+	if (nspareheaps < MAX_SPARE_HEAPS && h->size == HEAP_BLOCK_SIZE) {
 	    /* Include space that freeheap() or popheap() may have rewound. */
 	    memset(h, 0, HEAP_BLOCK_SIZE);
-	    spareheap = h;
+	    spareheaps[nspareheaps++] = h;
 	    continue;
 	}
 #endif
@@ -651,9 +653,9 @@ zhalloc(size_t size)
 
 #ifdef USE_MMAP
 #ifdef REUSE_HEAP
-	if (spareheap && n == HEAPSIZE) {
-	    h = spareheap;
-	    spareheap = NULL;
+	if (nspareheaps && n == HEAPSIZE) {
+	    h = spareheaps[--nspareheaps];
+	    spareheaps[nspareheaps] = NULL;
 	    n = HEAP_BLOCK_SIZE;
 	} else
 #endif

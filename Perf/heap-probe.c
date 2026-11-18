@@ -22,6 +22,8 @@ bin_heap_probe(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops),
     for (i = 0; i < 32; ++i) {
         Heap parent = new_heaps();
         unsigned char *child = zhalloc(256);
+        unsigned char *blocks[3];
+        int j;
         char *large;
         Heap suspended;
         memset(child, i, 256);
@@ -40,6 +42,14 @@ bin_heap_probe(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops),
         ok &= filled((unsigned char *)large, 20000, 'z');
         memset(large, 'q', 70000);
         ok &= hrealloc(large, 70000, 0) == NULL;
+        /* End the scope with more standard arenas than the shell retains. */
+        for (j = 0; j < 3; ++j) {
+            blocks[j] = zhalloc(12000);
+            memset(blocks[j], i + j + 1, 12000);
+        }
+        for (j = 0; j < 3; ++j)
+            ok &= filled(blocks[j], 12000, i + j + 1);
+        ok &= filled(child, 256, i);
         old_heaps(parent);
     }
     ok &= filled(outer, 128, 'a');

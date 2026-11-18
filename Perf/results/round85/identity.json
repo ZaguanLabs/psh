@@ -1,0 +1,108 @@
+{
+  "source_parent": "0d7e1d7c2cca5ba2c0fcc248a8048ad68ccfe9de",
+  "builds": {
+    "f": {
+      "configuration": "raw",
+      "command": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/raw/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto LDFLAGS=-g -flto"
+      ],
+      "sha256": "d700c45500cad91327526c9446a1d5340bd1446b2b524c29921492c995c22a21"
+    },
+    "d": {
+      "configuration": "lto",
+      "command": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/lto/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto LDFLAGS=-g -flto"
+      ],
+      "sha256": "b04df7993360c3b5108689edd78c7914112fd2f2cf0bf70604a41098831ed0ac"
+    },
+    "c": {
+      "configuration": "pgo",
+      "command": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/profiles",
+        "Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/profiles",
+        "Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/build/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/training.json",
+        "Running: make clean",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/pgo/profiles"
+      ],
+      "sha256": "2e974acd9051256a7910cebf537e89155e6471ff7d1b49e882a5dc14f4d93505"
+    },
+    "e": {
+      "configuration": "two",
+      "command": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/profiles",
+        "Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/profiles",
+        "Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/training.json",
+        "Running: make clean",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/profiles"
+      ],
+      "sha256": "036030f87b3ee9a16663144e4dd9134b06a4b59693b64f8392261e4ddb101a47"
+    },
+    "a": {
+      "path": "/usr/local/psh/current/bin/psh",
+      "sha256": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f"
+    },
+    "b": {
+      "path": ".work/round84/final/build/Src/zsh",
+      "sha256": "f952547ca1c68c1fdb045a8a602839c11d4519f7808b5a8c84bc55a1029d312d"
+    }
+  },
+  "sha256": {
+    "Src/mem.c": "71797730caa4c02f31e828677d89acac1aa38142fff8b8566137c9a0186fb4c7",
+    "Perf/heap-map-profile.py": "bbbfe8d76c7d12572873b8a2ca30efc4c66bb8b5e7ba15fa3061045e3dd698bc",
+    "Perf/heap-probe.c": "1f371c6f17f57585d81a69ee526cb54fec8280ae275d4cb43cc9d8e2166740ea",
+    "Perf/customer-benchmark.py": "8ac06e9e2b182776394f78f3cc40c40ed72594b934985682ef8cb4c3786ddb9b",
+    "Perf/customer-workload.zsh": "95dd386631e9c14b9f05ef3cc4a5a4bf1d96eaa4d5fb61473992de5c20ec0f3e",
+    ".work/round85/f/zsh": "d700c45500cad91327526c9446a1d5340bd1446b2b524c29921492c995c22a21",
+    ".work/round85/raw/runtime/bin/zsh": "d700c45500cad91327526c9446a1d5340bd1446b2b524c29921492c995c22a21",
+    ".work/round85/raw/build/Src/zsh": "d700c45500cad91327526c9446a1d5340bd1446b2b524c29921492c995c22a21",
+    ".work/round85/raw/build/Src/mem.c": "71797730caa4c02f31e828677d89acac1aa38142fff8b8566137c9a0186fb4c7",
+    ".work/round85/d/zsh": "b04df7993360c3b5108689edd78c7914112fd2f2cf0bf70604a41098831ed0ac",
+    ".work/round85/lto/runtime/bin/zsh": "b04df7993360c3b5108689edd78c7914112fd2f2cf0bf70604a41098831ed0ac",
+    ".work/round85/lto/build/Src/zsh": "b04df7993360c3b5108689edd78c7914112fd2f2cf0bf70604a41098831ed0ac",
+    ".work/round85/lto/build/Src/mem.c": "58fc5c4be37d2101e8f895e2bf9ae856ea262ab7f85ce4504068b9541cc5ccc2",
+    ".work/round85/c/zsh": "2e974acd9051256a7910cebf537e89155e6471ff7d1b49e882a5dc14f4d93505",
+    ".work/round85/pgo/runtime/bin/zsh": "2e974acd9051256a7910cebf537e89155e6471ff7d1b49e882a5dc14f4d93505",
+    ".work/round85/pgo/build/Src/zsh": "2e974acd9051256a7910cebf537e89155e6471ff7d1b49e882a5dc14f4d93505",
+    ".work/round85/pgo/build/Src/mem.c": "58fc5c4be37d2101e8f895e2bf9ae856ea262ab7f85ce4504068b9541cc5ccc2",
+    ".work/round85/e/zsh": "036030f87b3ee9a16663144e4dd9134b06a4b59693b64f8392261e4ddb101a47",
+    ".work/round85/two/runtime/bin/zsh": "036030f87b3ee9a16663144e4dd9134b06a4b59693b64f8392261e4ddb101a47",
+    ".work/round85/two/build/Src/zsh": "036030f87b3ee9a16663144e4dd9134b06a4b59693b64f8392261e4ddb101a47",
+    ".work/round85/two/build/Src/mem.c": "71797730caa4c02f31e828677d89acac1aa38142fff8b8566137c9a0186fb4c7",
+    "/usr/local/psh/current/bin/psh": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f",
+    ".work/round84/final/build/Src/zsh": "f952547ca1c68c1fdb045a8a602839c11d4519f7808b5a8c84bc55a1029d312d",
+    ".work/rc2/.work/package/1.0.0-rc2-b80aa8a9db05/build.json": "c6c015f7282838f6f274f784c2889dd030072bbc2e44621331f25410595f5a58",
+    ".work/rc2/.work/package/1.0.0-rc2-b80aa8a9db05/training.json": "da975e62f2c081969bbfece957627a71b4fb629c90787f6a8221ab6677a04030",
+    ".work/rc0-release-baseline/Src/zsh": "f6576b9b096a050a11e98e8bcd7cb38b1f30074f36edea1547a5498ab2a81123"
+  },
+  "installed_settings": {
+    "symbols": "split",
+    "cflags": "-O2 -g -flto -fprofile-use=@PROFILE_DIR@ -fprofile-partial-training -Werror=coverage-mismatch",
+    "ldflags": "-g -flto -fprofile-use=@PROFILE_DIR@",
+    "profile": "release",
+    "debug_assertions": false,
+    "optimization": "pgo-lto",
+    "gdbm": false,
+    "compiler": {
+      "command": [
+        "cc"
+      ],
+      "version": "cc (Mageia 15.2.0-1.mga10) 15.2.0"
+    }
+  },
+  "installed_training_inputs": {
+    "Packaging/train-compiler.py": "fb0596fba0508014771da1e56e64c37a8b0684674cab41eca5018be93cfc596d",
+    "Perf/compiler-training.zsh": "d4f174c816e243453ca5c263ee46c1618fd9955ebbc0ea82fab4093f33a83cf7",
+    "Perf/application-workload.zsh": "709c607df227395b5169dc32d4c9f85a13173adbc199c5fc62962c4c44246bbb",
+    "Vendor/sources.json": "6f6ab98b3a4e2622e60cd480b7c4d28d21399a764552ac11ebdfe466aeddfe75",
+    "Vendor/zjson/zjson.zsh": "49c202a2bbbdb6e794e41035ae538800e20ea2b394db27b2f1a263b1a68bd0d2",
+    "Vendor/zjson/lib/context.zsh": "484bb635cf1d8606d1f0d1574e75e1892067df77c49518afab9b390248ae3cb6",
+    "Vendor/zjson/lib/encode.zsh": "ed7a44546bd57d7629177261d883af755a9c564ee69a5378bf8692bf6fa0a6ea",
+    "Vendor/zjson/lib/pointer.zsh": "f20a37055b15edf1845790060a91c4bb279532c3250832c74f056ff6e3a4a831",
+    "Vendor/zjson/lib/utf8.zsh": "7b1698951e9a1f7ee57c7ba5d0d03318950229088370b98fbd034c5c58e5ce23",
+    "Vendor/zjson/lib/zjson.zsh": "9c5af98ecbb30440cf8a44f44b3820aca3d67763591eb1fa4a49f4ff764cb383"
+  }
+}

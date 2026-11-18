@@ -1,0 +1,38 @@
+{
+  "non-mmap": {
+    "round84": "55c1b8833f5e9691ef13bc7f224cc2a6e2cb9cddf017a50ef59621a18028564c",
+    "final": "55c1b8833f5e9691ef13bc7f224cc2a6e2cb9cddf017a50ef59621a18028564c",
+    "command": [
+      "gcc",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src/Zle",
+      "-E",
+      "-P",
+      "-x",
+      "c",
+      "-"
+    ],
+    "conditional": "#undef HAVE_MMAP"
+  },
+  "valgrind": {
+    "round84": "0a00f40384d94dd63a088641dca03e443679d3971e4932d414bd780be3daca81",
+    "final": "0a00f40384d94dd63a088641dca03e443679d3971e4932d414bd780be3daca81",
+    "command": [
+      "gcc",
+      "-DHAVE_CONFIG_H",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src",
+      "-I/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round85/two/build/Src/Zle",
+      "-E",
+      "-P",
+      "-x",
+      "c",
+      "-"
+    ],
+    "conditional": "#define ZSH_VALGRIND 1"
+  }
+}

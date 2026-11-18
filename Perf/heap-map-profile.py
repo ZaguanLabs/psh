@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Count successful private anonymous mmap requests for zcoder workloads on Linux."""
+"""Count successful private anonymous mmap requests for customer workloads on Linux."""
 
 import argparse
 import collections
@@ -36,6 +36,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--shell", type=Path, action="append", required=True)
     parser.add_argument("--zcoder", type=Path, required=True)
+    parser.add_argument("--zchat", type=Path, help="also profile the zchat paste decoder")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     perf = Path(__file__).resolve().parent
@@ -48,12 +49,16 @@ def main():
              "skill-fold": [worker, "coder-skill-fold", project, "200"]}
     shells = [str(shell.resolve(strict=True)) for shell in args.shell]
     inputs = [Path(path) for path in [*shells, worker, transcript]]
-    for stem in ("lib/util", "lib/input", "lib/skills", "lib/transcript", "vendor/zjson/zjson"):
-        source = Path(project) / (stem + ".zsh")
+    sources = [Path(project) / name for name in
+               ("lib/util.zsh", "lib/input.zsh", "lib/skills.zsh",
+                "lib/transcript.zsh", "vendor/zjson/zjson.zsh")]
+    if args.zchat:
+        chat = args.zchat.resolve(strict=True)
+        cases["chat-paste"] = [worker, "chat-paste", str(chat), "1"]
+        sources.extend([chat / "lib/util.zsh", chat / "lib/input.zsh"])
+    for source in sources:
         inputs.append(source.resolve(strict=True))
-        compiled = source.with_suffix(".zsh.zwc")
-        if compiled.is_file():
-            inputs.append(compiled)
+        inputs.append(source.with_suffix(".zsh.zwc"))
 
     env = {"LC_ALL": "C.UTF-8", "PATH": "/usr/bin:/bin"}
     report = {"page_size": os.sysconf("SC_PAGE_SIZE"), "sha256": hashes(inputs),
