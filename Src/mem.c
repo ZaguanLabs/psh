@@ -136,6 +136,19 @@ static Heap heaps;
 #define MAX_SPARE_HEAPS 2
 static Heap spareheaps[MAX_SPARE_HEAPS];
 static unsigned int nspareheaps;
+/* Largest payload extent before a rewind in this heap list. A restored or
+ * resized list uses a full clear because its earlier extents are unknown. */
+static size_t rewound_extent = HEAP_BLOCK_SIZE;
+
+static void
+rewind_heap(Heap h, size_t offset)
+{
+    if (h->used > rewound_extent)
+	rewound_extent = h->used;
+    h->used = offset;
+}
+#else
+#define rewind_heap(h, offset) ((h)->used = (offset))
 #endif
 
 /* a heap with free space, not always correct (it will be the last heap
@@ -209,6 +222,9 @@ new_heaps(void)
     h = heaps;
 
     fheap = heaps = NULL;
+#ifdef REUSE_HEAP
+    rewound_extent = 0;
+#endif
     unqueue_signals();
 
 #ifdef ZSH_HEAP_DEBUG
@@ -243,8 +259,9 @@ old_heaps(Heap old)
 #endif
 #ifdef REUSE_HEAP
 	if (nspareheaps < MAX_SPARE_HEAPS && h->size == HEAP_BLOCK_SIZE) {
-	    /* Include space that freeheap() or popheap() may have rewound. */
-	    memset(h, 0, HEAP_BLOCK_SIZE);
+	    size_t used = h->used > rewound_extent ? h->used : rewound_extent;
+	    size_t clear = used < ARENA_SIZEOF(h) ? sizeof(*h) + used : HEAP_BLOCK_SIZE;
+	    memset(h, 0, clear);
 	    spareheaps[nspareheaps++] = h;
 	    continue;
 	}
@@ -259,6 +276,9 @@ old_heaps(Heap old)
 #endif
     }
     heaps = old;
+#ifdef REUSE_HEAP
+    rewound_extent = HEAP_BLOCK_SIZE;
+#endif
 #ifdef ZSH_HEAP_DEBUG
     if (heap_debug_verbosity & HDV_OLD) {
 	fprintf(stderr, "HEAP DEBUG: heap " HEAPID_FMT
@@ -296,6 +316,9 @@ switch_heaps(Heap new)
     }
 #endif
     heaps = new;
+#ifdef REUSE_HEAP
+    rewound_extent = HEAP_BLOCK_SIZE;
+#endif
     fheap = NULL;
     unqueue_signals();
 
@@ -388,7 +411,7 @@ freeheap(void)
 #endif
 	    memset(arena(h) + h->sp->used, 0xff, h->used - h->sp->used);
 #endif
-	    h->used = h->sp->used;
+	    rewind_heap(h, h->sp->used);
 	    if (!fheap) {
 		if (h->used < ARENA_SIZEOF(h))
 		    fheap = h;
@@ -432,7 +455,7 @@ freeheap(void)
 		h->next = NULL;
 	    } else {
 		/* Leave an empty arena at the end until popped */
-		h->used = 0;
+		rewind_heap(h, 0);
 		fheap = hl = h;
 		break;
 	    }
@@ -481,7 +504,7 @@ popheap(void)
 #endif
 	    memset(arena(h) + hs->used, 0xff, h->used - hs->used);
 #endif
-	    h->used = hs->used;
+	    rewind_heap(h, hs->used);
 #ifdef ZSH_HEAP_DEBUG
 	    if (heap_debug_verbosity & HDV_POP) {
 		fprintf(stderr, "HEAP DEBUG: heap " HEAPID_FMT
@@ -732,6 +755,9 @@ hrealloc(char *p, size_t old, size_t new)
     /* find the heap with p */
 
     queue_signals();
+#ifdef REUSE_HEAP
+    rewound_extent = HEAP_BLOCK_SIZE;
+#endif
     for (h = heaps, ph = NULL; h; ph = h, h = h->next)
 	if (p >= arena(h) && p < arena(h) + ARENA_SIZEOF(h))
 	    break;

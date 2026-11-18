@@ -1,0 +1,80 @@
+{
+  "parent": "fcbe9ca219cc6e775ef64d63b4351579185060ea",
+  "hosts": {
+    "round85": {
+      "timing": ".work/round86/a/zsh",
+      "sha256": "036030f87b3ee9a16663144e4dd9134b06a4b59693b64f8392261e4ddb101a47"
+    },
+    "drop": {
+      "timing": ".work/round86/b/zsh",
+      "sha256": "7026a3420940d3593590e2a762733dfeb1ef4cf154ee560c52a5aa5eae91df79",
+      "source_sha256": "82e7d2d4315ba09098093f2a2a102f5e63d43240c982848e0aeec20edd3d3479",
+      "build": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/profiles",
+        "Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/profiles",
+        "Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/build/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/training.json",
+        "Running: make clean",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/drop/profiles"
+      ]
+    },
+    "scan": {
+      "timing": ".work/round86/c/zsh",
+      "sha256": "deac5599cad91f06cfe2dfcd5ffbc2c953b3640306158fe6e7f6ee9583a80c58",
+      "source_sha256": "61944249b71bb883c38d2fb9ef07a93cb2c258d51ed874f39313c03e3f1e1fd1",
+      "build": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/profiles",
+        "Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/profiles",
+        "Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/build/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/training.json",
+        "Running: make clean",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/scan/profiles"
+      ]
+    },
+    "bound": {
+      "timing": ".work/round86/d/zsh",
+      "sha256": "927d2977f26cdef9b98b1e289d3e7b4014244f61952aaf6d981899a03fc5994f",
+      "source_sha256": "d797462525bec108a02daf0e4f45ad139fe03f7629a8dbf68e7b7b8824f17bc3",
+      "build": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/profiles",
+        "Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/profiles",
+        "Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/build/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/training.json",
+        "Running: make clean",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/bound/profiles"
+      ]
+    },
+    "rewind": {
+      "timing": ".work/round86/e/zsh",
+      "sha256": "65f9b77a020827fa6478275ff5c3beda4334c2406341c961662271f62ba0613e",
+      "source_sha256": "4f3882e92b4073158acd4f640843d251386849db568ae2f87ac00355ac26180d",
+      "build": [
+        "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/profiles",
+        "Running: make MODDIR=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/training-modules install.modules CFLAGS=-O2 -g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/profiles LDFLAGS=-g -flto -fprofile-generate=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/profiles",
+        "Running: /usr/bin/python3 /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/Packaging/train-compiler.py --shell /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/build/Src/zsh --modules /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/training-modules --output /home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/training.json",
+        "Running: make clean",
+        "Running: make -j8 CFLAGS=-O2 -g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/profiles -fprofile-partial-training -Werror=coverage-mismatch LDFLAGS=-g -flto -fprofile-use=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/rewind/profiles"
+      ]
+    }
+  },
+  "inputs": {
+    "Perf/customer-benchmark.py": "8ac06e9e2b182776394f78f3cc40c40ed72594b934985682ef8cb4c3786ddb9b",
+    "Perf/customer-workload.zsh": "95dd386631e9c14b9f05ef3cc4a5a4bf1d96eaa4d5fb61473992de5c20ec0f3e",
+    "Perf/memory-checkpoints.py": "068701612051928b52e44b3a2ae4fd06c503bb662d7718dd9f94030afd087d82",
+    "Perf/heap-probe.c": "fa4379dd2cf616e37f87f891513a88cbf38d71f025c5af0a208c9b5c11c66b9f",
+    "Perf/results/round86/faults.py": "052d6e9a254aecb71eb0f090bc351c82a430f76d6f9156d10b98cbf9a2677624",
+    "Packaging/compiler.py": "68e26432b673a57fa663361439f4e38743f49506f1c92a3d11ced377d7d4ab38",
+    "Packaging/train-compiler.py": "fb0596fba0508014771da1e56e64c37a8b0684674cab41eca5018be93cfc596d"
+  },
+  "installed": "3a4b0785c95b0b9753b3bca97006380d3e821af48d7cb687ea66f749002ad63f",
+  "pristine_release": "f6576b9b096a050a11e98e8bcd7cb38b1f30074f36edea1547a5498ab2a81123",
+  "lto_control": {
+    "round85": "d700c45500cad91327526c9446a1d5340bd1446b2b524c29921492c995c22a21",
+    "round86": "593cfea25d9eaa94e2dd0a381f7a283f0dd6c83e7bf781d4f4ae6744490b1db6",
+    "command": [
+      "Running: ./configure --prefix=/home/stig/dev/challenge/zsh-perf/zsh-5.9.2/.work/round86/lto/runtime --enable-multibyte --disable-zsh-debug --enable-pcre",
+      "Running: make -j8 CFLAGS=-O2 -g -flto LDFLAGS=-g -flto"
+    ]
+  }
+}

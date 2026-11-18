@@ -52,6 +52,18 @@ bin_heap_probe(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops),
         ok &= filled(child, 256, i);
         old_heaps(parent);
     }
+    {
+        Heap parent = new_heaps();
+        unsigned char *prefix = zhalloc(64);
+        memset(prefix, 'p', 64);
+        pushheap();
+        memset(zhalloc(12000), 'r', 12000);
+        freeheap();
+        memset(zhalloc(128), 's', 128);
+        popheap();
+        ok &= filled(prefix, 64, 'p');
+        old_heaps(parent);
+    }
     ok &= filled(outer, 128, 'a');
     old_heaps(shell_heap);
     return !ok;
