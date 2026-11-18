@@ -1357,11 +1357,13 @@ void
 execlist(Estate state, int dont_change_job, int exiting)
 {
     static int donetrap;
+    /* Nested lists can borrow their parent's immutable pipeline name. */
+    static char *saved_pipe_text;
     Wordcode next;
     wordcode code;
     int ret, cj, csp, ltype;
     int old_pline_level, old_list_pipe, old_list_pipe_job;
-    char *old_list_pipe_text;
+    char *parent_pipe_text;
     zlong oldlineno;
     /*
      * ERREXIT only forces the shell to exit if the last command in a &&
@@ -1377,10 +1379,11 @@ execlist(Estate state, int dont_change_job, int exiting)
     old_pline_level = pline_level;
     old_list_pipe = list_pipe;
     old_list_pipe_job = list_pipe_job;
-    if (*list_pipe_text)
-	old_list_pipe_text = ztrdup(list_pipe_text);
-    else
-	old_list_pipe_text = NULL;
+    parent_pipe_text = saved_pipe_text;
+    if (!*list_pipe_text)
+	saved_pipe_text = NULL;
+    else if (!parent_pipe_text || strcmp(list_pipe_text, parent_pipe_text))
+	saved_pipe_text = ztrdup(list_pipe_text);
     oldlineno = lineno;
 
     if (sourcelevel && unset(SHINSTDIN)) {
@@ -1647,12 +1650,13 @@ sublist_done:
     pline_level = old_pline_level;
     list_pipe = old_list_pipe;
     list_pipe_job = old_list_pipe_job;
-    if (old_list_pipe_text) {
-	strcpy(list_pipe_text, old_list_pipe_text);
-	zsfree(old_list_pipe_text);
-    } else {
+    if (saved_pipe_text) {
+	strcpy(list_pipe_text, saved_pipe_text);
+	if (saved_pipe_text != parent_pipe_text)
+	    zsfree(saved_pipe_text);
+    } else
 	*list_pipe_text = '\0';
-    }
+    saved_pipe_text = parent_pipe_text;
     lineno = oldlineno;
     if (dont_change_job)
 	thisjob = cj;
