@@ -4464,12 +4464,19 @@ itype_end(const char *ptr, int itype, int once)
     if (isset(MULTIBYTE) &&
 	(itype != IIDENT || !isset(POSIXIDENTIFIERS))) {
 	mb_charinit();
-	while (*ptr) {
+	for (;;) {
 	    int len;
-	    if ((unsigned char)*ptr <= 0x7f || itok(*ptr)) {
-		/* ASCII and unexpanded tokens both have width one and
-		 * leave the conversion state unchanged.  Test ASCII first
-		 * to avoid the extra token-class test on the common path. */
+	    /* Consume ordinary ASCII directly, including after a wide character. */
+	    while (*ptr && (unsigned char)*ptr <= 0x7f) {
+		if (!zistype(*ptr,itype))
+		    return (char *)ptr;
+		++ptr;
+		if (once)
+		    return (char *)ptr;
+	    }
+	    if (!*ptr)
+		break;
+	    if (itok(*ptr)) {
 		len = 1;
 		if (!zistype(*ptr,itype))
 		    break;

@@ -78,6 +78,13 @@ bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(i
 	    typtab['7'] |= IUSER | ITOK;
 	    typtab['_'] ^= ISEP | IWORD;
 	}
+	{
+	    /* Resume scanning ASCII twice after a multibyte identifier character. */
+	    char mixed[] = "prefix\xc3\xa9" "middle\xe7\x95\x8c" "suffix!";
+	    char *encoded = metafy(mixed, sizeof(mixed) - 1, META_DUP);
+	    failed = check_buffer(encoded, &checks);
+	    zsfree(encoded);
+	}
 	for (byte = 0; byte < 256 && !failed; byte++) {
 	    char raw[] = {'a', (char)byte, '9', '\0'};
 	    char *encoded = metafy(raw, 3, META_DUP);
