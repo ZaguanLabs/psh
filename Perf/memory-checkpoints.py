@@ -15,13 +15,25 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def memory(pid):
+def memory(pid, heap_mapping=False):
     result = {}
     for filename, prefix in [('smaps_rollup', ''), ('status', 'status_')]:
         for line in Path(f'/proc/{pid}/{filename}').read_text().splitlines():
             fields = line.split()
             if len(fields) == 3 and fields[2] == 'kB':
                 result[prefix + fields[0].rstrip(':')] = int(fields[1])
+    if heap_mapping:
+        # A process may have several VMAs named [heap].
+        totals = {'Size:': 0, 'Rss:': 0, 'Anonymous:': 0}
+        in_heap = False
+        with Path(f'/proc/{pid}/smaps').open() as maps:
+            for line in maps:
+                fields = line.split(None, 2)
+                if '-' in fields[0]:
+                    in_heap = line.rstrip().endswith(' [heap]')
+                elif in_heap and fields[0] in totals:
+                    totals[fields[0]] += int(fields[1])
+        result.update({'heap_' + key.rstrip(':'): value for key, value in totals.items()})
     result['Private'] = result['Private_Clean'] + result['Private_Dirty']
     return result
 
@@ -39,6 +51,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--trim-module', type=Path,
                         help='diagnostic only: matching-SDK memory_trim.so, one shell and burst case only')
+    parser.add_argument('--heap-mapping', action='store_true',
+                        help='also sample the size, RSS and anonymous pages of Linux [heap] mappings')
     args = parser.parse_args()
     if args.samples < 1:
         parser.error('samples must be positive')
@@ -98,7 +112,7 @@ def main():
                                     if not line:
                                         break
                                     phase = line.decode().strip()
-                                    point = dict(phase=phase, memory=memory(proc.pid))
+                                    point = dict(phase=phase, memory=memory(proc.pid, args.heap_mapping))
                                     if not burst and phase != 'startup':
                                         state = state_file.read_bytes()
                                         if phase == 'initial-workload':

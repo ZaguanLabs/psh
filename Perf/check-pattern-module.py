@@ -13,14 +13,17 @@ def main():
     parser.add_argument("candidate", type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--memcheck", action="store_true")
+    parser.add_argument("--baseline-build", type=Path,
+                        help="use generated headers from this pristine build (e.g. a non-debug release)")
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
-    folder = root / ".work/pattern-module"
-    folder.mkdir(exist_ok=True)
+    build = args.baseline_build.resolve(strict=True) if args.baseline_build else root / ".work/baseline"
+    folder = args.output.resolve().parent / "pattern-module" if args.baseline_build else root / ".work/pattern-module"
+    folder.mkdir(parents=True, exist_ok=True)
     source = root / "Perf/pattern-module.c"
     module = folder / "psh_pattern_fixture.so"
     command = ["cc", "-O2", "-g", "-shared", "-fPIC", "-DMODULE", "-DHAVE_CONFIG_H",
-               "-I" + str(root / ".work/baseline/Src"),
+               "-I" + str(build / "Src"),
                "-I" + str(root / ".work/pristine/Src"), str(source), "-o", str(module)]
     subprocess.run(command, check=True)
     script = '''emulate -R zsh

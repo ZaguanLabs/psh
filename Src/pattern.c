@@ -541,7 +541,7 @@ patcompile(char *exp, int inflags, char **endexp)
 {
     int flags = 0;
     long len = 0;
-    long startoff;
+    long startoff, capacity;
     Upat pscan;
     char *lng, *strp = NULL;
     Patprog p;
@@ -552,11 +552,6 @@ patcompile(char *exp, int inflags, char **endexp)
     /* Ensure alignment of start of program string */
     startoff = (startoff + sizeof(union upat) - 1) & ~(sizeof(union upat) - 1);
 
-    /* Allocate reasonable sized chunk if none, reduce size if too big */
-    if (patalloc != P_DEF_ALLOC)
-	patout = (char *)zrealloc(patout, patalloc = P_DEF_ALLOC);
-    patcode = patout + startoff;
-    patsize = patcode - patout;
     patstart = patparse = exp;
     /*
      * Note global patnpar numbers parentheses 1..9, while patnpar
@@ -576,11 +571,6 @@ patcompile(char *exp, int inflags, char **endexp)
     }
     if (patflags & PAT_LCMATCHUC)
 	patglobflags |= GF_LCMATCHUC;
-    /*
-     * Have to be set now, since they get updated during compilation.
-     */
-    ((Patprog)patout)->globflags = patglobflags;
-
     if (!(patflags & PAT_ANY)) {
 	/* Look for a really pure string, with no tokens at all. */
 	if (!(patglobflags & ~GF_MULTIBYTE)
@@ -607,26 +597,32 @@ patcompile(char *exp, int inflags, char **endexp)
 		 strp++)
 		;
 	}
-	if (!strp || (*strp && *strp != '/')) {
-	    /* No, do normal compilation. */
+	if (strp && *strp && *strp != '/')
 	    strp = NULL;
-	    if (patcompswitch(0, &flags) == 0) {
-		unqueue_signals();
-		return NULL;
-	    }
-	} else {
-	    /*
-	     * Yes, copy the string, and skip compilation altogether.
-	     * Null terminate for the benefit of globbing.
-	     * Leave metafied both for globbing and for our own
-	     * efficiency.
-	     */
-	    patparse = strp;
-	    len = strp - exp;
-	    patadd(exp, 0, len + 1, 0);
-	    patout[startoff + len] = '\0';
-	    patflags |= PAT_PURES;
-	}
+    }
+
+    /* A literal's complete program size is known before emitting any code. */
+    patsize = startoff;
+    if (strp) {
+	len = strp - exp;
+	patsize = (startoff + len + 1 + sizeof(union upat) - 1) &
+	    ~(sizeof(union upat) - 1);
+    }
+    capacity = patsize > P_DEF_ALLOC ? patsize : P_DEF_ALLOC;
+    if (patalloc != capacity)
+	patout = (char *)zrealloc(patout, patalloc = capacity);
+    patcode = patout + patsize;
+    /* patcompswitch can change patglobflags. */
+    ((Patprog)patout)->globflags = patglobflags;
+
+    if (strp) {
+	patparse = strp;
+	memmove(patout + startoff, exp, len);
+	patout[startoff + len] = '\0';
+	patflags |= PAT_PURES;
+    } else if (!(patflags & PAT_ANY) && !patcompswitch(0, &flags)) {
+	unqueue_signals();
+	return NULL;
     }
 
     /* end of compilation: safe to use pointers */
