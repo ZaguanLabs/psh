@@ -2846,18 +2846,17 @@ freeeprog(Eprog p)
 char *
 ecgetstr(Estate s, int dup, int *tokflag)
 {
-    static char buf[4];
     wordcode c = *s->pc++;
     char *r;
 
     if (c == 6 || c == 7)
 	r = "";
     else if (c & 2) {
-	buf[0] = (char) ((c >>  3) & 0xff);
-	buf[1] = (char) ((c >> 11) & 0xff);
-	buf[2] = (char) ((c >> 19) & 0xff);
-	buf[3] = '\0';
-	r = dupstring(buf);
+	r = (char *) zhalloc(4);
+	r[0] = (char) ((c >>  3) & 0xff);
+	r[1] = (char) ((c >> 11) & 0xff);
+	r[2] = (char) ((c >> 19) & 0xff);
+	r[3] = '\0';
 	dup = EC_NODUP;
     } else {
 	r = s->strs + (c >> 2);
