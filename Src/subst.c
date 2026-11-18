@@ -237,7 +237,6 @@ static LinkNode
 stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	    int asssub)
 {
-    static const char proc_tokens[] = { Inang, OutangProc, Equals, 0 };
     static const char subst_tokens[] = { String, Qstring, Tick, Qtick, 0 };
     static const char assign_tokens[] =
 	{ String, Qstring, Tick, Qtick, '=', Equals, 0 };
@@ -245,10 +244,14 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
     char *str3 = (char *)getdata(node);
     char *str  = str3, c;
 
-    while (!errflag && (c = *str)) {
-	if (((c = *str) == Inang || c == OutangProc ||
-	     (str == str3 && c == Equals))
-	    && str[1] == Inpar) {
+    while (!errflag && *str) {
+	/* Every process substitution starts with a marker and Inpar. */
+	char *paren = strchr(str + 1, Inpar);
+	if (!paren || errflag)
+	    break;
+	str = paren - 1;
+	if ((c = *str) == Inang || c == OutangProc ||
+	    (str == str3 && c == Equals)) {
 	    char *subst, *rest, *snew, *sptr;
 	    int str3len = str - str3, sublen, restlen;
 
@@ -279,9 +282,7 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	    str = snew + str3len + sublen;
 	    setdata(node, str3);
 	} else {
-	    str++;
-	    /* Skip bytes that cannot begin process substitution. */
-	    str += strcspn(str, proc_tokens);
+	    str = paren;
 	}
     }
     str = str3;
