@@ -116,10 +116,11 @@ union mem_align {
 };
 
 #define H_ISIZE  sizeof(union mem_align)
-#define HEAPSIZE (16384 - H_ISIZE)
+#define HEAP_BLOCK_SIZE 16384
+#define HEAPSIZE (HEAP_BLOCK_SIZE - H_ISIZE)
 /* Memory available for user data in default arena size */
 #define HEAP_ARENA_SIZE (HEAPSIZE - sizeof(struct heap))
-#define HEAPFREE (16384 - H_ISIZE)
+#define HEAPFREE HEAPSIZE
 
 /* Memory available for user data in heap h */
 #define ARENA_SIZEOF(h) ((h)->size - sizeof(struct heap))
@@ -127,6 +128,13 @@ union mem_align {
 /* list of zsh heaps */
 
 static Heap heaps;
+
+#if defined(USE_MMAP) && !defined(ZSH_VALGRIND)
+/* Keep at most one cleared, standard-size mapping from a completed scope.
+ * Valgrind builds unmap it so stale accesses still fault immediately. */
+#define REUSE_HEAP 1
+static Heap spareheap;
+#endif
 
 /* a heap with free space, not always correct (it will be the last heap
  * if that was newly allocated but it may also be another one) */
@@ -229,6 +237,14 @@ old_heaps(Heap old)
 	if (heap_debug_verbosity & HDV_FREE) {
 	    fprintf(stderr, "HEAP DEBUG: heap " HEAPID_FMT
 		    "freed in old_heaps().\n", h->heap_id);
+	}
+#endif
+#ifdef REUSE_HEAP
+	if (!spareheap && h->size == HEAP_BLOCK_SIZE) {
+	    /* Include space that freeheap() or popheap() may have rewound. */
+	    memset(h, 0, HEAP_BLOCK_SIZE);
+	    spareheap = h;
+	    continue;
 	}
 #endif
 #ifdef USE_MMAP
@@ -634,7 +650,14 @@ zhalloc(size_t size)
 	n = HEAP_ARENA_SIZE > size ? HEAPSIZE : size + sizeof(*h);
 
 #ifdef USE_MMAP
-	h = mmap_heap_alloc(&n);
+#ifdef REUSE_HEAP
+	if (spareheap && n == HEAPSIZE) {
+	    h = spareheap;
+	    spareheap = NULL;
+	    n = HEAP_BLOCK_SIZE;
+	} else
+#endif
+	    h = mmap_heap_alloc(&n);
 #else
 	h = (Heap) zalloc(n);
 #endif
