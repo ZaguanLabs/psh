@@ -44,9 +44,15 @@ bin_check(UNUSED(char *name), UNUSED(char **args),
             }
             value.start = value.end = INT_MAX;
             /* Public setstrvalue() also supports callers with no queue. */
-            restore_queue_signals(mode == 0 ? 0 : saved_queue + 1);
+            if (mode == 0)
+                dont_queue_signals();
+            else
+                queue_signals();
             setstrvalue(&value, ztrdup("!"));
-            restore_queue_signals(saved_queue);
+            if (mode == 0)
+                restore_queue_signals(saved_queue);
+            else
+                unqueue_signals();
             if (strcmp(pm->u.str, expected) || errflag)
                 failed = 1;
             zsfree(expected);
@@ -61,6 +67,34 @@ bin_check(UNUSED(char *name), UNUSED(char **args),
         unsetparam("psh_append_fixture_value");
         if (failed)
             break;
+    }
+    /* Check whole-string += at the large-prefix cutoff. Mutate through
+     * the public getter before appending, then reacquire the current value. */
+    for (mode = 0; mode < 2; mode++) {
+        char *prefix = zalloc(4097);
+        Param pm;
+        char *value;
+        memset(prefix, 'a', 4096);
+        prefix[4096] = 0;
+        pm = setsparam("psh_append_fixture_value", prefix);
+        if (!pm)
+            return 1;
+        getsparam("psh_append_fixture_value")[4095] = 'Z';
+        gets = sets = 0;
+        if (mode)
+            pm->gsu.s = &counted;
+        if (!assignsparam("psh_append_fixture_value", ztrdup("!"), ASSPM_AUGMENT))
+            failed = 1;
+        if (mode && (gets != 1 || sets != 1))
+            failed = 1;
+        pm->gsu.s = &stdscalar_gsu;
+        value = getsparam("psh_append_fixture_value");
+        if (!value || strlen(value) != 4097 || strcmp(value + 4095, "Z!"))
+            failed = 1;
+        printf("large=%d gets=%d sets=%d failed=%d\n", mode, gets, sets, failed);
+        unsetparam("psh_append_fixture_value");
+        if (failed)
+            return 1;
     }
     fflush(stdout);
     return failed;

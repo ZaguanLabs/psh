@@ -2807,9 +2807,11 @@ assignstrvalue(Value v, char *val, int flags)
 	} else {
 	    char *z, *x;
             int zlen, vlen, newsize;
+	    size_t prefixlen;
 
             z = v->pm->gsu.s->getfn(v->pm);
-            zlen = strlen(z);
+	    prefixlen = strlen(z);
+            zlen = prefixlen;
 
 	    if ((v->flags & VALFLAG_INV) && unset(KSHARRAYS))
 		v->start--, v->end--;
@@ -2841,6 +2843,22 @@ assignstrvalue(Value v, char *val, int flags)
 	    else if (v->end > zlen)
 		v->end = zlen;
 
+	    /* Grow a large owned prefix under the assignment's signal queue.
+	     * The ordinary setter still performs named-directory maintenance. */
+	    if (prefixlen >= 4096 && prefixlen <= INT_MAX && *val &&
+		v->start == zlen && v->end == zlen &&
+		(flags & ASSPM_AUGMENT) && queue_signal_level() &&
+		v->pm->gsu.s == &stdscalar_gsu && z == v->pm->u.str &&
+		!(v->pm->node.flags & ~(PM_DECLARED | PM_LOCAL | PM_EXPORTED |
+					PM_NAMEDDIR))) {
+		size_t tailbytes = strlen(val) + 1;
+		x = zrealloc(z, prefixlen + tailbytes);
+		memcpy(x + prefixlen, val, tailbytes);
+		v->pm->u.str = NULL;
+		strsetfn(v->pm, x);
+		zsfree(val);
+		break;
+	    }
             vlen = strlen(val);
             /* Characters preceding start index +
                characters of what is assigned +

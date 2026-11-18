@@ -16,8 +16,11 @@ def main():
     parser.add_argument("--samples", type=int, default=9)
     parser.add_argument("--cpu", type=int)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--boundaries", action="store_true",
-                        help="include short inputs around the null-marker scan cutoff")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--boundaries", action="store_true",
+                           help="include short inputs around the null-marker scan cutoff")
+    selection.add_argument("--append-boundaries", action="store_true",
+                           help="measure appends to small prefixes and around the 4 KiB growth cutoff")
     args = parser.parse_args()
     if args.samples < 3:
         parser.error("at least three samples are required")
@@ -42,7 +45,11 @@ def main():
              ("replace", "ascii", 1000000, 0, 100),
              ("replace", "ascii", 1000000, 1, 100),
              ("whole", "ascii", 16, 1000000, 100)]
-    if args.boundaries:
+    if args.append_boundaries:
+        specs = [("append", "ascii", size, 32, iterations) for size, iterations in
+                 ((32, 5000), (4095, 1000), (4096, 1000), (4097, 1000),
+                  (65536, 250), (1000000, 100))]
+    elif args.boundaries:
         specs += [("whole", "ascii", 16, n, 5000)
                   for n in (31, 32, 63, 64, 65, 127, 128, 255, 256, 512, 575, 576, 577, 1024, 1087, 1088, 1089, 2048, 4096)]
     for operation, unit, initial, supplied, iterations in specs:

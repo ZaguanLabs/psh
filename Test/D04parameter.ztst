@@ -2945,3 +2945,15 @@ F:output ignorable as long as not an error
     done
   }
 0:Function return restores the last argument at small and large sizes
+
+  () {
+    local width prefix s
+    for width in 4095 4096 4097; do
+      prefix=${(l:$width::x:)}
+      s=$prefix
+      s+=$s
+      s+=$'\0tail'
+      [[ $s == "$prefix$prefix"$'\0tail' ]] || return 1
+    done
+  }
+0:Large scalar appends preserve self-reference and embedded NUL bytes
