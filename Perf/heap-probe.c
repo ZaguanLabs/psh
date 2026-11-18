@@ -55,7 +55,22 @@ bin_heap_probe(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops),
     {
         Heap parent = new_heaps();
         unsigned char *prefix = zhalloc(64);
+        char *tail, *grown;
+        unsigned char *sentinel;
         memset(prefix, 'p', 64);
+        tail = zhalloc(15);
+        memset(tail, 't', 15);
+        grown = hrealloc(tail, 15, 32);
+        ok &= grown == tail && filled((unsigned char *)grown, 15, 't');
+        memset(grown, 'g', 32);
+        sentinel = zhalloc(64);
+        memset(sentinel, 'v', 64);
+        grown = hrealloc(grown, 32, 96);
+        ok &= filled((unsigned char *)grown, 32, 'g');
+        memset(grown, 'w', 96);
+        grown = hrealloc(grown, 96, 20000);
+        ok &= filled((unsigned char *)grown, 96, 'w');
+        ok &= filled(sentinel, 64, 'v');
         pushheap();
         memset(zhalloc(12000), 'r', 12000);
         freeheap();

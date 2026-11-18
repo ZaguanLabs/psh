@@ -758,9 +758,17 @@ hrealloc(char *p, size_t old, size_t new)
 #ifdef REUSE_HEAP
     rewound_extent = HEAP_BLOCK_SIZE;
 #endif
-    for (h = heaps, ph = NULL; h; ph = h, h = h->next)
-	if (p >= arena(h) && p < arena(h) + ARENA_SIZEOF(h))
-	    break;
+    /* A trailing allocation in the current arena can grow without a
+     * list search.  The first allocation still needs its predecessor
+     * if resizing replaces or removes the whole arena. */
+    if (old && fheap && old < fheap->used &&
+	p == arena(fheap) + (fheap->used - old)) {
+	h = fheap;
+    } else {
+	for (h = heaps; h; ph = h, h = h->next)
+	    if (p >= arena(h) && p < arena(h) + ARENA_SIZEOF(h))
+		break;
+    }
 
     DPUTS(!h, "BUG: hrealloc() called for non-heap memory.");
     DPUTS(h->sp && arena(h) + h->sp->used > p,

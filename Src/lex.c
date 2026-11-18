@@ -30,7 +30,7 @@
 #include "zsh.mdh"
 #include "lex.pro"
 
-#define LEX_HEAP_SIZE (32)
+#define LEX_HEAP_SIZE (16)
 
 /* tokens */
 
