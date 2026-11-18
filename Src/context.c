@@ -44,6 +44,7 @@ struct context_stack {
 };
 
 static struct context_stack *cstack;
+static struct context_stack outer_context;
 
 /* save some or all of current context */
 
@@ -55,7 +56,7 @@ zcontext_save_partial(int parts)
 
     queue_signals();
 
-    cs = (struct context_stack *)malloc(sizeof(struct context_stack));
+    cs = cstack ? (struct context_stack *)malloc(sizeof(*cs)) : &outer_context;
 
     if (parts & ZCONTEXT_HIST) {
 	hist_context_save(&cs->hist_stack, !cstack);
@@ -105,7 +106,8 @@ zcontext_restore_partial(int parts)
 	parse_context_restore(&cs->parse_stack, !cstack);
     }
 
-    free(cs);
+    if (cs != &outer_context)
+	free(cs);
 
     unqueue_signals();
 }
