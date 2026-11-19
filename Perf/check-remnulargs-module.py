@@ -7,6 +7,9 @@ from pathlib import Path
 import subprocess
 
 
+EXPECTED_CHECKS = 31003
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("baseline", type=Path)
@@ -47,18 +50,18 @@ exit 0
             r = subprocess.run(prefix + [str(shell), "-dfc", script, "comparison", str(folder)],
                                env={"PATH": "/usr/bin:/bin", "LC_ALL": locale},
                                capture_output=True, timeout=300)
-            if r.returncode or r.stderr or not r.stdout.endswith(b"checks=30203\n"):
+            if r.returncode or r.stderr or not r.stdout.endswith(f"checks={EXPECTED_CHECKS}\n".encode()):
                 raise RuntimeError((str(shell), locale, r.returncode, r.stdout[-100:], r.stderr))
             if index == 0:
                 reference[locale] = r.stdout
             elif r.stdout != reference[locale]:
                 raise RuntimeError(f"{locale}: resulting allocation bytes differ")
-            report["cases"].append({"shell": str(shell), "locale": locale, "checks": 30203,
+            report["cases"].append({"shell": str(shell), "locale": locale, "checks": EXPECTED_CHECKS,
                                     "status": 0, "memcheck": args.memcheck,
                                     "binary_sha256": sha(shell),
                                     "stdout_sha256": hashlib.sha256(r.stdout).hexdigest(),
                                     "stdout_bytes": len(r.stdout)})
-            print(f"{shell.name}/{locale}: 30203 marker-removal checks passed", flush=True)
+            print(f"{shell.name}/{locale}: {EXPECTED_CHECKS} marker-removal checks passed", flush=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
 
 

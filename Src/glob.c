@@ -3700,6 +3700,22 @@ remnulargs(char *s)
 	    } else if (inull(c)) {
 		char *t = s - 1;
 
+		/* Quoted expansions often have a long literal between two
+		 * markers. After the first removal Bnullkeep also needs work. */
+		if (strlen(s) >= 512) {
+		    char markers[256], *p = markers;
+		    int byte;
+		    size_t n;
+
+		    for (byte = 1; byte < 256; byte++)
+			if (byte == (unsigned char)Bnullkeep || inull(byte))
+			    *p++ = (char)byte;
+		    *p = '\0';
+		    n = strcspn(s, markers);
+		    memmove(t, s, n);
+		    t += n;
+		    s += n;
+		}
 		while ((c = *s++)) {
 		    if (c == Bnullkeep)
 			*t++ = '\\';

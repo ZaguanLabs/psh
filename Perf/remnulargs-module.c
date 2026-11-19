@@ -47,6 +47,7 @@ bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(i
 	"\\", "a\\", { 'a', Bnullkeep, 0 }, { Meta, ' ', 0 }
     };
     static const int prefixes[] = { 0, 1, 63, 64, 65, 127, 255, 575, 576, 577, 1024 };
+    static const int tails[] = {510, 511, 512, 513, 1024};
     short saved[256];
     char raw[1032], *large;
     int mode, p, byte, variant, n, i, alignment, failed = 0;
@@ -85,6 +86,31 @@ bin_check(UNUSED(char *name), UNUSED(char **args), UNUSED(Options ops), UNUSED(i
 		    }
 		    raw[n] = '\0';
 		    if (check_input(raw, n, 0, NULL)) { failed = 1; break; }
+		}
+	    }
+	}
+	/* Long runs after the first removal, including the exact cutoff and
+	 * a retained backslash whose INULL bit can be cleared independently. */
+	if (mode == 1)
+	    typtab[(unsigned char)Bnullkeep] &= ~INULL;
+	for (alignment = 0; alignment < 8 && !failed; alignment++) {
+	    for (i = 0; i < (int)(sizeof(tails)/sizeof(tails[0])) && !failed; i++) {
+		for (variant = 0; variant < 4; variant++) {
+		    n = tails[i];
+		    raw[0] = Bnullkeep;
+		    raw[1] = Dnull;
+		    memset(raw + 2, 'y', n);
+		    if (variant) {
+			int offsets[] = {0, n / 2, n - 2};
+			int pos = 2 + offsets[variant - 1];
+			raw[pos] = Bnullkeep;
+			raw[pos + 1] = 'S';
+		    }
+		    raw[2 + n] = '\0';
+		    if (check_input(raw, n + 2, alignment, NULL)) {
+			failed = 1;
+			break;
+		    }
 		}
 	    }
 	}
