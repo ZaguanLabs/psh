@@ -357,17 +357,20 @@ enum prec_type {
  * Try to be clever about reusing subscripts by caching the Value structure.
  */
 static mnumber
-getmathparam(struct mathvalue *mptr)
+getmathparam(struct mathvalue *mptr, int keep)
 {
     mnumber result;
-    if (!mptr->pval) {
+    struct value scratch;
+    Value v = mptr->pval;
+
+    if (!v) {
 	char *s = mptr->lval;
-	mptr->pval = (Value)zhalloc(sizeof(struct value));
-	if (!getvalue(mptr->pval, &s, 1))
+	/* Only a later use of this operand needs a saved subscript. */
+	v = keep ? (Value)zhalloc(sizeof(*v)) : &scratch;
+	if (!getvalue(v, &s, 1))
 	{
 	    if (unset(UNSET))
 		zerr("%s: parameter not set", mptr->lval);
-	    mptr->pval = NULL;
 	    if (isset(FORCEFLOAT)) {
 		result.type = MN_FLOAT;
 		result.u.d = 0.0;
@@ -375,10 +378,12 @@ getmathparam(struct mathvalue *mptr)
 	    }
 	    return zero_mnumber;
 	}
+	if (keep)
+	    mptr->pval = v;
 	if (errflag)
 	    return zero_mnumber;
     }
-    result = getnumvalue(mptr->pval);
+    result = getnumvalue(v);
     if (isset(FORCEFLOAT) && result.type == MN_INTEGER) {
 	result.type = MN_FLOAT;
 	result.u.d = (double)result.u.l;
@@ -452,7 +457,7 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
 	ret.u.l = 0;
     } else {
 	if (stack[0].val.type == MN_UNSET)
-	    ret = getmathparam(stack);
+	    ret = getmathparam(stack, 0);
 	else
 	    ret = stack[0].val;
     }
@@ -958,12 +963,12 @@ push(mnumber val, char *lval, int getme)
 
 /**/
 static inline mnumber
-pop(int noget)
+pop(int noget, int keep)
 {
     struct mathvalue *mv = stack+sp;
 
     if (mv->val.type == MN_UNSET && !noget)
-	mv->val = getmathparam(mv);
+	mv->val = getmathparam(mv, keep);
     sp--;
     return errflag ? zero_mnumber : mv->val;
 }
@@ -1196,8 +1201,8 @@ op(int what)
     if (tp & (OP_A2|OP_A2IR|OP_A2IO|OP_E2|OP_E2IO)) {
 	/* Make sure anyone seeing this message reports it. */
 	DPUTS(sp < 1, "BUG: math: not enough wallabies in outback.");
-	b = pop(0);
-	a = pop(what == EQ);
+	b = pop(0, 0);
+	a = pop(what == EQ, tp & (OP_E2|OP_E2IO));
 	if (errflag)
 	    return;
 
@@ -1400,7 +1405,7 @@ op(int what)
 
     spval = &stack[sp].val;
     if (stack[sp].val.type == MN_UNSET) {
-	*spval = getmathparam(stack + sp);
+	*spval = getmathparam(stack + sp, 1);
 	if (errflag)
 	    return;
     }
@@ -1445,9 +1450,9 @@ op(int what)
 	break;
     case QUEST:
 	DPUTS(sp < 2, "BUG: math: three shall be the number of the counting.");
-	c = pop(0);
-	b = pop(0);
-	a = pop(0);
+	c = pop(0, 0);
+	b = pop(0, 0);
+	a = pop(0, 0);
 	if (errflag)
 	    return;
 	/* b and c can stay different types in this case. */
@@ -1487,7 +1492,7 @@ bop(int tk)
     int tst;
 
     if (stack[sp].val.type == MN_UNSET)
-	*spval = getmathparam(stack + sp);
+	*spval = getmathparam(stack + sp, 1);
     tst = (spval->type & MN_FLOAT) ? (zlong)spval->u.d : spval->u.l; 
 
     switch (tk) {
@@ -1655,7 +1660,7 @@ mathparse(int pc)
 	    break;
 	case QUEST:
 	    if (stack[sp].val.type == MN_UNSET)
-		stack[sp].val = getmathparam(stack + sp);
+		stack[sp].val = getmathparam(stack + sp, 1);
 	    q = (stack[sp].val.type == MN_FLOAT) ?
 		(stack[sp].val.u.d == 0 ? 0 : 1) :
 		stack[sp].val.u.l;

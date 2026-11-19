@@ -43,12 +43,13 @@ needs its value. Reading all variables at parse time would change expressions
 such as `i + (i=5)` and side-effecting subscripts.
 
 `mathvalue.lval` borrows text whose storage belongs to the surrounding
-evaluation/heap. `getmathparam()` obtains its cached `Value` descriptor through
-the shell heap allocator. That descriptor references a parameter; it does not
-own that parameter. `setmathvar()` rechecks the current parameter identity before
-reusing a cached descriptor for assignment. Unset/redeclare and custom callbacks
-are therefore lifetime boundaries, not opportunities to retain a raw pointer
-indefinitely. This modernization changes none of those allocations or checks.
+evaluation/heap. For a consumed operand or the final read of an expression,
+`getmathparam()` can keep a fresh `Value` descriptor in its own C frame.
+That frame stays live through recursive numeric conversion. Operands that
+may be used again keep their descriptor on the shell heap. In either case
+the descriptor borrows the parameter. Before writing through a cached
+descriptor, `setmathvar()` rechecks the current parameter identity to handle
+a callback that unset or redeclared the variable.
 
 `callmathfunc()` obtains argument descriptors, argument vectors and list nodes
 from the existing shell heap. Arguments are evaluated in sequence through
