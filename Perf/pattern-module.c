@@ -71,6 +71,53 @@ check_boundaries(int utf8chars)
     return checks;
 }
 
+/* Compare a bounded metafied input both directly and via a caller-owned
+ * patstralloc. patmatchlen uses the representation passed to the matcher. */
+static int
+check_literal_inputs(void)
+{
+    static const char literal[] = "a\0\203b";
+    static const int flags[] = {0, PAT_NOANCH, PAT_ANY, PAT_ANY | PAT_NOGLD};
+    int f, input, checks = 0;
+    char *pattern = metafy((char *)literal, 4, META_DUP);
+    int patternlen = strlen(pattern);
+
+    for (f = 0; f < 4; f++) {
+	Patprog prog = patcompile(pattern, flags[f] | PAT_ZDUP, NULL);
+	if (!prog)
+	    return -1;
+	for (input = 0; input < 3; input++) {
+	    char *text = metafy(input == 2 ? ".abc" : "a\0\203bc",
+				input == 1 ? 5 : 4, META_DUP);
+	    int n = strlen(text), rawlen = input == 1 ? 5 : 4;
+	    char *span = zalloc(n), *decoded;
+	    struct patstralloc data;
+	    int any = flags[f] & PAT_ANY;
+	    int expected = any ? !(input == 2 && (flags[f] & PAT_NOGLD)) :
+		(input == 0 || (input == 1 && (flags[f] & PAT_NOANCH)));
+
+	    memcpy(span, text, n);
+	    zsfree(text);
+	    if (pattrylen(prog, span, n, -1, NULL, 7) != expected ||
+		(expected && patmatchlen() != (any ? 0 : patternlen)))
+		return -1;
+	    if (patallocstr(prog, span, n, -1, 0, &data) ||
+		data.unmetalen != rawlen || data.unmetalenp || data.progstrunmeta)
+		return -1;
+	    decoded = patallocstr(prog, span, n, -1, 1, &data);
+	    if (!decoded || data.unmetalen != rawlen ||
+		pattrylen(prog, decoded, rawlen, -1, &data, 7) != expected ||
+		(expected && patmatchlen() != (any ? 0 : 4)))
+		return -1;
+	    zfree(span, n);
+	    checks += 3;
+	}
+	freepatprog(prog);
+    }
+    zsfree(pattern);
+    return checks;
+}
+
 static int
 check_api(char **args)
 {
@@ -140,6 +187,9 @@ check_api(char **args)
 	zsfree(encoded);
     }
     bounded = check_boundaries(utf8chars);
+    if (bounded < 0) return 1;
+    checks += bounded;
+    bounded = check_literal_inputs();
     if (bounded < 0) return 1;
     checks += bounded;
     printf("checks=%d\n", checks);

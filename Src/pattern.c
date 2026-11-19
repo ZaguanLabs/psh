@@ -2325,7 +2325,14 @@ pattryrefs(Patprog prog, char *string, int stringlen, int unmetalenin,
 	/* stringlen is unmetafied length; unmetalenin is ignored */
     } else {
 	patstralloc = &patstralloc_struct;
-	if (patallocstr(prog, string, stringlen, unmetalenin, 0, patstralloc)) {
+	/* Literal and match-all programs use the metafied string directly.
+	 * Only an external caller of patallocstr needs its decoded length. */
+	if ((prog->flags & (PAT_PURES|PAT_ANY)) &&
+	    !(prog->flags & PAT_HAS_EXCLUDP))
+	    memset(patstralloc, 0, sizeof(*patstralloc));
+	else
+	    patallocstr(prog, string, stringlen, unmetalenin, 0, patstralloc);
+	if (patstralloc->alloced) {
 	    patinstart = patstralloc->alloced + patstralloc->unmetalenp;
 	    stringlen = patstralloc->unmetalen;
 	} else
