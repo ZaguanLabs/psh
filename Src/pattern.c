@@ -539,6 +539,25 @@ patcompstart(void)
 mod_export Patprog
 patcompile(char *exp, int inflags, char **endexp)
 {
+    return patcompile_impl(exp, inflags, endexp, NULL);
+}
+
+/* A conditional evaluates an uncached pattern with signals queued and
+ * keeps exp alive through the match. For a borrowed literal only the
+ * header is in the static buffer; pattrycond takes its bytes separately. */
+
+/**/
+Patprog
+patcompilecond(char *exp, char **literal)
+{
+    *literal = NULL;
+    return patcompile_impl(exp, PAT_STATIC, NULL, literal);
+}
+
+/**/
+static Patprog
+patcompile_impl(char *exp, int inflags, char **endexp, char **literal)
+{
     int flags = 0;
     long len = 0;
     long startoff, capacity;
@@ -606,8 +625,11 @@ patcompile(char *exp, int inflags, char **endexp)
     patsize = startoff;
     if (strp) {
 	len = strp - exp;
-	patsize = (startoff + len + 1 + sizeof(union upat) - 1) &
-	    ~(sizeof(union upat) - 1);
+	if (literal && !*strp && len >= 4096)
+	    *literal = exp;
+	else
+	    patsize = (startoff + len + 1 + sizeof(union upat) - 1) &
+		~(sizeof(union upat) - 1);
     }
     capacity = patsize > P_DEF_ALLOC ? patsize : P_DEF_ALLOC;
     if (patalloc != capacity)
@@ -618,8 +640,10 @@ patcompile(char *exp, int inflags, char **endexp)
 
     if (strp) {
 	patparse = strp;
-	memmove(patout + startoff, exp, len);
-	patout[startoff + len] = '\0';
+	if (!literal || !*literal) {
+	    memmove(patout + startoff, exp, len);
+	    patout[startoff + len] = '\0';
+	}
 	patflags |= PAT_PURES;
     } else if (!(patflags & PAT_ANY) && !patcompswitch(0, &flags)) {
 	unqueue_signals();
@@ -2301,10 +2325,28 @@ pattryrefs(Patprog prog, char *string, int stringlen, int unmetalenin,
 	   Patstralloc patstralloc, int patoffset,
 	   int *nump, int *begp, int *endp)
 {
+    return pattryrefs_impl(prog, string, stringlen, unmetalenin, patstralloc,
+			   patoffset, nump, begp, endp, NULL);
+}
+
+/**/
+int
+pattrycond(Patprog prog, char *string, char *literal)
+{
+    return pattryrefs_impl(prog, string, -1, -1, NULL, 0,
+			   NULL, NULL, NULL, literal);
+}
+
+/**/
+static int
+pattryrefs_impl(Patprog prog, char *string, int stringlen, int unmetalenin,
+		Patstralloc patstralloc, int patoffset, int *nump, int *begp,
+		int *endp, char *literal)
+{
     int i, maxnpos = 0, ret;
     int origlen;
     char **sp, **ep, *ptr;
-    char *progstr = (char *)prog + prog->startoff;
+    char *progstr = literal ? literal : (char *)prog + prog->startoff;
     struct patstralloc patstralloc_struct;
 
     if (nump) {

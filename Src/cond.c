@@ -296,6 +296,7 @@ evalcond(Estate state, char *fromtest)
 	{
 	    int test, npat = state->pc[1];
 	    Patprog pprog = state->prog->pats[npat];
+	    char *literal = NULL;
 
 	    queue_signals();
 
@@ -309,8 +310,9 @@ evalcond(Estate state, char *fromtest)
 		save = (!(state->prog->flags & EF_HEAP) &&
 			!strcmp(opat, right) && pprog != dummy_patprog2);
 
-		if (!(pprog = patcompile(right, (save ? PAT_ZDUP : PAT_STATIC),
-					 NULL))) {
+		pprog = save ? patcompile(right, PAT_ZDUP, NULL) :
+		    patcompilecond(right, &literal);
+		if (!pprog) {
 		    zwarnnam(fromtest, "bad pattern: %s", right);
 		    unqueue_signals();
 		    return 2;
@@ -319,7 +321,7 @@ evalcond(Estate state, char *fromtest)
 		    state->prog->pats[npat] = pprog;
 	    }
 	    state->pc += 2;
-	    test = (pprog && pattry(pprog, left));
+	    test = (pprog && pattrycond(pprog, left, literal));
 
 	    unqueue_signals();
 
