@@ -1,4 +1,4 @@
-# Compatibility policy for psh 1.0.0-rc2 development
+# Compatibility policy for psh 1.0.0-rc3
 
 psh aims for meaningful performance gains on **Zsh 5.9.2** while preserving
 existing behavior by default. Existing scripts working unchanged is the normal
@@ -21,7 +21,7 @@ future update or platform. Undocumented or accidental behavioral differences
 remain bugs, including those found outside the author's projects. Memory
 corruption and unsafe ownership are never accepted as compatibility tradeoffs.
 
-## Unreleased post-rc2 system-module corrections
+## System and terminal corrections in rc3
 
 The research branch includes corrections which are **not present in installed
 or published rc2**. Ordinary valid descriptors keep their existing behavior,

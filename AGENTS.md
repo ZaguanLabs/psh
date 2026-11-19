@@ -25,7 +25,7 @@ limited differences; it is not a test-pass quota or an established measurement.
   under the normal user.
 - Keep the stable Zsh installation, personal startup files and account login
   shell untouched. Install psh only through its isolated packaging workflow.
-- Prepare `1.0.0-rc2` on the development branch. Published rc0/rc1 tags and source
+- Prepare `1.0.0-rc3` on the development branch. Published rc0–rc2 tags and source
   archives are immutable. Distinguish development iterations using commits,
   build digests and binary hashes. Retain historical artifacts and the archived
   private tag/draft checkpoint. Do not publish or change repository visibility

@@ -1,15 +1,11 @@
 # psh — Performance SHell
 
-psh **1.0.0-rc2** fixes distribution startup environment integration: locale
-initialization and `~/bin` discovery now have explicit installation support and
-mandatory regression coverage. Core optimizations and bundled projects are
-unchanged from rc1. Published rc0 and rc1 are retained unchanged.
+psh **1.0.0-rc3** reduces interpreter allocation and copying and adds
+system and terminal argument checks. See the [project overview](.github/README.md)
+and [rc3 release notes](Releases/1.0.0-rc3.md). This file retains the detailed
+development history.
 
-For the public introduction and quick start, see the
-[project overview](.github/README.md) and [rc2 release notes](Releases/1.0.0-rc2.md).
-This file retains the detailed development history.
-
-psh 1.0.0-rc2 pursues meaningful performance gains on Zsh 5.9.2 while preserving
+psh 1.0.0-rc3 pursues meaningful performance gains on Zsh 5.9.2 while preserving
 existing behavior by default. Limited, deliberate differences need substantial
 measured benefit, understood consequences and a documented migration or fallback.
 **Oh My Zsh must work unchanged**, including
