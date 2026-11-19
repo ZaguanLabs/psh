@@ -821,26 +821,28 @@ filesubstr(char **namptr, int assign)
 
 /**/
 static char *
-strcatsub(char **d, char *pb, char *pe, char *src, int l, char *s, int glbsub,
+strcatsub(char **d, char *pb, char *pe, char *src, size_t l, char *s, int glbsub,
 	  int copied)
 {
     char *dest;
-    int pl = pe - pb;
+    size_t pl = pe - pb;
 
     if (!pl && (!s || !*s)) {
 	*d = dest = (copied ? src : dupstring(src));
 	if (glbsub)
 	    shtokenize(dest);
     } else {
-	*d = dest = hcalloc(pl + l + (s ? strlen(s) : 0) + 1);
+	size_t sl = s ? strlen(s) : 0;
+
+	*d = dest = zhalloc(pl + l + sl + 1);
 	strncpy(dest, pb, pl);
 	dest += pl;
-	strcpy(dest, src);
+	memcpy(dest, src, l + 1);
 	if (glbsub)
 	    shtokenize(dest);
 	dest += l;
 	if (s)
-	    strcpy(dest, s);
+	    memcpy(dest, s, sl + 1);
     }
     return dest;
 }
@@ -4007,7 +4009,7 @@ colonsubscript:
     if (isarr) {
 	char *x;
 	char *y;
-	int xlen;
+	size_t xlen;
 	int i;
 	LinkNode on = n;
 
@@ -4203,7 +4205,7 @@ colonsubscript:
 	 * such as left- or right-padding and the (e) flag to
 	 * revaluate the result.
 	 */
-	int xlen;
+	size_t xlen;
 	char *x;
 	char *y;
 
