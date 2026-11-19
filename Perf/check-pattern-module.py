@@ -56,13 +56,13 @@ exit 0
                                               option, expected_width],
                                    env={"PATH": "/usr/bin:/bin", "LC_ALL": locale},
                                    capture_output=True, timeout=300)
-                if (r.returncode, r.stdout, r.stderr) != (0, b"checks=458\nchecks=458\n", b""):
+                if (r.returncode, r.stdout, r.stderr) != (0, b"checks=490\nchecks=490\n", b""):
                     raise RuntimeError((str(shell), locale, option, r.returncode, r.stdout, r.stderr))
                 report["cases"].append({"shell": str(shell), "locale": locale, "option": option,
-                                        "checks": 916, "queue_modes": ["unqueued", "queued"],
+                                        "checks": 980, "queue_modes": ["unqueued", "queued"],
                                         "status": 0, "memcheck": args.memcheck,
                                         "binary_sha256": hashlib.sha256(shell.read_bytes()).hexdigest()})
-                print(f"{shell.name}/{locale}/{option}: 916 bounded pattern API checks passed", flush=True)
+                print(f"{shell.name}/{locale}/{option}: 980 bounded pattern API checks passed", flush=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
 
 

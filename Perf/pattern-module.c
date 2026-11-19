@@ -119,6 +119,41 @@ check_literal_inputs(void)
 }
 
 static int
+check_token_prefixes(void)
+{
+    static const int lengths[] = {0, 63, 64, 65, 1087, 1088, 1089, 4096};
+    char pattern[4100], subject[4100], *end;
+    short *star = &typtab[(unsigned char)Star], saved = *star;
+    int file, active, checks = 0;
+    size_t i;
+
+    for (i = 0; i < sizeof(lengths) / sizeof(*lengths); i++) {
+	int n = lengths[i];
+	memset(pattern, 'x', n);
+	pattern[n] = Star;
+	strcpy(pattern + n + 1, "/z");
+	for (file = 0; file < 2; file++) {
+	    for (active = 0; active < 2; active++) {
+		Patprog prog;
+		int len = file ? n + 1 : n + 3;
+		memcpy(subject, pattern, len);
+		subject[n] = active ? 'w' : Star;
+		subject[len] = '\0';
+		*star = active ? saved : (saved & ~ITOK);
+		patcompstart();
+		prog = patcompile(pattern, PAT_STATIC | (file ? PAT_FILE : 0), &end);
+		*star = saved;
+		if (!prog || end != pattern + len ||
+		    !!(prog->flags & PAT_PURES) == active || !pattry(prog, subject))
+		    return -1;
+		checks++;
+	    }
+	}
+    }
+    return checks;
+}
+
+static int
 check_api(char **args)
 {
     static const struct {
@@ -190,6 +225,9 @@ check_api(char **args)
     if (bounded < 0) return 1;
     checks += bounded;
     bounded = check_literal_inputs();
+    if (bounded < 0) return 1;
+    checks += bounded;
+    bounded = check_token_prefixes();
     if (bounded < 0) return 1;
     checks += bounded;
     printf("checks=%d\n", checks);

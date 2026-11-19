@@ -2089,90 +2089,85 @@ makecline(LinkList list)
     return (argv);
 }
 
-/* Keep long-input setup out of the public helper's short-string path. */
+/* Find the first token or the terminator after a 64-byte literal prefix. */
 #if defined(__GNUC__) && (!defined(__APPLE__) || defined(__clang__))
-static void untokenize_tail(char *, int) __attribute__((__noinline__));
+static char *findtoken_tail(char *) __attribute__((__noinline__));
 #endif
 
 /**/
-static void
-untokenize_tail(char *s, int long_prefix)
+static char *
+findtoken_tail(char *s)
 {
-    if (long_prefix) {
-	size_t skip = strlen(s), found;
+    size_t skip = strlen(s), found;
 
-	if (skip >= 1024) {
-	    char tokens[16];
-	    int byte, count = 0;
+    if (skip >= 1024) {
+	char tokens[16];
+	int byte, count = 0;
 
-	    /* The first match in the union is the minimum group offset. */
-	    for (byte = 1; byte < 256; byte++) {
-		if (itok(byte)) {
-		    tokens[count++] = (char)byte;
-		    if (count == 15) {
-			tokens[count] = '\0';
-			found = strcspn(s, tokens);
-			if (found < skip) skip = found;
-			count = 0;
-			if (!skip) break;
-		    }
+	/* The first match in the union is the minimum group offset. */
+	for (byte = 1; byte < 256; byte++) {
+	    if (itok(byte)) {
+		tokens[count++] = (char)byte;
+		if (count == 15) {
+		    tokens[count] = '\0';
+		    found = strcspn(s, tokens);
+		    if (found < skip) skip = found;
+		    count = 0;
+		    if (!skip) break;
 		}
 	    }
-	    if (count) {
-		tokens[count] = '\0';
-		found = strcspn(s, tokens);
-		if (found < skip) skip = found;
-	    }
-	    s += skip;
 	}
+	if (count) {
+	    tokens[count] = '\0';
+	    found = strcspn(s, tokens);
+	    if (found < skip) skip = found;
+	}
+	return s + skip;
     }
-    if (*s) {
-	int c;
+    while (*s && !itok(*s))
+	s++;
+    return s;
+}
 
-	while ((c = *s++))
-	    if (itok(c)) {
-		char *p = s - 1;
+/**/
+char *
+findtoken(char *s)
+{
+    int groups = 16;
 
-		if (c != Nularg)
-		    *p++ = ztokens[c - Pound];
-
-		while ((c = *s++)) {
-		    if (itok(c)) {
-			if (c != Nularg)
-			    *p++ = ztokens[c - Pound];
-		    } else
-			*p++ = c;
-		}
-		*p = '\0';
-		break;
-	    }
+    /* Each byte is checked before advancing; no unchecked word loads. */
+    while (groups--) {
+	if (!*s || itok(*s)) return s;
+	s++;
+	if (!*s || itok(*s)) return s;
+	s++;
+	if (!*s || itok(*s)) return s;
+	s++;
+	if (!*s || itok(*s)) return s;
+	s++;
     }
+    return findtoken_tail(s);
 }
 
 /**/
 mod_export void
 untokenize(char *s)
 {
-    if (*s) {
-	int c, groups = 16;
+    char *p;
+    int c;
 
-	/* Each byte is checked before advancing; no unchecked word loads. */
-	while (groups--) {
-	    if (!(c = *s) || itok(c)) goto convert_tokens;
-	    s++;
-	    if (!(c = *s) || itok(c)) goto convert_tokens;
-	    s++;
-	    if (!(c = *s) || itok(c)) goto convert_tokens;
-	    s++;
-	    if (!(c = *s) || itok(c)) goto convert_tokens;
-	    s++;
-	}
-	if (*s) untokenize_tail(s, 1);
+    s = findtoken(s);
+    if (!*s)
 	return;
-
-    convert_tokens:
-	if (c) untokenize_tail(s, 0);
+    p = s;
+    while ((c = *s++)) {
+	if (itok(c)) {
+	    if (c != Nularg)
+		*p++ = ztokens[c - Pound];
+	} else
+	    *p++ = c;
     }
+    *p = '\0';
 }
 
 

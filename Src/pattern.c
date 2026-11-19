@@ -592,10 +592,11 @@ patcompile(char *exp, int inflags, char **endexp)
 	     */
 	    if (*exp == Nularg)
 		exp++;
-	    for (strp = exp; *strp &&
-		     (!(patflags & PAT_FILE) || *strp != '/') && !itok(*strp);
-		 strp++)
-		;
+	    if (patflags & PAT_FILE) {
+		for (strp = exp; *strp && *strp != '/' && !itok(*strp); strp++)
+		    ;
+	    } else
+		strp = findtoken(exp);
 	}
 	if (strp && *strp && *strp != '/')
 	    strp = NULL;
