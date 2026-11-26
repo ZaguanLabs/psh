@@ -1648,12 +1648,35 @@ parsestr(char **s)
     return err;
 }
 
+/* Printable ASCII (plus TAB) characters that dquote_parse() copies verbatim
+ * without entering any special case, escaping, or tokenization.
+ * Excludes: \0, \n, ", $, ', (, ), [, \, ], `, }, and all bytes >= 0x7f. */
+static const unsigned char dquote_plain_ascii[256] = {
+    /* 0x00..0x0f */ 0,0,0,0,0,0,0,0, 0,1,0,0,0,0,0,0,
+    /* 0x10..0x1f */ 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,
+    /* 0x20..0x2f */ 1,1,0,1,0,1,1,0, 0,0,1,1,1,1,1,1,
+    /* 0x30..0x3f */ 1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,
+    /* 0x40..0x4f */ 1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,
+    /* 0x50..0x5f */ 1,1,1,1,1,1,1,1, 1,1,1,0,0,0,1,1,
+    /* 0x60..0x6f */ 0,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,
+    /* 0x70..0x7f */ 1,1,1,1,1,1,1,1, 1,1,1,1,1,0,1,0
+};
+
 /**/
 mod_export int
 parsestrnoerr(char **s)
 {
-    int l = strlen(*s), err;
+    int l, err;
 
+    if (!zleactive) {
+	const char *p = *s;
+	while (dquote_plain_ascii[(unsigned char)*p])
+	    p++;
+	if (!*p)
+	    return 0;
+    }
+
+    l = strlen(*s);
     zcontext_save();
     untokenize(*s);
     inpush(dupstring_wlen(*s, l), 0, NULL);
@@ -1682,11 +1705,19 @@ parsestrnoerr(char **s)
 mod_export char *
 parse_subscript(char *s, int sub, int endchar)
 {
-    int l = strlen(s), err, toklen;
+    int l, err, toklen;
     char *t;
 
     if (!*s || *s == endchar)
 	return 0;
+    if (!zleactive && endchar != '\0') {
+	char *p = s;
+	while (dquote_plain_ascii[(unsigned char)*p] && *p != endchar)
+	    p++;
+	if (*p == endchar)
+	    return p;
+    }
+    l = strlen(s);
     zcontext_save();
     untokenize(t = dupstring_wlen(s, l));
     inpush(t, 0, NULL);

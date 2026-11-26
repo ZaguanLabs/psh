@@ -3059,19 +3059,17 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
 
 	/* For a size-preserving replacement at nonnegative indices, it is
 	 * enough to check that the old array reaches the end of the slice.
-	 * Avoid scanning the rest of a potentially much larger array.  Limit
-	 * this to a short prefix: a bounded scan is slower than arrlen() for
-	 * distant indices.  Keep the same restrictions as the in-place
-	 * replacement below. */
-	if (pre_assignment_length < 0 && v->end <= 32 &&
+	 * Reuse the confirmed-prefix cache for owned arrays of any length,
+	 * and retain the short bounded prefix check otherwise. */
+	if (pre_assignment_length < 0 &&
 	    v->start >= 0 && v->end > v->start &&
 	    !(v->flags & VALFLAG_INV) &&
 	    value_length == v->end - v->start &&
 	    v->pm->gsu.a->setfn == arrsetfn &&
 	    !(v->pm->node.flags & (PM_SPECIAL|PM_UNIQUE)) &&
 	    !v->pm->ename) {
-	    for (i = 0; i < v->end && old[i]; i++);
-	    if (i == v->end) {
+	    if (cache_length && (zulong)v->end <= (unsigned)-1 &&
+		array_length_ge(v->pm, old, (unsigned)v->end)) {
 		p = old + v->start;
 		for (r = val; *r;) {
 		    zsfree(*p);
@@ -3079,14 +3077,26 @@ setarrvalue_len(Value v, char **val, int pre_assignment_length)
 		}
 		free(val);
 		return;
+	    } else if (v->end <= 32) {
+		for (i = 0; i < v->end && old[i]; i++);
+		if (i == v->end) {
+		    p = old + v->start;
+		    for (r = val; *r;) {
+			zsfree(*p);
+			*p++ = *r++;
+		    }
+		    free(val);
+		    return;
+		}
+		/* The slice extends past the array: the bounded scan has already
+		 * found its full length, so do not scan it again below. */
+		pre_assignment_length = i;
 	    }
-	    /* The slice extends past the array: the bounded scan has already
-	     * found its full length, so do not scan it again below. */
-	    pre_assignment_length = i;
 	}
 
 	if (pre_assignment_length < 0)
-	    pre_assignment_length = arrlen(old);
+	    pre_assignment_length = cache_length ?
+		array_length_full(v->pm, old) : arrlen(old);
 	q = old;
 
 	if ((v->flags & VALFLAG_INV) && unset(KSHARRAYS)) {
