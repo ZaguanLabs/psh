@@ -61,6 +61,7 @@ static char *ptr;
 
 static mnumber yyval;
 static char *yylval;
+static int yylval_len;
 
 #define MAX_MLEVEL 256
 
@@ -315,6 +316,8 @@ struct mathvalue {
     /*
      * If we need to get a variable, this is the string to be passed
      * to the parameter code.  It may include a subscript.
+     * When lval_len > 0, lval borrows a plain ASCII identifier slice
+     * of length lval_len directly from the math expression buffer.
      */
     char *lval;
     /*
@@ -322,7 +325,9 @@ struct mathvalue {
      * stores a reference to it.
      */
     Value pval;
+    Param cached_pm;
     mnumber val;
+    int lval_len;
 };
 
 static struct mathvalue *stack;
@@ -338,6 +343,7 @@ static struct mathvalue *stack;
     APPLY(ptr, xptr) \
     APPLY(yyval, xyyval) \
     APPLY(yylval, xyylval) \
+    APPLY(yylval_len, xyylval_len) \
     APPLY(sp, xsp) \
     APPLY(stack, xstack) \
     APPLY(prec, xprec)
@@ -351,6 +357,43 @@ enum prec_type {
     MPREC_ARG
 };
 
+/* Parse a plain decimal integer string (optional '-' + 1..18 digits, no
+ * leading zero under OCTALZEROES, no spaces/radix/float chars) without
+ * invoking recursive matheval(). Returns 1 on match, 0 to fall back. */
+static inline int
+math_parse_plain_decimal(const char *sv, zlong *out)
+{
+    int neg = 0;
+    unsigned char c;
+    zulong acc;
+    int digits;
+
+    if (*sv == '-') {
+	neg = 1;
+	sv++;
+    }
+    c = (unsigned char)*sv;
+    if ((unsigned char)(c - '0') > 9U)
+	return 0;
+    if (c == '0') {
+	if (neg || sv[1] != '\0')
+	    return 0;
+	*out = 0;
+	return 1;
+    }
+    acc = (zulong)(c - '0');
+    digits = 1;
+    sv++;
+    while ((unsigned char)(*sv - '0') <= 9U && digits < 18) {
+	acc = acc * 10 + (zulong)(*sv - '0');
+	sv++;
+	digits++;
+    }
+    if (*sv != '\0')
+	return 0;
+    *out = neg ? -(zlong)acc : (zlong)acc;
+    return 1;
+}
 
 /*
  * Get a number from a variable.
@@ -364,7 +407,69 @@ getmathparam(struct mathvalue *mptr, int keep)
     Value v = mptr->pval;
 
     if (!v) {
-	char *s = mptr->lval;
+	char *s;
+	if (mptr->lval_len > 0) {
+	    char name[64];
+	    Param pm;
+	    memcpy(name, mptr->lval, (size_t)mptr->lval_len);
+	    name[mptr->lval_len] = '\0';
+	    pm = (Param) paramtab->getnode(paramtab, name);
+	    if (pm && !(pm->node.flags & PM_UNSET)) {
+		int pmt = PM_TYPE(pm->node.flags);
+		if (pmt == PM_INTEGER) {
+		    zlong lv = (pm->gsu.i == &stdinteger_gsu) ?
+			pm->u.val : pm->gsu.i->getfn(pm);
+		    if (keep)
+			mptr->cached_pm = pm;
+		    if (isset(FORCEFLOAT)) {
+			result.type = MN_FLOAT;
+			result.u.d = (double)lv;
+		    } else {
+			result.type = MN_INTEGER;
+			result.u.l = lv;
+		    }
+		    return result;
+		}
+		if (pmt == PM_FFLOAT || pmt == PM_EFLOAT) {
+		    result.type = MN_FLOAT;
+		    result.u.d = (pm->gsu.f == &stdfloat_gsu) ?
+			pm->u.dval : pm->gsu.f->getfn(pm);
+		    if (keep)
+			mptr->cached_pm = pm;
+		    return result;
+		}
+		if (pmt == PM_SCALAR && pm->gsu.s == &stdscalar_gsu &&
+		    mlevel < MAX_MLEVEL) {
+		    const char *sv = pm->u.str;
+		    zlong lv;
+		    if (!sv || !*sv) {
+			if (keep)
+			    mptr->cached_pm = pm;
+			if (isset(FORCEFLOAT)) {
+			    result.type = MN_FLOAT;
+			    result.u.d = 0.0;
+			    return result;
+			}
+			return zero_mnumber;
+		    }
+		    if (math_parse_plain_decimal(sv, &lv)) {
+			if (keep)
+			    mptr->cached_pm = pm;
+			if (isset(FORCEFLOAT)) {
+			    result.type = MN_FLOAT;
+			    result.u.d = (double)lv;
+			} else {
+			    result.type = MN_INTEGER;
+			    result.u.l = lv;
+			}
+			return result;
+		    }
+		}
+	    }
+	    mptr->lval = dupstrpfx(mptr->lval, mptr->lval_len);
+	    mptr->lval_len = 0;
+	}
+	s = mptr->lval;
 	/* Only a later use of this operand needs a saved subscript. */
 	v = keep ? (Value)zhalloc(sizeof(*v)) : &scratch;
 	if (!getvalue(v, &s, 1))
@@ -398,6 +503,7 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
     char *xptr;
     mnumber xyyval;
     char *xyylval;
+    int xyylval_len;
     int xsp;
     struct mathvalue *xstack = 0, nstack[STACKSZ];
     mnumber ret;
@@ -418,6 +524,7 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
 	xyyval.type = MN_INTEGER;
 	xyyval.u.l = 0;
 	xyylval = NULL;
+	xyylval_len = 0;
 	xptr = NULL;
 	xprec = NULL;
     }
@@ -429,7 +536,9 @@ mathevall(char *s, enum prec_type prec_tp, char **ep)
     unary = 1;
     stack[0].val.type = MN_INTEGER;
     stack[0].val.u.l = 0;
+    queue_signals();
     mathparse(prec_tp == MPREC_TOP ? TOPPREC : ARGPREC);
+    unqueue_signals();
     /*
      * Internally, we parse the contents of parentheses at top
      * precedence... so we can return a parenthesis here if
@@ -512,6 +621,43 @@ lexconstant(void)
     char *nptr;
 
     nptr = ptr;
+    if ((unsigned char)(*nptr - '0') <= 9U) {
+	if (*nptr == '0') {
+	    unsigned char c1 = (unsigned char)nptr[1];
+	    if (c1 != 'x' && c1 != 'X' && c1 != 'b' && c1 != 'B' &&
+		c1 != '.' && c1 != 'e' && c1 != 'E' && c1 != '#' &&
+		c1 != '_' && (unsigned char)(c1 - '0') > 9U) {
+		ptr = nptr + 1;
+		if (isset(FORCEFLOAT)) {
+		    yyval.type = MN_FLOAT;
+		    yyval.u.d = 0.0;
+		} else {
+		    yyval.u.l = 0;
+		}
+		return NUM;
+	    }
+	} else {
+	    zulong acc = (zulong)(*nptr - '0');
+	    char *p = nptr + 1;
+	    int digits = 1;
+	    while ((unsigned char)(*p - '0') <= 9U && digits < 18) {
+		acc = acc * 10 + (zulong)(*p - '0');
+		p++;
+		digits++;
+	    }
+	    if (*p != '.' && *p != 'e' && *p != 'E' && *p != '#' &&
+		*p != '_' && (unsigned char)(*p - '0') > 9U) {
+		ptr = p;
+		if (isset(FORCEFLOAT)) {
+		    yyval.type = MN_FLOAT;
+		    yyval.u.d = (double)(zlong)acc;
+		} else {
+		    yyval.u.l = (zlong)acc;
+		}
+		return NUM;
+	    }
+	}
+    }
     if (IS_DASH(*nptr))
 	nptr++;
 
@@ -898,47 +1044,67 @@ zzlex(void)
 		}
 		cct = 1;
 	    }
-	    if ((ie = itype_end(ptr, IIDENT, 0)) != ptr) {
-		int func = 0;
-		char *p;
+	    {
+		char *p = ptr;
+		int ascii_only = 1;
 
-		p = ptr;
-		ptr = ie;
-		if (ie - p == 3 && !EMULATION(EMULATE_SH)) {
-		    if ((p[0] == 'N' || p[0] == 'n') &&
-			(p[1] == 'A' || p[1] == 'a') &&
-			(p[2] == 'N' || p[2] == 'n')) {
-			yyval.type = MN_FLOAT;
-			yyval.u.d = 0.0;
-			yyval.u.d /= yyval.u.d;
-			return NUM;
-		    }
-		    else if ((p[0] == 'I' || p[0] == 'i') &&
-			     (p[1] == 'N' || p[1] == 'n') &&
-			     (p[2] == 'F' || p[2] == 'f')) {
-			yyval.type = MN_FLOAT;
-			yyval.u.d = 0.0;
-			yyval.u.d = 1.0 / yyval.u.d;
-			return NUM;
+		while (typtab[(unsigned char)*ptr] & IIDENT)
+		    ptr++;
+		if ((unsigned char)*ptr > 0x7f) {
+		    ie = itype_end(ptr, IIDENT, 0);
+		    if (ie != ptr) {
+			ptr = ie;
+			ascii_only = 0;
 		    }
 		}
-		if (*ptr == '[' || (!cct && *ptr == '(')) {
-		    char op = *ptr, cp = ((*ptr == '[') ? ']' : ')');
-		    int l;
-		    func = (op == '(');
-		    for (ptr++, l = 1; *ptr && l; ptr++) {
-			if (*ptr == op)
-			    l++;
-			if (*ptr == cp)
-			    l--;
-			if (*ptr == '\\' && ptr[1])
-			    ptr++;
+		if (ptr != p) {
+		    int func = 0;
+
+		    if (ptr - p == 3 && !EMULATION(EMULATE_SH)) {
+			if ((p[0] == 'N' || p[0] == 'n') &&
+			    (p[1] == 'A' || p[1] == 'a') &&
+			    (p[2] == 'N' || p[2] == 'n')) {
+			    yyval.type = MN_FLOAT;
+			    yyval.u.d = 0.0;
+			    yyval.u.d /= yyval.u.d;
+			    return NUM;
+			}
+			else if ((p[0] == 'I' || p[0] == 'i') &&
+				 (p[1] == 'N' || p[1] == 'n') &&
+				 (p[2] == 'F' || p[2] == 'f')) {
+			    yyval.type = MN_FLOAT;
+			    yyval.u.d = 0.0;
+			    yyval.u.d = 1.0 / yyval.u.d;
+			    return NUM;
+			}
 		    }
+		    if (*ptr == '[' || (!cct && *ptr == '(')) {
+			char op = *ptr, cp = ((*ptr == '[') ? ']' : ')');
+			int l;
+			func = (op == '(');
+			for (ptr++, l = 1; *ptr && l; ptr++) {
+			    if (*ptr == op)
+				l++;
+			    if (*ptr == cp)
+				l--;
+			    if (*ptr == '\\' && ptr[1])
+				ptr++;
+			}
+			yylval = dupstrpfx(p, ptr - p);
+			yylval_len = 0;
+			return (func ? FUNC : (cct ? CID : ID));
+		    }
+		    if (!cct && ascii_only && (size_t)(ptr - p) < 64) {
+			yylval = p;
+			yylval_len = (int)(ptr - p);
+			return ID;
+		    }
+		    yylval = dupstrpfx(p, ptr - p);
+		    yylval_len = 0;
+		    return (cct ? CID : ID);
 		}
-		yylval = dupstrpfx(p, ptr - p);
-		return (func ? FUNC : (cct ? CID : ID));
 	    }
-	    else if (cct) {
+	    if (cct) {
 		yyval.u.l = poundgetfn(NULL);
 		return NUM;
 	    }
@@ -948,7 +1114,7 @@ zzlex(void)
 
 /**/
 static void
-push(mnumber val, char *lval, int getme)
+push(mnumber val, char *lval, int lval_len, int getme)
 {
     if (sp == STACKSZ - 1)
 	zerr("stack overflow");
@@ -956,7 +1122,9 @@ push(mnumber val, char *lval, int getme)
 	sp++;
     stack[sp].val = val;
     stack[sp].lval = lval;
+    stack[sp].lval_len = lval_len;
     stack[sp].pval = NULL;
+    stack[sp].cached_pm = NULL;
     if (getme)
 	stack[sp].val.type = MN_UNSET;
 }
@@ -1036,6 +1204,57 @@ setmathvar(struct mathvalue *mvp, mnumber v)
     }
     if (noeval)
 	return v;
+    if (mvp->lval_len > 0) {
+	char name[64];
+	int same_pm;
+	memcpy(name, mvp->lval, (size_t)mvp->lval_len);
+	name[mvp->lval_len] = '\0';
+	pm = (Param) paramtab->getnode(paramtab, name);
+	same_pm = (mvp->cached_pm != NULL && pm == mvp->cached_pm);
+	if (pm && isset(EXECOPT) && !isset(ALLEXPORT) && !pm->env &&
+	    !(pm->node.flags & (PM_UNSET|PM_READONLY|PM_RESTRICTED|PM_EXPORTED)) &&
+	    (same_pm || !isset(WARNNESTEDVAR) || pm->level >= locallevel)) {
+	    int pmt = PM_TYPE(pm->node.flags);
+	    if (pmt == PM_INTEGER && pm->gsu.i == &stdinteger_gsu) {
+		zlong iv = (v.type == MN_INTEGER) ? v.u.l : (zlong)v.u.d;
+		pm->u.val = iv;
+		if (!same_pm) {
+		    pm->node.flags &= ~PM_DEFAULTED;
+		    if (v.type != MN_INTEGER) {
+			v.u.l = iv;
+			v.type = MN_INTEGER;
+		    }
+		}
+		if (!pm->base && lastbase != -1)
+		    pm->base = lastbase;
+		return v;
+	    }
+	    if ((pmt == PM_FFLOAT || pmt == PM_EFLOAT) &&
+		pm->gsu.f == &stdfloat_gsu) {
+		double dv = (v.type == MN_FLOAT) ? v.u.d : (double)v.u.l;
+		pm->u.dval = dv;
+		if (!same_pm) {
+		    pm->node.flags &= ~PM_DEFAULTED;
+		    if (v.type != MN_FLOAT) {
+			v.u.d = dv;
+			v.type = MN_FLOAT;
+		    }
+		}
+		return v;
+	    }
+	}
+	if (same_pm) {
+	    struct value sv;
+	    memset(&sv, 0, sizeof(sv));
+	    sv.pm = pm;
+	    sv.end = -1;
+	    setnumvalue(&sv, v);
+	    return v;
+	}
+	mvp->cached_pm = NULL;
+	mvp->lval = dupstrpfx(mvp->lval, mvp->lval_len);
+	mvp->lval_len = 0;
+    }
     untokenize(mvp->lval);
     pm = setnparam(mvp->lval, v);
     if (pm) {
@@ -1397,9 +1616,9 @@ op(int what)
 	if (tp & (OP_E2|OP_E2IO)) {
 	    struct mathvalue *mvp = stack + sp + 1;
 	    c = setmathvar(mvp, c);
-	    push(c, mvp->lval, 0);
+	    push(c, mvp->lval, mvp->lval_len, 0);
 	} else
-	    push(c,NULL, 0);
+	    push(c, NULL, 0, 0);
 	return;
     }
 
@@ -1456,7 +1675,7 @@ op(int what)
 	if (errflag)
 	    return;
 	/* b and c can stay different types in this case. */
-	push(((a.type & MN_FLOAT) ? a.u.d : a.u.l) ? b : c, NULL, 0);
+	push(((a.type & MN_FLOAT) ? a.u.d : a.u.l) ? b : c, NULL, 0, 0);
 	break;
     case COLON:
 	zerr("bad math expression: ':' without '?'");
@@ -1480,7 +1699,9 @@ op(int what)
 	return;
     }
     stack[sp].lval = NULL;
+    stack[sp].lval_len = 0;
     stack[sp].pval = NULL;
+    stack[sp].cached_pm = NULL;
 }
 
 
@@ -1619,83 +1840,97 @@ mathparse(int pc)
 {
     zlong q;
     int otok, onoeval;
+    int cur_pc = pc;
+    int op_tok[64], op_pc[64];
+    int osp = 0;
     char *optr = ptr;
 
     if (errflag)
 	return;
-    queue_signals();
     mtok = zzlex();
     /* Handle empty input */
-    if (pc == TOPPREC && mtok == EOI) {
-	unqueue_signals();
+    if (pc == TOPPREC && mtok == EOI)
 	return;
-    }
     checkunary(mtok, optr);
-    while (prec[mtok] <= pc) {
-	if (errflag) {
-	    unqueue_signals();
-	    return;
-	}
-	switch (mtok) {
-	case NUM:
-	    push(yyval, NULL, 0);
-	    break;
-	case ID:
-	    push(zero_mnumber, yylval, !noeval);
-	    break;
-	case CID:
-	    push((noeval ? zero_mnumber : getcvar(yylval)), yylval, 0);
-	    break;
-	case FUNC:
-	    push((noeval ? zero_mnumber : callmathfunc(yylval)), yylval, 0);
-	    break;
-	case M_INPAR:
-	    mathparse(TOPPREC);
-	    if (mtok != M_OUTPAR) {
-		if (!errflag)
-		    zerr("bad math expression: ')' expected");
-		unqueue_signals();
+    for (;;) {
+	while (prec[mtok] <= cur_pc) {
+	    if (errflag)
 		return;
-	    }
-	    break;
-	case QUEST:
-	    if (stack[sp].val.type == MN_UNSET)
-		stack[sp].val = getmathparam(stack + sp, 1);
-	    q = (stack[sp].val.type == MN_FLOAT) ?
-		(stack[sp].val.u.d == 0 ? 0 : 1) :
-		stack[sp].val.u.l;
+	    switch (mtok) {
+	    case NUM:
+		push(yyval, NULL, 0, 0);
+		break;
+	    case ID:
+		push(zero_mnumber, yylval, yylval_len, !noeval);
+		break;
+	    case CID:
+		push((noeval ? zero_mnumber : getcvar(yylval)), yylval, 0, 0);
+		break;
+	    case FUNC:
+		push((noeval ? zero_mnumber : callmathfunc(yylval)), yylval, 0, 0);
+		break;
+	    case M_INPAR:
+		mathparse(TOPPREC);
+		if (mtok != M_OUTPAR) {
+		    if (!errflag)
+			zerr("bad math expression: ')' expected");
+		    return;
+		}
+		break;
+	    case QUEST:
+		if (stack[sp].val.type == MN_UNSET)
+		    stack[sp].val = getmathparam(stack + sp, 1);
+		q = (stack[sp].val.type == MN_FLOAT) ?
+		    (stack[sp].val.u.d == 0 ? 0 : 1) :
+		    stack[sp].val.u.l;
 
-	    if (!q)
-		noeval++;
-	    mathparse(prec[COLON] - 1);
-	    if (!q)
-		noeval--;
-	    if (mtok != COLON) {
-		if (!errflag)
-		    zerr("bad math expression: ':' expected");
-		unqueue_signals();
-		return;
+		if (!q)
+		    noeval++;
+		mathparse(prec[COLON] - 1);
+		if (!q)
+		    noeval--;
+		if (mtok != COLON) {
+		    if (!errflag)
+			zerr("bad math expression: ':' expected");
+		    return;
+		}
+		if (q)
+		    noeval++;
+		mathparse(prec[QUEST]);
+		if (q)
+		    noeval--;
+		op(QUEST);
+		continue;
+	    default:
+		otok = mtok;
+		if (MTYPE(type[otok]) == BOOL || osp == 64) {
+		    onoeval = noeval;
+		    if (MTYPE(type[otok]) == BOOL)
+			bop(otok);
+		    mathparse(prec[otok] - (MTYPE(type[otok]) != RL));
+		    noeval = onoeval;
+		    op(otok);
+		    continue;
+		}
+		op_tok[osp] = otok;
+		op_pc[osp] = cur_pc;
+		osp++;
+		cur_pc = prec[otok] - (MTYPE(type[otok]) != RL);
+		optr = ptr;
+		mtok = zzlex();
+		checkunary(mtok, optr);
+		continue;
 	    }
-	    if (q)
-		noeval++;
-	    mathparse(prec[QUEST]);
-	    if (q)
-		noeval--;
-	    op(QUEST);
-	    continue;
-	default:
-	    otok = mtok;
-	    onoeval = noeval;
-	    if (MTYPE(type[otok]) == BOOL)
-		bop(otok);
-	    mathparse(prec[otok] - (MTYPE(type[otok]) != RL));
-	    noeval = onoeval;
-	    op(otok);
-	    continue;
+	    optr = ptr;
+	    mtok = zzlex();
+	    checkunary(mtok, optr);
 	}
-	optr = ptr;
-	mtok = zzlex();
-	checkunary(mtok, optr);
+	if (!osp)
+	    break;
+	osp--;
+	cur_pc = op_pc[osp];
+	op(op_tok[osp]);
+	if (errflag)
+	    return;
     }
-    unqueue_signals();
 }
