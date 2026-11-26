@@ -4461,18 +4461,34 @@ mod_export char *
 itype_end(const char *ptr, int itype, int once)
 {
 #ifdef MULTIBYTE_SUPPORT
+    /* Under MULTIBYTE_SUPPORT, IIDENT in typtab[] is set exclusively for
+     * ASCII [0-9A-Za-z_]. Scan pure ASCII identifiers without touching
+     * multibyte state or option checks unless a byte >= 0x80 is reached. */
+    if (itype == IIDENT) {
+	if (!once) {
+	    while (typtab[(unsigned char)*ptr] & IIDENT)
+		ptr++;
+	    if ((unsigned char)*ptr <= 0x7f)
+		return (char *)ptr;
+	} else if ((unsigned char)*ptr <= 0x7f) {
+	    return (char *)(ptr + ((typtab[(unsigned char)*ptr] & IIDENT) != 0));
+	}
+    }
     if (isset(MULTIBYTE) &&
 	(itype != IIDENT || !isset(POSIXIDENTIFIERS))) {
-	mb_charinit();
+	int mb_inited = 0;
 	for (;;) {
 	    int len;
 	    /* Consume ordinary ASCII directly, including after a wide character. */
-	    while (*ptr && (unsigned char)*ptr <= 0x7f) {
-		if (!zistype(*ptr,itype))
-		    return (char *)ptr;
-		++ptr;
-		if (once)
-		    return (char *)ptr;
+	    if (once) {
+		if ((unsigned char)*ptr - 1U < 127U)
+		    return (char *)(ptr + (zistype(*ptr, itype) != 0));
+	    } else {
+		while ((unsigned char)*ptr - 1U < 127U) {
+		    if (!zistype(*ptr, itype))
+			return (char *)ptr;
+		    ++ptr;
+		}
 	    }
 	    if (!*ptr)
 		break;
@@ -4482,6 +4498,10 @@ itype_end(const char *ptr, int itype, int once)
 		    break;
 	    } else {
 		wint_t wc;
+		if (!mb_inited) {
+		    mb_charinit();
+		    mb_inited = 1;
+		}
 		len = mb_metacharlenconv(ptr, &wc);
 
 		if (!len)
