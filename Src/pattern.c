@@ -1929,6 +1929,63 @@ static struct rpat pattrystate;
  */
 #ifdef MULTIBYTE_SUPPORT
 
+/* Decode one valid multi-byte UTF-8 character in [x, y) when shiftstate is
+ * initial and LC_CTYPE is UTF-8. Returns 2..4 on success, 0 to fall back to
+ * mbrtowc() (for non-UTF-8 locales, non-initial shift state, or errors). */
+static inline size_t
+pat_utf8_decode(const char *x, const char *y, wchar_t *wcp)
+{
+    static const mbstate_t zero_mbstate;
+    size_t avail = (size_t)(y - x);
+    unsigned char b0;
+
+    if (avail < 2 || memcmp(&shiftstate, &zero_mbstate, sizeof(shiftstate)) != 0 ||
+	!psh_ctype_is_utf8())
+	return 0;
+
+    b0 = (unsigned char)x[0];
+    if (b0 >= 0xC2 && b0 <= 0xDF) {
+	unsigned char b1 = (unsigned char)x[1];
+	if ((b1 & 0xC0) == 0x80) {
+	    if (wcp)
+		*wcp = (wchar_t)(((b0 & 0x1F) << 6) | (b1 & 0x3F));
+	    return 2;
+	}
+    } else if (b0 >= 0xE0 && b0 <= 0xEF) {
+	if (avail >= 3) {
+	    unsigned char b1 = (unsigned char)x[1];
+	    unsigned char b2 = (unsigned char)x[2];
+	    if ((b1 & 0xC0) == 0x80 && (b2 & 0xC0) == 0x80 &&
+		(b0 != 0xE0 || b1 >= 0xA0) &&
+		(b0 != 0xED || b1 <= 0x9F)) {
+		if (wcp)
+		    *wcp = (wchar_t)(((b0 & 0x0F) << 12) |
+				     ((b1 & 0x3F) << 6) |
+				     (b2 & 0x3F));
+		return 3;
+	    }
+	}
+    } else if (b0 >= 0xF0 && b0 <= 0xF4) {
+	if (avail >= 4) {
+	    unsigned char b1 = (unsigned char)x[1];
+	    unsigned char b2 = (unsigned char)x[2];
+	    unsigned char b3 = (unsigned char)x[3];
+	    if ((b1 & 0xC0) == 0x80 && (b2 & 0xC0) == 0x80 &&
+		(b3 & 0xC0) == 0x80 &&
+		(b0 != 0xF0 || b1 >= 0x90) &&
+		(b0 != 0xF4 || b1 <= 0x8F)) {
+		if (wcp)
+		    *wcp = (wchar_t)(((b0 & 0x07) << 18) |
+				     ((b1 & 0x3F) << 12) |
+				     ((b2 & 0x3F) << 6) |
+				     (b3 & 0x3F));
+		return 4;
+	    }
+	}
+    }
+    return 0;
+}
+
 /* Get a character from the start point in a string */
 #define CHARREF(x, y)	charref((x), (y), (int *)NULL)
 static wchar_t
@@ -1942,6 +1999,12 @@ charref(char *x, char *y, int *zmb_ind)
 	if (zmb_ind)
 	    *zmb_ind = ZMB_VALID;
 	return (wchar_t) (unsigned char) *x;
+    }
+
+    if (pat_utf8_decode(x, y, &wc)) {
+	if (zmb_ind)
+	    *zmb_ind = ZMB_VALID;
+	return wc;
     }
 
     ret = mbrtowc(&wc, x, y-x, &shiftstate);
@@ -1971,6 +2034,9 @@ charnext(char *x, char *y)
     if (!(patglobflags & GF_MULTIBYTE) || !((unsigned char) *x & 0x80))
 	return x + 1;
 
+    if ((ret = pat_utf8_decode(x, y, NULL)))
+	return x + ret;
+
     ret = mbrtowc(&wc, x, y-x, &shiftstate);
 
     if (ret == MB_INVALID || ret == MB_INCOMPLETE) {
@@ -1998,6 +2064,11 @@ charrefinc(char **x, char *y, int *z)
 
     if (!(patglobflags & GF_MULTIBYTE) || !((unsigned char) **x & 0x80))
 	return (wchar_t) (unsigned char) *(*x)++;
+
+    if ((ret = pat_utf8_decode(*x, y, &wc))) {
+	*x += ret;
+	return wc;
+    }
 
     ret = mbrtowc(&wc, *x, y-*x, &shiftstate);
 

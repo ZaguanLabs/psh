@@ -5639,6 +5639,26 @@ nicedup(const char *s, int heap)
 }
 
 
+/* Check whether the active LC_CTYPE codeset (honoring both setlocale() and
+ * thread-local uselocale()) is UTF-8. */
+/**/
+int
+psh_ctype_is_utf8(void)
+{
+#if defined(HAVE_NL_LANGINFO) && defined(CODESET)
+    static const char *cached_utf8_cs;
+    const char *cs = nl_langinfo(CODESET);
+    if (cs && cs == cached_utf8_cs)
+	return 1;
+    if (cs && cs[0] == 'U' && cs[1] == 'T' && cs[2] == 'F' &&
+	cs[3] == '-' && cs[4] == '8' && cs[5] == '\0') {
+	cached_utf8_cs = cs;
+	return 1;
+    }
+#endif
+    return 0;
+}
+
 /*
  * The guts of mb_metacharlenconv().  This version assumes we are
  * processing a true multibyte character string without tokens, and
@@ -5649,6 +5669,7 @@ nicedup(const char *s, int heap)
 mod_export int
 mb_metacharlenconv_r(const char *s, wint_t *wcp, mbstate_t *mbsp)
 {
+    static const mbstate_t zero_mbstate;
     size_t ret = MB_INVALID;
     char inchar;
     const char *ptr;
@@ -5658,6 +5679,128 @@ mb_metacharlenconv_r(const char *s, wint_t *wcp, mbstate_t *mbsp)
 	if (wcp)
 	    *wcp = (wint_t)*s;
 	return 1;
+    }
+
+    if (memcmp(mbsp, &zero_mbstate, sizeof(*mbsp)) == 0 && psh_ctype_is_utf8()) {
+	const char *p = s;
+	unsigned char b0;
+
+	if (*p == Meta) {
+	    b0 = (unsigned char)(*++p ^ 32);
+	    DPUTS(!*p,
+		  "BUG: unexpected end of string in mb_metacharlen()\n");
+	    p++;
+	} else if (imeta(*p)) {
+	    if (wcp)
+		*wcp = WEOF;
+	    return 0;
+	} else {
+	    b0 = (unsigned char)*p++;
+	}
+
+	if (b0 <= 0x7f) {
+	    if (wcp)
+		*wcp = (wint_t)b0;
+	    return (int)(p - s);
+	}
+	if (b0 >= 0xC2 && b0 <= 0xDF) {
+	    if (*p) {
+		unsigned char b1;
+		if (*p == Meta) {
+		    b1 = (unsigned char)(*++p ^ 32);
+		    p++;
+		} else if (imeta(*p)) {
+		    goto utf8_fallback;
+		} else {
+		    b1 = (unsigned char)*p++;
+		}
+		if ((b1 & 0xC0) == 0x80) {
+		    if (wcp)
+			*wcp = (wint_t)(((b0 & 0x1F) << 6) | (b1 & 0x3F));
+		    return (int)(p - s);
+		}
+	    }
+	} else if (b0 >= 0xE0 && b0 <= 0xEF) {
+	    if (*p) {
+		unsigned char b1;
+		if (*p == Meta) {
+		    b1 = (unsigned char)(*++p ^ 32);
+		    p++;
+		} else if (imeta(*p)) {
+		    goto utf8_fallback;
+		} else {
+		    b1 = (unsigned char)*p++;
+		}
+		if ((b1 & 0xC0) == 0x80 &&
+		    (b0 != 0xE0 || b1 >= 0xA0) &&
+		    (b0 != 0xED || b1 <= 0x9F) && *p) {
+		    unsigned char b2;
+		    if (*p == Meta) {
+			b2 = (unsigned char)(*++p ^ 32);
+			p++;
+		    } else if (imeta(*p)) {
+			goto utf8_fallback;
+		    } else {
+			b2 = (unsigned char)*p++;
+		    }
+		    if ((b2 & 0xC0) == 0x80) {
+			if (wcp)
+			    *wcp = (wint_t)(((b0 & 0x0F) << 12) |
+					    ((b1 & 0x3F) << 6) |
+					    (b2 & 0x3F));
+			return (int)(p - s);
+		    }
+		}
+	    }
+	} else if (b0 >= 0xF0 && b0 <= 0xF4) {
+	    if (*p) {
+		unsigned char b1;
+		if (*p == Meta) {
+		    b1 = (unsigned char)(*++p ^ 32);
+		    p++;
+		} else if (imeta(*p)) {
+		    goto utf8_fallback;
+		} else {
+		    b1 = (unsigned char)*p++;
+		}
+		if ((b1 & 0xC0) == 0x80 &&
+		    (b0 != 0xF0 || b1 >= 0x90) &&
+		    (b0 != 0xF4 || b1 <= 0x8F) && *p) {
+		    unsigned char b2;
+		    if (*p == Meta) {
+			b2 = (unsigned char)(*++p ^ 32);
+			p++;
+		    } else if (imeta(*p)) {
+			goto utf8_fallback;
+		    } else {
+			b2 = (unsigned char)*p++;
+		    }
+		    if ((b2 & 0xC0) == 0x80 && *p) {
+			unsigned char b3;
+			if (*p == Meta) {
+			    b3 = (unsigned char)(*++p ^ 32);
+			    p++;
+			} else if (imeta(*p)) {
+			    goto utf8_fallback;
+			} else {
+			    b3 = (unsigned char)*p++;
+			}
+			if ((b3 & 0xC0) == 0x80) {
+			    if (wcp)
+				*wcp = (wint_t)(((b0 & 0x07) << 18) |
+						((b1 & 0x3F) << 12) |
+						((b2 & 0x3F) << 6) |
+						(b3 & 0x3F));
+			    return (int)(p - s);
+			}
+		    }
+		}
+	    }
+	}
+    utf8_fallback:
+	/* Fall through to mbrtowc() for invalid, incomplete, or libc-specific
+	 * extended sequences (such as > U+10FFFF or 5/6-byte UTF-8 in glibc). */
+	;
     }
 
     for (ptr = s; *ptr; ) {
@@ -5760,6 +5903,8 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
     size_t ret;
     wchar_t wc;
     int num, num_in_char, complete;
+    int is_utf8 = -1;
+    int eptr_no_nul = 0;
 
     if (!isset(MULTIBYTE) || MB_CUR_MAX == 1)
 	return eptr ? (int)(eptr - ptr) : ztrlen(ptr);
@@ -5775,10 +5920,57 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
      * state-free count for every width mode. Resume here after multibyte
      * handling; leave the original Meta/ASCII loop below unchanged. */
  count_ascii:
-    if (eptr) {
-	while (ptr < eptr && (unsigned char)*ptr - 1U < 127U) {
+    if (!eptr) {
+	int prefix = 0;
+	while (prefix < 16 && (unsigned char)*ptr - 1U < 127U) {
 	    ptr++;
 	    num++;
+	    prefix++;
+	}
+	if (prefix == 16 && (unsigned char)*ptr - 1U < 127U) {
+	    eptr = ptr + strlen(ptr);
+	    eptr_no_nul = 1;
+	}
+    }
+    if (eptr) {
+	if (eptr_no_nul) {
+	    while (eptr - ptr >= 32) {
+		uint64_t w0, w1, w2, w3;
+		memcpy(&w0, ptr, 8);
+		memcpy(&w1, ptr + 8, 8);
+		memcpy(&w2, ptr + 16, 8);
+		memcpy(&w3, ptr + 24, 8);
+		if ((w0 | w1 | w2 | w3) & 0x8080808080808080ULL)
+		    break;
+		ptr += 32;
+		num += 32;
+	    }
+	    while (eptr - ptr >= 8) {
+		uint64_t w;
+		memcpy(&w, ptr, 8);
+		if (w & 0x8080808080808080ULL)
+		    break;
+		ptr += 8;
+		num += 8;
+	    }
+	    while (ptr < eptr && (unsigned char)*ptr <= 0x7f) {
+		ptr++;
+		num++;
+	    }
+	} else {
+	    while (eptr - ptr >= 8) {
+		uint64_t w;
+		memcpy(&w, ptr, 8);
+		if ((w & 0x8080808080808080ULL) ||
+		    ((w - 0x0101010101010101ULL) & ~w & 0x8080808080808080ULL))
+		    break;
+		ptr += 8;
+		num += 8;
+	    }
+	    while (ptr < eptr && (unsigned char)*ptr - 1U < 127U) {
+		ptr++;
+		num++;
+	    }
 	}
     } else {
 	while ((unsigned char)*ptr - 1U < 127U) {
@@ -5787,6 +5979,114 @@ mb_metastrlenend(char *ptr, int width, char *eptr)
 	}
     }
     laststart = ptr;
+    if (*ptr && !(eptr && ptr >= eptr)) {
+	if (is_utf8 < 0)
+	    is_utf8 = psh_ctype_is_utf8();
+	if (is_utf8) {
+	    for (;;) {
+		char *p = ptr;
+		unsigned char b0;
+		wchar_t uwc;
+
+		if (!*p || (eptr && p >= eptr))
+		    return num;
+		if ((unsigned char)*p - 1U < 127U)
+		    goto count_ascii;
+		if (*p == Meta) {
+		    if (++p == eptr || !*p)
+			break;
+		    b0 = (unsigned char)(*p++ ^ 32);
+		} else {
+		    b0 = (unsigned char)*p++;
+		}
+		if (b0 <= 0x7f) {
+		    num++;
+		    ptr = laststart = p;
+		    continue;
+		}
+		if (b0 >= 0xC2 && b0 <= 0xDF) {
+		    unsigned char b1;
+		    if (!*p || (eptr && p >= eptr))
+			break;
+		    if (*p == Meta) {
+			if (++p == eptr || !*p) break;
+			b1 = (unsigned char)(*p++ ^ 32);
+		    } else
+			b1 = (unsigned char)*p++;
+		    if ((b1 & 0xC0) != 0x80)
+			break;
+		    uwc = (wchar_t)(((b0 & 0x1F) << 6) | (b1 & 0x3F));
+		} else if (b0 >= 0xE0 && b0 <= 0xEF) {
+		    unsigned char b1, b2;
+		    if (!*p || (eptr && p >= eptr))
+			break;
+		    if (*p == Meta) {
+			if (++p == eptr || !*p) break;
+			b1 = (unsigned char)(*p++ ^ 32);
+		    } else
+			b1 = (unsigned char)*p++;
+		    if ((b1 & 0xC0) != 0x80 ||
+			(b0 == 0xE0 && b1 < 0xA0) ||
+			(b0 == 0xED && b1 > 0x9F) ||
+			!*p || (eptr && p >= eptr))
+			break;
+		    if (*p == Meta) {
+			if (++p == eptr || !*p) break;
+			b2 = (unsigned char)(*p++ ^ 32);
+		    } else
+			b2 = (unsigned char)*p++;
+		    if ((b2 & 0xC0) != 0x80)
+			break;
+		    uwc = (wchar_t)(((b0 & 0x0F) << 12) |
+				    ((b1 & 0x3F) << 6) |
+				    (b2 & 0x3F));
+		} else if (b0 >= 0xF0 && b0 <= 0xF4) {
+		    unsigned char b1, b2, b3;
+		    if (!*p || (eptr && p >= eptr))
+			break;
+		    if (*p == Meta) {
+			if (++p == eptr || !*p) break;
+			b1 = (unsigned char)(*p++ ^ 32);
+		    } else
+			b1 = (unsigned char)*p++;
+		    if ((b1 & 0xC0) != 0x80 ||
+			(b0 == 0xF0 && b1 < 0x90) ||
+			(b0 == 0xF4 && b1 > 0x8F) ||
+			!*p || (eptr && p >= eptr))
+			break;
+		    if (*p == Meta) {
+			if (++p == eptr || !*p) break;
+			b2 = (unsigned char)(*p++ ^ 32);
+		    } else
+			b2 = (unsigned char)*p++;
+		    if ((b2 & 0xC0) != 0x80 ||
+			!*p || (eptr && p >= eptr))
+			break;
+		    if (*p == Meta) {
+			if (++p == eptr || !*p) break;
+			b3 = (unsigned char)(*p++ ^ 32);
+		    } else
+			b3 = (unsigned char)*p++;
+		    if ((b3 & 0xC0) != 0x80)
+			break;
+		    uwc = (wchar_t)(((b0 & 0x07) << 18) |
+				    ((b1 & 0x3F) << 12) |
+				    ((b2 & 0x3F) << 6) |
+				    (b3 & 0x3F));
+		} else {
+		    break;
+		}
+		if (width) {
+		    int wcw = WCWIDTH(uwc);
+		    if (wcw > 0)
+			num += (width == 1) ? wcw : 1;
+		} else {
+		    num++;
+		}
+		ptr = laststart = p;
+	    }
+	}
+    }
     while (*ptr && !(eptr && ptr >= eptr)) {
 	if (*ptr == Meta)
 	    inchar = *++ptr ^ 32;
