@@ -602,6 +602,7 @@ bin_set(char *nam, char **args, UNUSED(Options ops), UNUSED(int func))
 {
     int action, optno, array = 0, hadopt = 0,
 	hadplus = 0, hadend = 0, sort = 0;
+    int old_mb = opts[MULTIBYTE], old_bh = opts[BANGHIST];
     char **x, *arrayname = NULL;
 
     /* Obsolescent sh compatibility: set - is the same as set +xv *
@@ -634,7 +635,8 @@ bin_set(char *nam, char **args, UNUSED(Options ops), UNUSED(int func))
 		    args++;
 		if (!*args) {
 		    printoptionstates(hadplus);
-		    inittyptab();
+		    if (opts[MULTIBYTE] != old_mb || opts[BANGHIST] != old_bh)
+			inittyptab();
 		    return 0;
 		}
 		if(!(optno = optlookup(*args)))
@@ -669,7 +671,8 @@ bin_set(char *nam, char **args, UNUSED(Options ops), UNUSED(int func))
     if (errflag)
 	return 1;
  doneoptions:
-    inittyptab();
+    if (opts[MULTIBYTE] != old_mb || opts[BANGHIST] != old_bh)
+	inittyptab();
 
     /* Show the parameters, possibly with values */
     queue_signals();

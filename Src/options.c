@@ -467,11 +467,21 @@ printoptionnode(HashNode hn, int set)
     }
 }
 
+/* Precomputed option masks for fast installemulation() when optiontab is
+ * untouched. keep[fully][opt] is 0x00 if installemulation modifies opt, else
+ * 0xFF; set[fully][mode][opt] is the replacement value (0 or 1). */
+static unsigned char emul_keep[2][OPT_SIZE];
+static unsigned char emul_set[2][4][OPT_SIZE];
+static HashTable orig_optiontab;
+static HashNode *orig_optiontab_nodes;
+static int orig_optiontab_ct;
+
 /**/
 void
 createoptiontable(void)
 {
     Optname on;
+    int i, fully;
 
     optiontab = newhashtable(101, "optiontab", NULL);
 
@@ -488,8 +498,30 @@ createoptiontable(void)
     optiontab->freenode    = NULL;
     optiontab->printnode   = printoptionnode;
 
-    for (on = optns; on->node.nam; on++)
+    memset(emul_keep, 0xff, sizeof(emul_keep));
+    memset(emul_set, 0, sizeof(emul_set));
+
+    for (on = optns; on->node.nam; on++) {
 	optiontab->addnode(optiontab, on->node.nam, on);
+	if (!(on->node.flags & OPT_ALIAS) && on->optno >= 0 &&
+	    on->optno < OPT_SIZE) {
+	    static const int modes[4] = {
+		EMULATE_CSH, EMULATE_KSH, EMULATE_SH, EMULATE_ZSH
+	    };
+	    for (fully = 0; fully < 2; fully++) {
+		if ((fully && !(on->node.flags & OPT_SPECIAL)) ||
+		    (on->node.flags & OPT_EMULATE)) {
+		    emul_keep[fully][on->optno] = 0;
+		    for (i = 0; i < 4; i++)
+			emul_set[fully][i][on->optno] =
+			    (unsigned char)defset(on, modes[i]);
+		}
+	    }
+	}
+    }
+    orig_optiontab = optiontab;
+    orig_optiontab_nodes = optiontab->nodes;
+    orig_optiontab_ct = optiontab->ct;
 }
 
 /* Emulation appropriate to the setemulate function */
@@ -524,6 +556,26 @@ void
 installemulation(int new_emulation, char *new_opts)
 {
     int fully = !!(new_emulation & EMULATE_FULLY);
+    int mode_idx = -1;
+
+    if (optiontab == orig_optiontab && !optiontab->scantab &&
+	optiontab->nodes == orig_optiontab_nodes &&
+	optiontab->ct == orig_optiontab_ct) {
+	switch (new_emulation & ~EMULATE_FULLY) {
+	case EMULATE_CSH: mode_idx = 0; break;
+	case EMULATE_KSH: mode_idx = 1; break;
+	case EMULATE_SH:  mode_idx = 2; break;
+	case EMULATE_ZSH: mode_idx = 3; break;
+	}
+    }
+    if (mode_idx >= 0) {
+	const unsigned char *keep = emul_keep[fully];
+	const unsigned char *set = emul_set[fully][mode_idx];
+	int i;
+	for (i = 0; i < OPT_SIZE; i++)
+	    new_opts[i] = (char)(((unsigned char)new_opts[i] & keep[i]) | set[i]);
+	return;
+    }
 
     setemulate_emulation = new_emulation;
     setemulate_opts = new_opts;
@@ -586,6 +638,7 @@ bin_setopt(char *nam, char **args, UNUSED(Options ops), int isun)
 {
     int action, optno, match = 0;
     int retval = 0;
+    int old_mb = opts[MULTIBYTE], old_bh = opts[BANGHIST];
 
     /* With no arguments or options, display options. */
     if (!*args) {
@@ -610,7 +663,8 @@ bin_setopt(char *nam, char **args, UNUSED(Options ops), int isun)
 		    args++;
 		if (!*args) {
 		    zwarnnam(nam, "string expected after -o");
-		    inittyptab();
+		    if (opts[MULTIBYTE] != old_mb || opts[BANGHIST] != old_bh)
+			inittyptab();
 		    return 1;
 		}
 		if(!(optno = optlookup(*args))) {
@@ -678,7 +732,8 @@ bin_setopt(char *nam, char **args, UNUSED(Options ops), int isun)
 	    args++;
 	}
     }
-    inittyptab();
+    if (opts[MULTIBYTE] != old_mb || opts[BANGHIST] != old_bh)
+	inittyptab();
     return retval;
 }
 
