@@ -280,7 +280,7 @@ hist_context_save(struct hist_stack *hs, int toplevel)
     chline = NULL;
     hptr = NULL;
     histactive = 0;
-    cmdstack = (unsigned char *)zalloc(CMDSTACKSZ);
+    cmdstack = alloc_cmdstack();
     cmdsp = 0;
 }
 
@@ -314,7 +314,7 @@ hist_context_restore(const struct hist_stack *hs, int toplevel)
     defev = hs->defev;
     hist_keep_comment = hs->hist_keep_comment;
     if (cmdstack)
-	zfree(cmdstack, CMDSTACKSZ);
+	free_cmdstack(cmdstack);
     cmdstack = hs->cstack;
     cmdsp = hs->csp;
 }

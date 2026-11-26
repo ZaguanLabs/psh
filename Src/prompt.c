@@ -1566,6 +1566,46 @@ prompttrunc(int arg, int truncchar, int doprint, int endchar,
     return 1;
 }
 
+/* Command stack pool to avoid repeated zalloc/zfree on function calls and
+ * context saves while keeping recursive C stack frames unchanged. */
+#define CMDSTACK_POOL_SIZE 8
+static unsigned char cmdstack_pool[CMDSTACK_POOL_SIZE][CMDSTACKSZ];
+static unsigned int cmdstack_pool_used;
+
+/**/
+unsigned char *
+alloc_cmdstack(void)
+{
+    unsigned int avail = ~cmdstack_pool_used & ((1U << CMDSTACK_POOL_SIZE) - 1U);
+
+    if (avail) {
+#if defined(__GNUC__) || defined(__clang__)
+	unsigned int slot = (unsigned int)__builtin_ctz(avail);
+#else
+	unsigned int slot = 0;
+	while (!(avail & (1U << slot)))
+	    slot++;
+#endif
+	cmdstack_pool_used |= 1U << slot;
+	return cmdstack_pool[slot];
+    }
+    return (unsigned char *)zalloc(CMDSTACKSZ);
+}
+
+/**/
+void
+free_cmdstack(unsigned char *cs)
+{
+    if (!cs)
+	return;
+    if (cs >= cmdstack_pool[0] && cs < cmdstack_pool[CMDSTACK_POOL_SIZE]) {
+	unsigned int slot = (unsigned int)((cs - cmdstack_pool[0]) / CMDSTACKSZ);
+	cmdstack_pool_used &= ~(1U << slot);
+	return;
+    }
+    zfree(cs, CMDSTACKSZ);
+}
+
 /**/
 void
 cmdpush(int cmdtok)

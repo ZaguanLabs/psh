@@ -5609,7 +5609,7 @@ execshfunc(Shfunc shf, LinkList args)
     queue_signals();
     ocs = cmdstack;
     ocsp = cmdsp;
-    cmdstack = (unsigned char *) zalloc(CMDSTACKSZ);
+    cmdstack = alloc_cmdstack();
     cmdsp = 0;
     if ((osfc = sfcontext) == SFC_NONE)
 	sfcontext = SFC_DIRECT;
@@ -5618,7 +5618,7 @@ execshfunc(Shfunc shf, LinkList args)
     doshfunc(shf, args, 0);
 
     sfcontext = osfc;
-    free(cmdstack);
+    free_cmdstack(cmdstack);
     cmdstack = ocs;
     cmdsp = ocsp;
 

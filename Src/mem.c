@@ -136,9 +136,13 @@ static Heap heaps;
 #define MAX_SPARE_HEAPS 2
 static Heap spareheaps[MAX_SPARE_HEAPS];
 static unsigned int nspareheaps;
-/* Largest payload extent before a rewind in this heap list. A restored or
- * resized list uses a full clear because its earlier extents are unknown. */
+/* Largest payload extent before a rewind in this heap list. Nested scopes
+ * preserve outer extents on a fixed stack; switch_heaps() and hrealloc()
+ * conservatively require full clearing. */
+#define REWOUND_STACK_SIZE 32
 static size_t rewound_extent = HEAP_BLOCK_SIZE;
+static size_t rewound_stack[REWOUND_STACK_SIZE];
+static unsigned int rewound_depth;
 
 static void
 rewind_heap(Heap h, size_t offset)
@@ -223,6 +227,9 @@ new_heaps(void)
 
     fheap = heaps = NULL;
 #ifdef REUSE_HEAP
+    if (rewound_depth < REWOUND_STACK_SIZE)
+	rewound_stack[rewound_depth] = rewound_extent;
+    rewound_depth++;
     rewound_extent = 0;
 #endif
     unqueue_signals();
@@ -277,7 +284,13 @@ old_heaps(Heap old)
     }
     heaps = old;
 #ifdef REUSE_HEAP
-    rewound_extent = HEAP_BLOCK_SIZE;
+    if (rewound_depth) {
+	rewound_depth--;
+	rewound_extent = rewound_depth < REWOUND_STACK_SIZE
+	    ? rewound_stack[rewound_depth] : HEAP_BLOCK_SIZE;
+    } else {
+	rewound_extent = HEAP_BLOCK_SIZE;
+    }
 #endif
 #ifdef ZSH_HEAP_DEBUG
     if (heap_debug_verbosity & HDV_OLD) {
@@ -317,7 +330,13 @@ switch_heaps(Heap new)
 #endif
     heaps = new;
 #ifdef REUSE_HEAP
-    rewound_extent = HEAP_BLOCK_SIZE;
+    {
+	unsigned int i, lim = rewound_depth < REWOUND_STACK_SIZE
+	    ? rewound_depth : REWOUND_STACK_SIZE;
+	for (i = 0; i < lim; i++)
+	    rewound_stack[i] = HEAP_BLOCK_SIZE;
+	rewound_extent = HEAP_BLOCK_SIZE;
+    }
 #endif
     fheap = NULL;
     unqueue_signals();
@@ -418,6 +437,16 @@ freeheap(void)
 	    } else if (ARENA_SIZEOF(h) - h->used >
 		       ARENA_SIZEOF(fheap) - fheap->used)
 		fheap = h;
+	    else if (hl && hl->next == h &&
+		     ARENA_SIZEOF(h) - h->used < 4096 &&
+		     ARENA_SIZEOF(fheap) - fheap->used >= 4096) {
+		/* Move nearly full pushed arenas ahead of fheap so subsequent
+		 * zhalloc() and freeheap() scans skip them until popheap(). */
+		hl->next = hn;
+		h->next = heaps;
+		heaps = h;
+		continue;
+	    }
 	    hl = h;
 #ifdef ZSH_HEAP_DEBUG
 	    /*

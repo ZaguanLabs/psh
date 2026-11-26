@@ -1432,10 +1432,12 @@ source(char *s)
     oldlineno = lineno;          /* store our current lineno                  */
     oloops    = loops;           /* stored the # of nested loops we are in    */
     oldshst   = opts[SHINSTDIN]; /* store current value of this option        */
+    queue_signals();
     ocs = cmdstack;
     ocsp = cmdsp;
-    cmdstack = (unsigned char *) zalloc(CMDSTACKSZ);
+    cmdstack = alloc_cmdstack();
     cmdsp = 0;
+    unqueue_signals();
 
     if (!prog) {
 	SHIN = tempfd;
@@ -1522,9 +1524,11 @@ source(char *s)
 	retflag = 0;
     scriptname = old_scriptname;
     scriptfilename = old_scriptfilename;
-    zfree(cmdstack, CMDSTACKSZ);
+    queue_signals();
+    free_cmdstack(cmdstack);
     cmdstack = ocs;
     cmdsp = ocsp;
+    unqueue_signals();
 
     return ret;
 }
