@@ -396,6 +396,1318 @@ math_parse_plain_decimal(const char *sv, zlong *out)
 }
 
 /*
+ * Bounded static-BSS bytecode cache for repeated pure-integer arithmetic
+ * expressions with plain ASCII identifiers.  Any float, subscript, function,
+ * radix, option edge case, unset/readonly/non-integer write, or division by
+ * zero falls back cleanly to mathevall() without side effects.
+ */
+#define MBC_SMALL_CACHE_SIZE  128
+#define MBC_SMALL_SRC         80
+#define MBC_SMALL_VARS        12
+#define MBC_SMALL_VARBUF      96
+#define MBC_SMALL_CONSTS      12
+#define MBC_SMALL_OPS         48
+
+#define MBC_LARGE_CACHE_SIZE  8
+#define MBC_LARGE_SRC         384
+#define MBC_LARGE_VARS        16
+#define MBC_LARGE_VARBUF      128
+#define MBC_LARGE_CONSTS      32
+#define MBC_LARGE_OPS         192
+
+#define MBC_MAX_VARS          MBC_LARGE_VARS
+#define MBC_STACK_SZ          32
+
+static unsigned char mbc_bad_char[256];
+static int mbc_table_ready;
+
+static void
+mbc_init_table(void)
+{
+    int i;
+    static const char allowed[] =
+	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
+	" \t\n\"+-*/%&|^~!<>=?:,()";
+    memset(mbc_bad_char, 1, sizeof(mbc_bad_char));
+    mbc_bad_char[0] = 0;
+    for (i = 0; allowed[i]; i++)
+	mbc_bad_char[(unsigned char)allowed[i]] = 0;
+    mbc_bad_char[(unsigned char)Dash] = 0;
+    mbc_bad_char[(unsigned char)Dnull] = 0;
+    mbc_table_ready = 1;
+}
+
+#define MBC_F_HAS_WRITE       (1U << 0)
+#define MBC_F_SAFE_SINGLE_END (1U << 1)
+#define MBC_F_HAS_DIV         (1U << 2)
+#define MBC_F_HAS_BRANCH      (1U << 3)
+#define MBC_F_HAS_COMMA       (1U << 4)
+
+#define MBC_TOK_BAD (-1)
+#define MBC_OP(op, arg) ((unsigned short)(((unsigned)(op) << 8) | ((unsigned)(arg) & 0xffU)))
+
+enum {
+    MBC_PUSH_CONST = 1,
+    MBC_LOAD_VAR,
+    MBC_STORE_VAR,
+    MBC_PREINC,
+    MBC_PREDEC,
+    MBC_POSTINC,
+    MBC_POSTDEC,
+    MBC_C_ADD,
+    MBC_C_SUB,
+    MBC_C_MUL,
+    MBC_C_DIV,
+    MBC_C_MOD,
+    MBC_C_AND,
+    MBC_C_XOR,
+    MBC_C_OR,
+    MBC_C_SHL,
+    MBC_C_SHR,
+    MBC_NEG,
+    MBC_NOT,
+    MBC_COMP,
+    MBC_TOBOOL,
+    MBC_POP,
+    MBC_ADD,
+    MBC_SUB,
+    MBC_MUL,
+    MBC_DIV,
+    MBC_MOD,
+    MBC_AND,
+    MBC_XOR,
+    MBC_OR,
+    MBC_SHL,
+    MBC_SHR,
+    MBC_LES,
+    MBC_LEQ,
+    MBC_GRE,
+    MBC_GEQ,
+    MBC_DEQ,
+    MBC_NEQ,
+    MBC_DXOR,
+    MBC_POWER,
+    MBC_JZ_KEEP,
+    MBC_JNZ_ONE,
+    MBC_JZ_POP,
+    MBC_JMP
+};
+
+struct mbc_hdr {
+    unsigned hash;
+    unsigned short src_len;
+    unsigned short write_mask;
+    unsigned char cprec;
+    unsigned char valid;	/* 0=empty, 1=compiled, 2=non-compilable */
+    unsigned char nvars;
+    unsigned char nconsts;
+    unsigned char nops;
+    unsigned char flags;
+};
+
+struct math_bc_small {
+    struct mbc_hdr h;
+    char src[MBC_SMALL_SRC];
+    char var_buf[MBC_SMALL_VARBUF];
+    unsigned char var_off[MBC_SMALL_VARS];
+    unsigned var_hash[MBC_SMALL_VARS];
+    zlong consts[MBC_SMALL_CONSTS];
+    unsigned short ops[MBC_SMALL_OPS];
+};
+
+struct math_bc_large {
+    struct mbc_hdr h;
+    char src[MBC_LARGE_SRC];
+    char var_buf[MBC_LARGE_VARBUF];
+    unsigned char var_off[MBC_LARGE_VARS];
+    unsigned var_hash[MBC_LARGE_VARS];
+    zlong consts[MBC_LARGE_CONSTS];
+    unsigned short ops[MBC_LARGE_OPS];
+};
+
+struct mbc_view {
+    struct mbc_hdr *h;
+    char *src;
+    char *var_buf;
+    unsigned char *var_off;
+    unsigned *var_hash;
+    zlong *consts;
+    unsigned short *ops;
+    unsigned short max_vars;
+    unsigned short max_varbuf;
+    unsigned short max_consts;
+    unsigned short max_ops;
+};
+
+static struct math_bc_small mbc_small[MBC_SMALL_CACHE_SIZE];
+static struct math_bc_large mbc_large[MBC_LARGE_CACHE_SIZE];
+
+struct mbc_compile_ctx {
+    struct mbc_view *vw;
+    const int *ptab;
+    const char *p;
+    int tok;
+    int unary;
+    int tok_var;
+    zlong tok_val;
+    unsigned char var_used;
+    unsigned char write_count;
+    short last_write_op;
+    int failed;
+};
+
+static int
+mbc_emit(struct mbc_compile_ctx *ctx, unsigned op_code, unsigned arg)
+{
+    struct mbc_view *vw = ctx->vw;
+    struct mbc_hdr *h = vw->h;
+    if (h->nops >= vw->max_ops) {
+	ctx->failed = 1;
+	return -1;
+    }
+    vw->ops[h->nops] = MBC_OP(op_code, arg);
+    return (int)(h->nops++);
+}
+
+static int
+mbc_add_const(struct mbc_compile_ctx *ctx, zlong val)
+{
+    struct mbc_view *vw = ctx->vw;
+    struct mbc_hdr *h = vw->h;
+    int i;
+    for (i = 0; i < (int)h->nconsts; i++)
+	if (vw->consts[i] == val)
+	    return i;
+    if (h->nconsts >= vw->max_consts) {
+	ctx->failed = 1;
+	return -1;
+    }
+    vw->consts[h->nconsts] = val;
+    return (int)(h->nconsts++);
+}
+
+static int
+mbc_add_var(struct mbc_compile_ctx *ctx, const char *start, size_t len)
+{
+    struct mbc_view *vw = ctx->vw;
+    struct mbc_hdr *h = vw->h;
+    int i;
+    unsigned hv = 0;
+    size_t k;
+
+    if (len == 0 || len >= 32) {
+	ctx->failed = 1;
+	return -1;
+    }
+    for (k = 0; k < len; k++)
+	hv += (hv << 5) + (unsigned char)start[k];
+    for (i = 0; i < (int)h->nvars; i++) {
+	if (vw->var_hash[i] == hv) {
+	    const char *existing = vw->var_buf + vw->var_off[i];
+	    if (memcmp(existing, start, len) == 0 && existing[len] == '\0')
+		return i;
+	}
+    }
+    if (h->nvars >= vw->max_vars ||
+	(size_t)ctx->var_used + len + 1 > vw->max_varbuf) {
+	ctx->failed = 1;
+	return -1;
+    }
+    i = (int)(h->nvars++);
+    vw->var_off[i] = ctx->var_used;
+    vw->var_hash[i] = hv;
+    memcpy(vw->var_buf + ctx->var_used, start, len);
+    vw->var_buf[ctx->var_used + len] = '\0';
+    ctx->var_used = (unsigned char)(ctx->var_used + len + 1);
+    return i;
+}
+
+static int
+mbc_lex_decimal(const char **pp, zlong *out)
+{
+    const char *p = *pp;
+    unsigned char c = (unsigned char)*p;
+    if ((unsigned char)(c - '0') > 9U)
+	return 0;
+    if (c == '0') {
+	unsigned char c1 = (unsigned char)p[1];
+	if (c1 == 'x' || c1 == 'X' || c1 == 'b' || c1 == 'B' ||
+	    c1 == '.' || c1 == 'e' || c1 == 'E' || c1 == '#' ||
+	    c1 == '_' || (unsigned char)(c1 - '0') <= 9U)
+	    return 0;
+	*pp = p + 1;
+	*out = 0;
+	return 1;
+    } else {
+	zulong acc = (zulong)(c - '0');
+	int digits = 1;
+	p++;
+	while ((unsigned char)(*p - '0') <= 9U && digits < 18) {
+	    acc = acc * 10 + (zulong)(*p - '0');
+	    p++;
+	    digits++;
+	}
+	if (*p == '.' || *p == 'e' || *p == 'E' || *p == '#' ||
+	    *p == '_' || (unsigned char)(*p - '0') <= 9U)
+	    return 0;
+	*pp = p;
+	*out = (zlong)acc;
+	return 1;
+    }
+}
+
+static void
+mbc_next(struct mbc_compile_ctx *ctx)
+{
+    const char *p = ctx->p;
+    int tok = MBC_TOK_BAD;
+
+    if (ctx->failed) {
+	ctx->tok = MBC_TOK_BAD;
+	return;
+    }
+    for (;;) {
+	char ch = *p++;
+	switch (ch) {
+	case ' ':
+	case '\t':
+	case '\n':
+	case '"':
+	case Dnull:
+	    continue;
+	case '+':
+	    if (*p == '+') {
+		p++;
+		tok = ctx->unary ? PREPLUS : POSTPLUS;
+	    } else if (*p == '=') {
+		p++;
+		tok = PLUSEQ;
+	    } else {
+		tok = ctx->unary ? UPLUS : PLUS;
+	    }
+	    break;
+	case '-':
+	case Dash:
+	    if (IS_DASH(*p)) {
+		p++;
+		tok = ctx->unary ? PREMINUS : POSTMINUS;
+	    } else if (*p == '=') {
+		p++;
+		tok = MINUSEQ;
+	    } else if (ctx->unary) {
+		if ((unsigned char)(*p - '0') <= 9U) {
+		    zlong v;
+		    if (!mbc_lex_decimal(&p, &v)) {
+			ctx->failed = 1;
+			ctx->tok = MBC_TOK_BAD;
+			return;
+		    }
+		    ctx->tok_val = -v;
+		    tok = NUM;
+		} else if (*p == '.') {
+		    ctx->failed = 1;
+		    ctx->tok = MBC_TOK_BAD;
+		    return;
+		} else {
+		    tok = UMINUS;
+		}
+	    } else {
+		tok = MINUS;
+	    }
+	    break;
+	case '(':
+	    tok = M_INPAR;
+	    break;
+	case ')':
+	    tok = M_OUTPAR;
+	    break;
+	case '!':
+	    if (*p == '=') { p++; tok = NEQ; }
+	    else tok = NOT;
+	    break;
+	case '~':
+	    tok = COMP;
+	    break;
+	case '&':
+	    if (*p == '&') {
+		if (*++p == '=') { tok = MBC_TOK_BAD; break; }
+		tok = DAND;
+	    } else if (*p == '=') {
+		p++;
+		tok = ANDEQ;
+	    } else {
+		tok = AND;
+	    }
+	    break;
+	case '|':
+	    if (*p == '|') {
+		if (*++p == '=') { tok = MBC_TOK_BAD; break; }
+		tok = DOR;
+	    } else if (*p == '=') {
+		p++;
+		tok = OREQ;
+	    } else {
+		tok = OR;
+	    }
+	    break;
+	case '^':
+	    if (*p == '^') {
+		if (*++p == '=') { tok = MBC_TOK_BAD; break; }
+		tok = DXOR;
+	    } else if (*p == '=') {
+		p++;
+		tok = XOREQ;
+	    } else {
+		tok = XOR;
+	    }
+	    break;
+	case '*':
+	    if (*p == '*') {
+		if (*++p == '=') { tok = MBC_TOK_BAD; break; }
+		tok = POWER;
+	    } else if (*p == '=') {
+		p++;
+		tok = MULEQ;
+	    } else {
+		tok = MUL;
+	    }
+	    break;
+	case '/':
+	    if (*p == '=') { p++; tok = DIVEQ; }
+	    else tok = DIV;
+	    break;
+	case '%':
+	    if (*p == '=') { p++; tok = MODEQ; }
+	    else tok = MOD;
+	    break;
+	case '<':
+	    if (*p == '<') {
+		if (*++p == '=') { p++; tok = SHLEFTEQ; }
+		else tok = SHLEFT;
+	    } else if (*p == '=') {
+		p++;
+		tok = LEQ;
+	    } else {
+		tok = LES;
+	    }
+	    break;
+	case '>':
+	    if (*p == '>') {
+		if (*++p == '=') { p++; tok = SHRIGHTEQ; }
+		else tok = SHRIGHT;
+	    } else if (*p == '=') {
+		p++;
+		tok = GEQ;
+	    } else {
+		tok = GRE;
+	    }
+	    break;
+	case '=':
+	    if (*p == '=') { p++; tok = DEQ; }
+	    else tok = EQ;
+	    break;
+	case '?':
+	    tok = ctx->unary ? MBC_TOK_BAD : QUEST;
+	    break;
+	case ':':
+	    tok = COLON;
+	    break;
+	case ',':
+	    tok = COMMA;
+	    break;
+	case '\0':
+	    p--;
+	    tok = EOI;
+	    break;
+	default:
+	    p--;
+	    if ((unsigned char)(*p - '0') <= 9U) {
+		zlong v;
+		if (!mbc_lex_decimal(&p, &v)) {
+		    ctx->failed = 1;
+		    ctx->tok = MBC_TOK_BAD;
+		    return;
+		}
+		ctx->tok_val = v;
+		tok = NUM;
+	    } else if ((unsigned char)*p <= 0x7f &&
+		       (typtab[(unsigned char)*p] & IIDENT)) {
+		const char *start = p;
+		size_t len;
+		while ((unsigned char)*p <= 0x7f &&
+		       (typtab[(unsigned char)*p] & IIDENT))
+		    p++;
+		if ((unsigned char)*p > 0x7f || *p == '[' || *p == '(') {
+		    ctx->failed = 1;
+		    ctx->tok = MBC_TOK_BAD;
+		    return;
+		}
+		len = (size_t)(p - start);
+		if (len == 3 &&
+		    ((((start[0] | 32) == 'n') && ((start[1] | 32) == 'a') &&
+		      ((start[2] | 32) == 'n')) ||
+		     (((start[0] | 32) == 'i') && ((start[1] | 32) == 'n') &&
+		      ((start[2] | 32) == 'f')))) {
+		    ctx->failed = 1;
+		    ctx->tok = MBC_TOK_BAD;
+		    return;
+		}
+		ctx->tok_var = mbc_add_var(ctx, start, len);
+		if (ctx->tok_var < 0) {
+		    ctx->tok = MBC_TOK_BAD;
+		    return;
+		}
+		tok = ID;
+	    } else {
+		tok = MBC_TOK_BAD;
+	    }
+	    break;
+	}
+	break;
+    }
+    ctx->p = p;
+    if (tok == MBC_TOK_BAD) {
+	ctx->failed = 1;
+	ctx->tok = MBC_TOK_BAD;
+	return;
+    }
+    {
+	int tp = type[tok];
+	if (tp & (OP_A2|OP_A2IR|OP_A2IO|OP_E2|OP_E2IO|OP_OP)) {
+	    if (ctx->unary) {
+		ctx->failed = 1;
+		ctx->tok = MBC_TOK_BAD;
+		return;
+	    }
+	} else {
+	    if (!ctx->unary) {
+		ctx->failed = 1;
+		ctx->tok = MBC_TOK_BAD;
+		return;
+	    }
+	}
+	ctx->unary = !(tp & OP_OPF);
+    }
+    ctx->tok = tok;
+}
+
+static void
+mbc_record_write(struct mbc_compile_ctx *ctx, int vid, int op_pos)
+{
+    ctx->write_count++;
+    ctx->last_write_op = (short)op_pos;
+    ctx->vw->h->write_mask |= (unsigned short)(1U << vid);
+}
+
+static int
+mbc_parse_expr(struct mbc_compile_ctx *ctx, int pc, int depth)
+{
+    const int *ptab = ctx->ptab;
+    struct mbc_view *vw = ctx->vw;
+    struct mbc_hdr *bc = vw->h;
+
+    if (ctx->failed || depth > 24) {
+	ctx->failed = 1;
+	return 0;
+    }
+
+    switch (ctx->tok) {
+    case NUM: {
+	int ci = mbc_add_const(ctx, ctx->tok_val);
+	if (ci < 0 || mbc_emit(ctx, MBC_PUSH_CONST, (unsigned)ci) < 0)
+	    return 0;
+	mbc_next(ctx);
+	break;
+    }
+    case ID: {
+	int vid = ctx->tok_var;
+	mbc_next(ctx);
+	if (ctx->failed)
+	    return 0;
+	if ((ctx->tok == POSTPLUS || ctx->tok == POSTMINUS) &&
+	    ptab[ctx->tok] <= pc) {
+	    int pos = mbc_emit(ctx, ctx->tok == POSTPLUS ? MBC_POSTINC : MBC_POSTDEC,
+			       (unsigned)vid);
+	    if (pos < 0)
+		return 0;
+	    mbc_record_write(ctx, vid, pos);
+	    mbc_next(ctx);
+	} else if (ctx->tok >= EQ && ctx->tok <= SHRIGHTEQ &&
+		   ptab[ctx->tok] <= pc) {
+	    int atop = ctx->tok;
+	    unsigned op_code;
+	    int pos;
+	    mbc_next(ctx);
+	    if (!mbc_parse_expr(ctx, ptab[atop], depth + 1))
+		return 0;
+	    switch (atop) {
+	    case EQ:        op_code = MBC_STORE_VAR; break;
+	    case PLUSEQ:    op_code = MBC_C_ADD; break;
+	    case MINUSEQ:   op_code = MBC_C_SUB; break;
+	    case MULEQ:     op_code = MBC_C_MUL; break;
+	    case DIVEQ:     op_code = MBC_C_DIV; bc->flags |= MBC_F_HAS_DIV; break;
+	    case MODEQ:     op_code = MBC_C_MOD; bc->flags |= MBC_F_HAS_DIV; break;
+	    case ANDEQ:     op_code = MBC_C_AND; break;
+	    case XOREQ:     op_code = MBC_C_XOR; break;
+	    case OREQ:      op_code = MBC_C_OR; break;
+	    case SHLEFTEQ:  op_code = MBC_C_SHL; break;
+	    case SHRIGHTEQ: op_code = MBC_C_SHR; break;
+	    default:        ctx->failed = 1; return 0;
+	    }
+	    pos = mbc_emit(ctx, op_code, (unsigned)vid);
+	    if (pos < 0)
+		return 0;
+	    mbc_record_write(ctx, vid, pos);
+	} else {
+	    if (mbc_emit(ctx, MBC_LOAD_VAR, (unsigned)vid) < 0)
+		return 0;
+	}
+	break;
+    }
+    case M_INPAR:
+	mbc_next(ctx);
+	if (!mbc_parse_expr(ctx, ptab[COMMA] + 1, depth + 1))
+	    return 0;
+	if (ctx->tok != M_OUTPAR) {
+	    ctx->failed = 1;
+	    return 0;
+	}
+	mbc_next(ctx);
+	break;
+    case UPLUS:
+	mbc_next(ctx);
+	if (!mbc_parse_expr(ctx, ptab[UPLUS], depth + 1))
+	    return 0;
+	break;
+    case UMINUS:
+	mbc_next(ctx);
+	if (!mbc_parse_expr(ctx, ptab[UMINUS], depth + 1))
+	    return 0;
+	if (mbc_emit(ctx, MBC_NEG, 0) < 0)
+	    return 0;
+	break;
+    case NOT:
+	mbc_next(ctx);
+	if (!mbc_parse_expr(ctx, ptab[NOT], depth + 1))
+	    return 0;
+	if (mbc_emit(ctx, MBC_NOT, 0) < 0)
+	    return 0;
+	break;
+    case COMP:
+	mbc_next(ctx);
+	if (!mbc_parse_expr(ctx, ptab[COMP], depth + 1))
+	    return 0;
+	if (mbc_emit(ctx, MBC_COMP, 0) < 0)
+	    return 0;
+	break;
+    case PREPLUS:
+    case PREMINUS: {
+	int is_inc = (ctx->tok == PREPLUS);
+	int vid, pos;
+	mbc_next(ctx);
+	if (ctx->failed || ctx->tok != ID) {
+	    ctx->failed = 1;
+	    return 0;
+	}
+	vid = ctx->tok_var;
+	mbc_next(ctx);
+	if (ctx->failed || ctx->tok == POSTPLUS || ctx->tok == POSTMINUS) {
+	    ctx->failed = 1;
+	    return 0;
+	}
+	pos = mbc_emit(ctx, is_inc ? MBC_PREINC : MBC_PREDEC, (unsigned)vid);
+	if (pos < 0)
+	    return 0;
+	mbc_record_write(ctx, vid, pos);
+	break;
+    }
+    default:
+	ctx->failed = 1;
+	return 0;
+    }
+
+    while (!ctx->failed && ctx->tok != MBC_TOK_BAD && ptab[ctx->tok] <= pc) {
+	int otok = ctx->tok;
+	switch (otok) {
+	case QUEST: {
+	    int j_else, j_end;
+	    mbc_next(ctx);
+	    bc->flags |= MBC_F_HAS_BRANCH;
+	    j_else = mbc_emit(ctx, MBC_JZ_POP, 0);
+	    if (j_else < 0)
+		return 0;
+	    if (!mbc_parse_expr(ctx, ptab[COLON] - 1, depth + 1))
+		return 0;
+	    if (ctx->tok != COLON) {
+		ctx->failed = 1;
+		return 0;
+	    }
+	    mbc_next(ctx);
+	    j_end = mbc_emit(ctx, MBC_JMP, 0);
+	    if (j_end < 0)
+		return 0;
+	    vw->ops[j_else] = MBC_OP(MBC_JZ_POP, bc->nops);
+	    if (!mbc_parse_expr(ctx, ptab[QUEST], depth + 1))
+		return 0;
+	    vw->ops[j_end] = MBC_OP(MBC_JMP, bc->nops);
+	    break;
+	}
+	case DAND: {
+	    int j_done;
+	    mbc_next(ctx);
+	    bc->flags |= MBC_F_HAS_BRANCH;
+	    j_done = mbc_emit(ctx, MBC_JZ_KEEP, 0);
+	    if (j_done < 0)
+		return 0;
+	    if (!mbc_parse_expr(ctx, ptab[DAND] - 1, depth + 1))
+		return 0;
+	    if (mbc_emit(ctx, MBC_TOBOOL, 0) < 0)
+		return 0;
+	    vw->ops[j_done] = MBC_OP(MBC_JZ_KEEP, bc->nops);
+	    break;
+	}
+	case DOR: {
+	    int j_done;
+	    mbc_next(ctx);
+	    bc->flags |= MBC_F_HAS_BRANCH;
+	    j_done = mbc_emit(ctx, MBC_JNZ_ONE, 0);
+	    if (j_done < 0)
+		return 0;
+	    if (!mbc_parse_expr(ctx, ptab[DOR] - 1, depth + 1))
+		return 0;
+	    if (mbc_emit(ctx, MBC_TOBOOL, 0) < 0)
+		return 0;
+	    vw->ops[j_done] = MBC_OP(MBC_JNZ_ONE, bc->nops);
+	    break;
+	}
+	case COMMA:
+	    mbc_next(ctx);
+	    bc->flags |= MBC_F_HAS_COMMA;
+	    if (mbc_emit(ctx, MBC_POP, 0) < 0)
+		return 0;
+	    if (!mbc_parse_expr(ctx, ptab[COMMA], depth + 1))
+		return 0;
+	    break;
+	case MUL:
+	case DIV:
+	case MOD:
+	case PLUS:
+	case MINUS:
+	case SHLEFT:
+	case SHRIGHT:
+	case LES:
+	case LEQ:
+	case GRE:
+	case GEQ:
+	case DEQ:
+	case NEQ:
+	case AND:
+	case XOR:
+	case OR:
+	case DXOR:
+	case POWER: {
+	    unsigned op_code;
+	    int rhs_pc = ptab[otok] - (MTYPE(type[otok]) != RL);
+	    mbc_next(ctx);
+	    if (!mbc_parse_expr(ctx, rhs_pc, depth + 1))
+		return 0;
+	    switch (otok) {
+	    case MUL:     op_code = MBC_MUL; break;
+	    case DIV:     op_code = MBC_DIV; bc->flags |= MBC_F_HAS_DIV; break;
+	    case MOD:     op_code = MBC_MOD; bc->flags |= MBC_F_HAS_DIV; break;
+	    case PLUS:    op_code = MBC_ADD; break;
+	    case MINUS:   op_code = MBC_SUB; break;
+	    case SHLEFT:  op_code = MBC_SHL; break;
+	    case SHRIGHT: op_code = MBC_SHR; break;
+	    case LES:     op_code = MBC_LES; break;
+	    case LEQ:     op_code = MBC_LEQ; break;
+	    case GRE:     op_code = MBC_GRE; break;
+	    case GEQ:     op_code = MBC_GEQ; break;
+	    case DEQ:     op_code = MBC_DEQ; break;
+	    case NEQ:     op_code = MBC_NEQ; break;
+	    case AND:     op_code = MBC_AND; break;
+	    case XOR:     op_code = MBC_XOR; break;
+	    case OR:      op_code = MBC_OR; break;
+	    case DXOR:    op_code = MBC_DXOR; break;
+	    case POWER:   op_code = MBC_POWER; bc->flags |= MBC_F_HAS_DIV; break;
+	    default:      ctx->failed = 1; return 0;
+	    }
+	    if (mbc_emit(ctx, op_code, 0) < 0)
+		return 0;
+	    break;
+	}
+	default:
+	    ctx->failed = 1;
+	    return 0;
+	}
+    }
+    return !ctx->failed;
+}
+
+static int
+mbc_compile(struct mbc_view *vw, const char *s, unsigned len,
+	    unsigned hash, int cprec)
+{
+    struct mbc_compile_ctx ctx;
+    struct mbc_hdr *bc = vw->h;
+
+    bc->hash = hash;
+    bc->src_len = (unsigned short)len;
+    bc->write_mask = 0;
+    bc->cprec = (unsigned char)cprec;
+    bc->valid = 2;
+    bc->nvars = 0;
+    bc->nconsts = 0;
+    bc->nops = 0;
+    bc->flags = 0;
+    memcpy(vw->src, s, len);
+
+    ctx.vw = vw;
+    ctx.ptab = cprec ? c_prec : z_prec;
+    ctx.p = s;
+    ctx.tok = MBC_TOK_BAD;
+    ctx.unary = 1;
+    ctx.tok_var = -1;
+    ctx.tok_val = 0;
+    ctx.var_used = 0;
+    ctx.write_count = 0;
+    ctx.last_write_op = -1;
+    ctx.failed = 0;
+
+    mbc_next(&ctx);
+    if (ctx.failed || ctx.tok == EOI)
+	return 0;
+    if (!mbc_parse_expr(&ctx, ctx.ptab[COMMA] + 1, 0) ||
+	ctx.failed || ctx.tok != EOI || bc->nops == 0)
+	return 0;
+
+    if (ctx.write_count > 0) {
+	bc->flags |= MBC_F_HAS_WRITE;
+	if (ctx.write_count == 1 && ctx.last_write_op == (short)(bc->nops - 1))
+	    bc->flags |= MBC_F_SAFE_SINGLE_END;
+	else if (bc->flags & (MBC_F_HAS_DIV | MBC_F_HAS_BRANCH))
+	    return 0;
+    }
+
+    bc->valid = 1;
+    return 1;
+}
+
+static inline Param
+mbc_lookup_param(const char *name, unsigned hashval)
+{
+    unsigned hsize = (unsigned)paramtab->hsize;
+    unsigned bucket = ((hsize & (hsize - 1)) == 0) ? (hashval & (hsize - 1))
+						   : (hashval % hsize);
+    unsigned char c0 = (unsigned char)name[0];
+    HashNode hp;
+
+    for (hp = paramtab->nodes[bucket]; hp; hp = hp->next) {
+	if ((unsigned char)hp->nam[0] == c0 &&
+	    strcmp(hp->nam + 1, name + 1) == 0)
+	    return (Param)hp;
+    }
+    return NULL;
+}
+
+static inline int
+mbc_is_writable_int(Param pm)
+{
+    return pm != NULL && !pm->env &&
+	!(pm->node.flags & (PM_UNSET|PM_AUTOLOAD|PM_READONLY|
+			    PM_RESTRICTED|PM_EXPORTED|PM_DEFAULTED)) &&
+	PM_TYPE(pm->node.flags) == PM_INTEGER &&
+	pm->gsu.i == &stdinteger_gsu &&
+	(!isset(WARNNESTEDVAR) || pm->level >= locallevel);
+}
+
+static inline int
+mbc_read_var(const struct mbc_view *vw, Param *pms, unsigned vi, zlong *out)
+{
+    Param pm = pms[vi];
+    if (pm) {
+	*out = pm->u.val;
+	return 1;
+    }
+    pm = mbc_lookup_param(vw->var_buf + vw->var_off[vi], vw->var_hash[vi]);
+    if (!pm) {
+	if (isset(UNSET)) {
+	    *out = 0;
+	    return 1;
+	}
+	return 0;
+    }
+    if (pm->node.flags & PM_AUTOLOAD)
+	return 0;
+    if (pm->node.flags & PM_UNSET) {
+	if (isset(UNSET)) {
+	    *out = 0;
+	    return 1;
+	}
+	return 0;
+    }
+    {
+	int pmt = PM_TYPE(pm->node.flags);
+	if (pmt == PM_INTEGER && pm->gsu.i == &stdinteger_gsu) {
+	    pms[vi] = pm;
+	    *out = pm->u.val;
+	    return 1;
+	}
+	if (pmt == PM_SCALAR && pm->gsu.s == &stdscalar_gsu) {
+	    const char *sv = pm->u.str;
+	    if (!sv || !*sv) {
+		*out = 0;
+		return 1;
+	    }
+	    return math_parse_plain_decimal(sv, out);
+	}
+    }
+    return 0;
+}
+
+static inline Param
+mbc_get_writable_int(const struct mbc_view *vw, Param *pms, unsigned vi)
+{
+    Param pm = pms[vi];
+    if (!pm)
+	pm = mbc_lookup_param(vw->var_buf + vw->var_off[vi], vw->var_hash[vi]);
+    if (!mbc_is_writable_int(pm))
+	return NULL;
+    pms[vi] = pm;
+    return pm;
+}
+
+static int
+mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
+{
+    unsigned h, len;
+    int cprec;
+    struct mbc_view vw;
+    struct mbc_hdr *bc;
+    Param pms[MBC_MAX_VARS];
+    zlong stk[MBC_STACK_SZ];
+    int top = -1;
+    unsigned pc = 0, nops;
+    int demote = 0;
+
+    if (errflag || noeval || mlevel >= MAX_MLEVEL ||
+	!isset(EXECOPT) || isset(FORCEFLOAT) ||
+	isset(OCTALZEROES) || isset(ALLEXPORT) ||
+	!psh_paramtab_is_standard())
+	return 0;
+
+    if (!mbc_table_ready)
+	mbc_init_table();
+
+    cprec = isset(CPRECEDENCES) ? 1 : 0;
+    h = 2166136261U ^ (unsigned)cprec;
+    {
+	const unsigned char *p = (const unsigned char *)s;
+	const unsigned char *end = p + MBC_LARGE_SRC;
+	unsigned char ch;
+	while (p < end && (ch = *p)) {
+	    if (mbc_bad_char[ch])
+		return 0;
+	    h = (h ^ ch) * 16777619U;
+	    p++;
+	}
+	if (p == end)
+	    return 0;
+	len = (unsigned)(p - (const unsigned char *)s);
+    }
+    if (!len)
+	return 0;
+
+    if (len <= MBC_SMALL_SRC) {
+	struct math_bc_small *sm =
+	    &mbc_small[(h ^ (h >> 7)) & (MBC_SMALL_CACHE_SIZE - 1)];
+	vw.h = &sm->h;
+	vw.src = sm->src;
+	vw.var_buf = sm->var_buf;
+	vw.var_off = sm->var_off;
+	vw.var_hash = sm->var_hash;
+	vw.consts = sm->consts;
+	vw.ops = sm->ops;
+	vw.max_vars = MBC_SMALL_VARS;
+	vw.max_varbuf = MBC_SMALL_VARBUF;
+	vw.max_consts = MBC_SMALL_CONSTS;
+	vw.max_ops = MBC_SMALL_OPS;
+    } else {
+	struct math_bc_large *lg =
+	    &mbc_large[(h ^ (h >> 3)) & (MBC_LARGE_CACHE_SIZE - 1)];
+	vw.h = &lg->h;
+	vw.src = lg->src;
+	vw.var_buf = lg->var_buf;
+	vw.var_off = lg->var_off;
+	vw.var_hash = lg->var_hash;
+	vw.consts = lg->consts;
+	vw.ops = lg->ops;
+	vw.max_vars = MBC_LARGE_VARS;
+	vw.max_varbuf = MBC_LARGE_VARBUF;
+	vw.max_consts = MBC_LARGE_CONSTS;
+	vw.max_ops = MBC_LARGE_OPS;
+    }
+    bc = vw.h;
+
+    if (!(bc->valid && bc->src_len == (unsigned short)len && bc->hash == h &&
+	  bc->cprec == (unsigned char)cprec && memcmp(vw.src, s, len) == 0)) {
+	if (!mbc_compile(&vw, s, len, h, cprec))
+	    return 0;
+    } else if (bc->valid != 1) {
+	return 0;
+    }
+
+    if (no_comma && (bc->flags & MBC_F_HAS_COMMA))
+	return 0;
+
+    {
+	unsigned vi;
+	for (vi = 0; vi < bc->nvars; vi++)
+	    pms[vi] = NULL;
+    }
+
+    queue_signals();
+
+    /* For multi-write expressions, pre-verify every variable before op 0 so
+     * no partial mutation can occur on bail-out. */
+    if ((bc->flags & MBC_F_HAS_WRITE) && !(bc->flags & MBC_F_SAFE_SINGLE_END)) {
+	unsigned vi;
+	for (vi = 0; vi < bc->nvars; vi++) {
+	    if (bc->write_mask & (1U << vi)) {
+		if (!mbc_get_writable_int(&vw, pms, vi)) {
+		    demote = 1;
+		    goto fallback;
+		}
+	    } else {
+		zlong dummy;
+		if (!mbc_read_var(&vw, pms, vi, &dummy)) {
+		    demote = 1;
+		    goto fallback;
+		}
+	    }
+	}
+    }
+
+    nops = bc->nops;
+    while (pc < nops) {
+	unsigned short ins = vw.ops[pc++];
+	unsigned op_code = ins >> 8;
+	unsigned arg = ins & 0xffU;
+
+	switch (op_code) {
+	case MBC_PUSH_CONST:
+	    stk[++top] = vw.consts[arg];
+	    break;
+	case MBC_LOAD_VAR: {
+	    zlong v;
+	    if (!mbc_read_var(&vw, pms, arg, &v)) {
+		demote = 1;
+		goto fallback;
+	    }
+	    stk[++top] = v;
+	    break;
+	}
+	case MBC_STORE_VAR: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    if (!pm) {
+		demote = 1;
+		goto fallback;
+	    }
+	    pm->u.val = stk[top];
+	    break;
+	}
+	case MBC_PREINC: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong v;
+	    if (!pm) {
+		demote = 1;
+		goto fallback;
+	    }
+	    v = (zlong)((zulong)pm->u.val + 1U);
+	    pm->u.val = v;
+	    stk[++top] = v;
+	    break;
+	}
+	case MBC_PREDEC: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong v;
+	    if (!pm) {
+		demote = 1;
+		goto fallback;
+	    }
+	    v = (zlong)((zulong)pm->u.val - 1U);
+	    pm->u.val = v;
+	    stk[++top] = v;
+	    break;
+	}
+	case MBC_POSTINC: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong v;
+	    if (!pm) {
+		demote = 1;
+		goto fallback;
+	    }
+	    v = pm->u.val;
+	    pm->u.val = (zlong)((zulong)v + 1U);
+	    stk[++top] = v;
+	    break;
+	}
+	case MBC_POSTDEC: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong v;
+	    if (!pm) {
+		demote = 1;
+		goto fallback;
+	    }
+	    v = pm->u.val;
+	    pm->u.val = (zlong)((zulong)v - 1U);
+	    stk[++top] = v;
+	    break;
+	}
+	case MBC_C_ADD: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = (zlong)((zulong)pm->u.val + (zulong)stk[top]);
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_SUB: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = (zlong)((zulong)pm->u.val - (zulong)stk[top]);
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_MUL: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = (zlong)((zulong)pm->u.val * (zulong)stk[top]);
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_DIV: {
+	    Param pm;
+	    zlong b = stk[top], res;
+	    if (b == 0)
+		goto fallback;
+	    pm = mbc_get_writable_int(&vw, pms, arg);
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = (b == -1) ? (zlong)(-(zulong)pm->u.val) : (pm->u.val / b);
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_MOD: {
+	    Param pm;
+	    zlong b = stk[top], res;
+	    if (b == 0)
+		goto fallback;
+	    pm = mbc_get_writable_int(&vw, pms, arg);
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = (b == -1) ? 0 : (pm->u.val % b);
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_AND: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = pm->u.val & stk[top];
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_XOR: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = pm->u.val ^ stk[top];
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_OR: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = pm->u.val | stk[top];
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_SHL: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = pm->u.val << stk[top];
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_C_SHR: {
+	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    zlong res;
+	    if (!pm) { demote = 1; goto fallback; }
+	    res = pm->u.val >> stk[top];
+	    pm->u.val = res;
+	    stk[top] = res;
+	    break;
+	}
+	case MBC_NEG:
+	    stk[top] = (zlong)(-(zulong)stk[top]);
+	    break;
+	case MBC_NOT:
+	    stk[top] = !stk[top];
+	    break;
+	case MBC_COMP:
+	    stk[top] = ~stk[top];
+	    break;
+	case MBC_TOBOOL:
+	    stk[top] = (stk[top] != 0);
+	    break;
+	case MBC_POP:
+	    top--;
+	    break;
+	case MBC_ADD:
+	    top--;
+	    stk[top] = (zlong)((zulong)stk[top] + (zulong)stk[top + 1]);
+	    break;
+	case MBC_SUB:
+	    top--;
+	    stk[top] = (zlong)((zulong)stk[top] - (zulong)stk[top + 1]);
+	    break;
+	case MBC_MUL:
+	    top--;
+	    stk[top] = (zlong)((zulong)stk[top] * (zulong)stk[top + 1]);
+	    break;
+	case MBC_DIV: {
+	    zlong b = stk[top--];
+	    if (b == 0)
+		goto fallback;
+	    stk[top] = (b == -1) ? (zlong)(-(zulong)stk[top]) : (stk[top] / b);
+	    break;
+	}
+	case MBC_MOD: {
+	    zlong b = stk[top--];
+	    if (b == 0)
+		goto fallback;
+	    stk[top] = (b == -1) ? 0 : (stk[top] % b);
+	    break;
+	}
+	case MBC_AND:
+	    top--;
+	    stk[top] &= stk[top + 1];
+	    break;
+	case MBC_XOR:
+	    top--;
+	    stk[top] ^= stk[top + 1];
+	    break;
+	case MBC_OR:
+	    top--;
+	    stk[top] |= stk[top + 1];
+	    break;
+	case MBC_SHL:
+	    top--;
+	    stk[top] = stk[top] << stk[top + 1];
+	    break;
+	case MBC_SHR:
+	    top--;
+	    stk[top] = stk[top] >> stk[top + 1];
+	    break;
+	case MBC_LES:
+	    top--;
+	    stk[top] = (zlong)(stk[top] < stk[top + 1]);
+	    break;
+	case MBC_LEQ:
+	    top--;
+	    stk[top] = (zlong)(stk[top] <= stk[top + 1]);
+	    break;
+	case MBC_GRE:
+	    top--;
+	    stk[top] = (zlong)(stk[top] > stk[top + 1]);
+	    break;
+	case MBC_GEQ:
+	    top--;
+	    stk[top] = (zlong)(stk[top] >= stk[top + 1]);
+	    break;
+	case MBC_DEQ:
+	    top--;
+	    stk[top] = (zlong)(stk[top] == stk[top + 1]);
+	    break;
+	case MBC_NEQ:
+	    top--;
+	    stk[top] = (zlong)(stk[top] != stk[top + 1]);
+	    break;
+	case MBC_DXOR:
+	    top--;
+	    stk[top] = (zlong)((stk[top] && !stk[top + 1]) ||
+			       (!stk[top] && stk[top + 1]));
+	    break;
+	case MBC_POWER: {
+	    zlong exp = stk[top--];
+	    zulong res = 1, b = (zulong)stk[top];
+	    if (exp < 0 || exp > 62)
+		goto fallback;
+	    while (exp > 0) {
+		if (exp & 1)
+		    res *= b;
+		exp >>= 1;
+		if (exp)
+		    b *= b;
+	    }
+	    stk[top] = (zlong)res;
+	    break;
+	}
+	case MBC_JZ_KEEP:
+	    if (!stk[top])
+		pc = arg;
+	    else
+		top--;
+	    break;
+	case MBC_JNZ_ONE:
+	    if (stk[top]) {
+		stk[top] = 1;
+		pc = arg;
+	    } else {
+		top--;
+	    }
+	    break;
+	case MBC_JZ_POP:
+	    if (!stk[top--])
+		pc = arg;
+	    break;
+	case MBC_JMP:
+	    pc = arg;
+	    break;
+	default:
+	    goto fallback;
+	}
+    }
+
+    unqueue_signals();
+    if (!mlevel)
+	lastbase = -1;
+    out->type = MN_INTEGER;
+    out->u.l = stk[0];
+    if (out_len)
+	*out_len = len;
+    return 1;
+
+fallback:
+    if (demote)
+	bc->valid = 2;
+    unqueue_signals();
+    return 0;
+}
+
+/*
  * Get a number from a variable.
  * Try to be clever about reusing subscripts by caching the Value structure.
  */
@@ -1749,6 +3061,8 @@ matheval(char *s)
 	x.u.l = 0;
 	return x;
     }
+    if (mbc_eval(s, 0, &x, NULL))
+	return lastmathval = x;
     x = mathevall(s, MPREC_TOP, &junk);
     mtok = xmtok;
     if (*junk)
@@ -1771,6 +3085,7 @@ mathevalarg(char *s, char **ss)
 {
     mnumber x;
     int xmtok = mtok;
+    unsigned len;
 
     /*
      * At this entry point we don't allow an empty expression,
@@ -1787,6 +3102,92 @@ mathevalarg(char *s, char **ss)
 	zerr("bad math expression: empty string");
 	return (zlong)0;
     }
+    if (!errflag && !noeval && mlevel < MAX_MLEVEL &&
+	isset(EXECOPT) && !isset(FORCEFLOAT) && !isset(OCTALZEROES)) {
+	const char *p = s;
+	zlong val;
+	if ((unsigned char)(*p - '0') <= 9U || IS_DASH(*p)) {
+	    int neg = 0;
+	    if (IS_DASH(*p)) {
+		neg = 1;
+		p++;
+	    }
+	    if (mbc_lex_decimal(&p, &val) && *p == '\0') {
+		if (neg)
+		    val = -val;
+		if (!mlevel)
+		    lastbase = -1;
+		lastmathval.type = MN_INTEGER;
+		lastmathval.u.l = val;
+		*ss = (char *)p;
+		return val;
+	    }
+	} else if ((unsigned char)*p <= 0x7f &&
+		   (typtab[(unsigned char)*p] & IIDENT) &&
+		   psh_paramtab_is_standard()) {
+	    unsigned hv = 0;
+	    while ((unsigned char)*p <= 0x7f &&
+		   (typtab[(unsigned char)*p] & IIDENT)) {
+		hv += (hv << 5) + (unsigned char)*p;
+		p++;
+	    }
+	    if (*p == '\0') {
+		size_t nlen = (size_t)(p - s);
+		if (nlen < 32 &&
+		    !(nlen == 3 &&
+		      ((((s[0] | 32) == 'n') && ((s[1] | 32) == 'a') &&
+			((s[2] | 32) == 'n')) ||
+		       (((s[0] | 32) == 'i') && ((s[1] | 32) == 'n') &&
+			((s[2] | 32) == 'f'))))) {
+		    Param pm;
+		    queue_signals();
+		    pm = mbc_lookup_param(s, hv);
+		    if (pm && !(pm->node.flags & (PM_UNSET|PM_AUTOLOAD))) {
+			int pmt = PM_TYPE(pm->node.flags);
+			if (pmt == PM_INTEGER && pm->gsu.i == &stdinteger_gsu) {
+			    val = pm->u.val;
+			    unqueue_signals();
+			    if (!mlevel)
+				lastbase = -1;
+			    lastmathval.type = MN_INTEGER;
+			    lastmathval.u.l = val;
+			    *ss = (char *)p;
+			    return val;
+			}
+			if (pmt == PM_SCALAR && pm->gsu.s == &stdscalar_gsu) {
+			    const char *sv = pm->u.str;
+			    if (!sv || !*sv) {
+				unqueue_signals();
+				if (!mlevel)
+				    lastbase = -1;
+				lastmathval.type = MN_INTEGER;
+				lastmathval.u.l = 0;
+				*ss = (char *)p;
+				return 0;
+			    }
+			    if (math_parse_plain_decimal(sv, &val)) {
+				unqueue_signals();
+				if (!mlevel)
+				    lastbase = -1;
+				lastmathval.type = MN_INTEGER;
+				lastmathval.u.l = val;
+				*ss = (char *)p;
+				return val;
+			    }
+			}
+		    }
+		    unqueue_signals();
+		}
+		goto slow_arg;
+	    }
+	}
+    }
+    if (mbc_eval(s, 1, &x, &len)) {
+	*ss = s + len;
+	lastmathval = x;
+	return x.u.l;
+    }
+slow_arg:
     x = mathevall(s, MPREC_ARG, ss);
     if (mtok == COMMA)
 	(*ss)--;

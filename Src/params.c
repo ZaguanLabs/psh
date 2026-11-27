@@ -3288,6 +3288,16 @@ getaparam(char *s)
 
 /**/
 int
+psh_paramtab_is_standard(void)
+{
+    return paramtab == realparamtab &&
+	paramtab->getnode == getparamnode &&
+	paramtab->hash == hasher &&
+	paramtab->cmpnodes == strcmp;
+}
+
+/**/
+int
 shiftownedarray(char *name, int back)
 {
     Param pm;
