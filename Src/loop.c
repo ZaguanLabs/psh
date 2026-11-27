@@ -50,6 +50,7 @@ int
 execfor(Estate state, int do_exec)
 {
     Wordcode end, loop;
+    Wordcode cond_site = NULL, adv_site = NULL;
     wordcode code = state->pc[-1];
     int iscond = (WC_FOR_TYPE(code) == WC_FOR_COND), ctok = 0, atok = 0;
     int last = 0;
@@ -81,7 +82,9 @@ execfor(Estate state, int do_exec)
 	    simple_pline = old_simple_pline;
 	    return 1;
 	}
+	cond_site = (!(state->prog->flags & EF_HEAP)) ? state->pc : NULL;
 	cond = ecgetstr(state, EC_NODUP, &ctok);
+	adv_site = (!(state->prog->flags & EF_HEAP)) ? state->pc : NULL;
 	advance = ecgetstr(state, EC_NODUP, &atok);
     } else {
 	vars = ecgetlist(state, *state->pc++, EC_NODUP, NULL);
@@ -133,8 +136,12 @@ execfor(Estate state, int do_exec)
 			printprompt4();
 			fprintf(xtrerr, "%s\n", str);
 			fflush(xtrerr);
+			val = mathevali(str);
+		    } else if (!ctok && cond_site) {
+			val = mathevali_cached(str, cond_site);
+		    } else {
+			val = mathevali(str);
 		    }
-		    val = mathevali(str);
 		} else
 		    val = 1;
 	    }
@@ -192,8 +199,12 @@ execfor(Estate state, int do_exec)
 		fprintf(xtrerr, "%s\n", str);
 		fflush(xtrerr);
 	    }
-	    if (!errflag)
-		matheval(str);
+	    if (!errflag) {
+		if (!atok && adv_site && !isset(XTRACE))
+		    matheval_cached(str, adv_site);
+		else
+		    matheval(str);
+	    }
 	}
 	if (errflag) {
 	    if (breaks)

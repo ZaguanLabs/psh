@@ -5275,19 +5275,25 @@ execarith(Estate state, UNUSED(int do_exec))
     char *e;
     mnumber val = zero_mnumber;
     int htok = 0;
+    Wordcode site;
 
     if (isset(XTRACE)) {
 	printprompt4();
 	fprintf(xtrerr, "((");
     }
     cmdpush(CS_MATH);
-    e = ecgetstr(state, EC_DUPTOK, &htok);
-    if (htok)
-	singsub(&e);
-    if (isset(XTRACE))
-	fprintf(xtrerr, " %s", e);
+    site = (!(state->prog->flags & EF_HEAP) && !isset(XTRACE)) ? state->pc : NULL;
+    if (site && !(*site & 1) && matheval_site(site, &val)) {
+	state->pc++;
+    } else {
+	e = ecgetstr(state, EC_DUPTOK, &htok);
+	if (htok)
+	    singsub(&e);
+	if (isset(XTRACE))
+	    fprintf(xtrerr, " %s", e);
 
-    val = matheval(e);
+	val = (site && !htok) ? matheval_cached(e, site) : matheval(e);
+    }
 
     cmdpop();
 

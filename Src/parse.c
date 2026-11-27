@@ -2811,6 +2811,9 @@ useeprog(Eprog p)
 /* Free an Eprog if we have finished with it */
 
 /**/
+unsigned long psh_eprog_gen = 1;
+
+/**/
 mod_export void
 freeeprog(Eprog p)
 {
@@ -2823,6 +2826,7 @@ freeeprog(Eprog p)
 	DPUTS(p->nref < 0 && !(p->flags & EF_HEAP), "Real EPROG has nref < 0");
 	DPUTS(p->nref < -1, "Uninitialised EPROG nref");
 	if (p->nref > 0 && !--p->nref) {
+	    psh_eprog_gen++;
 	    for (i = p->npats, pp = p->pats; i--; pp++)
 		freepatprog(*pp);
 	    if (p->dump) {

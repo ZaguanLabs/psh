@@ -33,6 +33,7 @@ struct mathvalue;
 #include "math.pro"
 
 #include <math.h>
+#include <fenv.h>
 
 /* nonzero means we are not evaluating, just parsing */
  
@@ -503,7 +504,32 @@ struct mbc_hdr {
     unsigned char nconsts;
     unsigned char nops;
     unsigned char flags;
+    Wordcode site;
+    unsigned long site_gen;
 };
+
+#define MBC_SITE_CACHE_SIZE 128
+#define MBC_TIER_NONE  0
+#define MBC_TIER_SMALL 1
+#define MBC_TIER_LARGE 2
+#define MBC_TIER_NEG   3
+
+struct mbc_site_entry {
+    Wordcode site;
+    unsigned long gen;
+    unsigned char cprec;
+    unsigned char tier;
+    unsigned char slot;
+};
+
+static struct mbc_site_entry mbc_site_cache[MBC_SITE_CACHE_SIZE];
+
+static inline unsigned
+mbc_site_index(Wordcode site)
+{
+    uintptr_t p = (uintptr_t)site;
+    return (unsigned)((p >> 2) ^ (p >> 9)) & (MBC_SITE_CACHE_SIZE - 1);
+}
 
 struct math_bc_small {
     struct mbc_hdr h;
@@ -1277,110 +1303,67 @@ mbc_get_writable_int(const struct mbc_view *vw, Param *pms, unsigned vi)
     return pm;
 }
 
-static int
-mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
+static inline void
+mbc_view_small(struct mbc_view *vw, unsigned slot)
 {
-    unsigned h, len;
-    int cprec;
-    struct mbc_view vw;
-    struct mbc_hdr *bc;
+    struct math_bc_small *sm = &mbc_small[slot];
+    vw->h = &sm->h;
+    vw->src = sm->src;
+    vw->var_buf = sm->var_buf;
+    vw->var_off = sm->var_off;
+    vw->var_hash = sm->var_hash;
+    vw->consts = sm->consts;
+    vw->ops = sm->ops;
+    vw->max_vars = MBC_SMALL_VARS;
+    vw->max_varbuf = MBC_SMALL_VARBUF;
+    vw->max_consts = MBC_SMALL_CONSTS;
+    vw->max_ops = MBC_SMALL_OPS;
+}
+
+static inline void
+mbc_view_large(struct mbc_view *vw, unsigned slot)
+{
+    struct math_bc_large *lg = &mbc_large[slot];
+    vw->h = &lg->h;
+    vw->src = lg->src;
+    vw->var_buf = lg->var_buf;
+    vw->var_off = lg->var_off;
+    vw->var_hash = lg->var_hash;
+    vw->consts = lg->consts;
+    vw->ops = lg->ops;
+    vw->max_vars = MBC_LARGE_VARS;
+    vw->max_varbuf = MBC_LARGE_VARBUF;
+    vw->max_consts = MBC_LARGE_CONSTS;
+    vw->max_ops = MBC_LARGE_OPS;
+}
+
+static int
+mbc_exec_vm(const struct mbc_view *vw, struct mbc_site_entry *se, mnumber *out)
+{
+    struct mbc_hdr *bc = vw->h;
     Param pms[MBC_MAX_VARS];
     zlong stk[MBC_STACK_SZ];
     int top = -1;
-    unsigned pc = 0, nops;
+    unsigned pc = 0, nops, vi;
     int demote = 0;
 
-    if (errflag || noeval || mlevel >= MAX_MLEVEL ||
-	!isset(EXECOPT) || isset(FORCEFLOAT) ||
-	isset(OCTALZEROES) || isset(ALLEXPORT) ||
-	!psh_paramtab_is_standard())
-	return 0;
-
-    if (!mbc_table_ready)
-	mbc_init_table();
-
-    cprec = isset(CPRECEDENCES) ? 1 : 0;
-    h = 2166136261U ^ (unsigned)cprec;
-    {
-	const unsigned char *p = (const unsigned char *)s;
-	const unsigned char *end = p + MBC_LARGE_SRC;
-	unsigned char ch;
-	while (p < end && (ch = *p)) {
-	    if (mbc_bad_char[ch])
-		return 0;
-	    h = (h ^ ch) * 16777619U;
-	    p++;
-	}
-	if (p == end)
-	    return 0;
-	len = (unsigned)(p - (const unsigned char *)s);
-    }
-    if (!len)
-	return 0;
-
-    if (len <= MBC_SMALL_SRC) {
-	struct math_bc_small *sm =
-	    &mbc_small[(h ^ (h >> 7)) & (MBC_SMALL_CACHE_SIZE - 1)];
-	vw.h = &sm->h;
-	vw.src = sm->src;
-	vw.var_buf = sm->var_buf;
-	vw.var_off = sm->var_off;
-	vw.var_hash = sm->var_hash;
-	vw.consts = sm->consts;
-	vw.ops = sm->ops;
-	vw.max_vars = MBC_SMALL_VARS;
-	vw.max_varbuf = MBC_SMALL_VARBUF;
-	vw.max_consts = MBC_SMALL_CONSTS;
-	vw.max_ops = MBC_SMALL_OPS;
-    } else {
-	struct math_bc_large *lg =
-	    &mbc_large[(h ^ (h >> 3)) & (MBC_LARGE_CACHE_SIZE - 1)];
-	vw.h = &lg->h;
-	vw.src = lg->src;
-	vw.var_buf = lg->var_buf;
-	vw.var_off = lg->var_off;
-	vw.var_hash = lg->var_hash;
-	vw.consts = lg->consts;
-	vw.ops = lg->ops;
-	vw.max_vars = MBC_LARGE_VARS;
-	vw.max_varbuf = MBC_LARGE_VARBUF;
-	vw.max_consts = MBC_LARGE_CONSTS;
-	vw.max_ops = MBC_LARGE_OPS;
-    }
-    bc = vw.h;
-
-    if (!(bc->valid && bc->src_len == (unsigned short)len && bc->hash == h &&
-	  bc->cprec == (unsigned char)cprec && memcmp(vw.src, s, len) == 0)) {
-	if (!mbc_compile(&vw, s, len, h, cprec))
-	    return 0;
-    } else if (bc->valid != 1) {
-	return 0;
-    }
-
-    if (no_comma && (bc->flags & MBC_F_HAS_COMMA))
-	return 0;
-
-    {
-	unsigned vi;
-	for (vi = 0; vi < bc->nvars; vi++)
-	    pms[vi] = NULL;
-    }
+    for (vi = 0; vi < bc->nvars; vi++)
+	pms[vi] = NULL;
 
     queue_signals();
 
     /* For multi-write expressions, pre-verify every variable before op 0 so
      * no partial mutation can occur on bail-out. */
     if ((bc->flags & MBC_F_HAS_WRITE) && !(bc->flags & MBC_F_SAFE_SINGLE_END)) {
-	unsigned vi;
 	for (vi = 0; vi < bc->nvars; vi++) {
 	    if (bc->write_mask & (1U << vi)) {
-		if (!mbc_get_writable_int(&vw, pms, vi)) {
+		if (!mbc_get_writable_int(vw, pms, vi)) {
 		    demote = 1;
 		    goto fallback;
 		}
 	    } else {
 		zlong dummy;
-		if (!mbc_read_var(&vw, pms, vi, &dummy)) {
+		if (!mbc_read_var(vw, pms, vi, &dummy)) {
 		    demote = 1;
 		    goto fallback;
 		}
@@ -1390,25 +1373,30 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 
     nops = bc->nops;
     while (pc < nops) {
-	unsigned short ins = vw.ops[pc++];
+	unsigned short ins = vw->ops[pc++];
 	unsigned op_code = ins >> 8;
 	unsigned arg = ins & 0xffU;
 
 	switch (op_code) {
 	case MBC_PUSH_CONST:
-	    stk[++top] = vw.consts[arg];
+	    stk[++top] = vw->consts[arg];
 	    break;
 	case MBC_LOAD_VAR: {
-	    zlong v;
-	    if (!mbc_read_var(&vw, pms, arg, &v)) {
-		demote = 1;
-		goto fallback;
+	    Param pm = pms[arg];
+	    if (pm) {
+		stk[++top] = pm->u.val;
+	    } else {
+		zlong v;
+		if (!mbc_read_var(vw, pms, arg, &v)) {
+		    demote = 1;
+		    goto fallback;
+		}
+		stk[++top] = v;
 	    }
-	    stk[++top] = v;
 	    break;
 	}
 	case MBC_STORE_VAR: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    if (!pm) {
 		demote = 1;
 		goto fallback;
@@ -1417,7 +1405,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_PREINC: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong v;
 	    if (!pm) {
 		demote = 1;
@@ -1429,7 +1417,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_PREDEC: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong v;
 	    if (!pm) {
 		demote = 1;
@@ -1441,7 +1429,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_POSTINC: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong v;
 	    if (!pm) {
 		demote = 1;
@@ -1453,7 +1441,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_POSTDEC: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong v;
 	    if (!pm) {
 		demote = 1;
@@ -1465,7 +1453,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_ADD: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = (zlong)((zulong)pm->u.val + (zulong)stk[top]);
@@ -1474,7 +1462,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_SUB: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = (zlong)((zulong)pm->u.val - (zulong)stk[top]);
@@ -1483,7 +1471,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_MUL: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = (zlong)((zulong)pm->u.val * (zulong)stk[top]);
@@ -1496,7 +1484,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    zlong b = stk[top], res;
 	    if (b == 0)
 		goto fallback;
-	    pm = mbc_get_writable_int(&vw, pms, arg);
+	    pm = mbc_get_writable_int(vw, pms, arg);
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = (b == -1) ? (zlong)(-(zulong)pm->u.val) : (pm->u.val / b);
 	    pm->u.val = res;
@@ -1508,7 +1496,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    zlong b = stk[top], res;
 	    if (b == 0)
 		goto fallback;
-	    pm = mbc_get_writable_int(&vw, pms, arg);
+	    pm = mbc_get_writable_int(vw, pms, arg);
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = (b == -1) ? 0 : (pm->u.val % b);
 	    pm->u.val = res;
@@ -1516,7 +1504,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_AND: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = pm->u.val & stk[top];
@@ -1525,7 +1513,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_XOR: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = pm->u.val ^ stk[top];
@@ -1534,7 +1522,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_OR: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = pm->u.val | stk[top];
@@ -1543,7 +1531,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_SHL: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = pm->u.val << stk[top];
@@ -1552,7 +1540,7 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	    break;
 	}
 	case MBC_C_SHR: {
-	    Param pm = mbc_get_writable_int(&vw, pms, arg);
+	    Param pm = mbc_get_writable_int(vw, pms, arg);
 	    zlong res;
 	    if (!pm) { demote = 1; goto fallback; }
 	    res = pm->u.val >> stk[top];
@@ -1696,15 +1684,325 @@ mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
 	lastbase = -1;
     out->type = MN_INTEGER;
     out->u.l = stk[0];
-    if (out_len)
-	*out_len = len;
     return 1;
 
 fallback:
-    if (demote)
+    if (demote) {
 	bc->valid = 2;
+	if (se)
+	    se->tier = MBC_TIER_NEG;
+    }
     unqueue_signals();
     return 0;
+}
+
+static int
+mbc_eval_with_site(const char *s, int no_comma, Wordcode site,
+		   mnumber *out, unsigned *out_len)
+{
+    unsigned h, len, slot;
+    unsigned char tier;
+    int cprec;
+    struct mbc_view vw;
+    struct mbc_hdr *bc;
+    struct mbc_site_entry *se = NULL;
+
+    if (errflag || noeval || mlevel >= MAX_MLEVEL ||
+	!isset(EXECOPT) || isset(FORCEFLOAT) ||
+	isset(OCTALZEROES) || isset(ALLEXPORT) ||
+	!psh_paramtab_is_standard())
+	return 0;
+
+    cprec = isset(CPRECEDENCES) ? 1 : 0;
+
+    if (site) {
+	se = &mbc_site_cache[mbc_site_index(site)];
+	if (se->site == site && se->gen == psh_eprog_gen &&
+	    se->cprec == (unsigned char)cprec) {
+	    if (se->tier == MBC_TIER_NEG)
+		return 0;
+	    if (se->tier == MBC_TIER_SMALL)
+		mbc_view_small(&vw, se->slot);
+	    else if (se->tier == MBC_TIER_LARGE)
+		mbc_view_large(&vw, se->slot);
+	    else
+		goto slow_hash;
+	    if (vw.h->valid == 1 && vw.h->site == site &&
+		vw.h->site_gen == psh_eprog_gen) {
+		if (no_comma && (vw.h->flags & MBC_F_HAS_COMMA))
+		    return 0;
+		if (mbc_exec_vm(&vw, se, out)) {
+		    if (out_len)
+			*out_len = vw.h->src_len;
+		    return 1;
+		}
+		return 0;
+	    }
+	}
+    }
+
+slow_hash:
+    if (!mbc_table_ready)
+	mbc_init_table();
+
+    h = 2166136261U ^ (unsigned)cprec;
+    {
+	const unsigned char *p = (const unsigned char *)s;
+	const unsigned char *end = p + MBC_LARGE_SRC;
+	unsigned char ch;
+	while (p < end && (ch = *p)) {
+	    if (mbc_bad_char[ch]) {
+		if (se) {
+		    se->site = site;
+		    se->gen = psh_eprog_gen;
+		    se->cprec = (unsigned char)cprec;
+		    se->tier = MBC_TIER_NEG;
+		}
+		return 0;
+	    }
+	    h = (h ^ ch) * 16777619U;
+	    p++;
+	}
+	if (p == end) {
+	    if (se) {
+		se->site = site;
+		se->gen = psh_eprog_gen;
+		se->cprec = (unsigned char)cprec;
+		se->tier = MBC_TIER_NEG;
+	    }
+	    return 0;
+	}
+	len = (unsigned)(p - (const unsigned char *)s);
+    }
+    if (!len)
+	return 0;
+
+    if (len <= MBC_SMALL_SRC) {
+	tier = MBC_TIER_SMALL;
+	slot = (h ^ (h >> 7)) & (MBC_SMALL_CACHE_SIZE - 1);
+	mbc_view_small(&vw, slot);
+    } else {
+	tier = MBC_TIER_LARGE;
+	slot = (h ^ (h >> 3)) & (MBC_LARGE_CACHE_SIZE - 1);
+	mbc_view_large(&vw, slot);
+    }
+    bc = vw.h;
+
+    if (!(bc->valid && bc->src_len == (unsigned short)len && bc->hash == h &&
+	  bc->cprec == (unsigned char)cprec && memcmp(vw.src, s, len) == 0)) {
+	bc->site = NULL;
+	bc->site_gen = 0;
+	if (!mbc_compile(&vw, s, len, h, cprec)) {
+	    if (se) {
+		se->site = site;
+		se->gen = psh_eprog_gen;
+		se->cprec = (unsigned char)cprec;
+		se->tier = MBC_TIER_NEG;
+	    }
+	    return 0;
+	}
+    } else if (bc->valid != 1) {
+	if (se) {
+	    se->site = site;
+	    se->gen = psh_eprog_gen;
+	    se->cprec = (unsigned char)cprec;
+	    se->tier = MBC_TIER_NEG;
+	}
+	return 0;
+    }
+
+    if (se) {
+	bc->site = site;
+	bc->site_gen = psh_eprog_gen;
+	se->site = site;
+	se->gen = psh_eprog_gen;
+	se->cprec = (unsigned char)cprec;
+	se->tier = tier;
+	se->slot = (unsigned char)slot;
+    }
+
+    if (no_comma && (bc->flags & MBC_F_HAS_COMMA))
+	return 0;
+
+    if (mbc_exec_vm(&vw, se, out)) {
+	if (out_len)
+	    *out_len = len;
+	return 1;
+    }
+    return 0;
+}
+
+static inline int
+mbc_eval(const char *s, int no_comma, mnumber *out, unsigned *out_len)
+{
+    return mbc_eval_with_site(s, no_comma, NULL, out, out_len);
+}
+
+/* Fast pointer-keyed entry for literal wordcode (( ... )) sites. */
+/**/
+int
+matheval_site(Wordcode site, mnumber *out)
+{
+    struct mbc_site_entry *se;
+    struct mbc_view vw;
+    int cprec;
+
+    if (errflag || noeval || mlevel >= MAX_MLEVEL ||
+	!isset(EXECOPT) || isset(FORCEFLOAT) ||
+	isset(OCTALZEROES) || isset(ALLEXPORT) ||
+	!psh_paramtab_is_standard())
+	return 0;
+
+    cprec = isset(CPRECEDENCES) ? 1 : 0;
+    se = &mbc_site_cache[mbc_site_index(site)];
+    if (se->site != site || se->gen != psh_eprog_gen ||
+	se->cprec != (unsigned char)cprec)
+	return 0;
+    if (se->tier == MBC_TIER_SMALL)
+	mbc_view_small(&vw, se->slot);
+    else if (se->tier == MBC_TIER_LARGE)
+	mbc_view_large(&vw, se->slot);
+    else
+	return 0;
+    if (vw.h->valid != 1 || vw.h->site != site ||
+	vw.h->site_gen != psh_eprog_gen)
+	return 0;
+    if (!mlevel)
+	outputradix = outputunderscore = 0;
+    if (mbc_exec_vm(&vw, se, out)) {
+	lastmathval = *out;
+	return 1;
+    }
+    return 0;
+}
+
+/*
+ * Fast exact decimal float parser:
+ * 1) Integer-valued floats with <=15 significant digits (e.g. 0.0, 17.0, 29.0)
+ *    convert directly via (double)acc with zero rounding-mode dependence and
+ *    zero FP exceptions.
+ * 2) Non-integer plain decimal floats (e.g. 0.016, 1.2, 0.70, <=23 bytes) use
+ *    a bounded 64-entry static-BSS cache (2 KiB) keyed by (text, len,
+ *    fegetround()), populated via math_strtod() only when no FP exception or
+ *    errno change occurs.  Honors thread-local uselocale() by falling back
+ *    whenever a non-global thread locale is active.
+ */
+#define PSH_FCACHE_SIZE 64
+#define PSH_FCACHE_MAXLEN 23
+
+struct psh_float_entry {
+    unsigned hash;
+    unsigned char len;
+    unsigned char rmode;
+    unsigned char valid;
+    char text[PSH_FCACHE_MAXLEN + 1];
+    double val;
+};
+
+static struct psh_float_entry psh_float_cache[PSH_FCACHE_SIZE];
+static double math_strtod(char *text, char **end);
+
+static int
+math_lex_plain_float(const char **pp, double *out)
+{
+    const char *start = *pp, *p = start;
+    zulong acc = 0, nz_acc = 0;
+    int sig_digits = 0, total_digits = 0, nz_frac = 0, frac_digits = 0;
+    size_t len;
+
+#ifdef PSH_MATH_LOCALE_OBJECT
+    if (uselocale((locale_t)0) != LC_GLOBAL_LOCALE)
+	return 0;
+#endif
+
+    while ((unsigned char)(*p - '0') <= 9U) {
+	unsigned d = (unsigned)(*p - '0');
+	if (acc || d) {
+	    if (sig_digits <= 15)
+		sig_digits++;
+	    if (sig_digits <= 15)
+		acc = acc * 10 + d;
+	}
+	total_digits++;
+	p++;
+    }
+    if (*p != '.')
+	return 0;
+    p++;
+    nz_acc = acc;
+    while ((unsigned char)(*p - '0') <= 9U) {
+	unsigned d = (unsigned)(*p - '0');
+	frac_digits++;
+	if (d != 0)
+	    nz_frac = frac_digits;
+	total_digits++;
+	p++;
+    }
+    if (!total_digits || *p == '.' || *p == 'e' || *p == 'E' ||
+	*p == '_' || *p == '#')
+	return 0;
+
+    if (nz_frac == 0 && sig_digits <= 15) {
+	*pp = p;
+	*out = (double)nz_acc;
+	return 1;
+    }
+
+    len = (size_t)(p - start);
+    if (len > PSH_FCACHE_MAXLEN)
+	return 0;
+
+    {
+	unsigned h = 2166136261U;
+	int rmode = fegetround();
+	unsigned char rm_tag = (unsigned char)((rmode == FE_TONEAREST) ? 0 :
+					       (rmode == FE_DOWNWARD)  ? 1 :
+					       (rmode == FE_UPWARD)    ? 2 :
+					       (rmode == FE_TOWARDZERO)? 3 : 4);
+	size_t i;
+	struct psh_float_entry *fe;
+
+	if (rm_tag == 4)
+	    return 0;
+	for (i = 0; i < len; i++)
+	    h = (h ^ (unsigned char)start[i]) * 16777619U;
+	fe = &psh_float_cache[(h ^ (unsigned)rm_tag ^ (h >> 6)) &
+			      (PSH_FCACHE_SIZE - 1)];
+	if (fe->valid && fe->len == (unsigned char)len &&
+	    fe->rmode == rm_tag && fe->hash == h &&
+	    memcmp(fe->text, start, len) == 0) {
+	    *pp = p;
+	    *out = fe->val;
+	    return 1;
+	}
+
+	{
+	    char buf[PSH_FCACHE_MAXLEN + 1];
+	    char *endp = NULL;
+	    int saved_errno = errno;
+	    int prev_except = fetestexcept(FE_ALL_EXCEPT);
+	    double dv;
+
+	    memcpy(buf, start, len);
+	    buf[len] = '\0';
+	    dv = math_strtod(buf, &endp);
+	    if (endp != buf + len)
+		return 0;
+	    if (errno == saved_errno &&
+		fetestexcept(FE_ALL_EXCEPT) == prev_except) {
+		fe->hash = h;
+		fe->len = (unsigned char)len;
+		fe->rmode = rm_tag;
+		memcpy(fe->text, start, len);
+		fe->text[len] = '\0';
+		fe->val = dv;
+		fe->valid = 1;
+	    }
+	    *pp = p;
+	    *out = dv;
+	    return 1;
+	}
+    }
 }
 
 /*
@@ -1775,6 +2073,22 @@ getmathparam(struct mathvalue *mptr, int keep)
 			    result.u.l = lv;
 			}
 			return result;
+		    }
+		    {
+			const char *fp = sv;
+			int fneg = 0;
+			double dv;
+			if (*fp == '-') {
+			    fneg = 1;
+			    fp++;
+			}
+			if (math_lex_plain_float(&fp, &dv) && *fp == '\0') {
+			    if (keep)
+				mptr->cached_pm = pm;
+			    result.type = MN_FLOAT;
+			    result.u.d = fneg ? -dv : dv;
+			    return result;
+			}
 		    }
 		}
 	    }
@@ -1968,6 +2282,16 @@ lexconstant(void)
 		}
 		return NUM;
 	    }
+	}
+    }
+    if ((unsigned char)(*nptr - '0') <= 9U || *nptr == '.') {
+	const char *fp = nptr;
+	double dv;
+	if (math_lex_plain_float(&fp, &dv)) {
+	    ptr = (char *)fp;
+	    yyval.type = MN_FLOAT;
+	    yyval.u.d = dv;
+	    return NUM;
 	}
     }
     if (IS_DASH(*nptr))
@@ -3042,6 +3366,40 @@ bop(int tk)
     };
 }
 
+
+/**/
+mnumber
+matheval_cached(char *s, Wordcode site)
+{
+    char *junk;
+    mnumber x;
+    int xmtok = mtok;
+    if (!mlevel)
+	outputradix = outputunderscore = 0;
+
+    if (*s == Nularg)
+	s++;
+    if (!*s) {
+	x.type = MN_INTEGER;
+	x.u.l = 0;
+	return x;
+    }
+    if (mbc_eval_with_site(s, 0, site, &x, NULL))
+	return lastmathval = x;
+    x = mathevall(s, MPREC_TOP, &junk);
+    mtok = xmtok;
+    if (*junk)
+	zerr("bad math expression: illegal character: %c", *junk);
+    return x;
+}
+
+/**/
+zlong
+mathevali_cached(char *s, Wordcode site)
+{
+    mnumber x = matheval_cached(s, site);
+    return (x.type & MN_FLOAT) ? (zlong)x.u.d : x.u.l;
+}
 
 /**/
 mod_export mnumber
