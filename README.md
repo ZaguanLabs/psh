@@ -1,6 +1,6 @@
 # psh — Performance SHell
 
-**psh 1.0.0-rc3**, based on Zsh 5.9.2, is an experimental performance fork.
+**psh 1.0.0-rc4**, based on Zsh 5.9.2, is an experimental performance fork.
 Performance takes priority, with broad Zsh compatibility and documented breaking
 changes allowed where their benefits justify them. **Oh My Zsh must work
 unchanged.** Universal drop-in compatibility is not promised; undocumented or
@@ -15,16 +15,18 @@ The author's Zsh projects are the primary customer workloads. Their profiles
 guide optimization priorities; project kernels and controls accompany focused
 shell benchmarks.
 
-[rc3](Releases/1.0.0-rc3.md) reduces allocation and copying in shell execution,
-tightens system and terminal argument validation, and carries forward the
-isolated startup environment introduced in rc2.
+[rc4](Releases/1.0.0-rc4.md) adds a bounded compiled integer arithmetic
+bytecode cache with wordcode-site lookup, rounding-mode-exact float literal
+caching, direct UTF-8/SWAR scanning, fast simple parameter expansion,
+power-of-2 hash tables, and pooled heap/cmdstack reuse (1.10×–2.72× faster than
+rc3, 1.63×–4.68× faster than pristine Zsh 5.9.2).
 
 ```sh
 git clone git@github.com:ZaguanLabs/psh.git
 cd psh
 python3 Perf/build.py
 ./psh --version
-# psh 1.0.0-rc3 (zsh 5.9.2)
+# psh 1.0.0-rc4 (zsh 5.9.2)
 ./psh -dfc 'print -r -- "$ZSH_VERSION"'
 # 5.9.2
 ```

@@ -1,4 +1,4 @@
-# Compatibility policy for psh 1.0.0-rc3
+# Compatibility policy for psh 1.0.0-rc4
 
 psh aims for meaningful performance gains on **Zsh 5.9.2** while preserving
 existing behavior by default. Existing scripts working unchanged is the normal

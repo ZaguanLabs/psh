@@ -5,8 +5,8 @@ It retains `ZSH_VERSION=5.9.2`, `zsh/*` module identities, native package names,
 and the usual personal startup filenames. It does not replace the system Zsh,
 alter personal startup files, or change the account's login shell.
 
-The current release candidate is **1.0.0-rc3**. `psh --version` reports
-`psh 1.0.0-rc3 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
+The current release candidate is **1.0.0-rc4**. `psh --version` reports
+`psh 1.0.0-rc4 (zsh 5.9.2)`; `$ZSH_VERSION` and module/function directories
 remain based on Zsh 5.9.2. [Compatibility limits](../COMPATIBILITY.md) and
 [original RC validation](../Releases/1.0.0-rc0.md) describe the tested scope.
 The [round-71 maintenance iteration](../Perf/round71.md) records development
@@ -28,7 +28,7 @@ subsequent repair and its installed-package regression tests.
 | `/usr/local/bin/psh` | Public executable, through `current` |
 | `/usr/local/bin/psh-config` | Discover this release's package and SDK paths |
 | `/usr/local/psh/current` | Active release symlink |
-| `/usr/local/psh/releases/1.0.0-rc3-<digest>/bin/psh` | Versioned executable |
+| `/usr/local/psh/releases/1.0.0-rc4-<digest>/bin/psh` | Versioned executable |
 | `<release>/lib/psh/5.9.2/` | `zdraw.so`, `zcurl.so`, `zmdown.so`, and stock `zsh/*.so` |
 | `<release>/share/psh/5.9.2/functions/` | Stock functions, completions, and package autoloads |
 | `<release>/share/psh/5.9.2/scripts/` | Package libraries, data, documentation, and licences |

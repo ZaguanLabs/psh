@@ -1,11 +1,13 @@
 # psh — Performance SHell
 
-psh **1.0.0-rc3** reduces interpreter allocation and copying and adds
-system and terminal argument checks. See the [project overview](.github/README.md)
-and [rc3 release notes](Releases/1.0.0-rc3.md). This file retains the detailed
+psh **1.0.0-rc4** adds ten deep interpreter optimization rounds (rounds
+101–110) covering arithmetic bytecode/site caching, UTF-8/SWAR scanning, fast
+simple parameter expansion, power-of-2 hash tables, option emulation masks, and
+heap/cmdstack reuse. See the [project overview](.github/README.md) and
+[rc4 release notes](Releases/1.0.0-rc4.md). This file retains the detailed
 development history.
 
-psh 1.0.0-rc3 pursues meaningful performance gains on Zsh 5.9.2 while preserving
+psh 1.0.0-rc4 pursues meaningful performance gains on Zsh 5.9.2 while preserving
 existing behavior by default. Limited, deliberate differences need substantial
 measured benefit, understood consequences and a documented migration or fallback.
 **Oh My Zsh must work unchanged**, including

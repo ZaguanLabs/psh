@@ -5,22 +5,22 @@ A Zsh 5.9.2 performance fork for people who do substantial work inside the shell
 psh grew out of Zsh applications: editors, chat clients, terminal interfaces and
 graphics experiments. It targets repeated interpreter work in those programs
 while preserving existing Zsh behavior by default. The current public candidate
-is **1.0.0-rc3**, with six bundled companion projects.
+is **1.0.0-rc4**, with six bundled companion projects.
 
-[Release notes](../Releases/1.0.0-rc3.md) ·
+[Release notes](../Releases/1.0.0-rc4.md) ·
 [Compatibility](../COMPATIBILITY.md) ·
 [Installation](../Packaging/README.md) ·
 [Performance evidence](../Perf/README.md)
 
 ## Try the source release
 
-Download the attached `psh-1.0.0-rc3.tar.xz` from
+Download the attached `psh-1.0.0-rc4.tar.xz` from
 [Releases](https://github.com/ZaguanLabs/psh/releases). It includes the verified
 upstream sources needed by the build tools, so no Git checkout is required.
 
 ```sh
-tar -xf psh-1.0.0-rc3.tar.xz
-cd psh-1.0.0-rc3
+tar -xf psh-1.0.0-rc4.tar.xz
+cd psh-1.0.0-rc4
 python3 Perf/build.py --which candidate --profile release
 ./psh --version
 ./psh -f
@@ -36,13 +36,17 @@ native modules, verification, isolated paths and rollback. The packaged release
 is currently validated on Mageia Linux x86-64, with startup integration also tested on
 AlmaLinux. Other platforms are experimental.
 
-## New in rc3
+## New in rc4
 
-The shell allocates and copies less during arithmetic, string expansion,
-pattern matching and function calls. System, socket and terminal commands
-validate descriptor and numeric arguments before passing them to the OS.
-See the [rc3 release notes](../Releases/1.0.0-rc3.md) for measurements,
-known tradeoffs and installation details.
+Ten deep interpreter optimization rounds (rounds 101–110) add a bounded
+compiled integer arithmetic bytecode cache with wordcode-site pointer caching,
+rounding-mode-exact float literal caching, direct RFC 3629 UTF-8 decoding and
+SWAR ASCII scanning, fast simple parameter expansion, power-of-2 hash tables,
+precomputed emulation masks, and pooled `cmdstack`/heap arena reuse — running
+1.10×–2.72× faster than rc3 and 1.63×–4.68× faster than pristine Zsh 5.9.2
+across all 15 customer workloads with 47%–86% less malloc churn.
+See the [rc4 release notes](../Releases/1.0.0-rc4.md) for measurements,
+memory tradeoffs and installation details.
 
 ## What changes
 
@@ -80,7 +84,7 @@ Read [the compatibility policy](../COMPATIBILITY.md) before adopting psh,
 especially for native modules. **Universal drop-in compatibility is not claimed.**
 Unexpected script failures and memory-safety problems are bugs.
 
-## Help test rc3
+## Help test rc4
 
 Try your real scripts and interactive setup. Report differences from Zsh at the
 [issue tracker](https://github.com/ZaguanLabs/psh/issues), with a minimal example,
