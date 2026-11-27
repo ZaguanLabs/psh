@@ -58,7 +58,7 @@ static int allusersadded;
 void
 createnameddirtable(void)
 {
-    nameddirtab = newhashtable(201, "nameddirtab", NULL);
+    nameddirtab = newhashtable(256, "nameddirtab", NULL);
 
     nameddirtab->hash        = hasher;
     nameddirtab->emptytable  = emptynameddirtable;

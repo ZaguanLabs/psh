@@ -483,7 +483,7 @@ createoptiontable(void)
     Optname on;
     int i, fully;
 
-    optiontab = newhashtable(101, "optiontab", NULL);
+    optiontab = newhashtable(128, "optiontab", NULL);
 
     optiontab->hash        = hasher;
     optiontab->emptytable  = NULL;

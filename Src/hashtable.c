@@ -196,16 +196,30 @@ static HashTableImpl firstht, lastht;
 
 /* Generic hash function */
 
+static inline unsigned
+psh_hasher_inline(const char *str)
+{
+    unsigned hashval = 0, c;
+    const unsigned char *p = (const unsigned char *)str;
+
+    while ((c = *p++))
+	hashval += (hashval << 5) + c;
+
+    return hashval;
+}
+
+static inline unsigned
+psh_bucket(unsigned hashval, unsigned hsize)
+{
+    return (hsize & (hsize - 1)) == 0 ? (hashval & (hsize - 1))
+				      : (hashval % hsize);
+}
+
 /**/
 mod_export unsigned
 hasher(const char *str)
 {
-    unsigned hashval = 0, c;
-
-    while ((c = *((unsigned char *) str++)))
-	hashval += (hashval << 5) + c;
-
-    return hashval;
+    return psh_hasher_inline(str);
 }
 
 /* Get a new hash table */
@@ -289,7 +303,10 @@ addhashnode2(HashTable ht, char *nam, void *nodeptr)
     hn = (HashNode) nodeptr;
     hn->nam = nam;
 
-    hashval = ht->hash(hn->nam) % ht->hsize;
+    if (ht->hash == hasher)
+	hashval = psh_bucket(psh_hasher_inline(hn->nam), (unsigned)ht->hsize);
+    else
+	hashval = ht->hash(hn->nam) % ht->hsize;
     scope_mark_bucket(ht, hashval);
     hp = ht->nodes[hashval];
 
@@ -302,31 +319,37 @@ addhashnode2(HashTable ht, char *nam, void *nodeptr)
 	return NULL;
     }
 
-    /* else check if the first node contains the same key */
-    if (ht->cmpnodes(hp->nam, hn->nam) == 0) {
-	ht->nodes[hashval] = hn;
-	replacing:
-	hn->next = hp->next;
-	if(impl(ht)->scan) {
-	    if(impl(ht)->scan->sorted) {
-		HashNode *hashtab = impl(ht)->scan->u.s.hashtab;
-		int i;
-		for(i = impl(ht)->scan->u.s.ct; i--; )
-		    if(hashtab[i] == hp)
-			hashtab[i] = hn;
-	    } else if(impl(ht)->scan->u.u == hp)
-		impl(ht)->scan->u.u = hn;
-	}
-	return hp;
-    }
-
-    /* else run through the list and check all the keys */
-    hq = hp;
-    hp = hp->next;
-    for (; hp; hq = hp, hp = hp->next) {
-	if (ht->cmpnodes(hp->nam, hn->nam) == 0) {
-	    hq->next = hn;
+    if (ht->cmpnodes == strcmp) {
+	unsigned char c0 = (unsigned char)hn->nam[0];
+	if ((unsigned char)hp->nam[0] == c0 &&
+	    (!c0 || strcmp(hp->nam + 1, hn->nam + 1) == 0)) {
+	    ht->nodes[hashval] = hn;
 	    goto replacing;
+	}
+	hq = hp;
+	hp = hp->next;
+	for (; hp; hq = hp, hp = hp->next) {
+	    if ((unsigned char)hp->nam[0] == c0 &&
+		(!c0 || strcmp(hp->nam + 1, hn->nam + 1) == 0)) {
+		hq->next = hn;
+		goto replacing;
+	    }
+	}
+    } else {
+	/* else check if the first node contains the same key */
+	if (ht->cmpnodes(hp->nam, hn->nam) == 0) {
+	    ht->nodes[hashval] = hn;
+	    goto replacing;
+	}
+
+	/* else run through the list and check all the keys */
+	hq = hp;
+	hp = hp->next;
+	for (; hp; hq = hp, hp = hp->next) {
+	    if (ht->cmpnodes(hp->nam, hn->nam) == 0) {
+		hq->next = hn;
+		goto replacing;
+	    }
 	}
     }
 
@@ -336,6 +359,20 @@ addhashnode2(HashTable ht, char *nam, void *nodeptr)
     if (++ht->ct >= ht->hsize * 2 && !impl(ht)->scan)
         expandhashtable(ht);
     return NULL;
+
+replacing:
+    hn->next = hp->next;
+    if(impl(ht)->scan) {
+	if(impl(ht)->scan->sorted) {
+	    HashNode *hashtab = impl(ht)->scan->u.s.hashtab;
+	    int i;
+	    for(i = impl(ht)->scan->u.s.ct; i--; )
+		if(hashtab[i] == hp)
+		    hashtab[i] = hn;
+	} else if(impl(ht)->scan->u.u == hp)
+	    impl(ht)->scan->u.u = hn;
+    }
+    return hp;
 }
 
 /* Get an enabled entry in a hash table.  *
@@ -349,6 +386,21 @@ gethashnode(HashTable ht, const char *nam)
 {
     unsigned hashval;
     HashNode hp;
+
+    if (ht->hash == hasher && ht->cmpnodes == strcmp) {
+	unsigned char c0 = (unsigned char)nam[0];
+	hashval = psh_bucket(psh_hasher_inline(nam), (unsigned)ht->hsize);
+	for (hp = ht->nodes[hashval]; hp; hp = hp->next) {
+	    if ((unsigned char)hp->nam[0] == c0 &&
+		(!c0 || strcmp(hp->nam + 1, nam + 1) == 0)) {
+		if (hp->flags & DISABLED)
+		    return NULL;
+		else
+		    return hp;
+	    }
+	}
+	return NULL;
+    }
 
     hashval = ht->hash(nam) % ht->hsize;
     for (hp = ht->nodes[hashval]; hp; hp = hp->next) {
@@ -374,6 +426,17 @@ gethashnode2(HashTable ht, const char *nam)
     unsigned hashval;
     HashNode hp;
 
+    if (ht->hash == hasher && ht->cmpnodes == strcmp) {
+	unsigned char c0 = (unsigned char)nam[0];
+	hashval = psh_bucket(psh_hasher_inline(nam), (unsigned)ht->hsize);
+	for (hp = ht->nodes[hashval]; hp; hp = hp->next) {
+	    if ((unsigned char)hp->nam[0] == c0 &&
+		(!c0 || strcmp(hp->nam + 1, nam + 1) == 0))
+		return hp;
+	}
+	return NULL;
+    }
+
     hashval = ht->hash(nam) % ht->hsize;
     for (hp = ht->nodes[hashval]; hp; hp = hp->next) {
 	if (ht->cmpnodes(hp->nam, nam) == 0)
@@ -394,7 +457,10 @@ removehashnode(HashTable ht, const char *nam)
     unsigned hashval;
     HashNode hp, hq;
 
-    hashval = ht->hash(nam) % ht->hsize;
+    if (ht->hash == hasher)
+	hashval = psh_bucket(psh_hasher_inline(nam), (unsigned)ht->hsize);
+    else
+	hashval = ht->hash(nam) % ht->hsize;
     hp = ht->nodes[hashval];
 
     /* if no nodes at this hash value, return NULL */
@@ -402,21 +468,28 @@ removehashnode(HashTable ht, const char *nam)
 	return NULL;
 
     /* else check if the key in the first one matches */
+    if (ht->cmpnodes == strcmp) {
+	unsigned char c0 = (unsigned char)nam[0];
+	if ((unsigned char)hp->nam[0] == c0 &&
+	    (!c0 || strcmp(hp->nam + 1, nam + 1) == 0)) {
+	    ht->nodes[hashval] = hp->next;
+	    goto gotit;
+	}
+	hq = hp;
+	hp = hp->next;
+	for (; hp; hq = hp, hp = hp->next) {
+	    if ((unsigned char)hp->nam[0] == c0 &&
+		(!c0 || strcmp(hp->nam + 1, nam + 1) == 0)) {
+		hq->next = hp->next;
+		goto gotit;
+	    }
+	}
+	return NULL;
+    }
+
     if (ht->cmpnodes(hp->nam, nam) == 0) {
 	ht->nodes[hashval] = hp->next;
-	gotit:
-	ht->ct--;
-	if(impl(ht)->scan) {
-	    if(impl(ht)->scan->sorted) {
-		HashNode *hashtab = impl(ht)->scan->u.s.hashtab;
-		int i;
-		for(i = impl(ht)->scan->u.s.ct; i--; )
-		    if(hashtab[i] == hp)
-			hashtab[i] = NULL;
-	    } else if(impl(ht)->scan->u.u == hp)
-		impl(ht)->scan->u.u = hp->next;
-	}
-	return hp;
+	goto gotit;
     }
 
     /* else run through the list and check the rest of the keys */
@@ -431,6 +504,20 @@ removehashnode(HashTable ht, const char *nam)
 
     /* else it is not in the list, so return NULL */
     return NULL;
+
+gotit:
+    ht->ct--;
+    if(impl(ht)->scan) {
+	if(impl(ht)->scan->sorted) {
+	    HashNode *hashtab = impl(ht)->scan->u.s.hashtab;
+	    int i;
+	    for(i = impl(ht)->scan->u.s.ct; i--; )
+		if(hashtab[i] == hp)
+		    hashtab[i] = NULL;
+	} else if(impl(ht)->scan->u.u == hp)
+	    impl(ht)->scan->u.u = hp->next;
+    }
+    return hp;
 }
 
 /* Disable a node in a hash table */
@@ -780,7 +867,7 @@ mod_export char **pathchecked;
 void
 createcmdnamtable(void)
 {
-    cmdnamtab = newhashtable(201, "cmdnamtab", NULL);
+    cmdnamtab = newhashtable(256, "cmdnamtab", NULL);
 
     cmdnamtab->hash        = hasher;
     cmdnamtab->emptytable  = emptycmdnamtable;
@@ -991,7 +1078,7 @@ mod_export HashTable shfunctab;
 void
 createshfunctable(void)
 {
-    shfunctab = newhashtable(7, "shfunctab", NULL);
+    shfunctab = newhashtable(32, "shfunctab", NULL);
 
     shfunctab->hash        = hasher;
     shfunctab->emptytable  = NULL;
@@ -1301,7 +1388,7 @@ createreswdtable(void)
 {
     Reswd rw;
 
-    reswdtab = newhashtable(23, "reswdtab", NULL);
+    reswdtab = newhashtable(32, "reswdtab", NULL);
 
     reswdtab->hash        = hasher;
     reswdtab->emptytable  = NULL;
@@ -1387,7 +1474,7 @@ createaliastables(void)
 {
     /* Table for regular and global aliases */
 
-    aliastab = newhashtable(23, "aliastab", NULL);
+    aliastab = newhashtable(32, "aliastab", NULL);
 
     createaliastable(aliastab);
 
@@ -1398,7 +1485,7 @@ createaliastables(void)
 
     /* Table for suffix aliases --- make this smaller */
 
-    sufaliastab = newhashtable(11, "sufaliastab", NULL);
+    sufaliastab = newhashtable(16, "sufaliastab", NULL);
 
     createaliastable(sufaliastab);
 }

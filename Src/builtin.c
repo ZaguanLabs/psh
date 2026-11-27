@@ -149,7 +149,7 @@ mod_export HashTable builtintab;
 void
 createbuiltintable(void)
 {
-    builtintab = newhashtable(85, "builtintab", NULL);
+    builtintab = newhashtable(128, "builtintab", NULL);
 
     builtintab->hash        = hasher;
     builtintab->emptytable  = NULL;

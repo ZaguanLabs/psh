@@ -492,7 +492,7 @@ newparamtable(int size, char const *name)
 {
     HashTable ht;
     if (!size)
-	size = 17;
+	size = 32;
     ht = newhashtable(size, name, NULL);
 
     ht->hash        = hasher;
@@ -951,7 +951,7 @@ createparamtable(void)
     char *machinebuf;
 #endif
 
-    paramtab = realparamtab = newparamtable(151, "paramtab");
+    paramtab = realparamtab = newparamtable(256, "paramtab");
 
     /* Add the special parameters to the hash table */
     for (ip = special_params; ip->node.nam; ip++)
@@ -1625,7 +1625,7 @@ getarg(char **str, int *inv, Value v, int a2, zlong *w,
 	    if (!ht) {
 		if (flags & SCANPM_CHECKING)
 		    return 0;
-		ht = newparamtable(17, v->pm->node.nam);
+		ht = newparamtable(32, v->pm->node.nam);
 		v->pm->gsu.h->setfn(v->pm, ht);
 	    }
 	    untokenize(s);
@@ -4295,7 +4295,7 @@ arrhashsetfn(Param pm, char **val, int flags)
 	ht = paramtab = pm->gsu.h->getfn(pm);
     }
     if (alen && (!(flags & ASSPM_AUGMENT) || !paramtab)) {
-	ht = paramtab = newparamtable(17, pm->node.nam);
+	ht = paramtab = newparamtable(32, pm->node.nam);
     }
     for (aptr = val; *aptr; ) {
 	int eltflags = 0;
