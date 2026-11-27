@@ -232,6 +232,179 @@ stringsubstquote(char *strstart, char **pstrdpos)
     return strret;
 }
 
+/*
+ * Fast path for plain scalar/integer/positional parameter expansions:
+ * $var, "$var", ${var}, "${var}", $1..$9, ${1}..${9} with no flags,
+ * subscripts, modifiers, word splitting, or globsubst.
+ * Returns 1 if handled (updating node data and *str), 0 to fall back to
+ * paramsubst() without mutating *str or node.
+ */
+static int
+try_simple_paramsubst(LinkList l, LinkNode n, char **str, int qt, int pf_flags)
+{
+    char *aptr = *str;
+    char *s = aptr + 1;
+    char *fstr, *ostr, *y;
+    const char *val;
+    char numbuf[32];
+    size_t vlen, pl, sl;
+    int inbrace = 0;
+
+    if (((pf_flags & PREFORK_SHWORDSPLIT) && !(pf_flags & PREFORK_SINGLE) && !qt) ||
+	(!qt && isset(GLOBSUBST)))
+	return 0;
+
+    if (*s == Inbrace) {
+	inbrace = 1;
+	s++;
+    }
+
+    if ((unsigned char)(*s - '1') <= 8U) {
+	int ppar = *s - '0';
+	int i;
+	char next = s[1];
+
+	if (inbrace) {
+	    if (next != Outbrace)
+		return 0;
+	    fstr = s + 2;
+	} else {
+	    if (!(next == '\0' ||
+		  ((unsigned char)next <= 0x7f &&
+		   !idigit(next) && next != '[' && next != ':') ||
+		  (next != Inbrack && itok(next))))
+		return 0;
+	    fstr = s + 1;
+	}
+	if (!pparams)
+	    return 0;
+	for (i = 0; i < ppar && pparams[i]; i++)
+	    ;
+	if (i == ppar) {
+	    val = pparams[ppar - 1];
+	    vlen = strlen(val);
+	} else {
+	    if (unset(UNSET))
+		return 0;
+	    val = "";
+	    vlen = 0;
+	}
+    } else if ((unsigned char)*s <= 0x7f &&
+	       (typtab[(unsigned char)*s] & IIDENT) && !idigit(*s)) {
+	const char *idbeg = s;
+	unsigned hv = 0;
+	size_t idlen;
+	unsigned hsize, bucket;
+	unsigned char c0;
+	HashNode hp;
+	Param pm = NULL;
+
+	if (!psh_paramtab_is_standard())
+	    return 0;
+	do {
+	    hv += (hv << 5) + (unsigned char)*s;
+	    s++;
+	} while ((unsigned char)*s <= 0x7f &&
+		 (typtab[(unsigned char)*s] & IIDENT));
+
+	if (inbrace) {
+	    if (*s != Outbrace)
+		return 0;
+	    fstr = s + 1;
+	} else {
+	    unsigned char next = (unsigned char)*s;
+	    if (!(next == 0 ||
+		  (next <= 0x7f && next != '[' && next != ':') ||
+		  (next != (unsigned char)Inbrack && itok((char)next))))
+		return 0;
+	    fstr = s;
+	}
+
+	idlen = (size_t)(s - idbeg);
+	hsize = (unsigned)paramtab->hsize;
+	bucket = ((hsize & (hsize - 1)) == 0) ? (hv & (hsize - 1))
+					      : (hv % hsize);
+	c0 = (unsigned char)idbeg[0];
+	for (hp = paramtab->nodes[bucket]; hp; hp = hp->next) {
+	    if ((unsigned char)hp->nam[0] == c0) {
+		size_t k = 1;
+		while (k < idlen && hp->nam[k] == idbeg[k])
+		    k++;
+		if (k == idlen && hp->nam[k] == '\0') {
+		    pm = (Param)hp;
+		    break;
+		}
+	    }
+	}
+	if (!pm || (pm->node.flags & (PM_UNSET|PM_AUTOLOAD|
+				      PM_LEFT|PM_RIGHT_B|PM_RIGHT_Z|
+				      PM_LOWER|PM_UPPER)))
+	    return 0;
+
+	switch (PM_TYPE(pm->node.flags)) {
+	case PM_SCALAR:
+	    if (pm->gsu.s != &stdscalar_gsu)
+		return 0;
+	    val = pm->u.str ? pm->u.str : "";
+	    vlen = strlen(val);
+	    break;
+	case PM_INTEGER:
+	    if (pm->gsu.i != &stdinteger_gsu ||
+		(pm->base != 0 && pm->base != 10 && pm->base != -10))
+		return 0;
+	    {
+		zlong iv = pm->u.val;
+		zulong uv = (iv < 0) ? (zulong)0 - (zulong)iv : (zulong)iv;
+		char *np = numbuf + sizeof(numbuf) - 1;
+		*np = '\0';
+		do {
+		    *--np = (char)('0' + (uv % 10));
+		    uv /= 10;
+		} while (uv);
+		if (iv < 0)
+		    *--np = '-';
+		val = np;
+		vlen = (size_t)((numbuf + sizeof(numbuf) - 1) - np);
+	    }
+	    break;
+	default:
+	    return 0;
+	}
+    } else {
+	return 0;
+    }
+
+    l->list.flags &= ~LF_ARRAY;
+    ostr = (char *)getdata(n);
+    pl = (size_t)(aptr - ostr);
+    sl = strlen(fstr);
+
+    if (!pl && !sl) {
+	if (qt && !vlen) {
+	    y = dupstring(nulstring);
+	    setdata(n, (void *)y);
+	    *str = y + 1;
+	    return 1;
+	}
+	y = (char *)zhalloc(vlen + 1);
+	memcpy(y, val, vlen);
+	y[vlen] = '\0';
+	setdata(n, (void *)y);
+	*str = y + vlen;
+	return 1;
+    }
+
+    y = (char *)zhalloc(pl + vlen + sl + 1);
+    if (pl)
+	memcpy(y, ostr, pl);
+    if (vlen)
+	memcpy(y + pl, val, vlen);
+    memcpy(y + pl + vlen, fstr, sl + 1);
+    setdata(n, (void *)y);
+    *str = y + pl + vlen + (sl == 1 && fstr[0] == Dnull ? 1 : 0);
+    return 1;
+}
+
 /**/
 static LinkNode
 stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
@@ -242,7 +415,15 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	{ String, Qstring, Tick, Qtick, '=', Equals, 0 };
     int qt;
     char *str3 = (char *)getdata(node);
-    char *str  = str3, c;
+    char *str  = str3, *first_hi = str3, c;
+
+    if (!errflag && !asssub) {
+	while ((signed char)*first_hi > 0)
+	    first_hi++;
+	if (!*first_hi)
+	    return node;
+	str = first_hi;
+    }
 
     while (!errflag && *str) {
 	/* Every process substitution starts with a marker and Inpar. */
@@ -280,12 +461,13 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	    sptr[restlen] = '\0';
 	    str3 = snew;
 	    str = snew + str3len + sublen;
+	    first_hi = str3;
 	    setdata(node, str3);
 	} else {
 	    str = paren;
 	}
     }
-    str = str3;
+    str = first_hi;
 
     while (!errflag && (c = *str)) {
 	if ((qt = c == Qstring) || c == String) {
@@ -327,6 +509,13 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 		     !(pf_flags & PREFORK_NOSHWORDSPLIT)) ||
 		    (pf_flags & PREFORK_SPLIT))
 		    pf_flags |= PREFORK_SHWORDSPLIT;
+		if (try_simple_paramsubst(
+			list, node, &str, qt,
+			pf_flags & (PREFORK_SINGLE|PREFORK_SHWORDSPLIT|
+				    PREFORK_SUBEXP))) {
+		    str3 = (char *)getdata(node);
+		    continue;
+		}
 		node = paramsubst(
 		    list, node, &str, qt,
 		    pf_flags & (PREFORK_SINGLE|PREFORK_SHWORDSPLIT|
@@ -447,6 +636,13 @@ stringsubst(LinkList list, LinkNode node, int pf_flags, int *ret_flags,
 	}
 	str++;
 	/* Literal spans have no effects; retain assignment-marker handling. */
+	if (!asssub) {
+	    while ((signed char)*str > 0)
+		str++;
+	    if (!*str || *str == String || *str == Qstring ||
+		*str == Tick || *str == Qtick)
+		continue;
+	}
 	str += strcspn(str, asssub ? assign_tokens : subst_tokens);
     }
     return errflag ? NULL : node;
